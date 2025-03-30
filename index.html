@@ -1,1 +1,593 @@
-Hello World
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Futuristic portfolio of Alex Carter, a Network Engineer, Cybersecurity Specialist, and Azure Architect. Explore my expertise in FortiGate SD-WAN, Azure, and advanced security solutions.">
+    <meta name="keywords" content="network engineer, cybersecurity specialist, Azure architect, FortiGate SD-WAN, IT security, hybrid engineer">
+    <meta name="author" content="Alex Carter">
+
+    <title>Alex Carter | Network Engineer & Cybersecurity Specialist</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Roboto', sans-serif;
+      }
+      body {
+        background-color: #0d0d1b;
+        color: #e4e4e4;
+        overflow-x: hidden;
+      }
+      /* Smooth Scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+      /* Loading Animation */
+      .loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #0d0d1b;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        transition: opacity 0.5s;
+      }
+      .loader::before {
+        content: '';
+        width: 50px;
+        height: 50px;
+        border: 5px solid #00aaff;
+        border-top: 5px solid transparent;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      .loader.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+      /* Background Animation */
+      .background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #1a1a2e 0%, #0d0d1b 100%);
+        z-index: -1;
+        opacity: 0.8;
+      }
+      .background::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: url('thumbnails/circuit-pattern.webp') repeat;
+        opacity: 0.1;
+        animation: moveBackground 20s linear infinite;
+      }
+      @keyframes moveBackground {
+        0% { background-position: 0 0; }
+        100% { background-position: 100% 100%; }
+      }
+      /* Header */
+      header {
+        position: sticky;
+        top: 0;
+        background: rgba(26, 26, 46, 0.8);
+        backdrop-filter: blur(10px);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .logo img {
+        height: 40px;
+        filter: drop-shadow(0 0 5px #00aaff);
+      }
+      nav a {
+        color: #e4e4e4;
+        text-decoration: none;
+        margin: 0 1.5rem;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        transition: color 0.3s, text-shadow 0.3s;
+      }
+      nav a:hover {
+        color: #00aaff;
+        text-shadow: 0 0 10px #00aaff;
+      }
+      /* Hero Section */
+      .hero {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        position: relative;
+        background: linear-gradient(135deg, rgba(0, 170, 255, 0.1), rgba(255, 0, 255, 0.1));
+      }
+      .hero img {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        border: 3px solid #00aaff;
+        box-shadow: 0 0 20px rgba(0, 170, 255, 0.5);
+        margin-bottom: 2rem;
+        animation: glow 2s infinite alternate;
+      }
+      @keyframes glow {
+        0% { box-shadow: 0 0 20px rgba(0, 170, 255, 0.5); }
+        100% { box-shadow: 0 0 30px rgba(0, 170, 255, 0.8); }
+      }
+      .hero h1 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 3rem;
+        background: linear-gradient(90deg, #00aaff, #ff00ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 1rem;
+        animation: fadeIn 2s ease-in-out;
+      }
+      .hero p {
+        font-size: 1.2rem;
+        color: #b0b0b0;
+        margin-bottom: 2rem;
+        animation: fadeIn 3s ease-in-out;
+      }
+      .hero .cta-button {
+        background: linear-gradient(90deg, #00aaff, #ff00ff);
+        color: white;
+        padding: 0.8rem 2rem;
+        text-decoration: none;
+        border-radius: 25px;
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 700;
+        text-transform: uppercase;
+        box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
+        transition: box-shadow 0.3s;
+        animation: fadeIn 4s ease-in-out;
+      }
+      .hero .cta-button:hover {
+        box-shadow: 0 0 25px rgba(0, 170, 255, 0.8);
+      }
+      @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
+      /* Sections */
+      section {
+        padding: 5rem 1rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      section h2 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2.5rem;
+        text-align: center;
+        background: linear-gradient(90deg, #00aaff, #ff00ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 3rem;
+        text-transform: uppercase;
+      }
+      /* About */
+      .about {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 2rem;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      }
+      .about img {
+        width: 100%;
+        max-width: 250px;
+        border-radius: 10px;
+        border: 2px solid #00aaff;
+      }
+      .about-text {
+        flex: 1;
+        min-width: 300px;
+      }
+      .about-text p {
+        line-height: 1.8;
+        color: #b0b0b0;
+        font-size: 1rem;
+      }
+      /* Skills */
+      .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+      }
+      .skill-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+      .skill-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 0 20px rgba(0, 170, 255, 0.5);
+      }
+      .skill-card img {
+        width: 60px;
+        margin-bottom: 1rem;
+        filter: drop-shadow(0 0 5px #00aaff);
+      }
+      .skill-card h3 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.2rem;
+        color: #e4e4e4;
+        margin-bottom: 0.5rem;
+      }
+      .skill-card p {
+        font-size: 0.9rem;
+        color: #b0b0b0;
+      }
+      /* Experience */
+      .experience-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+      .experience-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 2rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+      .experience-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 0 20px rgba(0, 170, 255, 0.5);
+      }
+      .experience-card img {
+        width: 50px;
+        margin-bottom: 1rem;
+        filter: drop-shadow(0 0 5px #00aaff);
+      }
+      .experience-card h3 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.2rem;
+        color: #e4e4e4;
+        margin-bottom: 0.5rem;
+      }
+      .experience-card p {
+        font-size: 0.9rem;
+        color: #b0b0b0;
+      }
+      /* Projects */
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+      .project-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 2rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+      .project-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 0 20px rgba(0, 170, 255, 0.5);
+      }
+      .project-card img, .project-card iframe {
+        width: 100%;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        border: 1px solid #00aaff;
+      }
+      .project-card h3 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.2rem;
+        color: #e4e4e4;
+        margin-bottom: 0.5rem;
+      }
+      .project-card p {
+        font-size: 0.9rem;
+        color: #b0b0b0;
+        margin-bottom: 1rem;
+      }
+      .project-card a {
+        color: #00aaff;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s, text-shadow 0.3s;
+      }
+      .project-card a:hover {
+        color: #ff00ff;
+        text-shadow: 0 0 10px #ff00ff;
+      }
+      /* Achievements */
+      .achievements-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+      .achievement-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 2rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+      .achievement-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 0 20px rgba(0, 170, 255, 0.5);
+      }
+      .achievement-card img {
+        width: 50px;
+        margin-bottom: 1rem;
+        filter: drop-shadow(0 0 5px #00aaff);
+      }
+      .achievement-card h3 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.2rem;
+        color: #e4e4e4;
+        margin-bottom: 0.5rem;
+      }
+      .achievement-card p {
+        font-size: 0.9rem;
+        color: #b0b0b0;
+      }
+      /* Contact */
+      .contact {
+        text-align: center;
+      }
+      .contact p {
+        color: #b0b0b0;
+        margin-bottom: 2rem;
+      }
+      .contact a {
+        color: #00aaff;
+        text-decoration: none;
+        font-weight: 600;
+        margin: 0 1.5rem;
+        font-family: 'Orbitron', sans-serif;
+        transition: color 0.3s, text-shadow 0.3s;
+      }
+      .contact a:hover {
+        color: #ff00ff;
+        text-shadow: 0 0 10px #ff00ff;
+      }
+      /* Footer */
+      footer {
+        background: rgba(26, 26, 46, 0.8);
+        backdrop-filter: blur(10px);
+        padding: 2rem;
+        text-align: center;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      footer p {
+        color: #b0b0b0;
+        font-size: 0.9rem;
+      }
+      footer a {
+        color: #00aaff;
+        text-decoration: none;
+        margin: 0 1rem;
+        transition: color 0.3s, text-shadow 0.3s;
+      }
+      footer a:hover {
+        color: #ff00ff;
+        text-shadow: 0 0 10px #ff00ff;
+      }
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .hero h1 {
+          font-size: 2rem;
+        }
+        .hero p {
+          font-size: 1rem;
+        }
+        section h2 {
+          font-size: 2rem;
+        }
+        nav a {
+          margin: 0 0.8rem;
+          font-size: 0.8rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Loader -->
+    <div class="loader"></div>
+
+    <!-- Background Animation -->
+    <div class="background"></div>
+
+    <!-- Header -->
+    <header>
+      <div class="logo">
+        <img src="icons/personal-logo.svg" alt="Alex Carter Logo">
+      </div>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#achievements">Achievements</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <img src="channel-pictures/my-picture.jpeg" alt="Alex Carter">
+      <h1>Alex Carter</h1>
+      <p>Network Engineer | Cybersecurity Specialist | Azure Architect | FortiGate Expert</p>
+      <a href="#projects" class="cta-button">Explore My Work</a>
+    </section>
+
+    <!-- About Me -->
+    <section id="about" class="about">
+      <img src="thumbnails/about-me.webp" alt="About Alex Carter">
+      <div class="about-text">
+        <h2>About Me</h2>
+        <p>I’m a seasoned Network Engineer and Cybersecurity Specialist with over 8 years of experience in designing, implementing, and securing enterprise-grade IT infrastructures. My expertise spans Azure architecture, FortiGate SD-WAN deployments, hybrid Exchange environments, and advanced cybersecurity frameworks.</p>
+        <p>I’m passionate about leveraging cutting-edge technologies like AI and cloud solutions to drive business innovation and resilience. Known for my strategic approach to problem-solving, I thrive in high-stakes environments and am committed to delivering scalable, secure, and efficient solutions.</p>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills">
+      <h2>My Skills</h2>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <img src="icons/hybrid-engineer.svg" alt="Hybrid Engineer Icon">
+          <h3>Hybrid Engineering & Project Management</h3>
+          <p>Expert in Exchange migrations, Office 365 administration, Azure deployments, FortiGate SD-WAN configurations, VPN setups, and IT troubleshooting.</p>
+        </div>
+        <div class="skill-card">
+          <img src="icons/cybersecurity.svg" alt="Cybersecurity Icon">
+          <h3>Network Engineering & Cybersecurity</h3>
+          <p>Proficient in Cisco switching, SSH, VPNs, firewall configuration (FortiGate, Cisco ASA), and advanced threat mitigation.</p>
+        </div>
+        <div class="skill-card">
+          <img src="icons/cloud.svg" alt="Cloud Icon">
+          <h3>Cloud & Infrastructure</h3>
+          <p>Skilled in Azure VM management, email security, hybrid cloud architectures, and infrastructure automation.</p>
+        </div>
+        <div class="skill-card">
+          <img src="icons/ai.svg" alt="AI Icon">
+          <h3>AI & Prompt Engineering</h3>
+          <p>Experienced in leveraging LLMs for automation, developing AI-driven workflows, and integrating AI into IT operations.</p>
+        </div>
+        <div class="skill-card">
+          <img src="icons/business.svg" alt="Business Icon">
+          <h3>Business & Strategy</h3>
+          <p>Adept at applying OKRs, RICE frameworks, and McKinsey models to drive strategic IT initiatives and business growth.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience & Certifications -->
+    <section id="experience">
+      <h2>Experience & Certifications</h2>
+      <div class="experience-grid">
+        <div class="experience-card">
+          <img src="icons/exchange.svg" alt="Exchange Icon">
+          <h3>Managing Exchange Hybrid Environments</h3>
+          <p>Lead the management of Exchange Hybrid environments for enterprise clients, ensuring 99.9% uptime under strict SLAs across global regions.</p>
+        </div>
+        <div class="experience-card">
+          <img src="icons/sdwan.svg" alt="SD-WAN Icon">
+          <h3>FortiGate SD-WAN Setups</h3>
+          <p>Designed and deployed FortiGate SD-WAN solutions for multi-regional enterprises, optimizing network performance and security for over 50 branch offices.</p>
+        </div>
+        <div class="experience-card">
+          <img src="icons/certifications.svg" alt="Certifications Icon">
+          <h3>AZ-800 & AZ-801 Exams</h3>
+          <p>Scheduled to complete AZ-800 and AZ-801 certifications on March 27, 2025, to further solidify expertise in Azure hybrid administration and infrastructure.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects & Ventures -->
+    <section id="projects">
+      <h2>Projects & Ventures</h2>
+      <div class="projects-grid">
+        <div class="project-card">
+          <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Spectech Tutorial" frameborder="0" allowfullscreen></iframe>
+          <h3>YouTube Channels (6 Active)</h3>
+          <p>Creator of six YouTube channels focused on IT and cybersecurity education (Spectech), personal productivity (LifeOS), emerging tech trends (Techsplore), blockchain and AI insights (Cryplle Tips), thought-provoking tech discussions (Dr Conspiracy, MindMesh), and sales strategies (Nerosales), collectively amassing over 100K subscribers.</p>
+          <a href="https://youtube.com" target="_blank">Visit My Channels</a>
+        </div>
+        <div class="project-card">
+          <img src="thumbnails/cybersecuritas.webp" alt="Cybersecuritas">
+          <h3>Cybersecuritas</h3>
+          <p>Founder of Cybersecuritas, a cybersecurity consultancy providing penetration testing, threat analysis, and compliance solutions for SMEs.</p>
+          <a href="https://cybersecuritas.co.za" target="_blank">Learn More</a>
+        </div>
+        <div class="project-card">
+          <iframe src="[your-livestream-url]" width="100%" height="200px" frameborder="0"></iframe>
+          <h3>AI-Generated Lo-Fi Music Livestream</h3>
+          <p>Developed an AI-powered lo-fi music livestream hosted on an Azure Linux VM, showcasing expertise in cloud infrastructure and AI integration.</p>
+        </div>
+        <div class="project-card">
+          <img src="thumbnails/game-dev.webp" alt="Game Development">
+          <h3>Amapiano-Inspired Game</h3>
+          <p>Currently developing a culturally inspired, AI-driven mobile game leveraging Azure cloud services for scalability and real-time analytics.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Professional Achievements -->
+    <section id="achievements">
+      <h2>Professional Achievements</h2>
+      <div class="achievements-grid">
+        <div class="achievement-card">
+          <img src="icons/sdwan-achievement.svg" alt="SD-WAN Achievement Icon">
+          <h3>Global SD-WAN Rollout</h3>
+          <p>Led a global FortiGate SD-WAN rollout, reducing latency by 30% and enhancing security for a multinational client.</p>
+        </div>
+        <div class="achievement-card">
+          <img src="icons/cybersecurity-achievement.svg" alt="Cybersecurity Achievement Icon">
+          <h3>Zero-Trust Architecture</h3>
+          <p>Designed a zero-trust architecture for a financial services firm, achieving 100% compliance with GDPR and ISO 27001 standards.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="contact">
+      <h2>Get in Touch</h2>
+      <p>Reach out to discuss opportunities, collaborations, or to explore how I can help secure and optimize your IT infrastructure!</p>
+      <div>
+        <a href="mailto:alex.carter@example.com">Email</a>
+        <a href="https://linkedin.com/in/alex-carter" target="_blank">LinkedIn</a>
+        <a href="https://github.com/alex-carter" target="_blank">GitHub</a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p>© 2025 Alex Carter. All rights reserved.</p>
+      <div>
+        <a href="https://linkedin.com/in/alex-carter" target="_blank">LinkedIn</a>
+        <a href="https://github.com/alex-carter" target="_blank">GitHub</a>
+      </div>
+    </footer>
+
+    <!-- JavaScript for Loader -->
+    <script>
+      window.addEventListener('load', () => {
+        document.querySelector('.loader').classList.add('hidden');
+      });
+    </script>
+  </body>
+</html>
