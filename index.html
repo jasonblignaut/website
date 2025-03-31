@@ -102,7 +102,7 @@
             50% { transform: translateY(-30px); }
         }
 
-        /* Dynamic Background with Blended Circuit */
+        /* Smooth Circuit Background */
         .background {
             position: fixed;
             inset: 0;
@@ -114,12 +114,12 @@
         .background::before {
             content: '';
             position: absolute;
-            inset: -50%;
+            inset: 0;
             background: url('thumbnails/circuit-pattern.webp') repeat;
-            background-size: 200% 200%; /* Zoomed in to hide edges */
+            background-size: 150% 150%; /* Balanced zoom */
             opacity: 0.15;
-            animation: moveBackground 40s linear infinite;
-            filter: blur(2px); /* Blend edges */
+            animation: moveBackground 80s ease-in-out infinite;
+            filter: blur(1px); /* Smooth edges */
         }
 
         .background::after {
@@ -133,7 +133,8 @@
 
         @keyframes moveBackground {
             0% { background-position: 0 0; }
-            100% { background-position: 200% 200%; }
+            50% { background-position: 50% 50%; }
+            100% { background-position: 0 0; }
         }
 
         @keyframes nebulaPulse {
@@ -386,11 +387,10 @@
             height: 200px;
             border-radius: 50%;
             border: 3px solid var(--primary-color);
-            box-shadow: 0 0 20px rgba(0, 170, 255, 0.5); /* Code 2 glow */
+            box-shadow: 0 0 20px rgba(0, 170, 255, 0.5);
             margin-bottom: 2rem;
             animation: glow 2s infinite alternate, float 4s ease-in-out infinite;
-            loading: lazy;
-            z-index: 1; /* Ensure above background */
+            z-index: 1;
         }
 
         @keyframes glow {
@@ -410,7 +410,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 1rem;
-            text-shadow: 0 0 2px var(--primary-color), 0 0 4px var(--secondary-color); /* Digital effect */
+            text-shadow: 0 0 2px var(--primary-color), 0 0 4px var(--secondary-color);
         }
 
         .hero p {
@@ -489,7 +489,7 @@
             -webkit-text-fill-color: transparent;
             margin-bottom: 3rem;
             text-transform: uppercase;
-            text-shadow: 0 0 2px var(--primary-color), 0 0 4px var(--secondary-color); /* Crisp digital effect */
+            text-shadow: 0 0 2px var(--primary-color), 0 0 4px var(--secondary-color);
             position: relative;
         }
 
@@ -876,7 +876,7 @@
     <a href="#" class="back-to-top" title="Back to Top">↑</a>
     <button class="audio-toggle" title="Toggle Music">♫</button>
     <section class="hero">
-        <img src="channel-pictures/my-picture.jpeg" alt="Jason Blignaut" loading="lazy">
+        <img src="/channel-pictures/my-picture.jpeg" alt="Jason Blignaut" loading="lazy" id="hero-image">
         <h1>Jason Blignaut</h1>
         <p>Hybrid Engineer | Cybersecurity Visionary | Azure & AI Innovator</p>
         <a href="#projects" class="cta-button">Dive Into My Work</a>
@@ -1082,6 +1082,16 @@
                 orb.style.animationDuration = `${5 + Math.random() * 5}s`;
                 document.body.appendChild(orb);
             }
+
+            // Debug and fix hero image
+            const heroImage = document.getElementById('hero-image');
+            heroImage.addEventListener('error', () => {
+                console.error('Failed to load /channel-pictures/my-picture.jpeg');
+                heroImage.src = 'thumbnails/thumbnail-13.webp'; // Fallback
+            });
+            heroImage.addEventListener('load', () => {
+                console.log('Hero image loaded successfully');
+            });
         });
     </script>
 </body>
