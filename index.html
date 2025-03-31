@@ -6,21 +6,17 @@
     <meta name="description" content="Jason Blignaut, a Hybrid Engineer specializing in Azure, cybersecurity, and IT. Explore my skills, projects, and ventures.">
     <meta name="keywords" content="Network Engineer, Cybersecurity, Azure, SD-WAN, IT, MSP, Technology">
     <meta name="author" content="Jason Blignaut">
-    <!-- Open Graph Meta Tags for Social Sharing -->
     <meta property="og:title" content="Jason Blignaut | Hybrid Engineer">
     <meta property="og:description" content="Explore the futuristic portfolio of Jason Blignaut, a Hybrid Engineer specializing in Azure, cybersecurity, and IT.">
     <meta property="og:image" content="thumbnails/thumbnail-13.webp">
     <meta property="og:url" content="https://labverse.co.za">
     <meta property="og:type" content="website">
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="icons/favicon.ico">
     <title>Jason Blignaut | Hybrid Engineer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <!-- YouTube Player API -->
     <script src="https://www.youtube.com/iframe_api"></script>
-    <!-- Three.js and VanillaTilt.js from CDN (swap with local paths if hosting) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
     <style>
@@ -49,10 +45,9 @@
             color: var(--text-light);
             line-height: 1.6;
             overflow-x: hidden;
-            cursor: none; /* Hide default cursor */
+            cursor: none;
         }
 
-        /* Custom Neon Cursor */
         .cursor {
             position: fixed;
             width: 20px;
@@ -77,7 +72,6 @@
             transform: translate(-50%, -50%);
         }
 
-        /* Mouse Trail */
         .trail {
             position: fixed;
             width: 5px;
@@ -96,7 +90,6 @@
             100% { opacity: 0; }
         }
 
-        /* Audio Unlock Overlay */
         .audio-overlay {
             position: fixed;
             top: 0;
@@ -135,7 +128,6 @@
             box-shadow: 0 0 30px rgba(0, 170, 255, 1);
         }
 
-        /* Preloader */
         .preloader {
             position: fixed;
             top: 0;
@@ -170,7 +162,6 @@
             pointer-events: none;
         }
 
-        /* 3D Background Canvas */
         #bg-canvas {
             position: fixed;
             top: 0;
@@ -181,7 +172,6 @@
             opacity: 0.8;
         }
 
-        /* Header */
         header {
             position: sticky;
             top: 0;
@@ -233,7 +223,6 @@
             color: var(--text-light);
         }
 
-        /* Back-to-Top Button */
         .back-to-top {
             position: fixed;
             bottom: 2rem;
@@ -263,7 +252,6 @@
             box-shadow: 0 0 25px rgba(0, 170, 255, 0.8);
         }
 
-        /* Audio Toggle Button */
         .audio-toggle {
             position: fixed;
             bottom: 2rem;
@@ -288,7 +276,6 @@
             box-shadow: 0 0 25px rgba(0, 170, 255, 0.8);
         }
 
-        /* Hero Section */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -356,7 +343,6 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* Sections */
         section {
             padding: 4rem 1rem;
             max-width: 1200px;
@@ -400,7 +386,6 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* About */
         .about {
             background: var(--card-bg);
             backdrop-filter: blur(10px);
@@ -437,7 +422,6 @@
             font-size: 1rem;
         }
 
-        /* Grid Layouts */
         .skills-grid, .experience-grid, .projects-grid, .personal-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -500,7 +484,6 @@
             text-shadow: 0 0 10px var(--secondary-color);
         }
 
-        /* YouTube Video Container */
         .video-container {
             position: relative;
             width: 100%;
@@ -555,7 +538,6 @@
             box-shadow: 0 0 25px rgba(0, 170, 255, 0.8);
         }
 
-        /* Contact */
         .contact {
             text-align: center;
         }
@@ -588,7 +570,6 @@
             text-shadow: 0 0 10px var(--secondary-color);
         }
 
-        /* Footer */
         footer {
             background: rgba(26, 26, 46, 0.8);
             backdrop-filter: blur(10px);
@@ -615,7 +596,6 @@
             text-shadow: 0 0 10px var(--secondary-color);
         }
 
-        /* Media Queries */
         @media (max-width: 768px) {
             .hamburger {
                 display: block;
@@ -686,24 +666,13 @@
     </style>
 </head>
 <body>
-    <!-- Preloader -->
     <div class="preloader"></div>
-
-    <!-- Audio Unlock Overlay -->
     <div class="audio-overlay">
         <button>Click Here to View Jason Blignaut's Portfolio</button>
     </div>
-
-    <!-- Custom Cursor -->
     <div class="cursor"></div>
-
-    <!-- 3D Background -->
     <canvas id="bg-canvas"></canvas>
-
-    <!-- YouTube Audio Player (Hidden) -->
     <iframe id="bg-audio" style="display: none;" src="https://www.youtube.com/embed/jfKfPfyJRdk?enablejsapi=1&autoplay=0&controls=0&showinfo=0&rel=0" frameborder="0"></iframe>
-
-    <!-- Header -->
     <header>
         <div class="logo">
             <a href="https://labverse.co.za">
@@ -719,22 +688,14 @@
             <a href="#contact">Contact</a>
         </nav>
     </header>
-
-    <!-- Back-to-Top Button -->
     <a href="#" class="back-to-top" title="Back to Top">↑</a>
-
-    <!-- Audio Toggle Button -->
     <button class="audio-toggle" title="Toggle Music">♫</button>
-
-    <!-- Hero Section -->
     <section class="hero">
         <img src="channel-pictures/my-picture.jpeg" alt="Jason Blignaut" loading="lazy">
         <h1>Jason Blignaut</h1>
         <p>Hybrid Engineer | Azure & Cybersecurity Specialist</p>
         <a href="#projects" class="cta-button">Explore My Work</a>
     </section>
-
-    <!-- About Me -->
     <section id="about" class="about">
         <div class="about-content">
             <img src="thumbnails/thumbnail-13.webp" alt="About Me" loading="lazy">
@@ -745,8 +706,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Skills -->
     <section id="skills">
         <h2>My Skills</h2>
         <div class="skills-grid">
@@ -777,8 +736,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Experience -->
     <section id="experience">
         <h2>Experience</h2>
         <div class="experience-grid">
@@ -794,8 +751,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Projects -->
     <section id="projects">
         <h2>Projects</h2>
         <div class="projects-grid">
@@ -834,8 +789,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Contact -->
     <section id="contact" class="contact">
         <h2>Get in Touch</h2>
         <p>Interested in collaborating or discussing opportunities? Let’s connect!</p>
@@ -845,8 +798,6 @@
             <a href="https://youtube.com/user/labverse" target="_blank">YouTube</a>
         </div>
     </section>
-
-    <!-- Footer -->
     <footer>
         <p>© 2025 Jason Blignaut. All rights reserved.</p>
         <div class="footer-links">
@@ -857,28 +808,37 @@
     </footer>
 
     <script>
-        // YouTube Player for Background Audio
         let audioPlayer;
+        let playerReady = false;
+
+        // YouTube API Initialization
         function onYouTubeIframeAPIReady() {
+            console.log("YouTube API Loaded");
             audioPlayer = new YT.Player('bg-audio', {
                 events: {
                     'onReady': (event) => {
-                        event.target.setVolume(30); // 30% volume
-                        event.target.mute(); // Start muted
+                        console.log("Background Audio Player Ready");
+                        event.target.setVolume(30);
+                        event.target.mute();
+                        playerReady = true;
+                    },
+                    'onError': (event) => {
+                        console.error("YouTube Player Error:", event.data);
                     }
                 }
             });
 
-            // YouTube Player for Project Video
             let lofiPlayer = new YT.Player('lofi-video', {
                 events: {
                     'onReady': (event) => {
-                        event.target.mute(); // Start muted
+                        console.log("Lo-Fi Video Player Ready");
+                        event.target.mute();
                         const unmuteButton = document.querySelector('.unmute-button');
                         unmuteButton.addEventListener('click', () => {
+                            console.log("Unmute Video Clicked");
                             event.target.unMute();
                             event.target.playVideo();
-                            audioPlayer.pauseVideo(); // Pause background audio
+                            audioPlayer.pauseVideo();
                             document.querySelector('.video-overlay').classList.add('hidden');
                         });
                     }
@@ -886,13 +846,31 @@
             });
         }
 
-        // Unlock Audio and Fade Overlay
+        // Overlay Click Handler with Fallback
         const overlay = document.querySelector('.audio-overlay');
-        overlay.querySelector('button').addEventListener('click', () => {
-            audioPlayer.unMute();
-            audioPlayer.playVideo();
-            overlay.classList.add('hidden');
-            document.querySelector('.hero').style.opacity = 1;
+        const overlayButton = overlay.querySelector('button');
+        overlayButton.addEventListener('click', () => {
+            console.log("Overlay Button Clicked");
+            if (playerReady && audioPlayer) {
+                console.log("Unmuting and Playing Audio");
+                audioPlayer.unMute();
+                audioPlayer.playVideo();
+                overlay.classList.add('hidden');
+                document.querySelector('.hero').style.opacity = 1;
+            } else {
+                console.warn("Player not ready yet, waiting...");
+                setTimeout(() => {
+                    if (audioPlayer) {
+                        audioPlayer.unMute();
+                        audioPlayer.playVideo();
+                        overlay.classList.add('hidden');
+                        document.querySelector('.hero').style.opacity = 1;
+                    } else {
+                        console.error("Audio player still not initialized");
+                        alert("Error loading audio. Please refresh the page.");
+                    }
+                }, 2000); // Wait 2 seconds as fallback
+            }
         });
 
         // Mobile Menu Toggle
@@ -946,13 +924,17 @@
         // Audio Toggle Button
         const audioToggle = document.querySelector('.audio-toggle');
         audioToggle.addEventListener('click', () => {
-            if (audioPlayer.isMuted()) {
-                audioPlayer.unMute();
-                audioPlayer.playVideo();
-                audioToggle.textContent = '♫';
+            if (audioPlayer) {
+                if (audioPlayer.isMuted()) {
+                    audioPlayer.unMute();
+                    audioPlayer.playVideo();
+                    audioToggle.textContent = '♫';
+                } else {
+                    audioPlayer.mute();
+                    audioToggle.textContent = '♪';
+                }
             } else {
-                audioPlayer.mute();
-                audioToggle.textContent = '♪';
+                console.error("Audio player not ready for toggle");
             }
         });
 
