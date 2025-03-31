@@ -622,7 +622,7 @@
 <body>
     <div class="preloader"></div>
     <div class="audio-overlay">
-        <button>View Jason Blignaut's Portfolio</button>
+        <button>Click Here to View Jason Blignaut's Portfolio</button>
     </div>
     <div class="cursor"></div>
     <div class="background"></div>
@@ -645,7 +645,7 @@
     <a href="#" class="back-to-top" title="Back to Top">↑</a>
     <button class="audio-toggle" title="Toggle Music">♫</button>
     <section class="hero">
-        <img src="channel-pictures/my-picture.jpeg" alt="Jason Blignaut" loading="lazy">
+        <img src="channel-pictures/my-picture.jpeg" alt="Jason Blignaut" loading="lazy" onerror="console.error('Failed to load profile picture. Check path: channel-pictures/my-picture.jpeg'); this.src='thumbnails/thumbnail-13.webp';">
         <h1>Jason Blignaut</h1>
         <p>Hybrid Engineer | Azure & Cybersecurity Specialist</p>
         <a href="#projects" class="cta-button">Explore My Work</a>
