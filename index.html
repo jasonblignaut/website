@@ -70,12 +70,14 @@
             }
         }
 
+        /* Background with Parallax Effect */
         .background {
             position: fixed;
             inset: 0;
             background: linear-gradient(135deg, #1a1a2e 0%, var(--bg-dark) 100%);
             z-index: -1;
             opacity: 0.8;
+            will-change: transform;
         }
 
         .background::before {
@@ -90,6 +92,32 @@
         @keyframes moveBackground {
             0% { background-position: 0 0; }
             100% { background-position: 100% 100%; }
+        }
+
+        /* Glowing Scroll Indicator for Mobile */
+        .scroll-indicator {
+            position: fixed;
+            right: 10px;
+            top: 50%;
+            width: 6px;
+            height: 50px;
+            background: linear-gradient(180deg, var(--primary-color), var(--secondary-color));
+            border-radius: 3px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.1s;
+            box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
+            animation: pulseIndicator 2s infinite ease-in-out;
+        }
+
+        .scroll-indicator.visible {
+            opacity: 1;
+        }
+
+        @keyframes pulseIndicator {
+            0% { transform: scaleY(1); box-shadow: 0 0 15px rgba(0, 170, 255, 0.5); }
+            50% { transform: scaleY(1.2); box-shadow: 0 0 25px rgba(0, 170, 255, 0.8); }
+            100% { transform: scaleY(1); box-shadow: 0 0 15px rgba(0, 170, 255, 0.5); }
         }
 
         .audio-overlay {
@@ -278,6 +306,8 @@
             padding: 2rem;
             opacity: 0;
             animation: fadeIn 2s forwards 1s;
+            position: relative;
+            overflow: hidden;
         }
 
         /* Profile Picture Container with Futuristic Effects */
@@ -646,6 +676,10 @@
             .audio-toggle {
                 left: 1rem;
             }
+
+            .scroll-indicator {
+                display: block;
+            }
         }
 
         @media (max-width: 480px) {
@@ -666,9 +700,10 @@
 <body>
     <div class="preloader"></div>
     <div class="audio-overlay">
-        <button>View Portfolio of Jason Blignaut</button>
-    </div>
+        <button>Click Here to View Jason Blignaut's Portfolio</button>
+     </div>
     <div class="background"></div>
+    <div class="scroll-indicator"></div>
     <audio id="bg-audio" src="/music/lofi.mp3" loop preload="auto" style="display: none;"></audio>
     <header>
         <div class="logo">
@@ -689,7 +724,7 @@
     <button class="audio-toggle" title="Toggle Music">♫</button>
     <section class="hero">
         <div class="profile-picture-container">
-            <img src="channel-pictures/my-picture.jpeg" alt="Jason Blignaut" loading="lazy">
+            <img src="channel-pictures/my-picture.jpeg" alt="Jason Blignaut" loading="lazy" onerror="console.error('Failed to load profile picture. Check path: channel-pictures/my-picture.jpeg'); this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=='">
         </div>
         <h1>Jason Blignaut</h1>
         <p>Hybrid Engineer | Azure & Cybersecurity Specialist</p>
@@ -787,7 +822,7 @@
     </section>
     <section id="contact" class="contact">
         <h2>Get in Touch</h2>
-               <p>Interested in collaborating or discussing opportunities? Let’s connect!</p>
+        <p>Interested in collaborating or discussing opportunities? Let’s connect!</p>
         <div class="contact-links">
             <a href="mailto:jason.blignaut@icloud.com">Email</a>
             <a href="https://linkedin.com/in/jasonblignaut" target="_blank">LinkedIn</a>
@@ -838,7 +873,7 @@
 
         // Fade Header and Show Back to Top
         let lastScrollTop = 0;
-        window.addEventListener('scroll', () => {
+        const handleScroll = () => {
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             if (scrollTop > lastScrollTop) {
                 document.querySelector('header').classList.add('hidden');
@@ -853,20 +888,47 @@
             } else {
                 backToTop.classList.remove('visible');
             }
-        });
 
-        // Futuristic Mouse Trail
-        document.addEventListener('mousemove', (e) => {
+            // Parallax Effect for Background
+            const background = document.querySelector('.background');
+            background.style.transform = `translateY(${scrollTop * 0.3}px)`;
+
+            // Scroll Indicator Position
+            const scrollIndicator = document.querySelector('.scroll-indicator');
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = scrollTop / maxScroll;
+            const indicatorHeight = window.innerHeight - 100; // Adjust for indicator height
+            const newTop = (window.innerHeight - 100) * scrollPercent + 50;
+            scrollIndicator.style.transform = `translateY(${newTop}px)`;
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        // Futuristic Mouse Trail for Desktop
+        const createTrail = (x, y) => {
             const trail = document.createElement('div');
             trail.className = 'trail';
-            trail.style.left = `${e.clientX}px`;
-            trail.style.top = `${e.clientY}px`;
+            trail.style.left = `${x}px`;
+            trail.style.top = `${y}px`;
             document.body.appendChild(trail);
+            setTimeout(() => trail.remove(), 500);
+        };
 
-            setTimeout(() => {
-                trail.remove();
-            }, 500);
+        document.addEventListener('mousemove', (e) => {
+            createTrail(e.clientX, e.clientY);
         });
+
+        // Touch Events for Mobile
+        document.addEventListener('touchmove', (e) => {
+            const touch = e.touches[0];
+            createTrail(touch.clientX, touch.clientY);
+        });
+
+        // Show Scroll Indicator on Mobile
+        const scrollIndicator = document.querySelector('.scroll-indicator');
+        if (window.innerWidth <= 768) {
+            scrollIndicator.classList.add('visible');
+        }
 
         // Audio Toggle Button
         const audioToggle = document.querySelector('.audio-toggle');
@@ -891,13 +953,6 @@
         // Preloader
         window.addEventListener('load', () => {
             document.querySelector('.preloader').classList.add('hidden');
-        });
-
-        // Profile Picture Fallback
-        const profileImg = document.querySelector('.hero img');
-        profileImg.addEventListener('error', () => {
-            console.error('Profile picture failed to load. Using Base64 fallback.');
-            profileImg.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=='; // 1x1 transparent pixel
         });
     </script>
 </body>
