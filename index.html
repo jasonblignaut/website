@@ -70,6 +70,39 @@
             }
         }
 
+        /* Particle Effect for Futuristic Look */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .particles::before {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--primary-color);
+            box-shadow: 0 0 5px var(--primary-color);
+            animation: float 5s infinite linear;
+        }
+        .particles::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--secondary-color);
+            box-shadow: 0 0 5px var(--secondary-color);
+            animation: float 7s infinite linear;
+        }
+        @keyframes float {
+            0% { transform: translate(0, 0); opacity: 0.7; }
+            100% { transform: translate(100vw, 100vh); opacity: 0; }
+        }
+
         /* Background with Parallax Effect */
         .background {
             position: fixed;
@@ -306,68 +339,23 @@
             padding: 2rem;
             opacity: 0;
             animation: fadeIn 2s forwards 1s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Profile Picture Container with Futuristic Effects */
-        .profile-picture-container {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            overflow: hidden;
-            margin-bottom: 2rem;
-            background: radial-gradient(circle, rgba(0, 170, 255, 0.1), transparent);
-            animation: pulse 3s infinite ease-in-out;
-        }
-
-        .profile-picture-container::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            animation: shimmer 1.5s infinite;
-            z-index: 1;
-            opacity: 0.5;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 20px rgba(0, 170, 255, 0.5), 0 0 40px rgba(255, 0, 255, 0.3); }
-            50% { box-shadow: 0 0 30px rgba(0, 170, 255, 0.8), 0 0 60px rgba(255, 0, 255, 0.5); }
-            100% { box-shadow: 0 0 20px rgba(0, 170, 255, 0.5), 0 0 40px rgba(255, 0, 255, 0.3); }
         }
 
         .hero img {
+            max-width: 200px;
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;
             border-radius: 50%;
             border: 3px solid var(--primary-color);
-            box-shadow: 0 0 20px rgba(0, 170, 255, 0.5), 0 0 40px rgba(255, 0, 255, 0.3);
-            animation: glow 2s infinite alternate, rotate 20s linear infinite;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 170, 255, 0.5);
+            margin-bottom: 2rem;
+            animation: glow 2s infinite alternate;
             loading: lazy;
         }
 
-        .hero img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(0, 170, 255, 0.8), 0 0 50px rgba(255, 0, 255, 0.5);
-        }
-
         @keyframes glow {
-            0% { box-shadow: 0 0 20px rgba(0, 170, 255, 0.5), 0 0 40px rgba(255, 0, 255, 0.3); }
-            100% { box-shadow: 0 0 30px rgba(0, 170, 255, 0.8), 0 0 60px rgba(255, 0, 255, 0.5); }
-        }
-
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% { box-shadow: 0 0 20px rgba(0, 170, 255, 0.5); }
+            100% { box-shadow: 0 0 30px rgba(0, 170, 255, 0.8); }
         }
 
         .hero h1 {
@@ -438,6 +426,28 @@
             -webkit-text-fill-color: transparent;
             margin-bottom: 3rem;
             text-transform: uppercase;
+            position: relative;
+        }
+
+        /* Holographic Glow Effect for Section Headers on Scroll */
+        section h2::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(0, 170, 255, 0.5), transparent);
+            opacity: 0;
+            transition: all 0.5s ease;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+        }
+
+        section h2.visible::before {
+            width: 200px;
+            height: 200px;
+            opacity: 0.7;
         }
 
         section > * {
@@ -499,12 +509,13 @@
             border-radius: 15px;
             padding: 2rem;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s;
+            will-change: transform;
+            transition: border-color 0.3s;
         }
 
         .skill-card:hover, .experience-card:hover, .project-card:hover, .personal-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 0 20px rgba(0, 170, 255, 0.5);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
         }
 
         .skill-card img, .experience-card img, .personal-card img {
@@ -657,9 +668,8 @@
                 padding: 1rem;
             }
 
-            .profile-picture-container {
-                width: 150px;
-                height: 150px;
+            .hero img {
+                max-width: 150px;
             }
 
             .back-to-top, .audio-toggle {
@@ -675,10 +685,6 @@
 
             .audio-toggle {
                 left: 1rem;
-            }
-
-            .scroll-indicator {
-                display: block;
             }
         }
 
@@ -700,9 +706,10 @@
 <body>
     <div class="preloader"></div>
     <div class="audio-overlay">
-        <button>Click Here to View Jason Blignaut's Portfolio</button>
-     </div>
+        <button>View Portfolio of Jason Blignaut</button>
+    </div>
     <div class="background"></div>
+    <div class="particles"></div>
     <div class="scroll-indicator"></div>
     <audio id="bg-audio" src="/music/lofi.mp3" loop preload="auto" style="display: none;"></audio>
     <header>
@@ -723,9 +730,7 @@
     <a href="#" class="back-to-top" title="Back to Top">↑</a>
     <button class="audio-toggle" title="Toggle Music">♫</button>
     <section class="hero">
-        <div class="profile-picture-container">
-            <img src="channel-pictures/my-picture.jpeg" alt="Jason Blignaut" loading="lazy" onerror="console.error('Failed to load profile picture. Check path: channel-pictures/my-picture.jpeg'); this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=='">
-        </div>
+        <img src="channel-pictures/my-picture.jpeg" alt="Jason Blignaut" loading="lazy">
         <h1>Jason Blignaut</h1>
         <p>Hybrid Engineer | Azure & Cybersecurity Specialist</p>
         <a href="#projects" class="cta-button">Explore My Work</a>
@@ -897,12 +902,30 @@
             const scrollIndicator = document.querySelector('.scroll-indicator');
             const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
             const scrollPercent = scrollTop / maxScroll;
-            const indicatorHeight = window.innerHeight - 100; // Adjust for indicator height
+            const indicatorHeight = window.innerHeight - 100;
             const newTop = (window.innerHeight - 100) * scrollPercent + 50;
             scrollIndicator.style.transform = `translateY(${newTop}px)`;
+
+            // Holographic Glow Effect for Section Headers
+            document.querySelectorAll('section h2').forEach(header => {
+                const rect = header.getBoundingClientRect();
+                if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
+                    header.classList.add('visible');
+                }
+            });
         };
 
-        window.addEventListener('scroll', handleScroll);
+        // Debounce Scroll Event for Performance
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    handleScroll();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
 
         // Futuristic Mouse Trail for Desktop
         const createTrail = (x, y) => {
@@ -918,17 +941,11 @@
             createTrail(e.clientX, e.clientY);
         });
 
-        // Touch Events for Mobile
+        // Futuristic Touch Trail for Mobile
         document.addEventListener('touchmove', (e) => {
             const touch = e.touches[0];
             createTrail(touch.clientX, touch.clientY);
         });
-
-        // Show Scroll Indicator on Mobile
-        const scrollIndicator = document.querySelector('.scroll-indicator');
-        if (window.innerWidth <= 768) {
-            scrollIndicator.classList.add('visible');
-        }
 
         // Audio Toggle Button
         const audioToggle = document.querySelector('.audio-toggle');
@@ -954,6 +971,12 @@
         window.addEventListener('load', () => {
             document.querySelector('.preloader').classList.add('hidden');
         });
+
+        // Show Scroll Indicator on Mobile
+        const scrollIndicator = document.querySelector('.scroll-indicator');
+        if (window.innerWidth <= 768) {
+            scrollIndicator.classList.add('visible');
+        }
     </script>
 </body>
 </html>
