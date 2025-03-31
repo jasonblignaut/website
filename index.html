@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Jason Blignaut, a Hybrid Engineer specializing in Azure, cybersecurity, and IT. Explore my skills, projects, and ventures.">
-    <meta name="keywords" content="Hybrid Engineer, Cybersecurity, Azure, SD-WAN, IT, MSP, Network Security, AI Innovation">
+    <meta name="description" content="Jason Blignaut, a Hybrid Engineer redefining cybersecurity and IT with Azure expertise and AI innovation. Explore my futuristic portfolio.">
+    <meta name="keywords" content="Hybrid Engineer, Cybersecurity, Azure, SD-WAN, AI, MSP, Network Security, Futuristic Tech">
     <meta name="author" content="Jason Blignaut">
     <meta property="og:title" content="Jason Blignaut | Hybrid Engineer">
-    <meta property="og:description" content="Futuristic portfolio of Jason Blignaut, a Hybrid Engineer driving Azure, cybersecurity, and IT innovation.">
+    <meta property="og:description" content="Step into the LabVerse: a futuristic portfolio of Jason Blignaut, blending Azure, cybersecurity, and AI innovation.">
     <meta property="og:image" content="thumbnails/thumbnail-13.webp">
     <meta property="og:url" content="https://labverse.co.za">
     <meta property="og:type" content="website">
     <link rel="icon" type="image/png" href="icons/favicon.ico">
-    <title>Jason Blignaut | Hybrid Engineer</title>
+    <title>Jason Blignaut | LabVerse</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -25,6 +25,7 @@
             --card-bg: rgba(255, 255, 255, 0.05);
             --text-light: #e4e4e4;
             --text-muted: #b0b0b0;
+            --glow-intensity: 20px;
         }
 
         * {
@@ -43,31 +44,35 @@
             color: var(--text-light);
             line-height: 1.6;
             overflow-x: hidden;
+            position: relative;
         }
 
+        /* Enhanced Mouse Trail with Particles */
         .trail {
             position: fixed;
-            width: 8px;
-            height: 8px;
-            background: var(--primary-color);
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(circle, var(--primary-color), transparent);
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
-            box-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--secondary-color);
-            animation: fadeOut 0.5s linear forwards;
+            box-shadow: 0 0 15px var(--primary-color), 0 0 25px var(--secondary-color);
+            animation: particleBurst 0.7s ease-out forwards;
         }
 
-        @keyframes fadeOut {
-            0% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0; transform: scale(0); }
+        @keyframes particleBurst {
+            0% { opacity: 1; transform: scale(0.5) rotate(0deg); }
+            50% { opacity: 0.8; transform: scale(1.5) rotate(180deg); }
+            100% { opacity: 0; transform: scale(0) rotate(360deg); }
         }
 
+        /* Dynamic Background with Circuit and Nebula Effects */
         .background {
             position: fixed;
             inset: 0;
             background: linear-gradient(135deg, #1a1a2e 0%, var(--bg-dark) 100%);
             z-index: -1;
-            opacity: 0.8;
+            overflow: hidden;
         }
 
         .background::before {
@@ -75,8 +80,17 @@
             position: absolute;
             inset: 0;
             background: url('thumbnails/circuit-pattern.webp') repeat;
-            opacity: 0.1;
+            opacity: 0.15;
             animation: moveBackground 60s linear infinite;
+        }
+
+        .background::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(0, 170, 255, 0.1), transparent 70%);
+            opacity: 0.3;
+            animation: nebulaPulse 15s infinite alternate;
         }
 
         @keyframes moveBackground {
@@ -84,6 +98,12 @@
             100% { background-position: 100% 100%; }
         }
 
+        @keyframes nebulaPulse {
+            0% { transform: scale(1); opacity: 0.3; }
+            100% { transform: scale(1.2); opacity: 0.5; }
+        }
+
+        /* Audio Overlay with Holographic Effect */
         .audio-overlay {
             position: fixed;
             top: 0;
@@ -106,22 +126,41 @@
         .audio-overlay button {
             background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
             color: white;
-            padding: 1rem 3rem;
+            padding: 1.5rem 4rem;
             border: none;
             border-radius: 50px;
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             text-transform: uppercase;
             cursor: pointer;
-            box-shadow: 0 0 20px rgba(0, 170, 255, 0.8);
+            box-shadow: 0 0 var(--glow-intensity) var(--primary-color), inset 0 0 10px var(--secondary-color);
+            position: relative;
+            overflow: hidden;
             transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .audio-overlay button::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: hologramSwipe 3s infinite;
+        }
+
+        @keyframes hologramSwipe {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
         }
 
         .audio-overlay button:hover {
             transform: scale(1.1);
-            box-shadow: 0 0 30px rgba(0, 170, 255, 1);
+            box-shadow: 0 0 calc(var(--glow-intensity) * 1.5) var(--primary-color);
         }
 
+        /* Preloader with Cyber Spinner */
         .preloader {
             position: fixed;
             top: 0;
@@ -138,17 +177,19 @@
 
         .preloader::before {
             content: '';
-            width: 50px;
-            height: 50px;
-            border: 5px solid var(--primary-color);
-            border-top: 5px solid transparent;
+            width: 60px;
+            height: 60px;
+            border: 6px solid var(--primary-color);
+            border-top: 6px solid var(--secondary-color);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: cyberSpin 1.5s linear infinite;
+            box-shadow: 0 0 15px var(--primary-color);
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        @keyframes cyberSpin {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); }
         }
 
         .preloader.hidden {
@@ -156,28 +197,34 @@
             pointer-events: none;
         }
 
+        /* Header with Neon Glow */
         header {
             position: sticky;
             top: 0;
-            background: rgba(26, 26, 46, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(26, 26, 46, 0.85);
+            backdrop-filter: blur(15px);
             padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transition: opacity 0.3s ease;
+            transition: opacity 0.3s ease, transform 0.3s;
         }
 
         header.hidden {
             opacity: 0;
-            pointer-events: none;
+            transform: translateY(-100%);
         }
 
         .logo img {
-            height: 40px;
-            filter: drop-shadow(0 0 2px var(--primary-color));
+            height: 50px;
+            filter: drop-shadow(0 0 5px var(--primary-color));
+            transition: transform 0.3s;
+        }
+
+        .logo img:hover {
+            transform: rotate(360deg);
         }
 
         nav {
@@ -188,78 +235,85 @@
         nav a {
             color: var(--text-light);
             text-decoration: none;
-            margin: 0 1rem;
+            margin: 0 1.5rem;
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
+            font-size: 1rem;
             text-transform: uppercase;
+            position: relative;
             transition: all 0.3s;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
         }
 
         nav a:hover {
             color: var(--primary-color);
-            text-shadow: 0 0 10px var(--primary-color);
+            text-shadow: 0 0 15px var(--primary-color);
         }
 
         .hamburger {
             display: none;
             cursor: pointer;
-            font-size: 1.5rem;
+            font-size: 2rem;
             color: var(--text-light);
+            transition: transform 0.3s;
         }
 
-        .back-to-top {
+        .hamburger:hover {
+            transform: scale(1.2);
+        }
+
+        /* Back to Top and Audio Toggle with Cyber Effects */
+        .back-to-top, .audio-toggle {
             position: fixed;
-            bottom: 2rem;
-            right: 2rem;
             background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
             color: white;
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             text-decoration: none;
-            box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
-            opacity: 0;
-            transition: opacity 0.3s, transform 0.3s;
+            box-shadow: 0 0 var(--glow-intensity) var(--primary-color);
+            transition: transform 0.3s, box-shadow 0.3s;
             z-index: 1000;
+        }
+
+        .back-to-top {
+            bottom: 2rem;
+            right: 2rem;
+            opacity: 0;
         }
 
         .back-to-top.visible {
             opacity: 1;
         }
 
-        .back-to-top:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 25px rgba(0, 170, 255, 0.8);
-        }
-
         .audio-toggle {
-            position: fixed;
             bottom: 2rem;
             left: 2rem;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5rem;
-            text-decoration: none;
-            box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
-            transition: transform 0.3s;
-            z-index: 1000;
         }
 
-        .audio-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 25px rgba(0, 170, 255, 0.8);
+        .back-to-top:hover, .audio-toggle:hover {
+            transform: scale(1.15) rotate(10deg);
+            box-shadow: 0 0 calc(var(--glow-intensity) * 1.5) var(--primary-color);
         }
 
+        /* Hero Section with Enhanced Effects */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -268,76 +322,127 @@
             align-items: center;
             text-align: center;
             padding: 2rem;
+            position: relative;
+            overflow: hidden;
             opacity: 0;
             animation: fadeIn 2s forwards 1s;
         }
 
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(0, 170, 255, 0.2), transparent 70%);
+            animation: heroPulse 10s infinite;
+            z-index: -1;
+        }
+
+        @keyframes heroPulse {
+            0% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.2; }
+            50% { transform: scale(1.2) translateX(-50%) translateY(-50%); opacity: 0.4; }
+            100% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.2; }
+        }
+
         .hero img {
-            width: 200px;
-            height: 200px;
+            width: 220px;
+            height: 220px;
             border-radius: 50%;
-            border: 3px solid var(--primary-color);
-            box-shadow: 0 0 20px rgba(0, 170, 255, 0.5);
+            border: 4px solid var(--primary-color);
+            box-shadow: 0 0 calc(var(--glow-intensity) * 1.5) var(--primary-color);
             margin-bottom: 2rem;
-            animation: glow 2s infinite alternate;
+            animation: glow 2s infinite alternate, float 4s ease-in-out infinite;
             loading: lazy;
         }
 
-        @keyframes glow {
-            0% { box-shadow: 0 0 20px rgba(0, 170, 255, 0.5); }
-            100% { box-shadow: 0 0 30px rgba(0, 170, 255, 0.8); }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
 
         .hero h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(2rem, 5vw, 3rem);
+            font-size: clamp(2.5rem, 6vw, 4rem);
             background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 1rem;
+            text-shadow: 0 0 10px var(--primary-color);
         }
 
         .hero p {
-            font-size: clamp(1rem, 3vw, 1.2rem);
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
             color: var(--text-muted);
             margin-bottom: 2rem;
-            max-width: 600px;
+            max-width: 700px;
+            animation: textGlow 3s infinite alternate;
+        }
+
+        @keyframes textGlow {
+            0% { text-shadow: 0 0 5px var(--text-muted); }
+            100% { text-shadow: 0 0 15px var(--primary-color); }
         }
 
         .hero .cta-button {
             background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
             color: white;
-            padding: 0.8rem 2rem;
+            padding: 1rem 3rem;
             text-decoration: none;
-            border-radius: 25px;
+            border-radius: 30px;
             font-family: 'Orbitron', sans-serif;
             font-weight: 700;
             text-transform: uppercase;
-            box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
+            box-shadow: 0 0 var(--glow-intensity) var(--primary-color);
             transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.3s;
+        }
+
+        .hero .cta-button:hover::before {
+            left: 100%;
         }
 
         .hero .cta-button:hover {
-            box-shadow: 0 0 25px rgba(0, 170, 255, 0.8);
+            box-shadow: 0 0 calc(var(--glow-intensity) * 2) var(--primary-color);
+            transform: scale(1.1);
         }
 
         @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(20px); }
+            0% { opacity: 0; transform: translateY(30px); }
             100% { opacity: 1; transform: translateY(0); }
         }
 
+        /* Sections */
         section {
-            padding: 4rem 1rem;
-            max-width: 1200px;
+            padding: 5rem 1rem;
+            max-width: 1400px;
             margin: 0 auto;
-            scroll-margin-top: 80px;
+            scroll-margin-top: 100px;
+            position: relative;
+        }
+
+        section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(0, 170, 255, 0.05), transparent 70%);
+            opacity: 0.5;
+            z-index: -1;
         }
 
         #about {
             min-height: auto;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
         }
 
         #skills, #projects, #contact {
@@ -349,48 +454,69 @@
 
         section h2 {
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-size: clamp(2rem, 5vw, 3rem);
             text-align: center;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            background Coleslaw linear-gradient(90deg, var(--primary-color), var(--secondary-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 3rem;
             text-transform: uppercase;
+            text-shadow: 0 0 15px var(--primary-color);
+            position: relative;
+        }
+
+        section h2::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 2px;
+            bottom: -10px;
+            left: 25%;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+            animation: underlinePulse 2s infinite;
+        }
+
+        @keyframes underlinePulse {
+            0% { width: 50%; opacity: 1; }
+            50% { width: 70%; opacity: 0.5; }
+            100% { width: 50%; opacity: 1; }
         }
 
         section > * {
             opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInSection 1s forwards;
+            transform: translateY(30px);
+            animation: fadeInSection 1.5s forwards;
         }
 
         @keyframes fadeInSection {
-            0% { opacity: 0; transform: translateY(20px); }
+            0% { opacity: 0; transform: translateY(30px); }
             100% { opacity: 1; transform: translateY(0); }
         }
 
         .about {
             background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 2rem;
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 3rem;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 var(--glow-intensity) rgba(0, 170, 255, 0.3);
         }
 
         .about-content {
             display: flex;
             flex-wrap: wrap;
-            gap: 2rem;
+            gap: 3rem;
             align-items: center;
         }
 
         .about img {
-            max-width: 250px;
+            max-width: 300px;
             width: 100%;
             height: auto;
-            border-radius: 10px;
-            border: 2px solid var(--primary-color);
+            border-radius: 15px;
+            border: 3px solid var(--primary-color);
+            box-shadow: 0 0 var(--glow-intensity) var(--primary-color);
+            animation: float 5s ease-in-out infinite;
             loading: lazy;
         }
 
@@ -402,54 +528,86 @@
         .about-text p {
             line-height: 1.8;
             color: var(--text-muted);
-            font-size: 1rem;
+            font-size: 1.1rem;
+            text-shadow: 0 0 5px var(--text-muted);
         }
 
         .skills-grid, .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
         }
 
         .skill-card, .project-card {
             background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 2rem;
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 2.5rem;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s;
+            box-shadow: 0 0 var(--glow-intensity) rgba(0, 170, 255, 0.3);
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card::before, .project-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 170, 255, 0.1), transparent);
+            animation: cardShine 5s infinite;
+        }
+
+        @keyframes cardShine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
         }
 
         .skill-card:hover, .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 0 20px rgba(0, 170, 255, 0.5);
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: 0 0 calc(var(--glow-intensity) * 2) var(--primary-color);
         }
 
         .skill-card img {
-            width: 60px;
-            margin-bottom: 1rem;
-            filter: drop-shadow(0 0 5px var(--primary-color));
+            width: 70px;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 0 10px var(--primary-color));
+            animation: spinHover 3s infinite paused;
             loading: lazy;
+        }
+
+        .skill-card:hover img {
+            animation-play-state: running;
+        }
+
+        @keyframes spinHover {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .project-card img {
             width: 100%;
             height: auto;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-            border: 1px solid var(--primary-color);
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 10px var(--primary-color);
             loading: lazy;
         }
 
         .skill-card h3, .project-card h3 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             color: var(--text-light);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
+            text-shadow: 0 0 5px var(--primary-color);
         }
 
         .skill-card p, .project-card p {
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: var(--text-muted);
             line-height: 1.6;
         }
@@ -459,47 +617,64 @@
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s;
+            position: relative;
+        }
+
+        .project-card a::after {
+            content: '→';
+            position: absolute;
+            right: -20px;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .project-card a:hover::after {
+            opacity: 1;
+            right: -15px;
         }
 
         .project-card a:hover {
             color: var(--secondary-color);
-            text-shadow: 0 0 10px var(--secondary-color);
+            text-shadow: 0 0 15px var(--secondary-color);
         }
 
         .video-container {
             position: relative;
             width: 100%;
-            height: 200px;
-            border-radius: 10px;
-            margin-top: 1rem;
+            height: 250px;
+            border-radius: 15px;
+            margin-top: 1.5rem;
+            overflow: hidden;
         }
 
         .project-card iframe {
             width: 100%;
             height: 100%;
-            border-radius: 10px;
-            border: 1px solid var(--primary-color);
-            box-shadow: 0 0 10px rgba(0, 170, 255, 0.3);
+            border-radius: 15px;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
             loading: lazy;
         }
 
         .contact {
             text-align: center;
+            position: relative;
         }
 
         .contact p {
             color: var(--text-muted);
-            margin-bottom: 2rem;
-            max-width: 600px;
+            margin-bottom: 2.5rem;
+            max-width: 700px;
             margin-left: auto;
             margin-right: auto;
+            font-size: 1.2rem;
         }
 
         .contact-links {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 1.5rem;
+            gap: 2rem;
         }
 
         .contact a {
@@ -507,38 +682,82 @@
             text-decoration: none;
             font-weight: 600;
             font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            padding: 0.5rem 1.5rem;
+            border: 1px solid var(--primary-color);
+            border-radius: 25px;
             transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.3s;
+        }
+
+        .contact a:hover::before {
+            left: 100%;
         }
 
         .contact a:hover {
             color: var(--secondary-color);
-            text-shadow: 0 0 10px var(--secondary-color);
+            text-shadow: 0 0 15px var(--secondary-color);
+            box-shadow: 0 0 var(--glow-intensity) var(--secondary-color);
         }
 
         footer {
-            background: rgba(26, 26, 46, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
+            background: rgba(26, 26, 46, 0.85);
+            backdrop-filter: blur(15px);
+            padding: 3rem;
             text-align: center;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(0, 170, 255, 0.1), transparent);
+            animation: footerSweep 4s infinite;
+        }
+
+        @keyframes footerSweep {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
         footer p {
             color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         footer a {
             color: var(--primary-color);
             text-decoration: none;
-            margin: 0 1rem;
+            margin: 0 1.5rem;
+            font-size: 1.1rem;
             transition: all 0.3s;
         }
 
         footer a:hover {
             color: var(--secondary-color);
-            text-shadow: 0 0 10px var(--secondary-color);
+            text-shadow: 0 0 15px var(--secondary-color);
+        }
+
+        /* Full Mobile and Desktop Compatibility */
+        @media (max-width: 1024px) {
+            .skills-grid, .projects-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
         }
 
         @media (max-width: 768px) {
@@ -549,12 +768,13 @@
             nav {
                 display: none;
                 position: fixed;
-                top: 70px;
+                top: 80px;
                 left: 0;
                 right: 0;
                 background: rgba(26, 26, 46, 0.95);
                 flex-direction: column;
-                padding: 2rem;
+                padding: 2.5rem;
+                box-shadow: 0 0 var(--glow-intensity) var(--primary-color);
             }
 
             nav.active {
@@ -562,8 +782,8 @@
             }
 
             nav a {
-                margin: 1rem 0;
-                font-size: 1.1rem;
+                margin: 1.5rem 0;
+                font-size: 1.3rem;
             }
 
             .about-content {
@@ -572,40 +792,54 @@
             }
 
             .hero {
-                padding: 1rem;
+                padding: 1.5rem;
             }
 
             .hero img {
-                max-width: 150px;
+                width: 180px;
+                height: 180px;
             }
 
             .back-to-top, .audio-toggle {
-                width: 40px;
-                height: 40px;
-                font-size: 1.2rem;
-                bottom: 1rem;
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+                bottom: 1.5rem;
             }
 
             .back-to-top {
-                right: 1rem;
+                right: 1.5rem;
             }
 
             .audio-toggle {
-                left: 1rem;
+                left: 1.5rem;
             }
         }
 
         @media (max-width: 480px) {
             section {
-                padding: 2rem 1rem;
+                padding: 3rem 1rem;
             }
 
             .skill-card, .project-card {
-                padding: 1.5rem;
+                padding: 2rem;
+            }
+
+            .hero h1 {
+                font-size: clamp(1.8rem, 4vw, 2.5rem);
+            }
+
+            .hero p {
+                font-size: clamp(1rem, 2.5vw, 1.2rem);
             }
 
             .project-card iframe {
-                height: 150px;
+                height: 180px;
+            }
+
+            .audio-overlay button {
+                padding: 1rem 2rem;
+                font-size: 1.2rem;
             }
         }
     </style>
@@ -613,7 +847,7 @@
 <body>
     <div class="preloader"></div>
     <div class="audio-overlay">
-        <button>Enter Jason Blignaut's LabVerse</button>
+        <button>Enter the LabVerse</button>
     </div>
     <div class="background"></div>
     <audio id="bg-audio" src="/music/lofi.mp3" loop preload="auto" style="display: none;"></audio>
@@ -636,89 +870,89 @@
     <section class="hero">
         <img src="channel-pictures/my-picture.jpeg" alt="Jason Blignaut" loading="lazy" onerror="this.src='thumbnails/thumbnail-13.webp';">
         <h1>Jason Blignaut</h1>
-        <p>Hybrid Engineer | Azure & Cybersecurity Specialist</p>
-        <a href="#projects" class="cta-button">Explore My Work</a>
+        <p>Hybrid Engineer | Cybersecurity Visionary | Azure & AI Innovator</p>
+        <a href="#projects" class="cta-button">Dive Into My Work</a>
     </section>
     <section id="about" class="about">
         <div class="about-content">
             <img src="thumbnails/thumbnail-13.webp" alt="About Me" loading="lazy">
             <div class="about-text">
                 <h2>About Me</h2>
-                <p>I’m a Hybrid Engineer based in Johannesburg, South Africa, with over 8 years of experience architecting secure, scalable IT solutions for global enterprises. Specializing in Azure cloud deployments, FortiGate SD-WAN, and advanced cybersecurity, I deliver high-impact results under tight SLAs.</p>
-                <p>My strategic mindset and passion for AI-driven innovation enable me to solve complex challenges efficiently, making me an asset to any cybersecurity firm or MSP aiming to stay ahead of the curve.</p>
+                <p>I’m a Hybrid Engineer from Johannesburg, South Africa, with 8+ years of experience crafting secure, future-proof IT ecosystems. From Azure cloud architecture to FortiGate SD-WAN deployments, I turn complex challenges into elegant solutions.</p>
+                <p>My obsession with AI and cybersecurity drives me to innovate relentlessly, delivering unmatched value to MSPs and enterprises. I thrive in high-pressure environments, blending technical mastery with strategic foresight.</p>
             </div>
         </div>
     </section>
     <section id="skills">
-        <h2>Core Skills</h2>
+        <h2>Core Arsenal</h2>
         <div class="skills-grid">
             <div class="skill-card">
                 <img src="icons/hybrid-engineer.svg" alt="Hybrid Engineer Icon" loading="lazy">
                 <h3>Hybrid Engineering</h3>
-                <p>Mastery in Azure deployments, Exchange migrations, Office 365 administration, FortiGate SD-WAN, and VPN setups—delivering seamless hybrid environments for enterprise clients.</p>
+                <p>Architecting Azure ecosystems, Exchange migrations, and FortiGate SD-WAN deployments—delivering seamless, secure hybrid solutions for global clients.</p>
             </div>
             <div class="skill-card">
                 <img src="icons/cybersecurity.svg" alt="Cybersecurity Icon" loading="lazy">
-                <h3>Cybersecurity & Networking</h3>
-                <p>Expertise in Cisco switching, Defender XDR, firewall configurations (FortiGate, Cisco ASA), and threat mitigation—ensuring robust security postures.</p>
+                <h3>Cybersecurity Mastery</h3>
+                <p>Fortifying networks with Cisco switching, Defender XDR, and advanced firewall configs—neutralizing threats before they strike.</p>
             </div>
             <div class="skill-card">
                 <img src="icons/cloud.svg" alt="Cloud Icon" loading="lazy">
-                <h3>Cloud Infrastructure</h3>
-                <p>Proven track record with Azure VMs, hybrid cloud integrations, and email security—optimizing performance and scalability for MSPs.</p>
+                <h3>Cloud Command</h3>
+                <p>Orchestrating Azure VMs and hybrid clouds—slashing costs and boosting uptime for MSPs with surgical precision.</p>
             </div>
-            <div class="skill-card">
+            <div class="project-card">
                 <img src="icons/ai.svg" alt="AI Icon" loading="lazy">
                 <h3>AI & Automation</h3>
-                <p>Leveraging LLMs and PowerShell automation to streamline workflows, reduce downtime, and enhance operational efficiency.</p>
+                <p>Harnessing LLMs and PowerShell to automate workflows, cut downtime, and supercharge operational efficiency.</p>
             </div>
             <div class="skill-card">
                 <img src="icons/strategy.svg" alt="Strategy Icon" loading="lazy">
-                <h3>Strategic Problem-Solving</h3>
-                <p>Applying OKRs and RICE frameworks to prioritize high-value initiatives and drive measurable outcomes in high-stakes environments.</p>
+                <h3>Strategic Execution</h3>
+                <p>Wielding OKRs and RICE frameworks to prioritize and deliver high-ROI outcomes in mission-critical scenarios.</p>
             </div>
         </div>
     </section>
     <section id="projects">
-        <h2>Key Projects</h2>
+        <h2>Cyber Creations</h2>
         <div class="projects-grid">
             <div class="project-card">
                 <img src="thumbnails/sdwan.webp" alt="SD-WAN Deployment" loading="lazy">
-                <h3>Global FortiGate SD-WAN Deployment</h3>
-                <p>Architected and deployed SD-WAN solutions across 50+ sites, improving network uptime by 30% and reducing latency for a multinational client.</p>
-                <a href="https://labverse.co.za/sdwan" target="_blank">Learn More</a>
+                <h3>Global SD-WAN Rollout</h3>
+                <p>Deployed FortiGate SD-WAN across 50+ sites, boosting network uptime by 30% and slashing latency for a Fortune 500 client.</p>
+                <a href="https://labverse.co.za/sdwan" target="_blank">Explore</a>
             </div>
             <div class="project-card">
                 <img src="thumbnails/azure-migration.webp" alt="Azure Migration" loading="lazy">
-                <h3>Azure Cloud Migration</h3>
-                <p>Led a hybrid Exchange-to-Azure migration for a 10,000-user organization, cutting costs by 25% and enhancing security with Defender XDR.</p>
-                <a href="https://labverse.co.za/azure" target="_blank">Learn More</a>
+                <h3>Azure Migration Overhaul</h3>
+                <p>Migrated 10,000 users to Azure hybrid cloud, cutting costs by 25% and locking down security with Defender XDR.</p>
+                <a href="https://labverse.co.za/azure" target="_blank">Explore</a>
             </div>
             <div class="project-card">
                 <img src="thumbnails/lofi-livestream.webp" alt="Lo-Fi Livestream" loading="lazy">
-                <h3>AI-Generated Lo-Fi Music Livestream</h3>
-                <p>Built an Azure Linux VM-hosted livestream using AI to generate lo-fi music, showcasing cloud and AI integration skills.</p>
+                <h3>AI-Powered Lo-Fi Stream</h3>
+                <p>Engineered an Azure-hosted livestream with AI-generated lo-fi beats—proof of my cloud and AI prowess.</p>
                 <div class="video-container">
                     <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk" frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
             <div class="project-card">
                 <img src="thumbnails/support-tool.webp" alt="T1 Support Tool" loading="lazy">
-                <h3>T1 Support Tool (PowerShell)</h3>
-                <p>Developed a PowerShell-based diagnostic tool for MSPs, reducing Tier 1 resolution time by 40% with integrated network troubleshooting guides.</p>
-                <a href="https://labverse.co.za/support-tool" target="_blank">Learn More</a>
+                <h3>T1 Cyber Toolkit</h3>
+                <p>Built a PowerShell diagnostic tool for MSPs, slashing Tier 1 resolution times by 40% with real-time network insights.</p>
+                <a href="https://labverse.co.za/support-tool" target="_blank">Explore</a>
             </div>
             <div class="project-card">
                 <img src="thumbnails/labverse.webp" alt="LabVerse Website" loading="lazy">
-                <h3>LabVerse Portfolio</h3>
-                <p>Designed this futuristic portfolio site, blending cutting-edge web tech with cybersecurity aesthetics to showcase my expertise.</p>
+                <h3>LabVerse Portal</h3>
+                <p>Crafted this futuristic portfolio with cutting-edge web tech—showcasing my skills in a cyberpunk wrapper.</p>
                 <a href="https://labverse.co.za" target="_blank">Explore</a>
             </div>
         </div>
     </section>
     <section id="contact" class="contact">
-        <h2>Get in Touch</h2>
-        <p>Ready to elevate your cybersecurity or IT operations? Let’s collaborate!</p>
+        <h2>Connect to the LabVerse</h2>
+        <p>Let’s forge the future of cybersecurity together—reach out now!</p>
         <div class="contact-links">
             <a href="mailto:jason.blignaut@icloud.com">Email</a>
             <a href="https://linkedin.com/in/jasonblignaut" target="_blank">LinkedIn</a>
@@ -726,7 +960,7 @@
         </div>
     </section>
     <footer>
-        <p>© 2025 Jason Blignaut. All rights reserved.</p>
+        <p>© 2025 Jason Blignaut | LabVerse Activated</p>
         <div class="footer-links">
             <a href="https://labverse.co.za" target="_blank">LabVerse</a>
             <a href="https://linkedin.com/in/jasonblignaut" target="_blank">LinkedIn</a>
@@ -764,7 +998,6 @@
             });
         });
 
-        let lastScrollTop = 0;
         function throttle(func, limit) {
             let inThrottle;
             return function() {
@@ -776,6 +1009,7 @@
             };
         }
 
+        let lastScrollTop = 0;
         window.addEventListener('scroll', throttle(() => {
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             if (scrollTop > lastScrollTop) {
@@ -786,7 +1020,7 @@
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
 
             const backToTop = document.querySelector('.back-to-top');
-            if (scrollTop > 200) {
+            if (scrollTop > 300) {
                 backToTop.classList.add('visible');
             } else {
                 backToTop.classList.remove('visible');
@@ -794,7 +1028,7 @@
         }, 100));
 
         let trailCount = 0;
-        const maxTrails = 50;
+        const maxTrails = 100;
         document.addEventListener('mousemove', throttle((e) => {
             if (trailCount < maxTrails) {
                 const trail = document.createElement('div');
@@ -806,9 +1040,9 @@
                 setTimeout(() => {
                     trail.remove();
                     trailCount--;
-                }, 500);
+                }, 700);
             }
-        }, 20));
+        }, 15));
 
         const audioToggle = document.querySelector('.audio-toggle');
         audioToggle.addEventListener('click', () => {
@@ -822,10 +1056,10 @@
         });
 
         VanillaTilt.init(document.querySelectorAll('.skill-card, .project-card'), {
-            max: 15,
-            speed: 400,
+            max: 20,
+            speed: 300,
             glare: true,
-            'max-glare': 0.5
+            'max-glare': 0.6
         });
 
         window.addEventListener('load', () => {
