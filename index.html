@@ -43,7 +43,7 @@
             color: var(--text-light);
             line-height: 1.6;
             overflow-x: hidden;
-            cursor: auto; /* Restore default cursor */
+            cursor: auto;
         }
 
         /* Futuristic Mouse Trail */
@@ -280,21 +280,64 @@
             animation: fadeIn 2s forwards 1s;
         }
 
+        /* Profile Picture Container with Futuristic Effects */
+        .profile-picture-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            background: radial-gradient(circle, rgba(0, 170, 255, 0.1), transparent);
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        .profile-picture-container::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shimmer 1.5s infinite;
+            z-index: 1;
+            opacity: 0.5;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 20px rgba(0, 170, 255, 0.5), 0 0 40px rgba(255, 0, 255, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(0, 170, 255, 0.8), 0 0 60px rgba(255, 0, 255, 0.5); }
+            100% { box-shadow: 0 0 20px rgba(0, 170, 255, 0.5), 0 0 40px rgba(255, 0, 255, 0.3); }
+        }
+
         .hero img {
-            max-width: 200px;
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: cover;
             border-radius: 50%;
             border: 3px solid var(--primary-color);
-            box-shadow: 0 0 20px rgba(0, 170, 255, 0.5);
-            margin-bottom: 2rem;
-            animation: glow 2s infinite alternate;
+            box-shadow: 0 0 20px rgba(0, 170, 255, 0.5), 0 0 40px rgba(255, 0, 255, 0.3);
+            animation: glow 2s infinite alternate, rotate 20s linear infinite;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             loading: lazy;
         }
 
+        .hero img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 170, 255, 0.8), 0 0 50px rgba(255, 0, 255, 0.5);
+        }
+
         @keyframes glow {
-            0% { box-shadow: 0 0 20px rgba(0, 170, 255, 0.5); }
-            100% { box-shadow: 0 0 30px rgba(0, 170, 255, 0.8); }
+            0% { box-shadow: 0 0 20px rgba(0, 170, 255, 0.5), 0 0 40px rgba(255, 0, 255, 0.3); }
+            100% { box-shadow: 0 0 30px rgba(0, 170, 255, 0.8), 0 0 60px rgba(255, 0, 255, 0.5); }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .hero h1 {
@@ -584,8 +627,9 @@
                 padding: 1rem;
             }
 
-            .hero img {
-                max-width: 150px;
+            .profile-picture-container {
+                width: 150px;
+                height: 150px;
             }
 
             .back-to-top, .audio-toggle {
@@ -622,7 +666,7 @@
 <body>
     <div class="preloader"></div>
     <div class="audio-overlay">
-        <button>Click Here to View Jason Blignaut's Portfolio</button>
+        <button>View Portfolio of Jason Blignaut</button>
     </div>
     <div class="background"></div>
     <audio id="bg-audio" src="/music/lofi.mp3" loop preload="auto" style="display: none;"></audio>
@@ -644,7 +688,9 @@
     <a href="#" class="back-to-top" title="Back to Top">↑</a>
     <button class="audio-toggle" title="Toggle Music">♫</button>
     <section class="hero">
-        <img src="channel-pictures/my-picture.jpeg" alt="Jason Blignaut" loading="lazy" onerror="console.error('Failed to load profile picture. Check path: channel-pictures/my-picture.jpeg'); this.src='thumbnails/thumbnail-13.webp';">
+        <div class="profile-picture-container">
+            <img src="thumbnails/thumbnail-13.webp" alt="Jason Blignaut" loading="lazy" onerror="console.error('Failed to load profile picture. Check path: channel-pictures/my-picture.jpeg'); this.src='thumbnails/thumbnail-13.webp';">
+        </div>
         <h1>Jason Blignaut</h1>
         <p>Hybrid Engineer | Azure & Cybersecurity Specialist</p>
         <a href="#projects" class="cta-button">Explore My Work</a>
@@ -741,7 +787,7 @@
     </section>
     <section id="contact" class="contact">
         <h2>Get in Touch</h2>
-        <p>Interested in collaborating or discussing opportunities? Let’s connect!</p>
+               <p>Interested in collaborating or discussing opportunities? Let’s connect!</p>
         <div class="contact-links">
             <a href="mailto:jason.blignaut@icloud.com">Email</a>
             <a href="https://linkedin.com/in/jasonblignaut" target="_blank">LinkedIn</a>
@@ -817,10 +863,9 @@
             trail.style.top = `${e.clientY}px`;
             document.body.appendChild(trail);
 
-            // Remove trail after animation ends to prevent DOM buildup
             setTimeout(() => {
                 trail.remove();
-            }, 500); // Matches animation duration
+            }, 500);
         });
 
         // Audio Toggle Button
@@ -846,6 +891,13 @@
         // Preloader
         window.addEventListener('load', () => {
             document.querySelector('.preloader').classList.add('hidden');
+        });
+
+        // Profile Picture Fallback
+        const profileImg = document.querySelector('.hero img');
+        profileImg.addEventListener('error', () => {
+            console.error('Profile picture failed to load. Using Base64 fallback.');
+            profileImg.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=='; // 1x1 transparent pixel
         });
     </script>
 </body>
