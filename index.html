@@ -169,7 +169,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            opacity: 0.8;
+            opacity: 0.3; /* Subtle background */
         }
 
         header {
@@ -672,7 +672,7 @@
     </div>
     <div class="cursor"></div>
     <canvas id="bg-canvas"></canvas>
-    <iframe id="bg-audio" style="display: none;" src="https://www.youtube.com/embed/jfKfPfyJRdk?enablejsapi=1&autoplay=0&controls=0&showinfo=0&rel=0" frameborder="0"></iframe>
+    <iframe id="bg-audio" style="display: none;" src="https://www.youtube.com/embed/jfKfPfyJRdk?enablejsapi=1&autoplay=0&controls=0&rel=0&showinfo=0&mute=1" frameborder="0"></iframe>
     <header>
         <div class="logo">
             <a href="https://labverse.co.za">
@@ -819,8 +819,8 @@
                     'onReady': (event) => {
                         console.log("Background Audio Player Ready");
                         event.target.setVolume(30);
-                        event.target.mute();
                         playerReady = true;
+                        // Don’t play yet, wait for user click
                     },
                     'onError': (event) => {
                         console.error("YouTube Player Error:", event.data);
@@ -846,30 +846,30 @@
             });
         }
 
-        // Overlay Click Handler with Fallback
+        // Overlay Click Handler
         const overlay = document.querySelector('.audio-overlay');
         const overlayButton = overlay.querySelector('button');
         overlayButton.addEventListener('click', () => {
             console.log("Overlay Button Clicked");
             if (playerReady && audioPlayer) {
-                console.log("Unmuting and Playing Audio");
+                console.log("Playing Audio");
                 audioPlayer.unMute();
                 audioPlayer.playVideo();
                 overlay.classList.add('hidden');
                 document.querySelector('.hero').style.opacity = 1;
             } else {
-                console.warn("Player not ready yet, waiting...");
+                console.warn("Player not ready, retrying...");
                 setTimeout(() => {
-                    if (audioPlayer) {
+                    if (audioPlayer && playerReady) {
                         audioPlayer.unMute();
                         audioPlayer.playVideo();
                         overlay.classList.add('hidden');
                         document.querySelector('.hero').style.opacity = 1;
                     } else {
-                        console.error("Audio player still not initialized");
-                        alert("Error loading audio. Please refresh the page.");
+                        console.error("Audio failed to initialize");
+                        alert("Audio failed to load. Please refresh the page.");
                     }
-                }, 2000); // Wait 2 seconds as fallback
+                }, 2000);
             }
         });
 
@@ -933,27 +933,43 @@
                     audioPlayer.mute();
                     audioToggle.textContent = '♪';
                 }
-            } else {
-                console.error("Audio player not ready for toggle");
             }
         });
 
-        // 3D Background with Three.js
+        // Galaxy Background with Three.js
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
 
-        const geometry = new THREE.PlaneGeometry(5, 5);
-        const material = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('thumbnails/thumbnail-13.webp'), transparent: true });
-        const plane = new THREE.Mesh(geometry, material);
-        scene.add(plane);
+        const texture = new THREE.TextureLoader().load('thumbnails/thumbnail-13.webp');
+        const particles = [];
+        for (let i = 0; i < 50; i++) {
+            const geometry = new THREE.PlaneGeometry(0.5, 0.5);
+            const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true, opacity: Math.random() });
+            const particle = new THREE.Mesh(geometry, material);
+            particle.position.x = (Math.random() - 0.5) * 20;
+            particle.position.y = (Math.random() - 0.5) * 20;
+            particle.position.z = (Math.random() - 0.5) * 10;
+            particle.velocity = new THREE.Vector3(
+                (Math.random() - 0.5) * 0.01,
+                (Math.random() - 0.5) * 0.01,
+                0
+            );
+            scene.add(particle);
+            particles.push(particle);
+        }
 
-        camera.position.z = 5;
+        camera.position.z = 10;
 
         function animate() {
             requestAnimationFrame(animate);
-            plane.rotation.z += 0.01;
+            particles.forEach(particle => {
+                particle.position.add(particle.velocity);
+                particle.material.opacity = Math.sin(Date.now() * 0.001 + particle.position.x) * 0.5 + 0.5;
+                if (particle.position.x > 10 || particle.position.x < -10) particle.velocity.x *= -1;
+                if (particle.position.y > 10 || particle.position.y < -10) particle.velocity.y *= -1;
+            });
             renderer.render(scene, camera);
         }
         animate();
