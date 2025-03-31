@@ -1,953 +1,533 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Jason Blignaut, a Hybrid Engineer specializing in Azure, Cybersecurity, and IT. Explore my skills, projects, and ventures.">
-    <meta name="keywords" content="Network Engineer, Cybersecurity, Azure, SD-WAN, IT, MSP, Technology">
-    <meta name="author" content="Jason Blignaut">
-    <meta property="og:title" content="Jason Blignaut | Hybrid Engineer">
-    <meta property="og:description" content="Explore the futuristic portfolio of Jason Blignaut, a Hybrid Engineer specializing in Azure, Cybersecurity, and IT.">
-    <meta property="og:image" content="thumbnails/thumbnail-13.webp">
-    <meta property="og:url" content="https://labverse.co.za">
-    <meta property="og:type" content="website">
-    <link rel="icon" type="image/png" href="icons/favicon.png">
-    <title>Jason Blignaut | Hybrid Engineer</title>
+    <meta name="description" content="Futuristic portfolio of [Your Name], a Hybrid Engineer & Project Manager specializing in Azure, cybersecurity, and IT. Explore my skills, projects, and ventures.">
+    <meta name="keywords" content="hybrid engineer, cybersecurity, Azure, SD-WAN, IT, project manager, Fourways Sandton, futuristic portfolio">
+    <meta name="author" content="[Your Name]">
+
+    <title>[Your Name] | Hybrid Engineer & Project Manager</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+
     <style>
-        :root {
-            --primary-color: #00aaff;
-            --secondary-color: #ff00ff;
-            --bg-dark: #0d0d1b;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --text-light: #e4e4e4;
-            --text-muted: #b0b0b0;
-            --neon-glow: rgba(0, 170, 255, 0.5);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Roboto', sans-serif;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            line-height: 1.6;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Preloader */
-        .preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-dark);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s;
-        }
-        .preloader::before {
-            content: '';
-            width: 50px;
-            height: 50px;
-            border: 5px solid var(--primary-color);
-            border-top: 5px solid transparent;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .preloader.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        /* Entry Overlay */
-        .entry-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(13, 13, 27, 0.95);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            transition: opacity 1s ease;
-        }
-        .entry-overlay.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        .entry-overlay h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 2rem;
-            text-transform: uppercase;
-        }
-        .entry-overlay button {
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 1rem 3rem;
-            border: none;
-            border-radius: 50px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            text-transform: uppercase;
-            cursor: pointer;
-            box-shadow: 0 0 20px var(--neon-glow);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .entry-overlay button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 30px var(--neon-glow);
-        }
-
-        /* Background Animation */
-        .background {
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(135deg, #1a1a2e 0%, var(--bg-dark) 100%);
-            background-size: 200% 200%;
-            z-index: -1;
-            opacity: 0.8;
-        }
-        .background::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(rgba(0, 170, 255, 0.1) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(0, 170, 255, 0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
-            opacity: 0.3;
-            animation: gridPulse 10s infinite linear;
-        }
-        @keyframes gridPulse {
-            0% { opacity: 0.3; }
-            50% { opacity: 0.5; }
-            100% { opacity: 0.3; }
-        }
-
-        /* Particle Effect */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
-        .particle {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: var(--primary-color);
-            box-shadow: 0 0 5px var(--primary-color);
-            animation: float 5s infinite linear;
-        }
-        @keyframes float {
-            0% { transform: translate(0, 0); opacity: 0.7; }
-            100% { transform: translate(100vw, 100vh); opacity: 0; }
-        }
-
-        /* Mouse Trail */
-        .trail {
-            position: fixed;
-            width: 8px;
-            height: 8px;
-            background: var(--primary-color);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            box-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--secondary-color);
-            animation: fadeOut 0.5s linear forwards;
-        }
-        @keyframes fadeOut {
-            0% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0; transform: scale(0); }
-        }
-
-        /* Header */
-        header {
-            position: sticky;
-            top: 0;
-            background: rgba(26, 26, 46, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transition: opacity 0.3s ease;
-        }
-        header.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        .logo img {
-            height: 40px;
-            filter: drop-shadow(0 0 2px var(--primary-color));
-        }
-        nav {
-            display: flex;
-            align-items: center;
-        }
-        nav a {
-            color: var(--text-light);
-            text-decoration: none;
-            margin: 0 1rem;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            transition: all 0.3s;
-        }
-        nav a:hover {
-            color: var(--primary-color);
-            text-shadow: 0 0 10px var(--primary-color);
-        }
-        .hamburger {
-            display: none;
-            cursor: pointer;
-            font-size: 1.5rem;
-            color: var(--text-light);
-        }
-
-        /* Back-to-Top Button */
-        .back-to-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5rem;
-            text-decoration: none;
-            box-shadow: 0 0 15px var(--neon-glow);
-            opacity: 0;
-            transition: opacity 0.3s, transform 0.3s;
-            z-index: 1000;
-        }
-        .back-to-top.visible {
-            opacity: 1;
-        }
-        .back-to-top:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 25px var(--neon-glow);
-        }
-
-        /* Audio Toggle Button */
-        .audio-toggle {
-            position: fixed;
-            bottom: 2rem;
-            left: 2rem;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5rem;
-            text-decoration: none;
-            box-shadow: 0 0 15px var(--neon-glow);
-            transition: transform 0.3s;
-            z-index: 1000;
-        }
-        .audio-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 25px var(--neon-glow);
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 2rem;
-            position: relative;
-            z-index: 10;
-        }
-        .hero img {
-            max-width: 200px;
-            width: 100%;
-            height: auto;
-            border-radius: 50%;
-            border: 3px solid var(--primary-color);
-            box-shadow: 0 0 20px var(--neon-glow);
-            margin-bottom: 2rem;
-            animation: glow 2s infinite alternate;
-            loading: lazy;
-            display: block;
-        }
-        @keyframes glow {
-            0% { box-shadow: 0 0 20px var(--neon-glow); }
-            100% { box-shadow: 0 0 30px var(--neon-glow); }
-        }
-        .hero h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(2rem, 5vw, 3rem);
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
-        }
-        .hero p {
-            font-size: clamp(1rem, 3vw, 1.2rem);
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-            max-width: 600px;
-        }
-        .hero .cta-button {
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 0.8rem 2rem;
-            text-decoration: none;
-            border-radius: 25px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            text-transform: uppercase;
-            box-shadow: 0 0 15px var(--neon-glow);
-            transition: all 0.3s;
-        }
-        .hero .cta-button:hover {
-            box-shadow: 0 0 25px var(--neon-glow);
-        }
-
-        /* Sections */
-        section {
-            padding: 4rem 1rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            scroll-margin-top: 80px;
-            position: relative;
-            z-index: 10;
-        }
-        #about {
-            min-height: auto;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        #skills, #experience, #projects, #contact {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        section h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(1.8rem, 4vw, 2.5rem);
-            text-align: center;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 3rem;
-            text-transform: uppercase;
-        }
-        section > * {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInSection 1s forwards;
-        }
-        @keyframes fadeInSection {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        /* About */
-        .about {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-        }
-        .about-content {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2rem;
-            align-items: center;
-        }
-        .about img {
-            max-width: 250px;
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
-            border: 2px solid var(--primary-color);
-            loading: lazy;
-        }
-        .about-text {
-            flex: 1;
-            min-width: 300px;
-        }
-        .about-text p {
-            line-height: 1.8;
-            color: var(--text-muted);
-            font-size: 1rem;
-        }
-
-        /* Grid Layouts */
-        .skills-grid, .experience-grid, .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-        .skill-card, .experience-card, .project-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: border-color 0.3s, transform 0.3s;
-        }
-        .skill-card:hover, .experience-card:hover, .project-card:hover {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 15px var(--neon-glow);
-            transform: translateY(-5px);
-        }
-        .skill-card img, .experience-card img {
-            width: 60px;
-            margin-bottom: 1rem;
-            filter: drop-shadow(0 0 5px var(--primary-color));
-            loading: lazy;
-        }
-        .project-card img {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-            border: 1px solid var(--primary-color);
-            loading: lazy;
-        }
-        .skill-card h3, .experience-card h3, .project-card h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
-            color: var(--text-light);
-            margin-bottom: 0.5rem;
-        }
-        .skill-card p, .experience-card p, .project-card p {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-        }
-        .project-card a {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        .project-card a:hover {
-            color: var(--secondary-color);
-            text-shadow: 0 0 10px var(--secondary-color);
-        }
-
-        /* YouTube Video Container */
-        .video-container {
-            position: relative;
-            width: 100%;
-            height: 200px;
-            border-radius: 10px;
-            margin-top: 1rem;
-        }
-        .project-card iframe {
-            width: 100%;
-            height: 100%;
-            border-radius: 10px;
-            border: 1px solid var(--primary-color);
-            box-shadow: 0 0 10px var(--neon-glow);
-            loading: lazy;
-        }
-        .video-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.3s ease;
-        }
-        .video-overlay.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        .unmute-button {
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 0.8rem 2rem;
-            border-radius: 25px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            text-transform: uppercase;
-            text-decoration: none;
-            box-shadow: 0 0 15px var(--neon-glow);
-            transition: all 0.3s;
-            border: none;
-            cursor: pointer;
-        }
-        .unmute-button:hover {
-            box-shadow: 0 0 25px var(--neon-glow);
-        }
-
-        /* Contact */
-        .contact {
-            text-align: center;
-        }
-        .contact p {
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .contact-links {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1.5rem;
-        }
-        .contact a {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 600;
-            font-family: 'Orbitron', sans-serif;
-            transition: all 0.3s;
-        }
-        .contact a:hover {
-            color: var(--secondary-color);
-            text-shadow: 0 0 10px var(--secondary-color);
-        }
-
-        /* Footer */
-        footer {
-            background: rgba(26, 26, 46, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
-            text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            z-index: 10;
-        }
-        footer p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-        footer a {
-            color: var(--primary-color);
-            text-decoration: none;
-            margin: 0 1rem;
-            transition: all 0.3s;
-        }
-        footer a:hover {
-            color: var(--secondary-color);
-            text-shadow: 0 0 10px var(--secondary-color);
-        }
-
-        /* Media Queries */
-        @media (max-width: 768px) {
-            .hamburger {
-                display: block;
-            }
-            nav {
-                display: none;
-                position: fixed;
-                top: 70px;
-                left: 0;
-                right: 0;
-                background: rgba(26, 26, 46, 0.95);
-                flex-direction: column;
-                padding: 2rem;
-            }
-            nav.active {
-                display: flex;
-            }
-            nav a {
-                margin: 1rem 0;
-                font-size: 1.1rem;
-            }
-            .about-content {
-                flex-direction: column;
-                text-align: center;
-            }
-            .hero {
-                padding: 1rem;
-            }
-            .hero img {
-                max-width: 150px;
-            }
-            .back-to-top, .audio-toggle {
-                width: 40px;
-                height: 40px;
-                font-size: 1.2rem;
-                bottom: 1rem;
-            }
-            .back-to-top {
-                right: 1rem;
-            }
-            .audio-toggle {
-                left: 1rem;
-            }
-        }
-        @media (max-width: 480px) {
-            section {
-                padding: 2rem 1rem;
-            }
-            .skill-card, .experience-card, .project-card {
-                padding: 1.5rem;
-            }
-            .project-card iframe {
-                height: 150px;
-            }
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Roboto', sans-serif;
+      }
+      body {
+        background-color: #0d0d1b;
+        color: #e4e4e4;
+        overflow-x: hidden;
+      }
+      /* Background Animation */
+      .background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #1a1a2e 0%, #0d0d1b 100%);
+        z-index: -1;
+        opacity: 0.8;
+      }
+      .background::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: url('thumbnails/circuit-pattern.webp') repeat;
+        opacity: 0.1;
+        animation: moveBackground 20s linear infinite;
+      }
+      @keyframes moveBackground {
+        0% { background-position: 0 0; }
+        100% { background-position: 100% 100%; }
+      }
+      /* Header */
+      header {
+        position: sticky;
+        top: 0;
+        background: rgba(26, 26, 46, 0.8);
+        backdrop-filter: blur(10px);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 1000;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .logo img {
+        height: 40px;
+        filter: drop-shadow(0 0 5px #00aaff);
+      }
+      nav a {
+        color: #e4e4e4;
+        text-decoration: none;
+        margin: 0 1.5rem;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        transition: color 0.3s, text-shadow 0.3s;
+      }
+      nav a:hover {
+        color: #00aaff;
+        text-shadow: 0 0 10px #00aaff;
+      }
+      /* Hero Section */
+      .hero {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        position: relative;
+      }
+      .hero img {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        border: 3px solid #00aaff;
+        box-shadow: 0 0 20px rgba(0, 170, 255, 0.5);
+        margin-bottom: 2rem;
+        animation: glow 2s infinite alternate;
+      }
+      @keyframes glow {
+        0% { box-shadow: 0 0 20px rgba(0, 170, 255, 0.5); }
+        100% { box-shadow: 0 0 30px rgba(0, 170, 255, 0.8); }
+      }
+      .hero h1 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 3rem;
+        background: linear-gradient(90deg, #00aaff, #ff00ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 1rem;
+        animation: fadeIn 2s ease-in-out;
+      }
+      .hero p {
+        font-size: 1.2rem;
+        color: #b0b0b0;
+        margin-bottom: 2rem;
+        animation: fadeIn 3s ease-in-out;
+      }
+      .hero .cta-button {
+        background: linear-gradient(90deg, #00aaff, #ff00ff);
+        color: white;
+        padding: 0.8rem 2rem;
+        text-decoration: none;
+        border-radius: 25px;
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 700;
+        text-transform: uppercase;
+        box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
+        transition: box-shadow 0.3s;
+        animation: fadeIn 4s ease-in-out;
+      }
+      .hero .cta-button:hover {
+        box-shadow: 0 0 25px rgba(0, 170, 255, 0.8);
+      }
+      @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
+      /* Sections */
+      section {
+        padding: 5rem 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      section h2 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2.5rem;
+        text-align: center;
+        background: linear-gradient(90deg, #00aaff, #ff00ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 3rem;
+        text-transform: uppercase;
+      }
+      /* About */
+      .about {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      }
+      .about img {
+        width: 250px;
+        border-radius: 10px;
+        border: 2px solid #00aaff;
+      }
+      .about-text p {
+        line-height: 1.8;
+        color: #b0b0b0;
+        font-size: 1rem;
+      }
+      /* Skills */
+      .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+      }
+      .skill-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+      .skill-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 0 20px rgba(0, 170, 255, 0.5);
+      }
+      .skill-card img {
+        width: 60px;
+        margin-bottom: 1rem;
+        filter: drop-shadow(0 0 5px #00aaff);
+      }
+      .skill-card h3 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.2rem;
+        color: #e4e4e4;
+        margin-bottom: 0.5rem;
+      }
+      .skill-card p {
+        font-size: 0.9rem;
+        color: #b0b0b0;
+      }
+      /* Experience */
+      .experience-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+      .experience-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 2rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+      .experience-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 0 20px rgba(0, 170, 255, 0.5);
+      }
+      .experience-card img {
+        width: 50px;
+        margin-bottom: 1rem;
+        filter: drop-shadow(0 0 5px #00aaff);
+      }
+      .experience-card h3 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.2rem;
+        color: #e4e4e4;
+        margin-bottom: 0.5rem;
+      }
+      .experience-card p {
+        font-size: 0.9rem;
+        color: #b0b0b0;
+      }
+      /* Projects */
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+      .project-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 2rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+      .project-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 0 20px rgba(0, 170, 255, 0.5);
+      }
+      .project-card img {
+        width: 100%;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        border: 1px solid #00aaff;
+      }
+      .project-card h3 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.2rem;
+        color: #e4e4e4;
+        margin-bottom: 0.5rem;
+      }
+      .project-card p {
+        font-size: 0.9rem;
+        color: #b0b0b0;
+        margin-bottom: 1rem;
+      }
+      .project-card a {
+        color: #00aaff;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s, text-shadow 0.3s;
+      }
+      .project-card a:hover {
+        color: #ff00ff;
+        text-shadow: 0 0 10px #ff00ff;
+      }
+      .project-card iframe {
+        margin-top: 1rem;
+        border-radius: 10px;
+      }
+      /* Personal Insights */
+      .personal-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+      .personal-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 2rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+      .personal-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 0 20px rgba(0, 170, 255, 0.5);
+      }
+      .personal-card img {
+        width: 50px;
+        margin-bottom: 1rem;
+        filter: drop-shadow(0 0 5px #00aaff);
+      }
+      .personal-card h3 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.2rem;
+        color: #e4e4e4;
+        margin-bottom: 0.5rem;
+      }
+      .personal-card p {
+        font-size: 0.9rem;
+        color: #b0b0b0;
+      }
+      /* Contact */
+      .contact {
+        text-align: center;
+      }
+      .contact p {
+        color: #b0b0b0;
+        margin-bottom: 2rem;
+      }
+      .contact a {
+        color: #00aaff;
+        text-decoration: none;
+        font-weight: 600;
+        margin: 0 1.5rem;
+        font-family: 'Orbitron', sans-serif;
+        transition: color 0.3s, text-shadow 0.3s;
+      }
+      .contact a:hover {
+        color: #ff00ff;
+        text-shadow: 0 0 10px #ff00ff;
+      }
+      /* Footer */
+      footer {
+        background: rgba(26, 26, 46, 0.8);
+        backdrop-filter: blur(10px);
+        padding: 2rem;
+        text-align: center;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      footer p {
+        color: #b0b0b0;
+        font-size: 0.9rem;
+      }
+      footer a {
+        color: #00aaff;
+        text-decoration: none;
+        margin: 0 1rem;
+        transition: color 0.3s, text-shadow 0.3s;
+      }
+      footer a:hover {
+        color: #ff00ff;
+        text-shadow: 0 0 10px #ff00ff;
+      }
     </style>
-</head>
-<body>
-    <!-- Preloader -->
-    <div class="preloader"></div>
-
-    <!-- Entry Overlay -->
-    <div class="entry-overlay">
-        <h1>Welcome to Jason Blignaut's Cyber Portfolio</h1>
-        <button id="enter-button">Enter</button>
-    </div>
-
+  </head>
+  <body>
     <!-- Background Animation -->
     <div class="background"></div>
-    <div class="particles" id="particles"></div>
-
-    <!-- Background Music -->
-    <audio id="background-music" loop>
-        <source src="audio/lofi-music.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
 
     <!-- Header -->
     <header>
-        <div class="logo">
-            <a href="https://labverse.co.za">
-                <img src="icons/LVNOBG.svg" alt="LabVerse Logo" loading="lazy">
-            </a>
-        </div>
-        <div class="hamburger">☰</div>
-        <nav>
-            <a href="#about">About</a>
-            <a href="#skills">Skills</a>
-            <a href="#experience">Experience</a>
-            <a href="#projects">Projects</a>
-            <a href="#contact">Contact</a>
-        </nav>
+      <div class="logo">
+        <img src="icons/personal-logo.svg" alt="[Your Name] Logo">
+      </div>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </nav>
     </header>
-
-    <!-- Back-to-Top Button -->
-    <a href="#" class="back-to-top" title="Back to Top">↑</a>
-
-    <!-- Audio Toggle Button -->
-    <button class="audio-toggle" title="Toggle Music">♫</button>
 
     <!-- Hero Section -->
     <section class="hero">
-        <img src="channel-pictures/my-picture.jpeg" alt="Jason Blignaut" loading="lazy" onerror="this.src='https://via.placeholder.com/200?text=Profile+Image+Not+Found'; console.error('Failed to load profile picture. Check path: channel-pictures/my-picture.jpeg');">
-        <h1>Jason Blignaut</h1>
-        <p>Hybrid Engineer | Azure & Cybersecurity Specialist</p>
-        <a href="#projects" class="cta-button">Explore My Work</a>
+      <img src="channel-pictures/my-picture.jpeg" alt="[Your Name]">
+      <h1>[Your Name]</h1>
+      <p>Hybrid Engineer & Project Manager | Azure & Cybersecurity Specialist</p>
+      <a href="#projects" class="cta-button">Explore My Work</a>
     </section>
 
     <!-- About Me -->
     <section id="about" class="about">
-        <div class="about-content">
-            <img src="thumbnails/thumbnail-13.webp" alt="About Me" loading="lazy">
-            <div class="about-text">
-                <h2>About Me</h2>
-                <p>I’m a Hybrid Engineer based in Johannesburg, South Africa, with over 8 years of experience in designing, implementing, and securing enterprise-grade IT infrastructures. I specialize in Azure architecture, FortiGate SD-WAN deployments, hybrid Exchange environments, and advanced cybersecurity frameworks.</p>
-                <p>I’m passionate about leveraging cutting-edge technologies like AI and cloud solutions to drive business innovation and resilience. Known for my strategic approach to problem-solving, I thrive in high-stakes environments and am committed to delivering scalable, secure, and efficient solutions.</p>
-            </div>
-        </div>
+      <img src="thumbnails/about-me.webp" alt="About Me">
+      <div class="about-text">
+        <h2>About Me</h2>
+        <p>I'm a Hybrid Engineer and Project Manager based in Fourways, Sandton, with a passion for technology, cybersecurity, and innovation. I specialize in Azure, SD-WAN (FortiGate), and Exchange migrations, while also exploring AI and creative projects.</p>
+        <p>Outside of work, I'm a proud father to a 7-month-old son, drive a VW Polo (planning to trade it in soon), and commute to Kyalami for work. I value continuous learning, structured decision-making, and delivering high-value results.</p>
+      </div>
     </section>
 
     <!-- Skills -->
     <section id="skills">
-        <h2>My Skills</h2>
-        <div class="skills-grid">
-            <div class="skill-card">
-                <img src="icons/icons.svg" alt="Hybrid Engineer Icon" loading="lazy">
-                <h3>Hybrid Engineering</h3>
-                <p>Expert in Exchange migrations, Office 365 administration, Azure deployments, FortiGate SD-WAN configurations, VPN setups, and IT troubleshooting.</p>
-            </div>
-            <div class="skill-card">
-                <img src="icons/icons.svg" alt="Cybersecurity Icon" loading="lazy">
-                <h3>Network Engineering & Cybersecurity</h3>
-                <p>Proficient in Cisco switching, SSH, VPNs, Defender XDR, firewall configuration (FortiGate, Cisco ASA), and advanced threat mitigation.</p>
-            </div>
-            <div class="skill-card">
-                <img src="icons/icons.svg" alt="Cloud Icon" loading="lazy">
-                <h3>Cloud & Infrastructure</h3>
-                <p>Skilled in Azure VMs, email security, and hybrid environments, ensuring seamless integration and performance.</p>
-            </div>
-            <div class="skill-card">
-                <img src="icons/icons.svg" alt="AI Icon" loading="lazy">
-                <h3>AI & Prompt Engineering</h3>
-                <p>Exploring LLMs and AI-driven workflows to enhance productivity and innovation.</p>
-            </div>
-            <div class="skill-card">
-                <img src="icons/icons.svg" alt="Business Icon" loading="lazy">
-                <h3>Business & Strategy</h3>
-                <p>Experienced in OKRs, RICE frameworks, decision-making, and business growth strategies.</p>
-            </div>
+      <h2>My Skills</h2>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <img src="icons/hybrid-engineer.svg" alt="Hybrid Engineer Icon">
+          <h3>Hybrid Engineering & Project Management</h3>
+          <p>Exchange migrations, Office 365, Azure, SD-WAN (FortiGate), VPNs, IT troubleshooting.</p>
         </div>
+        <div class="skill-card">
+          <img src="icons/cybersecurity.svg" alt="Cybersecurity Icon">
+          <h3>Network Engineering & Cybersecurity</h3>
+          <p>Cisco switches, SSH, VPNs, firewall configuration, advanced security.</p>
+        </div>
+        <div class="skill-card">
+          <img src="icons/cloud.svg" alt="Cloud Icon">
+          <h3>Cloud & Infrastructure</h3>
+          <p>Azure VMs, email security, hybrid environments.</p>
+        </div>
+        <div class="skill-card">
+          <img src="icons/ai.svg" alt="AI Icon">
+          <h3>AI & Prompt Engineering</h3>
+          <p>Learning LLMs, experimenting with AI-driven workflows.</p>
+        </div>
+        <div class="skill-card">
+          <img src="icons/business.svg" alt="Business Icon">
+          <h3>Business & Strategy</h3>
+          <p>OKRs, RICE frameworks, decision-making, business growth strategies.</p>
+        </div>
+      </div>
     </section>
 
-    <!-- Experience -->
+    <!-- Experience & Certifications -->
     <section id="experience">
-        <h2>Experience</h2>
-        <div class="experience-grid">
-            <div class="experience-card">
-                <img src="icons/icons.svg" alt="Exchange Icon" loading="lazy">
-                <h3>Exchange Hybrid Environments</h3>
-                <p>Supported global customers under SLA, ensuring seamless email migrations and operations.</p>
-            </div>
-            <div class="experience-card">
-                <img src="icons/icons.svg" alt="SD-WAN Icon" loading="lazy">
-                <h3>FortiGate SD-WAN Setups</h3>
-                <p>Designed and deployed SD-WAN solutions for enhanced network performance and security.</p>
-            </div>
+      <h2>Experience & Certifications</h2>
+      <div class="experience-grid">
+        <div class="experience-card">
+          <img src="icons/exchange.svg" alt="Exchange Icon">
+          <h3>Managing Exchange Hybrid Environments</h3>
+          <p>Supporting customers under SLA across multiple regions.</p>
         </div>
+        <div class="experience-card">
+          <img src="icons/sdwan.svg" alt="SD-WAN Icon">
+          <h3>FortiGate SD-WAN Setups</h3>
+          <p>Deploying and managing SD-WAN solutions globally.</p>
+        </div>
+        <div class="experience-card">
+          <img src="icons/certifications.svg" alt="Certifications Icon">
+          <h3>AZ-800 & AZ-801 Exams</h3>
+          <p>Scheduled for March 27, 2025, to enhance my Azure expertise.</p>
+        </div>
+      </div>
     </section>
 
-    <!-- Projects -->
+    <!-- Projects & Ventures -->
     <section id="projects">
-        <h2>Projects</h2>
-        <div class="projects-grid">
-            <div class="project-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="YouTube Channels" loading="lazy">
-                <h3>YouTube Channel</h3>
-                <p>LabVerse</p>
-                <a href="https://youtube.com/labverse" target="_blank">Visit the LabVerse YouTube Channel</a>
-            </div>
-            <div class="project-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="LabVerse Website" loading="lazy">
-                <h3>LabVerse Website</h3>
-                <p>Website showcasing all my projects</p>
-                <a href="https://labverse.co.za" target="_blank">Learn More</a>
-            </div>
-            <div class="project-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="Lo-Fi Livestream" loading="lazy">
-                <h3>AI-Generated Lo-Fi Music Livestream</h3>
-                <p>A creative project running on an Azure Linux VM, streaming AI-generated lo-fi music.</p>
-                <div class="video-container">
-                    <iframe id="lofi-video" src="https://www.youtube.com/embed/jfKfPfyJRdk" frameborder="0" allowfullscreen></iframe>
-                    <div class="video-overlay">
-                        <button class="unmute-button">Unmute & Watch</button>
-                    </div>
-                </div>
-            </div>
-            <div class="project-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="T1 Support Tool" loading="lazy">
-                <h3>T1 Support Tool Developed Using PowerShell</h3>
-                <p>A fully functional troubleshooting tool for basic network diagnostics with integrated guides.</p>
-            </div>
-            <div class="project-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="Web Development" loading="lazy">
-                <h3>Website Development</h3>
-                <p>Creating custom websites tailored to specific requirements with a focus on performance and design.</p>
-            </div>
+      <h2>Projects & Ventures</h2>
+      <div class="projects-grid">
+        <div class="project-card">
+          <img src="thumbnails/youtube-channels.webp" alt="YouTube Channels">
+          <h3>YouTube Channels (6 Active)</h3>
+          <p>Spectech (IT & cybersecurity), LifeOS (personal growth), Techsplore (tech trends), Cryplle Tips (crypto & AI), Dr Conspiracy (mind-expanding content), MindMesh (psychology & tech), Nerosales (sales psychology).</p>
+          <a href="https://youtube.com" target="_blank">Visit My Channels</a>
         </div>
+        <div class="project-card">
+          <img src="thumbnails/cybersecuritas.webp" alt="Cybersecuritas">
+          <h3>Cybersecuritas</h3>
+          <p>A cybersecurity business venture aimed at providing cutting-edge security solutions.</p>
+          <a href="https://cybersecuritas.co.za" target="_blank">Learn More</a>
+        </div>
+        <div class="project-card">
+          <img src="thumbnails/lofi-livestream.webp" alt="Lo-Fi Livestream">
+          <h3>AI-Generated Lo-Fi Music Livestream</h3>
+          <p>A creative project running on an Azure Linux VM, streaming AI-generated lo-fi music.</p>
+          <iframe src="[your-livestream-url]" width="100%" height="200px" frameborder="0"></iframe>
+        </div>
+        <div class="project-card">
+          <img src="thumbnails/game-dev.webp" alt="Game Development">
+          <h3>Amapiano-Inspired Game</h3>
+          <p>Developing a viral, addictive game inspired by Amapiano and Zulu culture.</p>
+        </div>
+        <div class="project-card">
+          <img src="thumbnails/call-of-duty.webp" alt="Call of Duty Project">
+          <h3>Call of Duty Glitches & Clan Tags</h3>
+          <p>Exploring glitches and unique clan tags for error-like effects in Call of Duty.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Personal Insights -->
+    <section id="personal">
+      <h2>Personal Insights</h2>
+      <div class="personal-grid">
+        <div class="personal-card">
+          <img src="icons/lifestyle.svg" alt="Lifestyle Icon">
+          <h3>Lifestyle & Family</h3>
+          <p>Based in Fourways, Sandton, commuting to Kyalami. Proud father to a 7-month-old son. I drive a VW Polo (planning to trade it in 7 months) and value friendly, non-rushy service.</p>
+        </div>
+        <div class="personal-card">
+          <img src="icons/mindset.svg" alt="Mindset Icon">
+          <h3>Work Habits & Mindset</h3>
+          <p>High standards, deep work ethic, and a strategic thinker. I use frameworks like OKRs, RICE, and McKinsey models to optimize decisions and ensure continuous improvement.</p>
+        </div>
+      </div>
     </section>
 
     <!-- Contact -->
     <section id="contact" class="contact">
-        <h2>Get in Touch</h2>
-        <p>Interested in collaborating or discussing opportunities? Let’s connect!</p>
-        <div class="contact-links">
-            <a href="mailto:jason.blignaut@icloud.com">Email</a>
-            <a href="https://linkedin.com/in/jasonblignaut" target="_blank">LinkedIn</a>
-            <a href="https://youtube.com/user/labverse" target="_blank">YouTube</a>
-        </div>
+      <h2>Get in Touch</h2>
+      <p>Reach out to discuss opportunities, collaborations, or just to connect!</p>
+      <div>
+        <a href="mailto:your-email@example.com">Email</a>
+        <a href="https://linkedin.com/in/your-profile" target="_blank">LinkedIn</a>
+        <a href="https://github.com/your-profile" target="_blank">GitHub</a>
+      </div>
     </section>
 
     <!-- Footer -->
     <footer>
-        <p>© 2025 Jason Blignaut. All rights reserved.</p>
-        <div class="footer-links">
-            <a href="https://labverse.co.za" target="_blank">LabVerse</a>
-            <a href="https://youtube.com/labverse" target="_blank">YouTube</a>
-            <a href="https://linkedin.com/in/jasonblignaut" target="_blank">LinkedIn</a>
-        </div>
+      <p>© 2025 [Your Name]. All rights reserved.</p>
+      <div>
+        <a href="https://linkedin.com/in/your-profile" target="_blank">LinkedIn</a>
+        <a href="https://github.com/your-profile" target="_blank">GitHub</a>
+      </div>
     </footer>
-
-    <script>
-        // Generate Particles
-        const particlesContainer = document.querySelector('.particles');
-        for (let i = 0; i < 50; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = `${Math.random() * 100}vw`;
-            particle.style.top = `${Math.random() * 100}vh`;
-            particle.style.animationDelay = `${Math.random() * 5}s`;
-            particlesContainer.appendChild(particle);
-        }
-
-        // Mouse Trail
-        const createTrail = (x, y) => {
-            const trail = document.createElement('div');
-            trail.className = 'trail';
-            trail.style.left = `${x}px`;
-            trail.style.top = `${y}px`;
-            document.body.appendChild(trail);
-            setTimeout(() => trail.remove(), 500);
-        };
-        document.addEventListener('mousemove', (e) => {
-            createTrail(e.clientX, e.clientY);
-        });
-        document.addEventListener('touchmove', (e) => {
-            const touch = e.touches[0];
-            createTrail(touch.clientX, touch.clientY);
-        });
-
-        // Audio Setup
-        const audio = document.getElementById('background-music');
-        audio.volume = 0.3;
-
-        // Entry Overlay
-        const overlay = document.querySelector('.entry-overlay');
-        const entryButton = overlay.querySelector('button');
-        entryButton.addEventListener('click', () => {
-            audio.play().then(() => {
-                overlay.classList.add('hidden');
-                document.querySelector('.hero').style.opacity = 1;
-            }).catch(error => {
-                console.error("Audio Play Error:", error);
-                alert("Failed to play audio. Please check your browser settings or refresh the page.");
-                overlay.classList.add('hidden'); // Proceed even if audio fails
-                document.querySelector('.hero').style.opacity = 1;
-            });
-        });
-
-        // Mobile Menu Toggle
-        const hamburger = document.querySelector('.hamburger');
-        const nav = document.querySelector('nav');
-        hamburger.addEventListener('click', () => {
-            nav.classList.toggle('active');
-            hamburger.textContent = nav.classList.contains('active') ? '✕' : '☰';
-        });
-        nav.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                nav.classList.remove('active');
-                hamburger.textContent = '☰';
-            });
-        });
-
-        // Fade Header and Show Back to Top
-        let lastScrollTop = 0;
-        window.addEventListener('scroll', () => {
-            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            if (scrollTop > lastScrollTop) {
-                document.querySelector('header').classList.add('hidden');
-            } else {
-                document.querySelector('header').classList.remove('hidden');
-            }
-            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-
-            const backToTop = document.querySelector('.back-to-top');
-            if (scrollTop > 200) {
-                backToTop.classList.add('visible');
-            } else {
-                backToTop.classList.remove('visible');
-            }
-        });
-
-        // Mouse-Following Background Animation
-        document.addEventListener('mousemove', (e) => {
-            const x = (e.clientX / window.innerWidth) * 100;
-            const y = (e.clientY / window.innerHeight) * 100;
-            document.querySelector('.background').style.backgroundPosition = `${x}% ${y}%`;
-        });
-
-        // Audio Toggle
-        const audioToggle = document.querySelector('.audio-toggle');
-        audioToggle.addEventListener('click', () => {
-            if (audio.paused) {
-                audio.play();
-                audioToggle.textContent = '♫';
-            } else {
-                audio.pause();
-                audioToggle.textContent = '♪';
-            }
-        });
-
-        // YouTube Player API for Unmuting Video
-        let player;
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('lofi-video', {
-                events: {
-                    'onReady': (event) => {
-                        player.mute();
-                        const unmuteButton = document.querySelector('.unmute-button');
-                        unmuteButton.addEventListener('click', () => {
-                            player.unMute();
-                            player.playVideo();
-                            audio.pause();
-                            document.querySelector('.video-overlay').classList.add('hidden');
-                        });
-                    }
-                }
-            });
-        }
-
-        // Card Tilt Effect
-        VanillaTilt.init(document.querySelectorAll('.skill-card, .experience-card, .project-card'), {
-            max: 15,
-            speed: 400,
-            glare: true,
-            'max-glare': 0.5
-        });
-
-        // Preloader
-        window.addEventListener('load', () => {
-            document.querySelector('.preloader').classList.add('hidden');
-        });
-
-        // Ensure Hero Section is Visible After Overlay
-        window.addEventListener('load', () => {
-            document.querySelector('.hero').style.opacity = 1;
-        });
-    </script>
-</body>
+  </body>
 </html>
