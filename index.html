@@ -10,12 +10,12 @@
     <!-- Open Graph Meta Tags for Social Sharing -->
     <meta property="og:title" content="Jason Blignaut | Hybrid Engineer">
     <meta property="og:description" content="Explore the futuristic portfolio of Jason Blignaut, a Hybrid Engineer specializing in Azure, cybersecurity, and IT.">
-    <meta property="og:image" content="thumbnails/og-image.webp">
+    <meta property="og:image" content="thumbnails/thumbnail-13.webp">
     <meta property="og:url" content="https://labverse.co.za">
     <meta property="og:type" content="website">
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="icons/favicon.png">
+    <!-- Favicon (Convert /icons/LVNOBG.svg to /icons/favicon.png) -->
+    <link rel="icon" type="image/png" href="icons/favicon.ico">
 
     <title>Jason Blignaut | Hybrid Engineer</title>
 
@@ -136,7 +136,7 @@
             animation: float 7s infinite linear;
         }
         @keyframes float {
-            0% { transform: translate(0, 0); opacity: 1; }
+            0% { transform: translate(0, 0); opacity: 0.7; }
             100% { transform: translate(100vw, 100vh); opacity: 0; }
         }
 
@@ -152,7 +152,7 @@
             align-items: center;
             z-index: 1000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transition: opacity 0.3s ease; /* Fade effect */
+            transition: opacity 0.3s ease;
         }
 
         header.hidden {
@@ -403,6 +403,7 @@
             border-radius: 10px;
             margin-bottom: 1rem;
             border: 1px solid var(--primary-color);
+            loading: lazy; /* Lazy load images */
         }
 
         .skill-card h3,
@@ -441,6 +442,7 @@
             margin-top: 1rem;
             border: 1px solid var(--primary-color);
             box-shadow: 0 0 10px rgba(0, 170, 255, 0.3);
+            loading: lazy; /* Lazy load iframes */
         }
 
         /* Contact */
@@ -594,7 +596,7 @@
     </header>
 
     <!-- Back-to-Top Button -->
-    <a href="#" class="back-to-top">↑</a>
+    <a href="#" class="back-to-top" title="Back to Top">↑</a>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -678,23 +680,24 @@
             <div class="project-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="LabVerse Website">
                 <h3>LabVerse Website</h3>
-                <p>A platform showcasing all my projects and ventures.</p>
+                <p>A portfolio showcasing my projects, skills, and expertise in IT and cybersecurity.</p>
                 <a href="https://labverse.co.za" target="_blank">Learn More</a>
             </div>
             <div class="project-card">
+                <img src="thumbnails/thumbnail-13.webp" alt="Lo-Fi Livestream">
                 <h3>AI-Generated Lo-Fi Music Livestream</h3>
                 <p>A creative project running on an Azure Linux VM, streaming AI-generated lo-fi music.</p>
-                <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk?si=5lcfa_uHm2VyOQf&autoplay=1&mute=1" title="AI-Generated Lo-Fi Music Livestream" frameborder="0" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk?si=5lcfa_uHm2VyOQf&autoplay=1&mute=1" title="AI-Generated Lo-Fi Music Livestream" frameborder="0" allow="autoplay" allowfullscreen></iframe>
             </div>
             <div class="project-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="PowerShell Tool">
+                <img src="thumbnails/thumbnail-13.webp" alt="T1 Support Tool">
                 <h3>T1 Support Tool (PowerShell)</h3>
-                <p>Developed a fully functional troubleshooting tool using PowerShell for basic network troubleshooting with guides.</p>
+                <p>Developed a fully functional troubleshooting tool using PowerShell for basic network diagnostics with guides.</p>
             </div>
             <div class="project-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Web Development">
                 <h3>Website Development</h3>
-                <p>Creating custom websites tailored to client requirements.</p>
+                <p>Creating custom websites tailored to client requirements with a focus on performance and design.</p>
             </div>
         </div>
     </section>
@@ -713,6 +716,10 @@
     <!-- Footer -->
     <footer>
         <p>© 2025 Jason Blignaut. All rights reserved.</p>
+        <div>
+            <a href="https://linkedin.com/in/jasonblignaut" target="_blank">LinkedIn</a>
+            <a href="https://youtube.com/user/labverse" target="_blank">YouTube</a>
+        </div>
     </footer>
 
     <script>
@@ -741,7 +748,7 @@
         // Back-to-Top Button Visibility
         const backToTop = document.querySelector('.back-to-top');
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
+            if (window.scrollY > 200) {
                 backToTop.classList.add('visible');
             } else {
                 backToTop.classList.remove('visible');
@@ -750,17 +757,14 @@
 
         // Header Fade on Scroll
         let lastScrollTop = 0;
-        const header = document.querySelector('header');
         window.addEventListener('scroll', () => {
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             if (scrollTop > lastScrollTop) {
-                // Scrolling down
-                header.classList.add('hidden');
+                document.querySelector('header').classList.add('hidden');
             } else {
-                // Scrolling up
-                header.classList.remove('hidden');
+                document.querySelector('header').classList.remove('hidden');
             }
-            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
         });
     </script>
 </body>
