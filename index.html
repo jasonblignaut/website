@@ -43,64 +43,7 @@
             color: var(--text-light);
             line-height: 1.6;
             overflow-x: hidden;
-            cursor: auto;
-        }
-
-        /* Futuristic Mouse Trail */
-        .trail {
-            position: fixed;
-            width: 8px;
-            height: 8px;
-            background: var(--primary-color);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            box-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--secondary-color);
-            animation: fadeOut 0.5s linear forwards;
-        }
-
-        @keyframes fadeOut {
-            0% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: scale(0);
-            }
-        }
-
-        /* Particle Effect for Futuristic Look */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-        .particles::before {
-            content: '';
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: var(--primary-color);
-            box-shadow: 0 0 5px var(--primary-color);
-            animation: float 5s infinite linear;
-        }
-        .particles::after {
-            content: '';
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: var(--secondary-color);
-            box-shadow: 0 0 5px var(--secondary-color);
-            animation: float 7s infinite linear;
-        }
-        @keyframes float {
-            0% { transform: translate(0, 0); opacity: 0.7; }
-            100% { transform: translate(100vw, 100vh); opacity: 0; }
+            position: relative;
         }
 
         /* Background with Parallax Effect */
@@ -108,7 +51,7 @@
             position: fixed;
             inset: 0;
             background: linear-gradient(135deg, #1a1a2e 0%, var(--bg-dark) 100%);
-            z-index: -1;
+            z-index: 1; /* Increased to ensure it's above body background but below content */
             opacity: 0.8;
             will-change: transform;
         }
@@ -125,6 +68,62 @@
         @keyframes moveBackground {
             0% { background-position: 0 0; }
             100% { background-position: 100% 100%; }
+        }
+
+        /* Particle Effect for Futuristic Look */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2; /* Increased to ensure particles are above background but below content */
+            pointer-events: none;
+        }
+
+        .particles::before, .particles::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            box-shadow: 0 0 5px var(--primary-color);
+            animation: float 5s infinite linear;
+        }
+
+        .particles::before {
+            background: var(--primary-color);
+            left: 20%;
+            top: 20%;
+        }
+
+        .particles::after {
+            background: var(--secondary-color);
+            left: 80%;
+            top: 80%;
+            animation-duration: 7s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); opacity: 0.7; }
+            100% { transform: translate(100vw, 100vh); opacity: 0; }
+        }
+
+        /* Futuristic Mouse/Touch Trail */
+        .trail {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            box-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--secondary-color);
+            animation: fadeOut 0.5s linear forwards;
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0); }
         }
 
         /* Glowing Scroll Indicator for Mobile */
@@ -153,6 +152,42 @@
             100% { transform: scaleY(1); box-shadow: 0 0 15px rgba(0, 170, 255, 0.5); }
         }
 
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s;
+        }
+
+        .preloader::before {
+            content: '';
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--primary-color);
+            border-top: 5px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .preloader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Audio Overlay */
         .audio-overlay {
             position: fixed;
             top: 0;
@@ -191,40 +226,7 @@
             box-shadow: 0 0 30px rgba(0, 170, 255, 1);
         }
 
-        .preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-dark);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s;
-        }
-
-        .preloader::before {
-            content: '';
-            width: 50px;
-            height: 50px;
-            border: 5px solid var(--primary-color);
-            border-top: 5px solid transparent;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .preloader.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
+        /* Header */
         header {
             position: sticky;
             top: 0;
@@ -276,6 +278,7 @@
             color: var(--text-light);
         }
 
+        /* Back-to-Top Button */
         .back-to-top {
             position: fixed;
             bottom: 2rem;
@@ -305,6 +308,7 @@
             box-shadow: 0 0 25px rgba(0, 170, 255, 0.8);
         }
 
+        /* Audio Toggle Button */
         .audio-toggle {
             position: fixed;
             bottom: 2rem;
@@ -329,6 +333,7 @@
             box-shadow: 0 0 25px rgba(0, 170, 255, 0.8);
         }
 
+        /* Hero Section */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -337,8 +342,8 @@
             align-items: center;
             text-align: center;
             padding: 2rem;
-            opacity: 0;
-            animation: fadeIn 2s forwards 1s;
+            position: relative;
+            z-index: 10; /* Ensure hero is above background and particles */
         }
 
         .hero img {
@@ -351,6 +356,7 @@
             margin-bottom: 2rem;
             animation: glow 2s infinite alternate;
             loading: lazy;
+            display: block; /* Ensure image is visible */
         }
 
         @keyframes glow {
@@ -396,11 +402,14 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
+        /* Sections */
         section {
             padding: 4rem 1rem;
             max-width: 1200px;
             margin: 0 auto;
             scroll-margin-top: 80px;
+            position: relative;
+            z-index: 10; /* Ensure sections are above background and particles */
         }
 
         #about {
@@ -429,7 +438,6 @@
             position: relative;
         }
 
-        /* Holographic Glow Effect for Section Headers on Scroll */
         section h2::before {
             content: '';
             position: absolute;
@@ -614,6 +622,8 @@
             padding: 2rem;
             text-align: center;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 10;
         }
 
         footer p {
@@ -706,7 +716,7 @@
 <body>
     <div class="preloader"></div>
     <div class="audio-overlay">
-        <button>View Portfolio of Jason Blignaut</button>
+        <button>Click Here to View Jason Blignaut's Portfolio</button>
     </div>
     <div class="background"></div>
     <div class="particles"></div>
@@ -730,7 +740,7 @@
     <a href="#" class="back-to-top" title="Back to Top">↑</a>
     <button class="audio-toggle" title="Toggle Music">♫</button>
     <section class="hero">
-        <img src="channel-pictures/my-picture.jpeg" alt="Jason Blignaut" loading="lazy">
+        <img src="channel-pictures/my-picture.jpeg" alt="Jason Blignaut" loading="lazy" onerror="console.error('Failed to load profile picture. Check path: channel-pictures/my-picture.jpeg'); this.src='https://via.placeholder.com/200?text=Profile+Image+Not+Found'">
         <h1>Jason Blignaut</h1>
         <p>Hybrid Engineer | Azure & Cybersecurity Specialist</p>
         <a href="#projects" class="cta-button">Explore My Work</a>
@@ -977,6 +987,11 @@
         if (window.innerWidth <= 768) {
             scrollIndicator.classList.add('visible');
         }
+
+        // Ensure Hero Section is Visible After Overlay
+        window.addEventListener('load', () => {
+            document.querySelector('.hero').style.opacity = 1;
+        });
     </script>
 </body>
 </html>
