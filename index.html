@@ -47,7 +47,7 @@
             position: relative;
         }
 
-        /* Enhanced Particle Effects */
+        /* Particle Effects */
         .trail {
             position: fixed;
             width: 12px;
@@ -102,7 +102,7 @@
             50% { transform: translateY(-30px); }
         }
 
-        /* Dynamic Background */
+        /* Dynamic Background with Blended Circuit */
         .background {
             position: fixed;
             inset: 0;
@@ -114,10 +114,12 @@
         .background::before {
             content: '';
             position: absolute;
-            inset: 0;
+            inset: -50%;
             background: url('thumbnails/circuit-pattern.webp') repeat;
+            background-size: 200% 200%; /* Zoomed in to hide edges */
             opacity: 0.15;
-            animation: moveBackground 50s linear infinite;
+            animation: moveBackground 40s linear infinite;
+            filter: blur(2px); /* Blend edges */
         }
 
         .background::after {
@@ -131,7 +133,7 @@
 
         @keyframes moveBackground {
             0% { background-position: 0 0; }
-            100% { background-position: 100% 100%; }
+            100% { background-position: 200% 200%; }
         }
 
         @keyframes nebulaPulse {
@@ -295,7 +297,7 @@
 
         nav a:hover {
             color: var(--primary-color);
-            text-shadow: 0 0 15px var(--primary-color);
+            text-shadow: 0 0 10px var(--primary-color);
         }
 
         .hamburger {
@@ -348,7 +350,7 @@
             box-shadow: 0 0 calc(var(--glow-intensity) * 1.5) var(--primary-color);
         }
 
-        /* Hero Section */
+        /* Hero Section with Glowing Circle */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -380,24 +382,25 @@
         }
 
         .hero img {
-            width: 220px;
-            height: 220px;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
-            border: 4px solid var(--primary-color);
-            box-shadow: 0 0 calc(var(--glow-intensity) * 1.5) var(--primary-color);
+            border: 3px solid var(--primary-color);
+            box-shadow: 0 0 20px rgba(0, 170, 255, 0.5); /* Code 2 glow */
             margin-bottom: 2rem;
             animation: glow 2s infinite alternate, float 4s ease-in-out infinite;
             loading: lazy;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+            z-index: 1; /* Ensure above background */
         }
 
         @keyframes glow {
             0% { box-shadow: 0 0 20px rgba(0, 170, 255, 0.5); }
             100% { box-shadow: 0 0 30px rgba(0, 170, 255, 0.8); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
 
         .hero h1 {
@@ -407,7 +410,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 1rem;
-            text-shadow: 0 0 10px var(--primary-color);
+            text-shadow: 0 0 2px var(--primary-color), 0 0 4px var(--secondary-color); /* Digital effect */
         }
 
         .hero p {
@@ -486,7 +489,7 @@
             -webkit-text-fill-color: transparent;
             margin-bottom: 3rem;
             text-transform: uppercase;
-            text-shadow: 0 0 15px var(--primary-color);
+            text-shadow: 0 0 2px var(--primary-color), 0 0 4px var(--secondary-color); /* Crisp digital effect */
             position: relative;
         }
 
@@ -595,15 +598,16 @@
             box-shadow: 0 0 calc(var(--glow-intensity) * 2) var(--primary-color);
         }
 
-        .skill-card img {
+        .skill-card img, .project-card img {
             width: 70px;
+            height: auto;
             margin-bottom: 1.5rem;
             filter: drop-shadow(0 0 10px var(--primary-color));
             animation: spinHover 3s infinite paused;
             loading: lazy;
         }
 
-        .skill-card:hover img {
+        .skill-card:hover img, .project-card:hover img {
             animation-play-state: running;
         }
 
@@ -612,22 +616,12 @@
             100% { transform: rotate(360deg); }
         }
 
-        .project-card img {
-            width: 100%;
-            height: auto;
-            border-radius: 15px;
-            margin-bottom: 1.5rem;
-            border: 2px solid var(--primary-color);
-            box-shadow: 0 0 10px var(--primary-color);
-            loading: lazy;
-        }
-
         .skill-card h3, .project-card h3 {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.4rem;
             color: var(--text-light);
             margin-bottom: 0.75rem;
-            text-shadow: 0 0 5px var(--primary-color);
+            text-shadow: 0 0 2px var(--primary-color);
         }
 
         .skill-card p, .project-card p {
@@ -659,7 +653,7 @@
 
         .project-card a:hover {
             color: var(--secondary-color);
-            text-shadow: 0 0 15px var(--secondary-color);
+            text-shadow: 0 0 10px var(--secondary-color);
         }
 
         .video-container {
@@ -760,7 +754,7 @@
 
         footer a:hover {
             color: var(--secondary-color);
-            text-shadow: 0 0 15px var(--secondary-color);
+            text-shadow: 0 0 10px var(--secondary-color);
         }
 
         /* Responsive Design */
@@ -826,7 +820,7 @@
             }
 
             .cyber-orb {
-                display: none; /* Reduce load on smaller screens */
+                display: none;
             }
         }
 
@@ -901,29 +895,27 @@
         <h2>Core Arsenal</h2>
         <div class="skills-grid">
             <div class="skill-card">
-                <img src="icons/hybrid-engineer.svg" alt="Hybrid Engineer Icon" loading="lazy">
+                <img src="thumbnails/thumbnail-13.webp" alt="Hybrid Engineer Icon" loading="lazy">
                 <h3>Hybrid Engineering</h3>
                 <p>Architecting Azure ecosystems, Exchange migrations, and FortiGate SD-WAN deployments—delivering seamless, secure hybrid solutions for global clients.</p>
             </div>
             <div class="skill-card">
-                <img src="icons/cybersecurity
-
-.svg" alt="Cybersecurity Icon" loading="lazy">
+                <img src="thumbnails/thumbnail-13.webp" alt="Cybersecurity Icon" loading="lazy">
                 <h3>Cybersecurity Mastery</h3>
                 <p>Fortifying networks with Cisco switching, Defender XDR, and advanced firewall configs—neutralizing threats before they strike.</p>
             </div>
             <div class="skill-card">
-                <img src="icons/cloud.svg" alt="Cloud Icon" loading="lazy">
+                <img src="thumbnails/thumbnail-13.webp" alt="Cloud Icon" loading="lazy">
                 <h3>Cloud Command</h3>
                 <p>Orchestrating Azure VMs and hybrid clouds—slashing costs and boosting uptime for MSPs with surgical precision.</p>
             </div>
             <div class="skill-card">
-                <img src="icons/ai.svg" alt="AI Icon" loading="lazy">
+                <img src="thumbnails/thumbnail-13.webp" alt="AI Icon" loading="lazy">
                 <h3>AI & Automation</h3>
                 <p>Harnessing LLMs and PowerShell to automate workflows, cut downtime, and supercharge operational efficiency.</p>
             </div>
             <div class="skill-card">
-                <img src="icons/strategy.svg" alt="Strategy Icon" loading="lazy">
+                <img src="thumbnails/thumbnail-13.webp" alt="Strategy Icon" loading="lazy">
                 <h3>Strategic Execution</h3>
                 <p>Wielding OKRs and RICE frameworks to prioritize and deliver high-ROI outcomes in mission-critical scenarios.</p>
             </div>
@@ -933,19 +925,19 @@
         <h2>Cyber Creations</h2>
         <div class="projects-grid">
             <div class="project-card">
-                <img src="thumbnails/sdwan.webp" alt="SD-WAN Deployment" loading="lazy">
+                <img src="thumbnails/thumbnail-13.webp" alt="SD-WAN Deployment" loading="lazy">
                 <h3>Global SD-WAN Rollout</h3>
                 <p>Deployed FortiGate SD-WAN across 50+ sites, boosting network uptime by 30% and slashing latency for a Fortune 500 client.</p>
                 <a href="https://labverse.co.za/sdwan" target="_blank">Explore</a>
             </div>
             <div class="project-card">
-                <img src="thumbnails/azure-migration.webp" alt="Azure Migration" loading="lazy">
+                <img src="thumbnails/thumbnail-13.webp" alt="Azure Migration" loading="lazy">
                 <h3>Azure Migration Overhaul</h3>
                 <p>Migrated 10,000 users to Azure hybrid cloud, cutting costs by 25% and locking down security with Defender XDR.</p>
                 <a href="https://labverse.co.za/azure" target="_blank">Explore</a>
             </div>
             <div class="project-card">
-                <img src="thumbnails/lofi-livestream.webp" alt="Lo-Fi Livestream" loading="lazy">
+                <img src="thumbnails/thumbnail-13.webp" alt="Lo-Fi Livestream" loading="lazy">
                 <h3>AI-Powered Lo-Fi Stream</h3>
                 <p>Engineered an Azure-hosted livestream with AI-generated lo-fi beats—proof of my cloud and AI prowess.</p>
                 <div class="video-container">
@@ -953,13 +945,13 @@
                 </div>
             </div>
             <div class="project-card">
-                <img src="thumbnails/support-tool.webp" alt="T1 Support Tool" loading="lazy">
+                <img src="thumbnails/thumbnail-13.webp" alt="T1 Support Tool" loading="lazy">
                 <h3>T1 Cyber Toolkit</h3>
                 <p>Built a PowerShell diagnostic tool for MSPs, slashing Tier 1 resolution times by 40% with real-time network insights.</p>
                 <a href="https://labverse.co.za/support-tool" target="_blank">Explore</a>
             </div>
             <div class="project-card">
-                <img src="thumbnails/labverse.webp" alt="LabVerse Website" loading="lazy">
+                <img src="thumbnails/thumbnail-13.webp" alt="LabVerse Website" loading="lazy">
                 <h3>LabVerse Portal</h3>
                 <p>Crafted this futuristic portfolio with cutting-edge web tech—showcasing my skills in a cyberpunk wrapper.</p>
                 <a href="https://labverse.co.za" target="_blank">Explore</a>
@@ -1080,7 +1072,6 @@
 
         window.addEventListener('load', () => {
             document.querySelector('.preloader').classList.add('hidden');
-            // Add floating cyber-orbs
             for (let i = 0; i < 10; i++) {
                 const orb = document.createElement('div');
                 orb.className = 'cyber-orb';
