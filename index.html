@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Jason Blignaut, a Hybrid Engineer specializing in Azure, cybersecurity, and IT. Explore my skills, projects, and ventures.">
+    <meta name="description" content="Jason Blignaut, a Hybrid Engineer specializing in Azure, Cybersecurity, and IT. Explore my skills, projects, and ventures.">
     <meta name="keywords" content="Network Engineer, Cybersecurity, Azure, SD-WAN, IT, MSP, Technology">
     <meta name="author" content="Jason Blignaut">
     <meta property="og:title" content="Jason Blignaut | Hybrid Engineer">
-    <meta property="og:description" content="Explore the futuristic portfolio of Jason Blignaut, a Hybrid Engineer specializing in Azure, cybersecurity, and IT.">
+    <meta property="og:description" content="Explore the futuristic portfolio of Jason Blignaut, a Hybrid Engineer specializing in Azure, Cybersecurity, and IT.">
     <meta property="og:image" content="thumbnails/thumbnail-13.webp">
     <meta property="og:url" content="https://labverse.co.za">
     <meta property="og:type" content="website">
@@ -80,8 +80,8 @@
             pointer-events: none;
         }
 
-        /* Audio Overlay */
-        .audio-overlay {
+        /* Entry Overlay */
+        .entry-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -89,16 +89,26 @@
             height: 100%;
             background: rgba(13, 13, 27, 0.95);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 10000;
             transition: opacity 1s ease;
         }
-        .audio-overlay.hidden {
+        .entry-overlay.hidden {
             opacity: 0;
             pointer-events: none;
         }
-        .audio-overlay button {
+        .entry-overlay h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+        }
+        .entry-overlay button {
             background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
             color: white;
             padding: 1rem 3rem;
@@ -111,7 +121,7 @@
             box-shadow: 0 0 20px var(--neon-glow);
             transition: transform 0.3s, box-shadow 0.3s;
         }
-        .audio-overlay button:hover {
+        .entry-overlay button:hover {
             transform: scale(1.1);
             box-shadow: 0 0 30px var(--neon-glow);
         }
@@ -125,13 +135,11 @@
             z-index: -1;
             opacity: 0.8;
         }
-
-        /* Digital Grid Overlay for Cybersecurity Aesthetic */
         .background::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(rgba(0, 170 | 255, 0.1) 1px, transparent 1px),
+            background: linear-gradient(rgba(0, 170, 255, 0.1) 1px, transparent 1px),
                         linear-gradient(90deg, rgba(0, 170, 255, 0.1) 1px, transparent 1px);
             background-size: 20px 20px;
             opacity: 0.3;
@@ -143,7 +151,7 @@
             100% { opacity: 0.3; }
         }
 
-        /* Particle Effect for Futuristic Look */
+        /* Particle Effect */
         .particles {
             position: fixed;
             top: 0;
@@ -166,7 +174,7 @@
             100% { transform: translate(100vw, 100vh); opacity: 0; }
         }
 
-        /* Futuristic Mouse Trail */
+        /* Mouse Trail */
         .trail {
             position: fixed;
             width: 8px;
@@ -635,9 +643,10 @@
     <!-- Preloader -->
     <div class="preloader"></div>
 
-    <!-- Audio Overlay -->
-    <div class="audio-overlay">
-        <button>NEVER BE BASIC</button>
+    <!-- Entry Overlay -->
+    <div class="entry-overlay">
+        <h1>Welcome to Jason Blignaut's Cyber Portfolio</h1>
+        <button id="enter-button">Enter</button>
     </div>
 
     <!-- Background Animation -->
@@ -675,7 +684,7 @@
 
     <!-- Hero Section -->
     <section class="hero">
-        <img src="channel-pictures/my-picture.jpeg" alt="Jason Blignaut" loading="lazy">
+        <img src="channel-pictures/my-picture.jpeg" alt="Jason Blignaut" loading="lazy" onerror="this.src='https://via.placeholder.com/200?text=Profile+Image+Not+Found'; console.error('Failed to load profile picture. Check path: channel-pictures/my-picture.jpeg');">
         <h1>Jason Blignaut</h1>
         <p>Hybrid Engineer | Azure & Cybersecurity Specialist</p>
         <a href="#projects" class="cta-button">Explore My Work</a>
@@ -805,7 +814,7 @@
 
     <script>
         // Generate Particles
-        const particlesContainer = document.getElementById('particles');
+        const particlesContainer = document.querySelector('.particles');
         for (let i = 0; i < 50; i++) {
             const particle = document.createElement('div');
             particle.className = 'particle';
@@ -836,15 +845,18 @@
         const audio = document.getElementById('background-music');
         audio.volume = 0.3;
 
-        // Audio Overlay
-        const overlay = document.querySelector('.audio-overlay');
-        const overlayButton = overlay.querySelector('button');
-        overlayButton.addEventListener('click', () => {
+        // Entry Overlay
+        const overlay = document.querySelector('.entry-overlay');
+        const entryButton = overlay.querySelector('button');
+        entryButton.addEventListener('click', () => {
             audio.play().then(() => {
                 overlay.classList.add('hidden');
+                document.querySelector('.hero').style.opacity = 1;
             }).catch(error => {
                 console.error("Audio Play Error:", error);
-                alert("Failed to play audio. Please check your browser settings or refresh.");
+                alert("Failed to play audio. Please check your browser settings or refresh the page.");
+                overlay.classList.add('hidden'); // Proceed even if audio fails
+                document.querySelector('.hero').style.opacity = 1;
             });
         });
 
@@ -930,6 +942,11 @@
         // Preloader
         window.addEventListener('load', () => {
             document.querySelector('.preloader').classList.add('hidden');
+        });
+
+        // Ensure Hero Section is Visible After Overlay
+        window.addEventListener('load', () => {
+            document.querySelector('.hero').style.opacity = 1;
         });
     </script>
 </body>
