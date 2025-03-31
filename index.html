@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Jason Blignaut, a Hybrid Engineer redefining cybersecurity and IT with Azure expertise and AI innovation. Explore my futuristic portfolio.">
-    <meta name="keywords" content="Hybrid Engineer, Cybersecurity, Azure, SD-WAN, AI, MSP, Network Security, Futuristic Tech">
+    <meta name="description" content="Jason Blignaut, a Hybrid Engineer focused on cybersecurity and solving problems through innovation. Check out my portfolio.">
+    <meta name="keywords" content="Hybrid Engineer, Cybersecurity, Azure, SD-WAN, AI, MSP, Network Security, Technolgoy">
     <meta name="author" content="Jason Blignaut">
     <meta property="og:title" content="Jason Blignaut | LabVerse">
-    <meta property="og:description" content="Step into the LabVerse: a futuristic portfolio of Jason Blignaut, blending Azure, cybersecurity, and AI innovation.">
+    <meta property="og:description" content="Step into the LabVerse: a portfolio of Jason Blignaut.">
     <meta property="og:image" content="thumbnails/thumbnail-13.webp">
     <meta property="og:url" content="https://labverse.co.za">
     <meta property="og:type" content="website">
@@ -116,10 +116,10 @@
             position: absolute;
             inset: 0;
             background: url('thumbnails/circuit-pattern.webp') repeat;
-            background-size: 150% 150%; /* Balanced zoom */
+            background-size: 150% 150%;
             opacity: 0.15;
             animation: moveBackground 80s ease-in-out infinite;
-            filter: blur(1px); /* Smooth edges */
+            filter: blur(1px);
         }
 
         .background::after {
@@ -364,6 +364,7 @@
             overflow: hidden;
             opacity: 0;
             animation: fadeIn 2s forwards 1s;
+            z-index: 1; /* Base layer for hero */
         }
 
         .hero::before {
@@ -387,10 +388,11 @@
             height: 200px;
             border-radius: 50%;
             border: 3px solid var(--primary-color);
-            box-shadow: 0 0 20px rgba(0, 170, 255, 0.5);
+            box-shadow: 0 0 20px rgba(0, 170, 255, 0.5), 0 0 30px rgba(0, 170, 255, 0.8); /* Double glow */
             margin-bottom: 2rem;
             animation: glow 2s infinite alternate, float 4s ease-in-out infinite;
-            z-index: 1;
+            z-index: 99999; /* ABOVE EVERYTHING */
+            position: relative;
         }
 
         @keyframes glow {
@@ -411,6 +413,7 @@
             -webkit-text-fill-color: transparent;
             margin-bottom: 1rem;
             text-shadow: 0 0 2px var(--primary-color), 0 0 4px var(--secondary-color);
+            z-index: 2;
         }
 
         .hero p {
@@ -418,6 +421,7 @@
             color: var(--text-muted);
             margin-bottom: 2rem;
             max-width: 700px;
+            z-index: 2;
         }
 
         .hero .cta-button {
@@ -433,6 +437,7 @@
             transition: all 0.3s;
             position: relative;
             overflow: hidden;
+            z-index: 2;
         }
 
         .hero .cta-button::before {
@@ -467,6 +472,7 @@
             margin: 0 auto;
             scroll-margin-top: 100px;
             position: relative;
+            z-index: 1;
         }
 
         #about {
@@ -491,6 +497,7 @@
             text-transform: uppercase;
             text-shadow: 0 0 2px var(--primary-color), 0 0 4px var(--secondary-color);
             position: relative;
+            z-index: 2;
         }
 
         section h2::after {
@@ -502,6 +509,7 @@
             left: 25%;
             background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
             animation: underlinePulse 2s infinite;
+            z-index: 2;
         }
 
         @keyframes underlinePulse {
@@ -575,6 +583,7 @@
             transition: all 0.4s;
             position: relative;
             overflow: hidden;
+            z-index: 2;
         }
 
         .skill-card::before, .project-card::before {
@@ -736,6 +745,7 @@
             text-align: center;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
+            z-index: 1;
         }
 
         footer p {
@@ -876,7 +886,7 @@
     <a href="#" class="back-to-top" title="Back to Top">↑</a>
     <button class="audio-toggle" title="Toggle Music">♫</button>
     <section class="hero">
-        <img src="/channel-pictures/my-picture.jpeg" alt="Jason Blignaut" loading="lazy" id="hero-image">
+        <img src="/channel-pictures/my-picture.jpeg" alt="Jason Blignaut" id="hero-image">
         <h1>Jason Blignaut</h1>
         <p>Hybrid Engineer | Cybersecurity Visionary | Azure & AI Innovator</p>
         <a href="#projects" class="cta-button">Dive Into My Work</a>
@@ -897,17 +907,17 @@
             <div class="skill-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Hybrid Engineer Icon" loading="lazy">
                 <h3>Hybrid Engineering</h3>
-                <p>Architecting Azure ecosystems, Exchange migrations, and FortiGate SD-WAN deployments—delivering seamless, secure hybrid solutions for global clients.</p>
+                <p>Architecting Azure ecosystems, Exchange migrations, and FortiGate SD-WAN deployments, delivering secure hybrid solutions for global clients.</p>
             </div>
             <div class="skill-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Cybersecurity Icon" loading="lazy">
                 <h3>Cybersecurity Mastery</h3>
-                <p>Fortifying networks with Cisco switching, Defender XDR, and advanced firewall configs—neutralizing threats before they strike.</p>
+                <p>Securing networks with Cisco switching, Defender XDR, and advanced firewall configs, neutralizing threats before they strike.</p>
             </div>
             <div class="skill-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Cloud Icon" loading="lazy">
                 <h3>Cloud Command</h3>
-                <p>Orchestrating Azure VMs and hybrid clouds—slashing costs and boosting uptime for MSPs with surgical precision.</p>
+                <p>Spinning up Azure VMs and hybrid cloud infrastructure. reducing costs and increasing uptime for MSPs with exact precision.</p>
             </div>
             <div class="skill-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="AI Icon" loading="lazy">
@@ -917,7 +927,7 @@
             <div class="skill-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Strategy Icon" loading="lazy">
                 <h3>Strategic Execution</h3>
-                <p>Wielding OKRs and RICE frameworks to prioritize and deliver high-ROI outcomes in mission-critical scenarios.</p>
+                <p>OKRs and RICE frameworks to prioritize and deliver high ROI outcomes in critical scenarios.</p>
             </div>
         </div>
     </section>
@@ -939,7 +949,7 @@
             <div class="project-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Lo-Fi Livestream" loading="lazy">
                 <h3>AI-Powered Lo-Fi Stream</h3>
-                <p>Engineered an Azure-hosted livestream with AI-generated lo-fi beats—proof of my cloud and AI prowess.</p>
+                <p>Created an Azure hosted livestream with AI generated lo-fi beats..</p>
                 <div class="video-container">
                     <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk" frameborder="0" allowfullscreen></iframe>
                 </div>
@@ -947,20 +957,20 @@
             <div class="project-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="T1 Support Tool" loading="lazy">
                 <h3>T1 Cyber Toolkit</h3>
-                <p>Built a PowerShell diagnostic tool for MSPs, slashing Tier 1 resolution times by 40% with real-time network insights.</p>
+                <p>Built a PowerShell diagnostic tool for MSPs, reducing Tier 1 resolution times by 40% with realtime network insights.</p>
                 <a href="https://labverse.co.za/support-tool" target="_blank">Explore</a>
             </div>
             <div class="project-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="LabVerse Website" loading="lazy">
                 <h3>LabVerse Portal</h3>
-                <p>Crafted this futuristic portfolio with cutting-edge web tech—showcasing my skills in a cyberpunk wrapper.</p>
+                <p>Crafted this futuristic portfolio with some free time and bit of creativity, showcasing my skills.</p>
                 <a href="https://labverse.co.za" target="_blank">Explore</a>
             </div>
         </div>
     </section>
     <section id="contact" class="contact">
         <h2>Connect to the LabVerse</h2>
-        <p>Let’s forge the future of cybersecurity together—reach out now!</p>
+        <p>Let’s collaborate, reach out!</p>
         <div class="contact-links">
             <a href="mailto:jason.blignaut@icloud.com">Email</a>
             <a href="https://linkedin.com/in/jasonblignaut" target="_blank">LinkedIn</a>
@@ -968,7 +978,7 @@
         </div>
     </section>
     <footer>
-        <p>© 2025 Jason Blignaut | LabVerse Activated</p>
+        <p>© 2025 Jason Blignaut | LabVerse</p>
         <div class="footer-links">
             <a href="https://labverse.co.za" target="_blank">LabVerse</a>
             <a href="https://linkedin.com/in/jasonblignaut" target="_blank">LinkedIn</a>
@@ -1083,15 +1093,38 @@
                 document.body.appendChild(orb);
             }
 
-            // Debug and fix hero image
+            // Ensure hero image loads and shows
             const heroImage = document.getElementById('hero-image');
-            heroImage.addEventListener('error', () => {
-                console.error('Failed to load /channel-pictures/my-picture.jpeg');
-                heroImage.src = 'thumbnails/thumbnail-13.webp'; // Fallback
-            });
+            const pathsToTry = [
+                '/channel-pictures/my-picture.jpeg',  // Absolute from root
+                './channel-pictures/my-picture.jpeg', // Relative to HTML
+                'channel-pictures/my-picture.jpeg',   // Relative without leading slash
+                'thumbnails/thumbnail-13.webp'        // Final fallback
+            ];
+            let currentPathIndex = 0;
+
+            function tryNextPath() {
+                if (currentPathIndex >= pathsToTry.length) {
+                    console.error('All paths failed. Check file existence and server config.');
+                    return;
+                }
+                heroImage.src = pathsToTry[currentPathIndex];
+                console.log(`Trying path: ${pathsToTry[currentPathIndex]}`);
+                currentPathIndex++;
+            }
+
             heroImage.addEventListener('load', () => {
-                console.log('Hero image loaded successfully');
+                console.log(`Image loaded successfully at ${heroImage.src}`);
+                heroImage.style.opacity = 1; // Ensure visibility
             });
+
+            heroImage.addEventListener('error', () => {
+                console.error(`Failed to load ${heroImage.src}`);
+                tryNextPath();
+            });
+
+            heroImage.style.opacity = 0; // Start hidden, show on load
+            tryNextPath(); // Kick off the loading process
         });
     </script>
 </body>
