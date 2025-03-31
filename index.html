@@ -43,31 +43,31 @@
             color: var(--text-light);
             line-height: 1.6;
             overflow-x: hidden;
-            cursor: none;
+            cursor: auto; /* Restore default cursor */
         }
 
-        .cursor {
+        /* Futuristic Mouse Trail */
+        .trail {
             position: fixed;
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--primary-color);
+            width: 8px;
+            height: 8px;
+            background: var(--primary-color);
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
-            transition: transform 0.1s ease;
+            box-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--secondary-color);
+            animation: fadeOut 0.5s linear forwards;
         }
 
-        .cursor::after {
-            content: '';
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: var(--secondary-color);
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            transition: opacity 0.2s ease;
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0);
+            }
         }
 
         .background {
@@ -624,7 +624,6 @@
     <div class="audio-overlay">
         <button>Click Here to View Jason Blignaut's Portfolio</button>
     </div>
-    <div class="cursor"></div>
     <div class="background"></div>
     <audio id="bg-audio" src="/music/lofi.mp3" loop preload="auto" style="display: none;"></audio>
     <header>
@@ -810,11 +809,18 @@
             }
         });
 
-        // Lightweight Cursor
-        const cursor = document.querySelector('.cursor');
+        // Futuristic Mouse Trail
         document.addEventListener('mousemove', (e) => {
-            cursor.style.left = `${e.clientX}px`;
-            cursor.style.top = `${e.clientY}px`;
+            const trail = document.createElement('div');
+            trail.className = 'trail';
+            trail.style.left = `${e.clientX}px`;
+            trail.style.top = `${e.clientY}px`;
+            document.body.appendChild(trail);
+
+            // Remove trail after animation ends to prevent DOM buildup
+            setTimeout(() => {
+                trail.remove();
+            }, 500); // Matches animation duration
         });
 
         // Audio Toggle Button
