@@ -16,7 +16,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
     <style>
         :root {
@@ -47,6 +46,7 @@
             cursor: none;
         }
 
+        /* Optimized Cursor */
         .cursor {
             position: fixed;
             width: 20px;
@@ -55,7 +55,6 @@
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
-            box-shadow: 0 0 15px var(--primary-color);
             transition: transform 0.1s ease;
         }
 
@@ -69,26 +68,33 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            transition: opacity 0.2s ease;
         }
 
-        .trail {
+        /* Lightweight Background */
+        .background {
             position: fixed;
-            width: 5px;
-            height: 5px;
-            background: var(--primary-color);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9998;
-            opacity: 0.7;
-            box-shadow: 0 0 10px var(--primary-color);
-            animation: fadeOut 0.5s forwards;
+            inset: 0;
+            background: linear-gradient(135deg, #1a1a2e 0%, var(--bg-dark) 100%);
+            z-index: -1;
+            opacity: 0.8;
         }
 
-        @keyframes fadeOut {
-            0% { opacity: 0.7; }
-            100% { opacity: 0; }
+        .background::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('thumbnails/thumbnail-13.webp') repeat;
+            opacity: 0.1;
+            animation: moveBackground 60s linear infinite;
         }
 
+        @keyframes moveBackground {
+            0% { background-position: 0 0; }
+            100% { background-position: 100% 100%; }
+        }
+
+        /* Audio Overlay */
         .audio-overlay {
             position: fixed;
             top: 0;
@@ -127,6 +133,7 @@
             box-shadow: 0 0 30px rgba(0, 170, 255, 1);
         }
 
+        /* Preloader */
         .preloader {
             position: fixed;
             top: 0;
@@ -161,16 +168,7 @@
             pointer-events: none;
         }
 
-        #bg-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.3;
-        }
-
+        /* Header */
         header {
             position: sticky;
             top: 0;
@@ -222,6 +220,7 @@
             color: var(--text-light);
         }
 
+        /* Back to Top */
         .back-to-top {
             position: fixed;
             bottom: 2rem;
@@ -251,6 +250,7 @@
             box-shadow: 0 0 25px rgba(0, 170, 255, 0.8);
         }
 
+        /* Audio Toggle */
         .audio-toggle {
             position: fixed;
             bottom: 2rem;
@@ -275,6 +275,7 @@
             box-shadow: 0 0 25px rgba(0, 170, 255, 0.8);
         }
 
+        /* Hero Section */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -342,6 +343,7 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
+        /* Sections */
         section {
             padding: 4rem 1rem;
             max-width: 1200px;
@@ -433,13 +435,12 @@
             border-radius: 15px;
             padding: 2rem;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            will-change: transform;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
         }
 
         .skill-card:hover, .experience-card:hover, .project-card:hover, .personal-card:hover {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
+            transform: translateY(-10px);
+            box-shadow: 0 0 20px rgba(0, 170, 255, 0.5);
         }
 
         .skill-card img, .experience-card img, .personal-card img {
@@ -670,7 +671,7 @@
         <button>Click Here to View Jason Blignaut's Portfolio</button>
     </div>
     <div class="cursor"></div>
-    <canvas id="bg-canvas"></canvas>
+    <div class="background"></div>
     <audio id="bg-audio" src="/music/lofi.mp3" loop preload="auto" style="display: none;"></audio>
     <header>
         <div class="logo">
@@ -809,16 +810,13 @@
     <script>
         // Audio Setup
         const audio = document.getElementById('bg-audio');
-        audio.volume = 0.3; // 30% volume
-        audio.muted = false; // Start unmuted, but paused
+        audio.volume = 0.3;
 
         // Overlay Click Handler
         const overlay = document.querySelector('.audio-overlay');
         const overlayButton = overlay.querySelector('button');
         overlayButton.addEventListener('click', () => {
-            console.log("Overlay Button Clicked");
             audio.play().then(() => {
-                console.log("Audio Playing");
                 overlay.classList.add('hidden');
                 document.querySelector('.hero').style.opacity = 1;
             }).catch(error => {
@@ -842,7 +840,7 @@
             });
         });
 
-        // Fade Header on Scroll
+        // Fade Header and Show Back to Top
         let lastScrollTop = 0;
         window.addEventListener('scroll', () => {
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -861,18 +859,11 @@
             }
         });
 
-        // Custom Cursor and Mouse Trail
+        // Lightweight Cursor
         const cursor = document.querySelector('.cursor');
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = `${e.clientX}px`;
             cursor.style.top = `${e.clientY}px`;
-
-            const trail = document.createElement('div');
-            trail.className = 'trail';
-            trail.style.left = `${e.clientX}px`;
-            trail.style.top = `${e.clientY}px`;
-            document.body.appendChild(trail);
-            setTimeout(() => trail.remove(), 500);
         });
 
         // Audio Toggle Button
@@ -885,50 +876,6 @@
                 audio.pause();
                 audioToggle.textContent = '♪';
             }
-        });
-
-        // Galaxy Background with Three.js
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-
-        const texture = new THREE.TextureLoader().load('thumbnails/thumbnail-13.webp');
-        const particles = [];
-        for (let i = 0; i < 50; i++) {
-            const geometry = new THREE.PlaneGeometry(0.5, 0.5);
-            const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true, opacity: Math.random() });
-            const particle = new THREE.Mesh(geometry, material);
-            particle.position.x = (Math.random() - 0.5) * 20;
-            particle.position.y = (Math.random() - 0.5) * 20;
-            particle.position.z = (Math.random() - 0.5) * 10;
-            particle.velocity = new THREE.Vector3(
-                (Math.random() - 0.5) * 0.01,
-                (Math.random() - 0.5) * 0.01,
-                0
-            );
-            scene.add(particle);
-            particles.push(particle);
-        }
-
-        camera.position.z = 10;
-
-        function animate() {
-            requestAnimationFrame(animate);
-            particles.forEach(particle => {
-                particle.position.add(particle.velocity);
-                particle.material.opacity = Math.sin(Date.now() * 0.001 + particle.position.x) * 0.5 + 0.5;
-                if (particle.position.x > 10 || particle.position.x < -10) particle.velocity.x *= -1;
-                if (particle.position.y > 10 || particle.position.y < -10) particle.velocity.y *= -1;
-            });
-            renderer.render(scene, camera);
-        }
-        animate();
-
-        window.addEventListener('resize', () => {
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
         });
 
         // Card Tilt Effect
@@ -944,20 +891,17 @@
             document.querySelector('.preloader').classList.add('hidden');
         });
 
-        // Note: YouTube API still used for project video, but not background audio
-        let lofiPlayer;
+        // YouTube Video Handler
         function onYouTubeIframeAPIReady() {
-            lofiPlayer = new YT.Player('lofi-video', {
+            const lofiPlayer = new YT.Player('lofi-video', {
                 events: {
                     'onReady': (event) => {
-                        console.log("Lo-Fi Video Player Ready");
                         event.target.mute();
                         const unmuteButton = document.querySelector('.unmute-button');
                         unmuteButton.addEventListener('click', () => {
-                            console.log("Unmute Video Clicked");
                             event.target.unMute();
                             event.target.playVideo();
-                            audio.pause(); // Pause background audio when video plays
+                            audio.pause();
                             document.querySelector('.video-overlay').classList.add('hidden');
                         });
                     }
@@ -965,5 +909,6 @@
             });
         }
     </script>
+    <script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>
