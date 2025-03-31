@@ -7,13 +7,6 @@
     <meta name="keywords" content="Network Engineer, Cybersecurity, Azure, SD-WAN, IT, MSP, Technology">
     <meta name="author" content="Jason Blignaut">
 
-    <!-- Open Graph Meta Tags for Social Sharing -->
-    <meta property="og:title" content="Jason Blignaut | Hybrid Engineer">
-    <meta property="og:description" content="Explore the futuristic portfolio of Jason Blignaut, a Hybrid Engineer specializing in Azure, cybersecurity, and IT.">
-    <meta property="og:image" content="thumbnails/thumbnail-13.webp">
-    <meta property="og:url" content="https://labverse.co.za">
-    <meta property="og:type" content="website">
-
     <!-- Favicon (Convert /icons/LVNOBG.svg to /icons/favicon.png) -->
     <link rel="icon" type="image/png" href="icons/favicon.ico">
 
@@ -51,38 +44,6 @@
             overflow-x: hidden;
         }
 
-        /* Preloader */
-        .preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-dark);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s;
-        }
-        .preloader::before {
-            content: '';
-            width: 50px;
-            height: 50px;
-            border: 5px solid var(--primary-color);
-            border-top: 5px solid transparent;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .preloader.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
         /* Background Animation */
         .background {
             position: fixed;
@@ -107,7 +68,7 @@
             100% { background-position: 0 0; } /* Smooth loop by returning to start */
         }
 
-        /* Particle Effect */
+        /* Particle Effect for Futuristic Look */
         .particles {
             position: fixed;
             top: 0;
@@ -152,7 +113,7 @@
             align-items: center;
             z-index: 1000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transition: opacity 0.3s ease;
+            transition: opacity 0.3s ease; /* Fade effect */
         }
 
         header.hidden {
@@ -162,12 +123,7 @@
 
         .logo img {
             height: 40px;
-            filter: drop-shadow(0 0 5px var(--primary-color));
-            transition: transform 0.3s;
-        }
-
-        .logo img:hover {
-            transform: scale(1.1);
+            filter: drop-shadow(0 0 2px var(--primary-color)); /* Reduced glow */
         }
 
         nav {
@@ -296,9 +252,6 @@
         /* Sections */
         section {
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
             padding: 4rem 1rem;
             max-width: 1200px;
             margin: 0 auto;
@@ -314,17 +267,6 @@
             -webkit-text-fill-color: transparent;
             margin-bottom: 3rem;
             text-transform: uppercase;
-        }
-
-        /* Fade-In Animation for Section Content */
-        section > * {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInSection 1s forwards;
-        }
-        @keyframes fadeInSection {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
         }
 
         /* About */
@@ -366,7 +308,8 @@
         /* Grid Layouts */
         .skills-grid,
         .experience-grid,
-        .projects-grid {
+        .projects-grid,
+        .personal-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
@@ -374,7 +317,8 @@
 
         .skill-card,
         .experience-card,
-        .project-card {
+        .project-card,
+        .personal-card {
             background: var(--card-bg);
             backdrop-filter: blur(10px);
             border-radius: 15px;
@@ -385,13 +329,15 @@
 
         .skill-card:hover,
         .experience-card:hover,
-        .project-card:hover {
-            transform: translateY(-10px) scale(1.02);
+        .project-card:hover,
+        .personal-card:hover {
+            transform: translateY(-10px);
             box-shadow: 0 0 20px rgba(0, 170, 255, 0.5);
         }
 
         .skill-card img,
-        .experience-card img {
+        .experience-card img,
+        .personal-card img {
             width: 60px;
             margin-bottom: 1rem;
             filter: drop-shadow(0 0 5px var(--primary-color));
@@ -403,12 +349,12 @@
             border-radius: 10px;
             margin-bottom: 1rem;
             border: 1px solid var(--primary-color);
-            loading: lazy; /* Lazy load images */
         }
 
         .skill-card h3,
         .experience-card h3,
-        .project-card h3 {
+        .project-card h3,
+        .personal-card h3 {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.2rem;
             color: var(--text-light);
@@ -417,10 +363,10 @@
 
         .skill-card p,
         .experience-card p,
-        .project-card p {
+        .project-card p,
+        .personal-card p {
             font-size: 0.9rem;
             color: var(--text-muted);
-            line-height: 1.6;
         }
 
         .project-card a {
@@ -440,9 +386,6 @@
             height: 200px;
             border-radius: 10px;
             margin-top: 1rem;
-            border: 1px solid var(--primary-color);
-            box-shadow: 0 0 10px rgba(0, 170, 255, 0.3);
-            loading: lazy; /* Lazy load iframes */
         }
 
         /* Contact */
@@ -475,7 +418,7 @@
 
         .contact a:hover {
             color: var(--secondary-color);
-            text-shadow: 0 0 10px var(--secondary-color);
+            text-shadow: 0 0 10pxV: 0 10px var(--secondary-color);
         }
 
         /* Footer */
@@ -560,7 +503,8 @@
 
             .skill-card,
             .experience-card,
-            .project-card {
+            .project-card,
+            .personal-card {
                 padding: 1.5rem;
             }
 
@@ -571,14 +515,9 @@
     </style>
 </head>
 <body>
-    <!-- Preloader -->
-    <div class="preloader"></div>
-
-    <!-- Background Animation -->
     <div class="background"></div>
     <div class="particles"></div>
 
-    <!-- Header -->
     <header>
         <div class="logo">
             <a href="https://labverse.co.za">
@@ -598,7 +537,6 @@
     <!-- Back-to-Top Button -->
     <a href="#" class="back-to-top" title="Back to Top">↑</a>
 
-    <!-- Hero Section -->
     <section class="hero">
         <img src="channel-pictures/my-picture.jpeg" alt="Jason Blignaut">
         <h1>Jason Blignaut</h1>
@@ -606,106 +544,101 @@
         <a href="#projects" class="cta-button">Explore My Work</a>
     </section>
 
-    <!-- About Me -->
     <section id="about" class="about">
         <div class="about-content">
             <img src="thumbnails/thumbnail-13.webp" alt="About Me">
             <div class="about-text">
                 <h2>About Me</h2>
-                <p>I’m a seasoned Hybrid Engineer with over 8 years of experience in designing, implementing, and securing enterprise-grade IT infrastructures. Based in Johannesburg, South Africa, I specialize in Azure architecture, FortiGate SD-WAN deployments, hybrid Exchange environments, and advanced cybersecurity frameworks.</p>
-                <p>I’m passionate about leveraging cutting-edge technologies like AI and cloud solutions to drive business innovation and resilience. Known for my strategic approach to problem-solving, I thrive in high-stakes environments and am committed to delivering scalable, secure, and efficient solutions.</p>
+                <p>I'm a Hybrid Engineer based in Johannesburg, South Africa, with a passion for networking, technology, cybersecurity, and innovation. I specialize in Azure, SD-WAN (FortiGate), and Exchange migrations, while also exploring AI and creative projects.</p>
+                <p>I value continuous learning, structured decision-making, and delivering high-value results.</p>
             </div>
         </div>
     </section>
 
-    <!-- Skills -->
     <section id="skills">
         <h2>My Skills</h2>
         <div class="skills-grid">
             <div class="skill-card">
-                <img src="icons/hybrid-engineer.svg" alt="Hybrid Engineer Icon">
+                <img src="icons/icons.svg" alt="Hybrid Engineer Icon">
                 <h3>Hybrid Engineering</h3>
-                <p>Expert in Exchange migrations, Office 365 administration, Azure deployments, FortiGate SD-WAN configurations, VPN setups, and IT troubleshooting.</p>
+                <p>Exchange migrations, Office 365, Azure, SD-WAN (FortiGate), VPNs, IT troubleshooting.</p>
             </div>
             <div class="skill-card">
-                <img src="icons/cybersecurity.svg" alt="Cybersecurity Icon">
+                <img src="icons/icons.svg" alt="Cybersecurity Icon">
                 <h3>Network Engineering & Cybersecurity</h3>
-                <p>Proficient in Cisco switching, SSH, VPNs, Defender XDR, firewall configuration (FortiGate, Cisco ASA), and advanced threat mitigation.</p>
+                <p>Cisco switches, SSH, VPNs, Defender XDR, firewall configuration, advanced security.</p>
             </div>
             <div class="skill-card">
-                <img src="icons/cloud.svg" alt="Cloud Icon">
+                <img src="icons/icons.svg" alt="Cloud Icon">
                 <h3>Cloud & Infrastructure</h3>
-                <p>Skilled in Azure VMs, email security, hybrid cloud architectures, and infrastructure automation.</p>
+                <p>Azure VMs, email security, hybrid environments.</p>
             </div>
             <div class="skill-card">
-                <img src="icons/ai.svg" alt="AI Icon">
+                <img src="icons/icons.svg" alt="AI Icon">
                 <h3>AI & Prompt Engineering</h3>
-                <p>Experienced in leveraging LLMs for automation, developing AI-driven workflows, and integrating AI into IT operations.</p>
+                <p>Learning LLMs, experimenting with AI-driven workflows.</p>
             </div>
             <div class="skill-card">
-                <img src="icons/business.svg" alt="Business Icon">
+                <img src="icons/icons.svg" alt="Business Icon">
                 <h3>Business & Strategy</h3>
-                <p>Adept at applying OKRs, RICE frameworks, and McKinsey models to drive strategic IT initiatives and business growth.</p>
+                <p>OKRs, RICE frameworks, decision-making, business growth strategies.</p>
             </div>
         </div>
     </section>
 
-    <!-- Experience -->
     <section id="experience">
         <h2>Experience</h2>
         <div class="experience-grid">
             <div class="experience-card">
-                <img src="icons/exchange.svg" alt="Exchange Icon">
+                <img src="icons/icons.svg" alt="Exchange Icon">
                 <h3>Exchange Hybrid Environments</h3>
-                <p>Led the management of Exchange Hybrid environments for enterprise clients, ensuring 99.9% uptime under strict SLAs across global regions.</p>
+                <p>Supporting customers under SLA globally.</p>
             </div>
             <div class="experience-card">
-                <img src="icons/sdwan.svg" alt="SD-WAN Icon">
+                <img src="icons/icons.svg" alt="SD-WAN Icon">
                 <h3>FortiGate SD-WAN Setups</h3>
-                <p>Designed and deployed FortiGate SD-WAN solutions for multi-regional enterprises, optimizing network performance and security for over 50 branch offices.</p>
+                <p>Deploying and managing SD-WAN solutions.</p>
             </div>
         </div>
     </section>
 
-    <!-- Projects -->
     <section id="projects">
         <h2>Projects</h2>
         <div class="projects-grid">
             <div class="project-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="YouTube Channels">
                 <h3>YouTube Channel</h3>
-                <p>LabVerse: Sharing insights on IT, cybersecurity, and technology trends.</p>
+                <p>LabVerse</p>
                 <a href="https://youtube.com/labverse" target="_blank">Visit the LabVerse YouTube Channel</a>
             </div>
             <div class="project-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="LabVerse Website">
+                <img src="thumbnails/thumbnail-13.webp" alt="Cybersecuritas">
                 <h3>LabVerse Website</h3>
-                <p>A portfolio showcasing my projects, skills, and expertise in IT and cybersecurity.</p>
+                <p>Website showcasing all my projects</p>
                 <a href="https://labverse.co.za" target="_blank">Learn More</a>
             </div>
             <div class="project-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Lo-Fi Livestream">
                 <h3>AI-Generated Lo-Fi Music Livestream</h3>
                 <p>A creative project running on an Azure Linux VM, streaming AI-generated lo-fi music.</p>
-                <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk?si=5lcfa_uHm2VyOQf&autoplay=1&mute=1" title="AI-Generated Lo-Fi Music Livestream" frameborder="0" allow="autoplay" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk?si=5lcfa_uHm2VyOQf&autoplay=1&mute=0" frameborder="0" allow="autoplay" allowfullscreen></iframe>
             </div>
             <div class="project-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="T1 Support Tool">
-                <h3>T1 Support Tool (PowerShell)</h3>
-                <p>Developed a fully functional troubleshooting tool using PowerShell for basic network diagnostics with guides.</p>
+                <img src="thumbnails/thumbnail-13.webp" alt="Game Development">
+                <h3>T1 Support tool developed using only PowerShell</h3>
+                <p>Developing a fully functional, troubleshooting tool to do basic network troubleshooting with guides.</p>
             </div>
             <div class="project-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Web Development">
                 <h3>Website Development</h3>
-                <p>Creating custom websites tailored to client requirements with a focus on performance and design.</p>
+                <p>Creating custom websites as per requested requirements.</p>
             </div>
         </div>
     </section>
 
-    <!-- Contact -->
     <section id="contact" class="contact">
         <h2>Get in Touch</h2>
-        <p>Reach out to discuss opportunities, collaborations, or to explore how I can help secure and optimize your IT infrastructure!</p>
+        <p>Reach out to discuss opportunities, collaborations, or just to connect!</p>
         <div class="contact-links">
             <a href="mailto:jason.blignaut@icloud.com">Email</a>
             <a href="https://linkedin.com/in/jasonblignaut" target="_blank">LinkedIn</a>
@@ -713,21 +646,11 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <p>© 2025 Jason Blignaut. All rights reserved.</p>
-        <div>
-            <a href="https://linkedin.com/in/jasonblignaut" target="_blank">LinkedIn</a>
-            <a href="https://youtube.com/user/labverse" target="_blank">YouTube</a>
-        </div>
     </footer>
 
     <script>
-        // Preloader
-        window.addEventListener('load', () => {
-            document.querySelector('.preloader').classList.add('hidden');
-        });
-
         // Mobile menu toggle
         const hamburger = document.querySelector('.hamburger');
         const nav = document.querySelector('nav');
@@ -745,26 +668,26 @@
             });
         });
 
-        // Back-to-Top Button Visibility
-        const backToTop = document.querySelector('.back-to-top');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 200) {
-                backToTop.classList.add('visible');
-            } else {
-                backToTop.classList.remove('visible');
-            }
-        });
-
-        // Header Fade on Scroll
+        // Fade header on scroll
         let lastScrollTop = 0;
         window.addEventListener('scroll', () => {
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             if (scrollTop > lastScrollTop) {
+                // Scrolling down
                 document.querySelector('header').classList.add('hidden');
             } else {
+                // Scrolling up
                 document.querySelector('header').classList.remove('hidden');
             }
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+
+            // Show/hide back-to-top button
+            const backToTop = document.querySelector('.back-to-top');
+            if (scrollTop > 200) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
         });
     </script>
 </body>
