@@ -7,6 +7,13 @@
     <meta name="keywords" content="Network Engineer, Cybersecurity, Azure, SD-WAN, IT, MSP, Technology">
     <meta name="author" content="Jason Blignaut">
 
+    <!-- Open Graph Meta Tags for Social Sharing -->
+    <meta property="og:title" content="Jason Blignaut | Hybrid Engineer">
+    <meta property="og:description" content="Explore the futuristic portfolio of Jason Blignaut, a Hybrid Engineer specializing in Azure, cybersecurity, and IT.">
+    <meta property="og:image" content="thumbnails/thumbnail-13.webp">
+    <meta property="og:url" content="https://labverse.co.za">
+    <meta property="og:type" content="website">
+
     <!-- Favicon (Convert /icons/LVNOBG.svg to /icons/favicon.png) -->
     <link rel="icon" type="image/png" href="icons/favicon.ico">
 
@@ -15,6 +22,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <!-- YouTube Player API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
 
     <style>
         :root {
@@ -44,6 +54,38 @@
             overflow-x: hidden;
         }
 
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s;
+        }
+        .preloader::before {
+            content: '';
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--primary-color);
+            border-top: 5px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .preloader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
         /* Background Animation */
         .background {
             position: fixed;
@@ -59,13 +101,7 @@
             inset: 0;
             background: url('thumbnails/thumbnail-13.webp') repeat;
             opacity: 0.1;
-            animation: moveBackground 60s linear infinite;
-        }
-
-        @keyframes moveBackground {
-            0% { background-position: 0 0; }
-            50% { background-position: 100% 100%; }
-            100% { background-position: 0 0; } /* Smooth loop by returning to start */
+            transition: background-position 0.1s ease;
         }
 
         /* Particle Effect for Futuristic Look */
@@ -113,7 +149,7 @@
             align-items: center;
             z-index: 1000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transition: opacity 0.3s ease; /* Fade effect */
+            transition: opacity 0.3s ease;
         }
 
         header.hidden {
@@ -123,7 +159,7 @@
 
         .logo img {
             height: 40px;
-            filter: drop-shadow(0 0 2px var(--primary-color)); /* Reduced glow */
+            filter: drop-shadow(0 0 2px var(--primary-color));
         }
 
         nav {
@@ -179,6 +215,31 @@
         }
 
         .back-to-top:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(0, 170, 255, 0.8);
+        }
+
+        /* Audio Toggle Button */
+        .audio-toggle {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            text-decoration: none;
+            box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
+            transition: transform 0.3s;
+            z-index: 1000;
+        }
+
+        .audio-toggle:hover {
             transform: scale(1.1);
             box-shadow: 0 0 25px rgba(0, 170, 255, 0.8);
         }
@@ -251,11 +312,29 @@
 
         /* Sections */
         section {
-            min-height: 100vh;
             padding: 4rem 1rem;
             max-width: 1200px;
             margin: 0 auto;
-            scroll-margin-top: 80px; /* Adjust for sticky header */
+            scroll-margin-top: 80px;
+        }
+
+        /* Specific styling for About section to remove blank space */
+        #about {
+            min-height: auto; /* Remove min-height to fit content */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Other sections remain full-page */
+        #skills,
+        #experience,
+        #projects,
+        #contact {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         section h2 {
@@ -267,6 +346,17 @@
             -webkit-text-fill-color: transparent;
             margin-bottom: 3rem;
             text-transform: uppercase;
+        }
+
+        /* Fade-In Animation for Section Content */
+        section > * {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInSection 1s forwards;
+        }
+        @keyframes fadeInSection {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         /* About */
@@ -292,6 +382,7 @@
             height: auto;
             border-radius: 10px;
             border: 2px solid var(--primary-color);
+            loading: lazy;
         }
 
         .about-text {
@@ -324,7 +415,8 @@
             border-radius: 15px;
             padding: 2rem;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s;
+            will-change: transform;
+            transition: transform 0.3s ease, opacity 0.3s ease;
         }
 
         .skill-card:hover,
@@ -332,7 +424,9 @@
         .project-card:hover,
         .personal-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 0 20px rgba(0, 170, 255, 0.5);
+            opacity: 0.95;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
         }
 
         .skill-card img,
@@ -341,6 +435,7 @@
             width: 60px;
             margin-bottom: 1rem;
             filter: drop-shadow(0 0 5px var(--primary-color));
+            loading: lazy;
         }
 
         .project-card img {
@@ -349,6 +444,7 @@
             border-radius: 10px;
             margin-bottom: 1rem;
             border: 1px solid var(--primary-color);
+            loading: lazy;
         }
 
         .skill-card h3,
@@ -367,6 +463,7 @@
         .personal-card p {
             font-size: 0.9rem;
             color: var(--text-muted);
+            line-height: 1.6;
         }
 
         .project-card a {
@@ -381,11 +478,57 @@
             text-shadow: 0 0 10px var(--secondary-color);
         }
 
-        .project-card iframe {
+        /* YouTube Video Container */
+        .video-container {
+            position: relative;
             width: 100%;
             height: 200px;
             border-radius: 10px;
             margin-top: 1rem;
+        }
+
+        .project-card iframe {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            border: 1px solid var(--primary-color);
+            box-shadow: 0 0 10px rgba(0, 170, 255, 0.3);
+            loading: lazy;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.3s ease;
+        }
+
+        .video-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .unmute-button {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-decoration: none;
+            box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
+            transition: all 0.3s;
+        }
+
+        .unmute-button:hover {
+            box-shadow: 0 0 25px rgba(0, 170, 255, 0.8);
         }
 
         /* Contact */
@@ -418,7 +561,7 @@
 
         .contact a:hover {
             color: var(--secondary-color);
-            text-shadow: 0 0 10pxV: 0 10px var(--secondary-color);
+            text-shadow: 0 0 10px var(--secondary-color);
         }
 
         /* Footer */
@@ -487,12 +630,24 @@
                 max-width: 150px;
             }
 
-            .back-to-top {
+            .back-to-top,
+            .audio-toggle {
                 width: 40px;
                 height: 40px;
                 font-size: 1.2rem;
                 bottom: 1rem;
+            }
+
+            .back-to-top {
                 right: 1rem;
+            }
+
+            .audio-toggle {
+                left: 1rem;
+            }
+
+            .video-container {
+                height: 150px;
             }
         }
 
@@ -507,16 +662,21 @@
             .personal-card {
                 padding: 1.5rem;
             }
-
-            .project-card iframe {
-                height: 150px;
-            }
         }
     </style>
 </head>
 <body>
+    <!-- Preloader -->
+    <div class="preloader"></div>
+
     <div class="background"></div>
     <div class="particles"></div>
+
+    <!-- Background Lo-Fi Music -->
+    <audio id="background-music" autoplay loop>
+        <source src="audio/lofi-music.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
     <header>
         <div class="logo">
@@ -536,6 +696,9 @@
 
     <!-- Back-to-Top Button -->
     <a href="#" class="back-to-top" title="Back to Top">↑</a>
+
+    <!-- Audio Toggle Button -->
+    <button class="audio-toggle" title="Toggle Music">♫</button>
 
     <section class="hero">
         <img src="channel-pictures/my-picture.jpeg" alt="Jason Blignaut">
@@ -606,39 +769,44 @@
         <h2>Projects</h2>
         <div class="projects-grid">
             <div class="project-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="YouTube Channels">
+                <img src="thumbnails/thumbnail-13.webp" alt="YouTube Channels" loading="lazy">
                 <h3>YouTube Channel</h3>
                 <p>LabVerse</p>
                 <a href="https://youtube.com/labverse" target="_blank">Visit the LabVerse YouTube Channel</a>
             </div>
             <div class="project-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="Cybersecuritas">
+                <img src="thumbnails/thumbnail-13.webp" alt="LabVerse Website" loading="lazy">
                 <h3>LabVerse Website</h3>
                 <p>Website showcasing all my projects</p>
                 <a href="https://labverse.co.za" target="_blank">Learn More</a>
             </div>
             <div class="project-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="Lo-Fi Livestream">
+                <img src="thumbnails/thumbnail-13.webp" alt="Lo-Fi Livestream" loading="lazy">
                 <h3>AI-Generated Lo-Fi Music Livestream</h3>
                 <p>A creative project running on an Azure Linux VM, streaming AI-generated lo-fi music.</p>
-                <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk?si=5lcfa_uHm2VyOQf&autoplay=1&mute=1" frameborder="0" allow="autoplay" allowfullscreen></iframe>
+                <div class="video-container">
+                    <iframe id="lofi-video" src="https://www.youtube.com/embed/jfKfPfyJRdk?si=5lcfa_uHm2VyOQf&mute=1" frameborder="0" allowfullscreen></iframe>
+                    <div class="video-overlay">
+                        <button class="unmute-button">Unmute & Watch</button>
+                    </div>
+                </div>
             </div>
             <div class="project-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="Game Development">
-                <h3>T1 Support tool developed using only PowerShell</h3>
-                <p>Developing a fully functional, troubleshooting tool to do basic network troubleshooting with guides.</p>
+                <img src="thumbnails/thumbnail-13.webp" alt="T1 Support Tool" loading="lazy">
+                <h3>T1 Support Tool Developed Using PowerShell</h3>
+                <p>A fully functional troubleshooting tool for basic network diagnostics with integrated guides.</p>
             </div>
             <div class="project-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="Web Development">
+                <img src="thumbnails/thumbnail-13.webp" alt="Web Development" loading="lazy">
                 <h3>Website Development</h3>
-                <p>Creating custom websites as per requested requirements.</p>
+                <p>Creating custom websites tailored to specific requirements with a focus on performance and design.</p>
             </div>
         </div>
     </section>
 
     <section id="contact" class="contact">
         <h2>Get in Touch</h2>
-        <p>Reach out to discuss opportunities, collaborations, or just to connect!</p>
+        <p>Interested in collaborating or discussing opportunities? Let’s connect!</p>
         <div class="contact-links">
             <a href="mailto:jason.blignaut@icloud.com">Email</a>
             <a href="https://linkedin.com/in/jasonblignaut" target="_blank">LinkedIn</a>
@@ -648,6 +816,11 @@
 
     <footer>
         <p>© 2025 Jason Blignaut. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="https://labverse.co.za" target="_blank">LabVerse</a>
+            <a href="https://youtube.com/labverse" target="_blank">YouTube</a>
+            <a href="https://linkedin.com/in/jasonblignaut" target="_blank">LinkedIn</a>
+        </div>
     </footer>
 
     <script>
@@ -688,6 +861,52 @@
             } else {
                 backToTop.classList.remove('visible');
             }
+        });
+
+        // Mouse-following background animation
+        const background = document.querySelector('.background::before');
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth) * 100;
+            const y = (e.clientY / window.innerHeight) * 100;
+            document.querySelector('.background::before').style.backgroundPosition = `${x}% ${y}%`;
+        });
+
+        // Audio toggle
+        const audio = document.getElementById('background-music');
+        const audioToggle = document.querySelector('.audio-toggle');
+        audioToggle.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+                audioToggle.textContent = '♫';
+            } else {
+                audio.pause();
+                audioToggle.textContent = '♪';
+            }
+        });
+
+        // YouTube Player API for unmuting video
+        let player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('lofi-video', {
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            const unmuteButton = document.querySelector('.unmute-button');
+            unmuteButton.addEventListener('click', () => {
+                player.unMute();
+                player.playVideo();
+                document.getElementById('background-music').pause();
+                document.querySelector('.video-overlay').classList.add('hidden');
+            });
+        }
+
+        // Preloader
+        window.addEventListener('load', () => {
+            document.querySelector('.preloader').classList.add('hidden');
         });
     </script>
 </body>
