@@ -3,265 +3,273 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="LabVerse | Technical University V2.0: South Africa’s Elite Free IT Training Nexus. Master Hybrid Cloud, Cybersecurity, and Networking in an Innovative Cyber Realm.">
-    <meta name="keywords" content="Technical University South Africa, Free IT Training, Hybrid Cloud, Cybersecurity, Networking, Digital Marketing, SEO Optimization, Cisco, Unifi, Network Diagrams, Management, Leadership Mindset, Cyber Innovation, LabVerse V2.0">
+    <meta name="description" content="LabVerse | Technical University V3.0: South Africa’s Ultimate Free IT Training Cosmos. Master Skills in a Futuristic, Fancy Realm.">
+    <meta name="keywords" content="Technical University South Africa, Free IT Training, Hybrid Cloud, Cybersecurity, Networking, Digital Marketing, SEO, Cisco, Unifi, Leadership, LabVerse V3.0, Cosmic Innovation">
     <meta name="author" content="LabVerse">
     <meta name="robots" content="index, follow">
-    <meta property="og:title" content="LabVerse | Technical University V2.0">
-    <meta property="og:description" content="Step Into Innovation with LabVerse | Technical University V2.0. Elite Free Tutorials in a Cyber Awe Realm.">
-    <meta property="og:image" content="assets/cyber-core.webp">
+    <meta property="og:title" content="LabVerse | Technical University V3.0">
+    <meta property="og:description" content="Explore LabVerse | Technical University V3.0: Elite Free IT Tutorials in a Cosmic, Fancy Realm.">
+    <meta property="og:image" content="assets/cosmo-core.webp">
     <meta property="og:url" content="https://labverse.co.za">
     <meta property="og:type" content="website">
     <link rel="icon" type="image/png" href="assets/favicon.ico">
-    <title>LabVerse | Technical University V2.0</title>
+    <title>LabVerse | Technical University V3.0</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;800&family=Source+Code+Pro:wght@300;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Roboto+Mono:wght@300;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
     <style>
         :root {
-            --cyber-neon: #00ffcc;
-            --cyber-magenta: #ff00cc;
-            --dark-abyss: #03031a;
-            --crystal-glass: rgba(255, 255, 255, 0.1);
-            --light-pulse: #fdfcff;
-            --shadow-pulse: #e0e0f5;
-            --glow-edge: 25px;
+            --cosmo-lime: #39ff14;
+            --cosmo-purple: #d400ff;
+            --cosmo-abyss: #02020f;
+            --luna-glass: rgba(255, 255, 255, 0.12);
+            --star-white: #fffbff;
+            --shadow-luna: #d0d0f0;
+            --glow-cosmo: 28px;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Source Code Pro', monospace;
+            font-family: 'Roboto Mono', monospace;
         }
 
-        html {
-            scroll-behavior: smooth;
+        html, body {
             overflow-x: hidden;
-            -webkit-overflow-scrolling: touch;
+            overflow-y: auto; /* Scroll Fix 1 */
+            height: auto;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch; /* Scroll Fix 7 */
+            touch-action: pan-y;
         }
 
         body {
-            background-color: var(--dark-abyss);
-            color: var(--light-pulse);
-            line-height: 1.9;
+            background-color: var(--cosmo-abyss);
+            color: var(--star-white);
+            line-height: 2;
             position: relative;
-            overflow-x: hidden;
-            overflow-y: auto; /* Scroll Locked In */
             min-height: 100vh;
             will-change: scroll-position;
         }
 
-        /* Cyber Flare (Mouse & Scroll Effect) */
-        .cyber-flare {
-            position: fixed;
-            width: 18px;
-            height: 18px;
-            background: var(--cyber-neon);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 10007;
-            opacity: 0.95;
-            box-shadow: 0 0 45px var(--cyber-neon), 0 0 60px var(--cyber-magenta);
-            animation: flareBurst 1.2s ease-out forwards;
-            will-change: transform, opacity;
-        }
-
-        @keyframes flareBurst {
-            0% { transform: scale(1); opacity: 0.95; }
-            50% { transform: scale(7); opacity: 0.9; }
-            100% { transform: scale(0); opacity: 0; }
-        }
-
-        .cyber-flare.scroll {
-            width: 100%;
-            height: 6px;
-            background: linear-gradient(90deg, transparent, var(--cyber-magenta), transparent);
-            border-radius: 0;
-            animation: flareSweep 1s ease-out forwards;
-        }
-
-        @keyframes flareSweep {
-            0% { transform: translateY(-100vh) skewX(45deg); opacity: 1; }
-            50% { transform: translateY(0) skewX(0deg); opacity: 0.85; }
-            100% { transform: translateY(100vh) skewX(-45deg); opacity: 0; }
-        }
-
-        /* Neon Trails */
-        .neon-trail {
-            position: fixed;
-            width: 12px;
-            height: 100px;
-            background: linear-gradient(180deg, var(--cyber-neon), transparent);
-            pointer-events: none;
-            z-index: 10005;
-            opacity: 0.98;
-            box-shadow: 0 0 45px var(--cyber-neon);
-            animation: trailFall 3s linear forwards;
-            will-change: transform, opacity;
-        }
-
-        @keyframes trailFall {
-            0% { transform: translateY(-110vh) rotate(25deg); opacity: 0.98; }
-            70% { opacity: 0.85; }
-            100% { transform: translateY(110vh) rotate(25deg); opacity: 0; }
-        }
-
-        /* Cyber Grid (3D Background) */
-        #cyber-grid {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            pointer-events: none; /* Scroll Untouched */
-            opacity: 0.8;
-        }
-
-        .grid-pulse {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(0, 255, 204, 0.18) 0%, transparent 70%);
-            opacity: 0.7;
-            animation: pulseDrift 55s linear infinite;
-        }
-
-        @keyframes pulseDrift {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(-140px, 140px); }
-        }
-
-        /* Abyss Spheres */
-        .abyss-sphere {
+        /* Cosmo Flare (Mouse & Scroll) */
+        .cosmo-flare {
             position: absolute;
             width: 20px;
             height: 20px;
-            background: var(--cyber-magenta);
+            background: var(--cosmo-lime);
             border-radius: 50%;
             pointer-events: none;
-            z-index: 0;
-            opacity: 0.92;
-            box-shadow: 0 0 50px var(--cyber-magenta);
-            animation: sphereOrbit 11s ease-in-out infinite;
+            z-index: 10008;
+            opacity: 0.98;
+            box-shadow: 0 0 50px var(--cosmo-lime), 0 0 65px var(--cosmo-purple);
+            animation: cosmoBurst 1.3s ease-out forwards;
             will-change: transform, opacity;
         }
 
-        @keyframes sphereOrbit {
-            0%, 100% { transform: translate(0, 0); opacity: 0.92; }
-            50% { transform: translate(50px, -50px); opacity: 1; }
+        @keyframes cosmoBurst {
+            0% { transform: scale(1) rotate(0deg); opacity: 0.98; }
+            50% { transform: scale(8) rotate(180deg); opacity: 0.92; }
+            100% { transform: scale(0) rotate(360deg); opacity: 0; }
         }
 
-        /* Quantum Gate */
-        .quantum-gate {
-            position: fixed;
+        .cosmo-flare.scroll {
+            width: 110%;
+            height: 8px;
+            background: linear-gradient(90deg, transparent, var(--cosmo-purple), transparent);
+            border-radius: 0;
+            animation: cosmoSweep 1.1s ease-out forwards;
+        }
+
+        @keyframes cosmoSweep {
+            0% { transform: translateY(-120vh) skewX(50deg); opacity: 1; }
+            50% { transform: translateY(0) skewX(0deg); opacity: 0.9; }
+            100% { transform: translateY(120vh) skewX(-50deg); opacity: 0; }
+        }
+
+        /* Luna Trails */
+        .luna-trail {
+            position: absolute;
+            width: 14px;
+            height: 120px;
+            background: linear-gradient(180deg, var(--cosmo-lime), transparent);
+            pointer-events: none;
+            z-index: 10006;
+            opacity: 0.99;
+            box-shadow: 0 0 50px var(--cosmo-lime);
+            animation: lunaDrop 3.2s linear forwards;
+            will-change: transform, opacity;
+        }
+
+        @keyframes lunaDrop {
+            0% { transform: translateY(-130vh) rotate(30deg); opacity: 0.99; }
+            70% { opacity: 0.9; }
+            100% { transform: translateY(130vh) rotate(30deg); opacity: 0; }
+        }
+
+        /* Cosmo Grid Wrapper */
+        .grid-wrapper {
+            position: absolute;
+            inset: 0;
+            z-index: -1; /* Scroll Fix 2 */
+            pointer-events: none;
+            overflow: hidden; /* Scroll Fix 3 */
+        }
+
+        #cosmo-grid {
+            position: absolute; /* Scroll Fix 2 */
+            inset: 0;
+            opacity: 0.82;
+        }
+
+        .grid-luna {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(57, 255, 20, 0.2) 0%, transparent 75%);
+            opacity: 0.72;
+            animation: lunaDrift 60s linear infinite;
+        }
+
+        @keyframes lunaDrift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-160px, 160px); }
+        }
+
+        /* Star Nodes */
+        .star-node {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: var(--cosmo-purple);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.95;
+            box-shadow: 0 0 55px var(--cosmo-purple);
+            animation: nodePulse 12s ease-in-out infinite;
+            will-change: transform, opacity;
+        }
+
+        @keyframes nodePulse {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.95; }
+            50% { transform: translate(55px, -55px) scale(1.2); opacity: 1; }
+        }
+
+        /* Cosmo Gate */
+        .cosmo-gate {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(0, 255, 204, 0.25), var(--dark-abyss) 85%);
+            background: radial-gradient(circle, rgba(57, 255, 20, 0.28), var(--cosmo-abyss) 90%);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 10000;
-            transition: opacity 2.5s ease, transform 2.5s ease;
+            transition: opacity 2.8s ease, transform 2.8s ease; /* Scroll Fix 6 */
         }
 
-        .quantum-gate.hidden {
+        .cosmo-gate.hidden {
             opacity: 0;
-            transform: scale(1.5) rotate(10deg);
+            transform: scale(1.6) rotate(15deg);
             pointer-events: none;
         }
 
-        .quantum-gate button {
-            background: linear-gradient(135deg, var(--cyber-neon), var(--cyber-magenta));
-            color: var(--light-pulse);
-            padding: 5rem 11rem;
+        .cosmo-gate button {
+            background: linear-gradient(135deg, var(--cosmo-lime), var(--cosmo-purple));
+            color: var(--star-white);
+            padding: 5.5rem 12rem;
             border: none;
-            border-radius: 110px;
-            font-family: 'Exo 2', sans-serif;
-            font-size: 3.5rem;
-            font-weight: 800;
+            border-radius: 120px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.8rem;
+            font-weight: 900;
             text-transform: uppercase;
             cursor: pointer;
-            box-shadow: 0 0 var(--glow-edge) var(--cyber-neon);
+            box-shadow: 0 0 var(--glow-cosmo) var(--cosmo-lime);
             position: relative;
             overflow: hidden;
-            transition: transform 1s, box-shadow 1s;
+            transition: transform 1.1s, box-shadow 1.1s;
         }
 
-        .quantum-gate button::before {
+        .cosmo-gate button::before {
             content: '';
             position: absolute;
             top: -50%;
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.5), transparent);
-            animation: gatePulse 3s infinite;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+            animation: gateFlux 3.2s infinite;
         }
 
-        @keyframes gatePulse {
+        @keyframes gateFlux {
             0% { transform: translateX(-100%) rotate(45deg); }
             100% { transform: translateX(100%) rotate(45deg); }
         }
 
-        .quantum-gate button:hover {
-            transform: scale(1.3) rotate(5deg);
-            box-shadow: 0 0 calc(var(--glow-edge) * 2) var(--cyber-magenta);
+        .cosmo-gate button:hover {
+            transform: scale(1.35) rotate(10deg);
+            box-shadow: 0 0 calc(var(--glow-cosmo) * 2) var(--cosmo-purple);
         }
 
-        /* Cyber Loader */
-        .cyber-loader {
-            position: fixed;
+        /* Cosmo Loader */
+        .cosmo-loader {
+            position: absolute; /* Scroll Fix 2 */
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--dark-abyss);
+            background: var(--cosmo-abyss);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 2s ease;
+            transition: opacity 2.2s ease; /* Scroll Fix 5 */
         }
 
-        .cyber-loader::before {
+        .cosmo-loader::before {
             content: '';
-            width: 100px;
-            height: 100px;
-            border: 12px solid var(--cyber-neon);
-            border-top: 12px solid var(--cyber-magenta);
+            width: 110px;
+            height: 110px;
+            border: 14px solid var(--cosmo-lime);
+            border-top: 14px solid var(--cosmo-purple);
             border-radius: 50%;
-            animation: cyberSpin 2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
-            box-shadow: 0 0 55px var(--cyber-neon);
+            animation: cosmoSpin 2.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+            box-shadow: 0 0 60px var(--cosmo-lime);
         }
 
-        @keyframes cyberSpin {
+        @keyframes cosmoSpin {
             0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.5); }
+            50% { transform: rotate(180deg) scale(1.6); }
             100% { transform: rotate(360deg) scale(1); }
         }
 
-        .cyber-loader.hidden {
+        .cosmo-loader.hidden {
             opacity: 0;
             pointer-events: none;
+            display: none; /* Scroll Fix 5 */
         }
 
-        /* Abyss Header */
+        /* Luna Header */
         header {
-            position: fixed;
+            position: sticky;
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(3, 3, 26, 0.95);
-            backdrop-filter: blur(40px);
-            padding: 3rem 4rem;
+            background: rgba(2, 2, 15, 0.96);
+            backdrop-filter: blur(45px);
+            padding: 3.5rem 5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            border-bottom: 1px solid rgba(0, 255, 204, 0.3);
-            transition: transform 1s ease;
+            border-bottom: 1px solid rgba(57, 255, 20, 0.35);
+            transition: transform 1.1s ease;
         }
 
         header.hidden {
@@ -269,13 +277,13 @@
         }
 
         .logo img {
-            height: 80px;
-            filter: drop-shadow(0 0 20px var(--cyber-neon));
-            transition: transform 1s;
+            height: 85px;
+            filter: drop-shadow(0 0 22px var(--cosmo-lime));
+            transition: transform 1.1s;
         }
 
         .logo img:hover {
-            transform: scale(1.45) rotate(45deg);
+            transform: scale(1.5) rotate(50deg);
         }
 
         nav {
@@ -283,30 +291,30 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1300px;
         }
 
         nav a {
-            color: var(--light-pulse);
+            color: var(--star-white);
             text-decoration: none;
-            margin: 0 4.5rem;
-            font-family: 'Exo 2', sans-serif;
-            font-size: 2rem;
-            font-weight: 800;
+            margin: 0 5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 900;
             text-transform: uppercase;
             position: relative;
-            transition: all 0.9s;
+            transition: all 1s;
         }
 
         nav a::after {
             content: '';
             position: absolute;
             width: 0;
-            height: 7px;
-            bottom: -20px;
+            height: 8px;
+            bottom: -22px;
             left: 0;
-            background: var(--cyber-neon);
-            transition: width 0.9s ease;
+            background: var(--cosmo-lime);
+            transition: width 1s ease;
         }
 
         nav a:hover::after {
@@ -314,198 +322,196 @@
         }
 
         nav a:hover {
-            color: var(--cyber-neon);
-            text-shadow: 0 0 30px var(--cyber-neon);
+            color: var(--cosmo-lime);
+            text-shadow: 0 0 35px var(--cosmo-lime);
         }
 
         .hamburger {
             display: none;
             cursor: pointer;
-            font-size: 4.5rem;
-            color: var(--light-pulse);
-            transition: transform 0.9s;
+            font-size: 5rem;
+            color: var(--star-white);
+            transition: transform 1s;
         }
 
         .hamburger:hover {
-            transform: scale(1.45);
+            transform: scale(1.5);
         }
 
-        /* Cyber Controls */
-        .abyss-top, .audio-abyss {
+        /* Cosmo Controls */
+        .luna-top, .audio-luna {
             position: fixed;
-            background: linear-gradient(135deg, var(--cyber-neon), var(--cyber-magenta));
-            color: var(--light-pulse);
-            width: 90px;
-            height: 90px;
+            background: linear-gradient(135deg, var(--cosmo-lime), var(--cosmo-purple));
+            color: var(--star-white);
+            width: 95px;
+            height: 95px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 3rem;
+            font-size: 3.2rem;
             text-decoration: none;
-            box-shadow: 0 0 var(--glow-edge) var(--cyber-neon);
-            transition: transform 0.9s, box-shadow 0.9s;
+            box-shadow: 0 0 var(--glow-cosmo) var(--cosmo-lime);
+            transition: transform 1s, box-shadow 1s;
             z-index: 1000;
         }
 
-        .abyss-top {
-            bottom: 5.5rem;
-            right: 5.5rem;
+        .luna-top {
+            bottom: 6rem;
+            right: 6rem;
             opacity: 0;
         }
 
-        .abyss-top.visible {
+        .luna-top.visible {
             opacity: 1;
         }
 
-        .audio-abyss {
-            bottom: 5.5rem;
-            left: 5.5rem;
+        .audio-luna {
+            bottom: 6rem;
+            left: 6rem;
         }
 
-        .abyss-top:hover, .audio-abyss:hover {
-            transform: scale(1.4) rotate(15deg);
-            box-shadow: 0 0 calc(var(--glow-edge) * 2) var(--cyber-magenta);
+        .luna-top:hover, .audio-luna:hover {
+            transform: scale(1.45) rotate(20deg);
+            box-shadow: 0 0 calc(var(--glow-cosmo) * 2) var(--cosmo-purple);
         }
 
-        /* Cyber Abyss (Hero) */
-        .cyber-abyss {
+        /* Cosmo Luna (Hero) */
+        .cosmo-luna {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 6rem 5rem;
+            padding: 7rem 6rem;
             position: relative;
-            overflow: hidden;
             z-index: 1;
         }
 
-        .cyber-abyss::before {
+        .cosmo-luna::before {
             content: '';
             position: absolute;
-            width: 450%;
-            height: 450%;
-            background: radial-gradient(circle, rgba(0, 255, 204, 0.22), transparent 90%);
-            animation: abyssPulse 18s infinite ease-in-out;
+            width: 500%;
+            height: 500%;
+            background: radial-gradient(circle, rgba(57, 255, 20, 0.25), transparent 95%);
+            animation: lunaPulse 20s infinite ease-in-out;
             z-index: -1;
         }
 
-        @keyframes abyssPulse {
-            0% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.22; }
-            50% { transform: scale(1.25) translateX(-50%) translateY(-50%); opacity: 0.45; }
-            100% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.22; }
+        @keyframes lunaPulse {
+            0% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.25; }
+            50% { transform: scale(1.3) translateX(-50%) translateY(-50%); opacity: 0.5; }
+            100% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.25; }
         }
 
-        .cyber-abyss img {
-            width: 400px;
-            height: 400px;
+        .cosmo-luna img {
+            width: 420px;
+            height: 420px;
             border-radius: 50%;
-            border: 8px solid var(--cyber-neon);
-            box-shadow: 0 0 50px var(--cyber-neon);
-            margin-bottom: 4.5rem;
-            transition: transform 1.1s ease;
-            z-index: 99999;
-            animation: imageOrbit 10s infinite ease-in-out;
+            border: 9px solid var(--cosmo-lime);
+            box-shadow: 0 0 55px var(--cosmo-lime);
+            margin-bottom: 5rem;
+            transition: transform 1.2s ease;
+            animation: lunaOrbit 11s infinite ease-in-out;
         }
 
-        @keyframes imageOrbit {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+        @keyframes lunaOrbit {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(10deg); }
         }
 
-        .cyber-abyss img:hover {
-            transform: scale(1.2) rotate(10deg);
+        .cosmo-luna img:hover {
+            transform: scale(1.25) rotate(15deg);
         }
 
-        .cyber-abyss h1 {
-            font-family: 'Exo 2', sans-serif;
-            font-size: clamp(6rem, 14vw, 11rem);
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--cyber-neon), var(--cyber-magenta));
+        .cosmo-luna h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(6.5rem, 15vw, 12rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--cosmo-lime), var(--cosmo-purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 3.5rem;
-            text-shadow: 0 0 20px var(--cyber-neon);
+            margin-bottom: 4rem;
+            text-shadow: 0 0 22px var(--cosmo-lime);
             position: relative;
             z-index: 2;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.06em;
         }
 
-        .cyber-abyss h1::after {
+        .cosmo-luna h1::after {
             content: '';
             position: absolute;
-            width: 95%;
-            height: 7px;
-            bottom: -30px;
-            left: 2.5%;
-            background: linear-gradient(90deg, transparent, var(--cyber-neon), transparent);
-            animation: abyssFlux 5s infinite ease-in-out;
+            width: 98%;
+            height: 8px;
+            bottom: -35px;
+            left: 1%;
+            background: linear-gradient(90deg, transparent, var(--cosmo-lime), transparent);
+            animation: lunaFlux 5.5s infinite ease-in-out;
         }
 
-        @keyframes abyssFlux {
-            0% { width: 95%; opacity: 1; }
-            50% { width: 100%; opacity: 0.9; }
-            100% { width: 95%; opacity: 1; }
+        @keyframes lunaFlux {
+            0% { width: 98%; opacity: 1; }
+            50% { width: 100%; opacity: 0.95; }
+            100% { width: 98%; opacity: 1; }
         }
 
-        .cyber-abyss p {
-            font-size: clamp(2.4rem, 8vw, 3.2rem);
-            color: var(--shadow-pulse);
-            margin-bottom: 4.5rem;
-            max-width: 1400px;
+        .cosmo-luna p {
+            font-size: clamp(2.6rem, 9vw, 3.4rem);
+            color: var(--shadow-luna);
+            margin-bottom: 5rem;
+            max-width: 1500px;
             z-index: 2;
         }
 
-        .cyber-abyss .abyss-launch {
-            background: linear-gradient(135deg, var(--cyber-neon), var(--cyber-magenta));
-            color: var(--light-pulse);
-            padding: 3rem 7rem;
+        .cosmo-luna .luna-launch {
+            background: linear-gradient(135deg, var(--cosmo-lime), var(--cosmo-purple));
+            color: var(--star-white);
+            padding: 3.2rem 7.5rem;
             text-decoration: none;
-            border-radius: 100px;
-            font-family: 'Exo 2', sans-serif;
-            font-weight: 800;
-            font-size: 2.6rem;
+            border-radius: 110px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 2.8rem;
             text-transform: uppercase;
-            box-shadow: 0 0 var(--glow-edge) var(--cyber-neon);
-            transition: all 1s;
+            box-shadow: 0 0 var(--glow-cosmo) var(--cosmo-lime);
+            transition: all 1.1s;
             position: relative;
             overflow: hidden;
             z-index: 2;
         }
 
-        .cyber-abyss .abyss-launch::before {
+        .cosmo-luna .luna-launch::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
-            transition: left 1s;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+            transition: left 1.1s;
         }
 
-        .cyber-abyss .abyss-launch:hover::before {
+        .cosmo-luna .luna-launch:hover::before {
             left: 100%;
         }
 
-        .cyber-abyss .abyss-launch:hover {
-            box-shadow: 0 0 calc(var(--glow-edge) * 2) var(--cyber-magenta);
-            transform: scale(1.25) rotate(5deg);
+        .cosmo-luna .luna-launch:hover {
+            box-shadow: 0 0 calc(var(--glow-cosmo) * 2) var(--cosmo-purple);
+            transform: scale(1.3) rotate(8deg);
         }
 
-        /* Cyber Zones */
+        /* Cosmo Zones */
         section {
-            padding: 12rem 5rem;
-            max-width: 2800px;
+            padding: 14rem 6rem;
+            max-width: 3000px;
             margin: 0 auto;
-            scroll-margin-top: 160px;
+            scroll-margin-top: 170px;
             position: relative;
             z-index: 1;
             opacity: 0;
-            transform: translateY(180px);
-            transition: opacity 2s ease, transform 2s ease;
+            transform: translateY(200px);
+            transition: opacity 2.2s ease, transform 2.2s ease;
         }
 
         section.visible {
@@ -513,11 +519,11 @@
             transform: translateY(0);
         }
 
-        #cyber-info {
+        #cosmo-info {
             min-height: auto;
         }
 
-        #cyber-skills, #cyber-tutorials, #cyber-contact {
+        #cosmo-skills, #cosmo-tutorials, #cosmo-contact {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -526,16 +532,16 @@
         }
 
         section h2 {
-            font-family: 'Exo 2', sans-serif;
-            font-size: clamp(5.5rem, 13vw, 9rem);
-            font-weight: 800;
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(6rem, 14vw, 10rem);
+            font-weight: 900;
             text-align: center;
-            background: linear-gradient(135deg, var(--cyber-neon), var(--cyber-magenta));
+            background: linear-gradient(135deg, var(--cosmo-lime), var(--cosmo-purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 8rem;
+            margin-bottom: 9rem;
             text-transform: uppercase;
-            text-shadow: 0 0 20px var(--cyber-neon);
+            text-shadow: 0 0 22px var(--cosmo-lime);
             position: relative;
             z-index: 2;
         }
@@ -543,286 +549,286 @@
         section h2::after {
             content: '';
             position: absolute;
-            width: 80%;
-            height: 7px;
-            bottom: -35px;
-            left: 10%;
-            background: linear-gradient(90deg, transparent, var(--cyber-neon), transparent);
-            animation: zonePulse 4.5s infinite ease-in-out;
+            width: 85%;
+            height: 8px;
+            bottom: -40px;
+            left: 7.5%;
+            background: linear-gradient(90deg, transparent, var(--cosmo-lime), transparent);
+            animation: zonePulse 5s infinite ease-in-out;
             z-index: 2;
         }
 
         @keyframes zonePulse {
-            0% { width: 80%; opacity: 0.95; }
-            50% { width: 100%; opacity: 0.8; }
-            100% { width: 80%; opacity: 0.95; }
+            0% { width: 85%; opacity: 1; }
+            50% { width: 100%; opacity: 0.85; }
+            100% { width: 85%; opacity: 1; }
         }
 
-        .cyber-info {
-            background: var(--crystal-glass);
-            backdrop-filter: blur(40px);
-            border-radius: 45px;
-            padding: 10rem;
-            border: 1px solid rgba(0, 255, 204, 0.35);
-            box-shadow: 0 0 var(--glow-edge) rgba(0, 255, 204, 0.45);
-            max-width: 2400px;
+        .cosmo-info {
+            background: var(--luna-glass);
+            backdrop-filter: blur(45px);
+            border-radius: 50px;
+            padding: 11rem;
+            border: 1px solid rgba(57, 255, 20, 0.4);
+            box-shadow: 0 0 var(--glow-cosmo) rgba(57, 255, 20, 0.5);
+            max-width: 2600px;
             width: 100%;
         }
 
-        .info-cyber {
+        .info-cosmo {
             display: flex;
             flex-wrap: wrap;
-            gap: 9rem;
+            gap: 10rem;
             align-items: center;
             justify-content: center;
         }
 
-        .cyber-info img {
-            max-width: 650px;
+        .cosmo-info img {
+            max-width: 700px;
             width: 100%;
             height: auto;
-            border-radius: 45px;
-            border: 8px solid var(--cyber-neon);
-            box-shadow: 0 0 var(--glow-edge) var(--cyber-neon);
-            transition: transform 1.1s ease;
+            border-radius: 50px;
+            border: 9px solid var(--cosmo-lime);
+            box-shadow: 0 0 var(--glow-cosmo) var(--cosmo-lime);
+            transition: transform 1.2s ease;
             loading: lazy;
         }
 
-        .cyber-info img:hover {
-            transform: scale(1.18) rotate(8deg);
+        .cosmo-info img:hover {
+            transform: scale(1.2) rotate(10deg);
         }
 
         .info-text {
             flex: 1;
-            min-width: 550px;
+            min-width: 600px;
             text-align: center;
         }
 
         .info-text p {
-            line-height: 3;
-            color: var(--shadow-pulse);
-            font-size: 2rem;
+            line-height: 3.2;
+            color: var(--shadow-luna);
+            font-size: 2.2rem;
         }
 
-        .skills-cyber, .tutorials-cyber {
+        .skills-cosmo, .tutorials-cosmo {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-            gap: 8rem;
+            grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
+            gap: 9rem;
             width: 100%;
-            max-width: 2600px;
+            max-width: 2800px;
             justify-items: center;
         }
 
-        .skill-orbit, .tutorial-orbit {
-            background: var(--crystal-glass);
-            backdrop-filter: blur(40px);
-            border-radius: 45px;
-            padding: 6.5rem;
-            border: 1px solid rgba(0, 255, 204, 0.35);
-            box-shadow: 0 0 var(--glow-edge) rgba(0, 255, 204, 0.45);
-            transition: all 1.1s;
+        .skill-star, .tutorial-star {
+            background: var(--luna-glass);
+            backdrop-filter: blur(45px);
+            border-radius: 50px;
+            padding: 7rem;
+            border: 1px solid rgba(57, 255, 20, 0.4);
+            box-shadow: 0 0 var(--glow-cosmo) rgba(57, 255, 20, 0.5);
+            transition: all 1.2s;
             position: relative;
             overflow: hidden;
             z-index: 2;
             width: 100%;
-            max-width: 650px;
-            animation: orbitSway 12s infinite ease-in-out;
+            max-width: 700px;
+            animation: starSway 13s infinite ease-in-out;
         }
 
-        @keyframes orbitSway {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+        @keyframes starSway {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
         }
 
-        .skill-orbit::before, .tutorial-orbit::before {
+        .skill-star::before, .tutorial-star::before {
             content: '';
             position: absolute;
             top: -50%;
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(0, 255, 204, 0.18), transparent);
-            animation: cyberFlux 5.5s infinite;
+            background: linear-gradient(45deg, transparent, rgba(57, 255, 20, 0.2), transparent);
+            animation: cosmoFlux 6s infinite;
         }
 
-        @keyframes cyberFlux {
+        @keyframes cosmoFlux {
             0% { transform: translateX(-100%) rotate(45deg); }
             100% { transform: translateX(100%) rotate(45deg); }
         }
 
-        .skill-orbit:hover, .tutorial-orbit:hover {
-            transform: translateY(-45px) scale(1.12) rotate(5deg);
-            box-shadow: 0 0 calc(var(--glow-edge) * 2) var(--cyber-magenta);
+        .skill-star:hover, .tutorial-star:hover {
+            transform: translateY(-50px) scale(1.15) rotate(8deg);
+            box-shadow: 0 0 calc(var(--glow-cosmo) * 2) var(--cosmo-purple);
         }
 
-        .skill-orbit img, .tutorial-orbit img {
-            width: 150px;
+        .skill-star img, .tutorial-star img {
+            width: 160px;
             height: auto;
-            margin-bottom: 4rem;
-            filter: drop-shadow(0 0 30px var(--cyber-neon));
-            transition: transform 1s ease;
+            margin-bottom: 4.5rem;
+            filter: drop-shadow(0 0 35px var(--cosmo-lime));
+            transition: transform 1.1s ease;
             loading: lazy;
         }
 
-        .skill-orbit:hover img, .tutorial-orbit:hover img {
-            transform: scale(1.4) rotate(15deg);
+        .skill-star:hover img, .tutorial-star:hover img {
+            transform: scale(1.45) rotate(20deg);
         }
 
-        .skill-orbit h3, .tutorial-orbit h3 {
-            font-family: 'Exo 2', sans-serif;
-            font-size: 2.8rem;
-            font-weight: 800;
-            color: var(--light-pulse);
-            margin-bottom: 2.5rem;
-            text-shadow: 0 0 18px var(--cyber-neon);
+        .skill-star h3, .tutorial-star h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--star-white);
+            margin-bottom: 3rem;
+            text-shadow: 0 0 20px var(--cosmo-lime);
         }
 
-        .skill-orbit p, .tutorial-orbit p {
-            font-size: 1.8rem;
-            color: var(--shadow-pulse);
-            line-height: 2.6;
+        .skill-star p, .tutorial-star p {
+            font-size: 2rem;
+            color: var(--shadow-luna);
+            line-height: 2.8;
         }
 
-        .tutorial-orbit a {
-            color: var(--cyber-neon);
+        .tutorial-star a {
+            color: var(--cosmo-lime);
             text-decoration: none;
             font-weight: 700;
-            font-size: 2rem;
-            transition: all 0.9s;
+            font-size: 2.2rem;
+            transition: all 1s;
             position: relative;
         }
 
-        .tutorial-orbit a::after {
+        .tutorial-star a::after {
             content: '→';
             position: absolute;
-            right: -55px;
+            right: -60px;
             opacity: 0;
-            transition: all 0.9s;
+            transition: all 1s;
         }
 
-        .tutorial-orbit a:hover::after {
+        .tutorial-star a:hover::after {
             opacity: 1;
-            right: -40px;
+            right: -45px;
         }
 
-        .tutorial-orbit a:hover {
-            color: var(--cyber-magenta);
-            text-shadow: 0 0 30px var(--cyber-magenta);
+        .tutorial-star a:hover {
+            color: var(--cosmo-purple);
+            text-shadow: 0 0 35px var(--cosmo-purple);
         }
 
-        .media-cyber {
+        .media-cosmo {
             position: relative;
             width: 100%;
-            height: 420px;
-            border-radius: 45px;
-            margin-top: 4rem;
+            height: 450px;
+            border-radius: 50px;
+            margin-top: 4.5rem;
             overflow: hidden;
         }
 
-        .tutorial-orbit iframe {
+        .tutorial-star iframe {
             width: 100%;
             height: 100%;
-            border-radius: 45px;
-            border: 8px solid var(--cyber-neon);
-            box-shadow: 0 0 45px rgba(0, 255, 204, 0.6);
+            border-radius: 50px;
+            border: 9px solid var(--cosmo-lime);
+            box-shadow: 0 0 50px rgba(57, 255, 20, 0.65);
             loading: lazy;
         }
 
-        .cyber-contact {
+        .cosmo-contact {
             text-align: center;
             position: relative;
-            max-width: 2400px;
+            max-width: 2600px;
             width: 100%;
         }
 
-        .cyber-contact p {
-            color: var(--shadow-pulse);
-            margin-bottom: 7rem;
-            max-width: 1400px;
+        .cosmo-contact p {
+            color: var(--shadow-luna);
+            margin-bottom: 8rem;
+            max-width: 1500px;
             margin-left: auto;
             margin-right: auto;
-            font-size: 2.2rem;
+            font-size: 2.4rem;
         }
 
-        .contact-array {
+        .contact-cosmo {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 8rem;
+            gap: 9rem;
         }
 
-        .cyber-contact a {
-            color: var(--cyber-neon);
+        .cosmo-contact a {
+            color: var(--cosmo-lime);
             text-decoration: none;
             font-weight: 700;
-            font-family: 'Exo 2', sans-serif;
-            font-size: 2.4rem;
-            padding: 2.5rem 6rem;
-            border: 6px solid var(--cyber-neon);
-            border-radius: 90px;
-            transition: all 1s;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.6rem;
+            padding: 3rem 6.5rem;
+            border: 7px solid var(--cosmo-lime);
+            border-radius: 100px;
+            transition: all 1.1s;
             position: relative;
             overflow: hidden;
         }
 
-        .cyber-contact a::before {
+        .cosmo-contact a::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
-            transition: left 1s;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+            transition: left 1.1s;
         }
 
-        .cyber-contact a:hover::before {
+        .cosmo-contact a:hover::before {
             left: 100%;
         }
 
-        .cyber-contact a:hover {
-            color: var(--cyber-magenta);
-            box-shadow: 0 0 var(--glow-edge) var(--cyber-magenta);
-            transform: scale(1.15) rotate(5deg);
+        .cosmo-contact a:hover {
+            color: var(--cosmo-purple);
+            box-shadow: 0 0 var(--glow-cosmo) var(--cosmo-purple);
+            transform: scale(1.2) rotate(6deg);
         }
 
         footer {
-            background: rgba(3, 3, 26, 0.95);
-            backdrop-filter: blur(40px);
-            padding: 9rem;
+            background: rgba(2, 2, 15, 0.96);
+            backdrop-filter: blur(45px);
+            padding: 10rem;
             text-align: center;
-            border-top: 1px solid rgba(0, 255, 204, 0.3);
+            border-top: 1px solid rgba(57, 255, 20, 0.35);
             position: relative;
             z-index: 1;
         }
 
         footer p {
-            color: var(--shadow-pulse);
-            font-size: 1.8rem;
-            margin-bottom: 4.5rem;
+            color: var(--shadow-luna);
+            font-size: 2rem;
+            margin-bottom: 5rem;
         }
 
         footer a {
-            color: var(--cyber-neon);
+            color: var(--cosmo-lime);
             text-decoration: none;
-            margin: 0 4.5rem;
-            font-size: 2rem;
-            transition: all 0.9s;
+            margin: 0 5rem;
+            font-size: 2.2rem;
+            transition: all 1s;
         }
 
         footer a:hover {
-            color: var(--cyber-magenta);
-            text-shadow: 0 0 30px var(--cyber-magenta);
+            color: var(--cosmo-purple);
+            text-shadow: 0 0 35px var(--cosmo-purple);
         }
 
-        /* Responsive Innovation */
+        /* Responsive Fancy */
         @media (max-width: 1024px) {
-            .skills-cyber, .tutorials-cyber {
-                grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            .skills-cosmo, .tutorials-cosmo {
+                grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
             }
 
-            .cyber-info {
-                padding: 8rem;
+            .cosmo-info {
+                padding: 9rem;
             }
         }
 
@@ -834,13 +840,13 @@
             nav {
                 display: none;
                 position: fixed;
-                top: 150px;
+                top: 160px;
                 left: 0;
                 right: 0;
-                background: rgba(3, 3, 26, 0.98);
+                background: rgba(2, 2, 15, 0.98);
                 flex-direction: column;
-                padding: 9rem 5rem;
-                box-shadow: 0 0 var(--glow-edge) var(--cyber-neon);
+                padding: 10rem 6rem;
+                box-shadow: 0 0 var(--glow-cosmo) var(--cosmo-lime);
                 width: 100%;
             }
 
@@ -849,196 +855,198 @@
             }
 
             nav a {
-                margin: 4.5rem 0;
-                font-size: 2.2rem;
+                margin: 5rem 0;
+                font-size: 2.4rem;
             }
 
-            .info-cyber {
+            .info-cosmo {
                 flex-direction: column;
                 text-align: center;
-                gap: 7rem;
+                gap: 8rem;
             }
 
-            .cyber-abyss {
-                padding: 5rem 4rem;
+            .cosmo-luna {
+                padding: 6rem 5rem;
             }
 
-            .cyber-abyss img {
-                width: 320px;
-                height: 320px;
+            .cosmo-luna img {
+                width: 340px;
+                height: 340px;
             }
 
-            .abyss-top, .audio-abyss {
-                width: 80px;
-                height: 80px;
-                font-size: 2.8rem;
-                bottom: 4.5rem;
+            .luna-top, .audio-luna {
+                width: 85px;
+                height: 85px;
+                font-size: 3rem;
+                bottom: 5rem;
             }
 
-            .abyss-top {
-                right: 4.5rem;
+            .luna-top {
+                right: 5rem;
             }
 
-            .audio-abyss {
-                left: 4.5rem;
+            .audio-luna {
+                left: 5rem;
             }
 
-            .abyss-sphere {
+            .star-node {
                 display: none;
             }
         }
 
         @media (max-width: 480px) {
             section {
-                padding: 10rem 4rem;
+                padding: 12rem 5rem;
             }
 
-            .skill-orbit, .tutorial-orbit {
-                padding: 5.5rem;
+            .skill-star, .tutorial-star {
+                padding: 6rem;
                 max-width: 100%;
             }
 
-            .cyber-abyss h1 {
-                font-size: clamp(5rem, 12vw, 8rem);
+            .cosmo-luna h1 {
+                font-size: clamp(5.5rem, 13vw, 9rem);
             }
 
-            .cyber-abyss p {
-                font-size: clamp(2rem, 7vw, 2.4rem);
+            .cosmo-luna p {
+                font-size: clamp(2.2rem, 8vw, 2.6rem);
             }
 
-            .tutorial-orbit iframe {
-                height: 340px;
+            .tutorial-star iframe {
+                height: 360px;
             }
 
-            .quantum-gate button {
-                padding: 4rem 9rem;
-                font-size: 2.8rem;
+            .cosmo-gate button {
+                padding: 4.5rem 10rem;
+                font-size: 3rem;
             }
 
-            .cyber-info {
-                padding: 7rem;
+            .cosmo-info {
+                padding: 8rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="cyber-loader"></div>
-    <div class="quantum-gate">
-        <button>Enter V2.0</button>
+    <div class="cosmo-loader"></div>
+    <div class="cosmo-gate">
+        <button>Enter V3.0</button>
     </div>
-    <div id="cyber-grid"></div>
-    <div class="grid-pulse"></div>
-    <audio id="cyber-audio" src="/audio/cyber-synth.mp3" loop preload="auto" style="display: none;"></audio>
+    <div class="grid-wrapper">
+        <div id="cosmo-grid"></div>
+        <div class="grid-luna"></div>
+    </div>
+    <audio id="cosmo-audio" src="/audio/cosmo-wave.mp3" loop preload="auto" style="display: none;"></audio>
     <header>
         <div class="logo">
             <a href="https://labverse.co.za">
-                <img src="assets/cyber-icon.svg" alt="LabVerse V2.0" loading="lazy">
+                <img src="assets/cosmo-icon.svg" alt="LabVerse V3.0" loading="lazy">
             </a>
         </div>
         <div class="hamburger">☰</div>
         <nav>
-            <a href="#cyber-info">Info</a>
-            <a href="#cyber-skills">Skills</a>
-            <a href="#cyber-tutorials">Tutorials</a>
-            <a href="#cyber-contact">Contact</a>
+            <a href="#cosmo-info">Info</a>
+            <a href="#cosmo-skills">Skills</a>
+            <a href="#cosmo-tutorials">Tutorials</a>
+            <a href="#cosmo-contact">Contact</a>
         </nav>
     </header>
-    <a href="#" class="abyss-top" title="Back to Abyss">↑</a>
-    <button class="audio-abyss" title="Toggle Cyber Sound">♫</button>
-    <section class="cyber-abyss">
-        <img src="/cyber-images/core-cyber.jpeg" alt="Cyber Core" id="abyss-image">
-        <h1>LabVerse | Technical University V2.0</h1>
-        <p>South Africa’s Elite Free IT Training Nexus | Unleash Skills in an Innovative Cyber Realm</p>
-        <a href="#cyber-tutorials" class="abyss-launch">Launch Vault</a>
+    <a href="#" class="luna-top" title="Back to Luna">↑</a>
+    <button class="audio-luna" title="Toggle Cosmo Sound">♫</button>
+    <section class="cosmo-luna">
+        <img src="/cosmo-images/core-cosmo.jpeg" alt="Cosmo Core" id="luna-image">
+        <h1>LabVerse | Technical University V3.0</h1>
+        <p>South Africa’s Ultimate Free IT Training Cosmos | Ascend Skills in a Fancy Realm</p>
+        <a href="#cosmo-tutorials" class="luna-launch">Launch Cosmos</a>
     </section>
-    <section id="cyber-info" class="cyber-info">
-        <div class="info-cyber">
-            <img src="assets/cyber-core.webp" alt="Cyber Info" loading="lazy">
+    <section id="cosmo-info" class="cosmo-info">
+        <div class="info-cosmo">
+            <img src="assets/cosmo-core.webp" alt="Cosmo Info" loading="lazy">
             <div class="info-text">
-                <h2>Cyber Nexus</h2>
-                <p>LabVerse | Technical University V2.0, born in Johannesburg, sets the gold standard for free IT training. Hybrid cloud, cybersecurity, and networking fuse into an innovative cyber realm.</p>
-                <p>Our mission: empower a global elite with cutting-edge skills—bridging today with tomorrow’s tech empire.</p>
+                <h2>Cosmo Core</h2>
+                <p>LabVerse | Technical University V3.0, launched from Johannesburg, redefines free IT training with cosmic flair. Master hybrid cloud, cybersecurity, and networking in a futuristic realm.</p>
+                <p>Our vision: propel a global elite into the tech cosmos—where innovation reigns supreme.</p>
             </div>
         </div>
     </section>
-    <section id="cyber-skills">
-        <h2>Skills Orbit</h2>
-        <div class="skills-cyber">
-            <div class="skill-orbit">
-                <img src="assets/cyber-core.webp" alt="Hybrid Cloud" loading="lazy">
+    <section id="cosmo-skills">
+        <h2>Skills Cosmos</h2>
+        <div class="skills-cosmo">
+            <div class="skill-star">
+                <img src="assets/cosmo-core.webp" alt="Hybrid Cloud" loading="lazy">
                 <h3>Hybrid Cloud</h3>
-                <p>Design Azure systems for infinite scalability.</p>
+                <p>Engineer Azure systems for cosmic scalability.</p>
             </div>
-            <div class="skill-orbit">
-                <img src="assets/cyber-core.webp" alt="Cybersecurity" loading="lazy">
+            <div class="skill-star">
+                <img src="assets/cosmo-core.webp" alt="Cybersecurity" loading="lazy">
                 <h3>Cybersecurity</h3>
-                <p>Shield domains with Cisco and next-gen defenses.</p>
+                <p>Fortify galaxies with Cisco and stellar defenses.</p>
             </div>
-            <div class="skill-orbit">
-                <img src="assets/cyber-core.webp" alt="Networking" loading="lazy">
+            <div class="skill-star">
+                <img src="assets/cosmo-core.webp" alt="Networking" loading="lazy">
                 <h3>Networking</h3>
-                <p>Build SD-WAN and interstellar networks.</p>
+                <p>Construct SD-WAN and interstellar frameworks.</p>
             </div>
-            <div class="skill-orbit">
-                <img src="assets/cyber-core.webp" alt="Digital Marketing" loading="lazy">
+            <div class="skill-star">
+                <img src="assets/cosmo-core.webp" alt="Digital Marketing" loading="lazy">
                 <h3>Digital Marketing & SEO</h3>
-                <p>Launch brands into orbit with cyber-tactics.</p>
+                <p>Elevate brands to lunar heights with cosmic strategy.</p>
             </div>
-            <div class="skill-orbit">
-                <img src="assets/cyber-core.webp" alt="Leadership" loading="lazy">
-                <h3>Leadership Core</h3>
-                <p>Master a futuristic mindset for tech dominance.</p>
+            <div class="skill-star">
+                <img src="assets/cosmo-core.webp" alt="Leadership" loading="lazy">
+                <h3>Leadership Nova</h3>
+                <p>Command with a visionary cosmic mindset.</p>
             </div>
         </div>
     </section>
-    <section id="cyber-tutorials">
-        <h2>Tutorial Vault</h2>
-        <div class="tutorials-cyber">
-            <div class="tutorial-orbit">
-                <img src="assets/cyber-core.webp" alt="SD-WAN" loading="lazy">
-                <h3>SD-WAN Pulse</h3>
-                <p>Deploy FortiGate SD-WAN across 50+ nodes—elite uptime.</p>
-                <a href="https://labverse.co.za/sdwan" target="_blank">Access</a>
+    <section id="cosmo-tutorials">
+        <h2>Tutorial Nebula</h2>
+        <div class="tutorials-cosmo">
+            <div class="tutorial-star">
+                <img src="assets/cosmo-core.webp" alt="SD-WAN" loading="lazy">
+                <h3>SD-WAN Nova</h3>
+                <p>Deploy FortiGate SD-WAN across 50+ nodes—stellar uptime.</p>
+                <a href="https://labverse.co.za/sdwan" target="_blank">Explore</a>
             </div>
-            <div class="tutorial-orbit">
-                <img src="assets/cyber-core.webp" alt="Azure Migration" loading="lazy">
-                <h3>Azure Surge</h3>
-                <p>Migrate 10,000 users to Azure—peak precision.</p>
-                <a href="https://labverse.co.za/azure" target="_blank">Access</a>
+            <div class="tutorial-star">
+                <img src="assets/cosmo-core.webp" alt="Azure Migration" loading="lazy">
+                <h3>Azure Orbit</h3>
+                <p>Migrate 10,000 users to Azure—cosmic efficiency.</p>
+                <a href="https://labverse.co.za/azure" target="_blank">Explore</a>
             </div>
-            <div class="tutorial-orbit">
-                <img src="assets/cyber-core.webp" alt="Lo-Fi Stream" loading="lazy">
-                <h3>Cyber Lo-Fi Orbit</h3>
-                <p>Launch a Linux Azure stream—endless vibes.</p>
-                <div class="media-cyber">
+            <div class="tutorial-star">
+                <img src="assets/cosmo-core.webp" alt="Lo-Fi Stream" loading="lazy">
+                <h3>Luna Lo-Fi Wave</h3>
+                <p>Launch a Linux Azure stream—eternal cosmic beats.</p>
+                <div class="media-cosmo">
                     <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk" frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
-            <div class="tutorial-orbit">
-                <img src="assets/cyber-core.webp" alt="Support Tool" loading="lazy">
-                <h3>T1 Cyber Kit</h3>
-                <p>Create a PowerShell tool—AI-powered speed.</p>
-                <a href="https://labverse.co.za/support-tool" target="_blank">Access</a>
+            <div class="tutorial-star">
+                <img src="assets/cosmo-core.webp" alt="Support Tool" loading="lazy">
+                <h3>T1 Cosmo Kit</h3>
+                <p>Build a PowerShell tool—AI-driven precision.</p>
+                <a href="https://labverse.co.za/support-tool" target="_blank">Explore</a>
             </div>
-            <div class="tutorial-orbit">
-                <img src="assets/cyber-core.webp" alt="Website Maintenance" loading="lazy">
-                <h3>Cyber V2.0</h3>
-                <p>Optimize sites with LabVerse innovation.</p>
-                <a href="https://labverse.co.za" target="_blank">Access</a>
+            <div class="tutorial-star">
+                <img src="assets/cosmo-core.webp" alt="Website Maintenance" loading="lazy">
+                <h3>Cosmo V3.0</h3>
+                <p>Master site optimization—LabVerse cosmic flair.</p>
+                <a href="https://labverse.co.za" target="_blank">Explore</a>
             </div>
         </div>
     </section>
-    <section id="cyber-contact" class="cyber-contact">
-        <h2>Contact Array</h2>
-        <p>Tap into elite IT training or connect in the cyber realm.</p>
-        <div class="contact-array">
+    <section id="cosmo-contact" class="cosmo-contact">
+        <h2>Contact Nebula</h2>
+        <p>Engage with elite IT training or link up in the cosmic realm.</p>
+        <div class="contact-cosmo">
             <a href="mailto:labversemail@gmail.com">Email</a>
             <a href="https://linkedin.com/in/labverse" target="_blank">LinkedIn</a>
             <a href="https://www.youtube.com/@labversity" target="_blank">YouTube</a>
         </div>
     </section>
     <footer>
-        <p>© 2025 LabVerse | Technical University V2.0</p>
+        <p>© 2025 LabVerse | Technical University V3.0</p>
         <div class="footer-links">
             <a href="mailto:labversemail@gmail.com">Contact</a>
             <a href="https://linkedin.com/in/labverse" target="_blank">LinkedIn</a>
@@ -1046,17 +1054,17 @@
     </footer>
 
     <script>
-        const audio = document.getElementById('cyber-audio');
-        audio.volume = 0.18;
+        const audio = document.getElementById('cosmo-audio');
+        audio.volume = 0.2;
 
-        const gate = document.querySelector('.quantum-gate');
+        const gate = document.querySelector('.cosmo-gate');
         const gateButton = gate.querySelector('button');
         gateButton.addEventListener('click', () => {
             audio.play().then(() => {
-                gsap.to(gate, { opacity: 0, scale: 1.5, rotate: 10, duration: 2.5, ease: 'power4.out', onComplete: () => gate.classList.add('hidden') });
+                gsap.to(gate, { opacity: 0, scale: 1.6, rotate: 15, duration: 2.8, ease: 'power4.out', onComplete: () => gate.classList.add('hidden') });
             }).catch(error => {
                 console.error("Audio Play Error:", error);
-                gsap.to(gate, { opacity: 0, scale: 1.5, rotate: 10, duration: 2.5, ease: 'power4.out', onComplete: () => gate.classList.add('hidden') });
+                gsap.to(gate, { opacity: 0, scale: 1.6, rotate: 15, duration: 2.8, ease: 'power4.out', onComplete: () => gate.classList.add('hidden') });
             });
         });
 
@@ -1087,51 +1095,51 @@
 
         let lastScrollTop = 0;
         let scrollVelocity = 0;
-        window.addEventListener('scroll', () => {
+        window.addEventListener('scroll', throttle(() => {
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             scrollVelocity = scrollTop - lastScrollTop;
 
             if (scrollTop > lastScrollTop) {
-                gsap.to('header', { y: '-100%', duration: 1, ease: 'power3.inOut' });
+                gsap.to('header', { y: '-100%', duration: 1.1, ease: 'power3.inOut' });
             } else {
-                gsap.to('header', { y: '0%', duration: 1, ease: 'power3.inOut' });
+                gsap.to('header', { y: '0%', duration: 1.1, ease: 'power3.inOut' });
             }
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
 
-            const abyssTop = document.querySelector('.abyss-top');
-            if (scrollTop > 1000) {
-                abyssTop.classList.add('visible');
+            const lunaTop = document.querySelector('.luna-top');
+            if (scrollTop > 1100) {
+                lunaTop.classList.add('visible');
             } else {
-                abyssTop.classList.remove('visible');
+                lunaTop.classList.remove('visible');
             }
 
             document.querySelectorAll('section').forEach(section => {
                 const rect = section.getBoundingClientRect();
-                if (rect.top <= window.innerHeight * 0.95 && rect.bottom >= 0 && !section.classList.contains('visible')) {
+                if (rect.top <= window.innerHeight * 0.9 && rect.bottom >= 0 && !section.classList.contains('visible')) {
                     section.classList.add('visible');
                     const flare = document.createElement('div');
-                    flare.className = 'cyber-flare scroll';
+                    flare.className = 'cosmo-flare scroll';
                     flare.style.top = `${rect.top + window.scrollY + rect.height / 2}px`;
                     document.body.appendChild(flare);
-                    setTimeout(() => flare.remove(), 1000);
+                    setTimeout(() => flare.remove(), 1100);
                 }
             });
 
-            if (Math.abs(scrollVelocity) > 18) {
+            if (Math.abs(scrollVelocity) > 20) {
                 const flare = document.createElement('div');
-                flare.className = 'cyber-flare scroll';
+                flare.className = 'cosmo-flare scroll';
                 flare.style.top = `${scrollTop + window.innerHeight / 2}px`;
                 document.body.appendChild(flare);
-                setTimeout(() => flare.remove(), 1000);
+                setTimeout(() => flare.remove(), 1100);
             }
-        }, { passive: true }); /* Scroll Elite */
+        }, 50), { passive: true }); /* Scroll Fix 4 */
 
         let flareCount = 0;
-        const maxFlares = 50;
+        const maxFlares = 55;
         document.addEventListener('mousemove', throttle((e) => {
             if (flareCount < maxFlares) {
                 const flare = document.createElement('div');
-                flare.className = 'cyber-flare';
+                flare.className = 'cosmo-flare';
                 flare.style.left = `${e.clientX}px`;
                 flare.style.top = `${e.clientY}px`;
                 document.body.appendChild(flare);
@@ -1139,47 +1147,47 @@
                 setTimeout(() => {
                     flare.remove();
                     flareCount--;
-                }, 1200);
+                }, 1300);
             }
-        }, 10));
+        }, 8));
 
-        function spawnNeonTrail() {
-            if (Math.random() < 0.3) {
+        function spawnLunaTrail() {
+            if (Math.random() < 0.35) {
                 const trail = document.createElement('div');
-                trail.className = 'neon-trail';
+                trail.className = 'luna-trail';
                 trail.style.left = `${Math.random() * 100}vw`;
-                trail.style.top = `${-100}px`;
+                trail.style.top = `${-120}px`;
                 document.body.appendChild(trail);
-                setTimeout(() => trail.remove(), 3000);
+                setTimeout(() => trail.remove(), 3200);
             }
         }
 
-        setInterval(spawnNeonTrail, 50);
+        setInterval(spawnLunaTrail, 45);
 
-        const audioAbyss = document.querySelector('.audio-abyss');
-        audioAbyss.addEventListener('click', () => {
+        const audioLuna = document.querySelector('.audio-luna');
+        audioLuna.addEventListener('click', () => {
             if (audio.paused) {
                 audio.play();
-                audioAbyss.textContent = '♫';
+                audioLuna.textContent = '♫';
             } else {
                 audio.pause();
-                audioAbyss.textContent = '♪';
+                audioLuna.textContent = '♪';
             }
         });
 
         window.addEventListener('load', () => {
-            gsap.to('.cyber-loader', { opacity: 0, duration: 2, ease: 'power4.out', onComplete: () => document.querySelector('.cyber-loader').classList.add('hidden') });
+            gsap.to('.cosmo-loader', { opacity: 0, duration: 2.2, ease: 'power4.out', onComplete: () => document.querySelector('.cosmo-loader').classList.add('hidden') });
 
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             const renderer = new THREE.WebGLRenderer({ alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
-            document.getElementById('cyber-grid').appendChild(renderer.domElement);
+            document.getElementById('cosmo-grid').appendChild(renderer.domElement);
 
-            const gridSize = 50;
-            const spacing = 5;
-            const geometry = new THREE.SphereGeometry(0.25, 32, 32);
-            const material = new THREE.MeshBasicMaterial({ color: 0x00ffcc, transparent: true, opacity: 0.8 });
+            const gridSize = 55;
+            const spacing = 5.5;
+            const geometry = new THREE.SphereGeometry(0.28, 32, 32);
+            const material = new THREE.MeshBasicMaterial({ color: 0x39ff14, transparent: true, opacity: 0.85 });
 
             for (let x = -gridSize; x <= gridSize; x += spacing) {
                 for (let z = -gridSize; z <= gridSize; z += spacing) {
@@ -1189,13 +1197,13 @@
                 }
             }
 
-            camera.position.z = 60;
-            camera.position.y = 50;
+            camera.position.z = 65;
+            camera.position.y = 55;
             camera.lookAt(0, 0, 0);
 
             function animate() {
                 requestAnimationFrame(animate);
-                scene.rotation.y += 0.0004;
+                scene.rotation.y += 0.0003;
                 renderer.render(scene, camera);
             }
             animate();
@@ -1206,46 +1214,46 @@
                 renderer.setSize(window.innerWidth, window.innerHeight);
             });
 
-            for (let i = 0; i < 45; i++) {
-                const sphere = document.createElement('div');
-                sphere.className = 'abyss-sphere';
-                sphere.style.left = `${Math.random() * 100}vw`;
-                sphere.style.top = `${Math.random() * 100}vh`;
-                sphere.style.animationDuration = `${9 + Math.random() * 9}s`;
-                sphere.style.animationDelay = `${Math.random() * 4.5}s`;
-                document.body.appendChild(sphere);
+            for (let i = 0; i < 50; i++) {
+                const node = document.createElement('div');
+                node.className = 'star-node';
+                node.style.left = `${Math.random() * 100}vw`;
+                node.style.top = `${Math.random() * 100}vh`;
+                node.style.animationDuration = `${10 + Math.random() * 10}s`;
+                node.style.animationDelay = `${Math.random() * 5}s`;
+                document.body.appendChild(node);
             }
 
-            const abyssImage = document.getElementById('abyss-image');
+            const lunaImage = document.getElementById('luna-image');
             const pathsToTry = [
-                '/cyber-images/core-cyber.jpeg',
-                './cyber-images/core-cyber.jpeg',
-                'cyber-images/core-cyber.jpeg',
-                'assets/cyber-core.webp'
+                '/cosmo-images/core-cosmo.jpeg',
+                './cosmo-images/core-cosmo.jpeg',
+                'cosmo-images/core-cosmo.jpeg',
+                'assets/cosmo-core.webp'
             ];
             let currentPathIndex = 0;
 
             function tryNextPath() {
                 if (currentPathIndex >= pathsToTry.length) {
-                    console.error('All paths failed. Verify file paths and server setup.');
+                    console.error('All paths failed. Check file paths and server config.');
                     return;
                 }
-                abyssImage.src = pathsToTry[currentPathIndex];
-                console.log(`Attempting path: ${pathsToTry[currentPathIndex]}`);
+                lunaImage.src = pathsToTry[currentPathIndex];
+                console.log(`Trying path: ${pathsToTry[currentPathIndex]}`);
                 currentPathIndex++;
             }
 
-            abyssImage.addEventListener('load', () => {
-                console.log(`Image loaded at ${abyssImage.src}`);
-                gsap.to(abyssImage, { opacity: 1, duration: 1.5, ease: 'power3.out' });
+            lunaImage.addEventListener('load', () => {
+                console.log(`Image loaded at ${lunaImage.src}`);
+                gsap.to(lunaImage, { opacity: 1, duration: 1.6, ease: 'power3.out' });
             });
 
-            abyssImage.addEventListener('error', () => {
-                console.error(`Failed to load ${abyssImage.src}`);
+            lunaImage.addEventListener('error', () => {
+                console.error(`Failed to load ${lunaImage.src}`);
                 tryNextPath();
             });
 
-            abyssImage.style.opacity = 0;
+            lunaImage.style.opacity = 0;
             tryNextPath();
         });
     </script>
