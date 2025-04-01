@@ -1021,10 +1021,6 @@
         <div class="ar-point" style="top: 80%; left: 20%;"></div>
         <div class="ar-point plasma" style="top: 40%; left: 90%;"></div>
     </div>
-    <div class="terminal-console" id="terminal-console">
-        <div class="console-output" id="console-output"></div>
-        <input type="text" class="console-input" id="console-input" placeholder="> Enter command">
-    </div>
     <div class="control-panel" id="control-panel">
         <button class="control-btn top-btn" title="Back to Top">↑</button>
         <button class="control-btn audio-control" title="Toggle Audio">♫</button>
@@ -1072,7 +1068,7 @@
                 </div>
             </div>
         </section>
-        <section id="data" class="holo-section">
+        <section id="data" class="holo-section">F
             <h2 class="holo-title">Data Archives</h2>
             <div class="data-grid">
                 <div class="data-node">
@@ -1477,43 +1473,6 @@
                     arToggle.addEventListener('click', () => {
                         arOverlayElement.classList.toggle('active');
                         arToggle.textContent = arOverlayElement.classList.contains('active') ? 'AR+' : 'AR';
-                    });
-                }
-
-                // Terminal Console
-                const consoleToggle = document.querySelector('.console-toggle');
-                const terminalConsoleElement = document.getElementById('terminal-console');
-                const consoleInput = document.getElementById('console-input');
-                const consoleOutput = document.getElementById('console-output');
-                if (consoleToggle && terminalConsoleElement && consoleInput && consoleOutput) {
-                    consoleToggle.addEventListener('click', () => {
-                        terminalConsoleElement.classList.toggle('active');
-                        consoleToggle.textContent = terminalConsoleElement.classList.contains('active') ? '⌨-' : '⌨';
-                        if (terminalConsoleElement.classList.contains('active')) consoleInput.focus();
-                    });
-
-                    consoleInput.addEventListener('keypress', (e) => {
-                        if (e.key === 'Enter') {
-                            const command = consoleInput.value.toLowerCase();
-                            consoleOutput.innerHTML += `<p>> ${command}</p>`;
-                            if (command === 'help') {
-                                consoleOutput.innerHTML += '<p>Commands: help, clear, weather, ar, exit</p>';
-                            } else if (command === 'clear') {
-                                consoleOutput.innerHTML = '';
-                            } else if (command === 'weather') {
-                                consoleOutput.innerHTML += '<p>Toggle weather with button</p>';
-                            } else if (command === 'ar') {
-                                arOverlayElement.classList.toggle('active');
-                                consoleOutput.innerHTML += `<p>AR ${arOverlayElement.classList.contains('active') ? 'enabled' : 'disabled'}</p>`;
-                            } else if (command === 'exit') {
-                                terminalConsoleElement.classList.remove('active');
-                                consoleToggle.textContent = '⌨';
-                            } else {
-                                consoleOutput.innerHTML += '<p>Unknown command</p>';
-                            }
-                            consoleInput.value = '';
-                            consoleOutput.scrollTop = consoleOutput.scrollHeight;
-                        }
                     });
                 }
 
