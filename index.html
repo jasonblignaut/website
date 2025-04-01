@@ -3,268 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="LabVerse | Technical University: South Africa’s Ultimate Free IT Training Nexus. Master Hybrid Cloud, Cybersecurity, Networking, and More with Elite Tutorials.">
-    <meta name="keywords" content="Technical University South Africa, Free IT Training, Hybrid Cloud, Cybersecurity, Networking, Digital Marketing, SEO Optimization, Cisco, Unifi, Network Diagrams, Management, Leadership Mindset, Cyber Future, LabVerse, Technology College">
+    <meta name="description" content="LabVerse | Technical University: South Africa’s Elite Free IT Training Nexus. Master Tomorrow’s Tech Today—Hybrid Cloud, Cybersecurity, Networking, and Beyond.">
+    <meta name="keywords" content="Technical University South Africa, Free IT Training, Hybrid Cloud, Cybersecurity, Networking, Digital Marketing, SEO Optimization, Cisco, Unifi, Network Diagrams, Management, Leadership Mindset, Future Tech, LabVerse, Cyber Nexus">
     <meta name="author" content="LabVerse">
     <meta name="robots" content="index, follow">
     <meta property="og:title" content="LabVerse | Technical University">
-    <meta property="og:description" content="Unlock the Future at LabVerse | Technical University. Free Tutorials on Cloud, Security, Networking, and Beyond.">
-    <meta property="og:image" content="thumbnails/thumbnail-13.webp">
+    <meta property="og:description" content="Step Into Tomorrow with LabVerse | Technical University. Free Elite Tutorials for the Cyber-Future.">
+    <meta property="og:image" content="assets/thumbnail-core.webp">
     <meta property="og:url" content="https://labverse.co.za">
     <meta property="og:type" content="website">
-    <link rel="icon" type="image/png" href="icons/favicon.ico">
+    <link rel="icon" type="image/png" href="assets/favicon.ico">
     <title>LabVerse | Technical University</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;900&family=IBM+Plex+Mono:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Roboto+Mono:wght@300;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
     <style>
         :root {
-            --cyber-blue: #00d4ff;
-            --cyber-magenta: #ff00cc;
-            --deep-space: #03031a;
-            --glass-fusion: rgba(255, 255, 255, 0.06);
-            --text-lumen: #f8f8ff;
-            --text-shadow: #c0c0d8;
-            --glow-max: 20px;
+            --nova-blue: #00f4ff;
+            --nova-purple: #ff00ff;
+            --black-hole: #0a0a1f;
+            --plasma-glass: rgba(255, 255, 255, 0.08);
+            --light-flux: #f9f9ff;
+            --shadow-flux: #d0d0e8;
+            --glow-core: 22px;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'IBM Plex Mono', monospace;
+            font-family: 'Roboto Mono', monospace;
         }
 
         html {
             scroll-behavior: smooth;
             overflow-x: hidden;
-        }
-
-        body {
-            background-color: var(--deep-space);
-            color: var(--text-lumen);
-            line-height: 1.6;
-            position: relative;
-            overflow-x: hidden;
-            overflow-y: auto;
             -webkit-overflow-scrolling: touch;
         }
 
-        /* Cyber Ripple (Mouse Trail) */
-        .cyber-ripple {
+        body {
+            background-color: var(--black-hole);
+            color: var(--light-flux);
+            line-height: 1.7;
+            position: relative;
+            overflow-x: hidden;
+            overflow-y: scroll; /* Priority 1: Guaranteed Scroll */
+            min-height: 100vh;
+            transform-style: preserve-3d;
+            will-change: scroll-position;
+        }
+
+        /* Nova Burst (Mouse Effect) */
+        .nova-burst {
             position: fixed;
-            width: 12px;
-            height: 12px;
-            background: var(--cyber-blue);
+            width: 15px;
+            height: 15px;
+            background: var(--nova-blue);
             border-radius: 50%;
             pointer-events: none;
-            z-index: 10006;
-            opacity: 0.9;
-            box-shadow: 0 0 30px var(--cyber-blue), 0 0 40px var(--cyber-magenta);
-            animation: rippleFade 0.9s ease-out forwards;
+            z-index: 10007;
+            opacity: 0.95;
+            box-shadow: 0 0 35px var(--nova-blue), 0 0 50px var(--nova-purple);
+            animation: novaExpand 1s ease-out forwards;
             will-change: transform, opacity;
         }
 
-        @keyframes rippleFade {
-            0% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(4); opacity: 0.7; }
+        @keyframes novaExpand {
+            0% { transform: scale(1); opacity: 0.95; }
+            50% { transform: scale(5); opacity: 0.8; }
             100% { transform: scale(0); opacity: 0; }
         }
 
-        /* Flux Sweep (Scroll Effect) */
-        .flux-sweep {
+        /* Flux Rift (Scroll Effect) */
+        .flux-rift {
             position: fixed;
             width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--cyber-magenta), transparent);
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--nova-purple), transparent);
+            pointer-events: none;
+            z-index: 10006;
+            opacity: 0;
+            box-shadow: 0 0 40px var(--nova-purple);
+            animation: riftDrag 0.8s ease-out forwards;
+            will-change: transform, opacity;
+        }
+
+        @keyframes riftDrag {
+            0% { transform: translateY(-100vh) skewX(35deg); opacity: 1; }
+            50% { transform: translateY(0) skewX(0deg); opacity: 0.7; }
+            100% { transform: translateY(100vh) skewX(-35deg); opacity: 0; }
+        }
+
+        /* Plasma Trails */
+        .plasma-trail {
+            position: fixed;
+            width: 8px;
+            height: 80px;
+            background: linear-gradient(180deg, var(--nova-blue), transparent);
             pointer-events: none;
             z-index: 10005;
-            opacity: 0;
-            box-shadow: 0 0 35px var(--cyber-magenta);
-            animation: sweepDrag 0.7s ease-out forwards;
+            opacity: 0.9;
+            box-shadow: 0 0 35px var(--nova-blue);
+            animation: plasmaFall 2.5s linear forwards;
             will-change: transform, opacity;
         }
 
-        @keyframes sweepDrag {
-            0% { transform: translateY(-100vh) skewX(30deg); opacity: 0.9; }
-            50% { transform: translateY(0) skewX(0deg); opacity: 0.6; }
-            100% { transform: translateY(100vh) skewX(-30deg); opacity: 0; }
+        @keyframes plasmaFall {
+            0% { transform: translateY(-90vh) rotate(20deg); opacity: 0.9; }
+            70% { opacity: 0.7; }
+            100% { transform: translateY(100vh) rotate(20deg); opacity: 0; }
         }
 
-        /* Nano Streams */
-        .nano-stream {
+        /* Cosmic Grid (3D Background) */
+        #cosmic-grid {
             position: fixed;
-            width: 6px;
-            height: 70px;
-            background: linear-gradient(180deg, var(--cyber-blue), transparent);
-            pointer-events: none;
-            z-index: 10004;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none; /* Priority 1: No Scroll Interference */
+            opacity: 0.9;
+        }
+
+        .grid-veil {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0, 244, 255, 0.12) 0%, transparent 60%);
             opacity: 0.8;
-            box-shadow: 0 0 30px var(--cyber-blue);
-            animation: streamDrop 2.2s linear forwards;
-            will-change: transform, opacity;
+            animation: veilDrift 45s linear infinite;
         }
 
-        @keyframes streamDrop {
-            0% { transform: translateY(-80vh) rotate(18deg); opacity: 0.8; }
-            70% { opacity: 0.6; }
-            100% { transform: translateY(100vh) rotate(18deg); opacity: 0; }
-        }
-
-        /* Quantum Grid (3D Background) */
-        #quantum-grid {
-            position: fixed;
-            inset: 0;
-            z-index: -2;
-            pointer-events: none;
-        }
-
-        .grid-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, transparent 50%);
-            opacity: 0.7;
-            animation: gridFlow 40s linear infinite;
-        }
-
-        @keyframes gridFlow {
+        @keyframes veilDrift {
             0% { transform: translate(0, 0); }
-            100% { transform: translate(-80px, 80px); }
+            100% { transform: translate(-100px, 100px); }
         }
 
-        /* Cyber Nodes */
-        .cyber-node {
+        /* Nebula Orbs */
+        .nebula-orb {
             position: absolute;
-            width: 14px;
-            height: 14px;
-            background: var(--cyber-magenta);
+            width: 16px;
+            height: 16px;
+            background: var(--nova-purple);
             border-radius: 50%;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.8;
-            box-shadow: 0 0 30px var(--cyber-magenta);
-            animation: nodeDrift 8s ease-in-out infinite;
+            opacity: 0.85;
+            box-shadow: 0 0 40px var(--nova-purple);
+            animation: orbPulse 9s ease-in-out infinite;
             will-change: transform, opacity;
         }
 
-        @keyframes nodeDrift {
-            0%, 100% { transform: translate(0, 0); opacity: 0.8; }
-            50% { transform: translate(35px, -35px); opacity: 1; }
+        @keyframes orbPulse {
+            0%, 100% { transform: translate(0, 0); opacity: 0.85; }
+            50% { transform: translate(40px, -40px); opacity: 1; }
         }
 
-        /* Nexus Portal */
-        .nexus-portal {
+        /* Vortex Gate */
+        .vortex-gate {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(0, 212, 255, 0.18), var(--deep-space) 70%);
+            background: radial-gradient(circle, rgba(0, 244, 255, 0.2), var(--black-hole) 75%);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 10000;
-            transition: opacity 1.6s ease, transform 1.6s ease;
+            transition: opacity 2s ease, transform 2s ease;
         }
 
-        .nexus-portal.hidden {
+        .vortex-gate.hidden {
             opacity: 0;
-            transform: scale(1.35);
+            transform: scale(1.4);
             pointer-events: none;
         }
 
-        .nexus-portal button {
-            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-magenta));
-            color: var(--text-lumen);
-            padding: 3.5rem 8rem;
+        .vortex-gate button {
+            background: linear-gradient(135deg, var(--nova-blue), var(--nova-purple));
+            color: var(--light-flux);
+            padding: 4rem 9rem;
             border: none;
-            border-radius: 80px;
-            font-family: 'Exo 2', sans-serif;
-            font-size: 2.8rem;
+            border-radius: 90px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
             font-weight: 900;
             text-transform: uppercase;
             cursor: pointer;
-            box-shadow: 0 0 var(--glow-max) var(--cyber-blue);
+            box-shadow: 0 0 var(--glow-core) var(--nova-blue);
             position: relative;
             overflow: hidden;
-            transition: transform 0.7s, box-shadow 0.7s;
+            transition: transform 0.8s, box-shadow 0.8s;
         }
 
-        .nexus-portal button::before {
+        .vortex-gate button::before {
             content: '';
             position: absolute;
             top: -50%;
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.35), transparent);
-            animation: portalPulse 2.2s infinite;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: vortexSweep 2.5s infinite;
         }
 
-        @keyframes portalPulse {
+        @keyframes vortexSweep {
             0% { transform: translateX(-100%) rotate(45deg); }
             100% { transform: translateX(100%) rotate(45deg); }
         }
 
-        .nexus-portal button:hover {
-            transform: scale(1.18);
-            box-shadow: 0 0 calc(var(--glow-max) * 2) var(--cyber-magenta);
+        .vortex-gate button:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 calc(var(--glow-core) * 2) var(--nova-purple);
         }
 
-        /* Quantum Loader */
-        .quantum-loader {
+        /* Flux Loader */
+        .flux-loader {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--deep-space);
+            background: var(--black-hole);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 1.2s ease;
+            transition: opacity 1.5s ease;
         }
 
-        .quantum-loader::before {
+        .flux-loader::before {
             content: '';
-            width: 70px;
-            height: 70px;
-            border: 6px solid var(--cyber-blue);
-            border-top: 6px solid var(--cyber-magenta);
+            width: 80px;
+            height: 80px;
+            border: 8px solid var(--nova-blue);
+            border-top: 8px solid var(--nova-purple);
             border-radius: 50%;
-            animation: quantumSpin 1.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
-            box-shadow: 0 0 35px var(--cyber-blue);
+            animation: fluxSpin 1.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+            box-shadow: 0 0 45px var(--nova-blue);
         }
 
-        @keyframes quantumSpin {
+        @keyframes fluxSpin {
             0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.35); }
+            50% { transform: rotate(180deg) scale(1.4); }
             100% { transform: rotate(360deg) scale(1); }
         }
 
-        .quantum-loader.hidden {
+        .flux-loader.hidden {
             opacity: 0;
             pointer-events: none;
         }
 
-        /* Omni Header */
+        /* Nebula Nav */
         header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(6, 6, 30, 0.96);
-            backdrop-filter: blur(25px);
-            padding: 1.8rem 2.5rem;
+            background: rgba(10, 10, 31, 0.95);
+            backdrop-filter: blur(30px);
+            padding: 2rem 3rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            border-bottom: 1px solid rgba(0, 212, 255, 0.18);
-            transition: transform 0.7s ease;
+            border-bottom: 1px solid rgba(0, 244, 255, 0.2);
+            transition: transform 0.8s ease;
         }
 
         header.hidden {
@@ -272,13 +276,13 @@
         }
 
         .logo img {
-            height: 65px;
-            filter: drop-shadow(0 0 12px var(--cyber-blue));
-            transition: transform 0.7s;
+            height: 70px;
+            filter: drop-shadow(0 0 15px var(--nova-blue));
+            transition: transform 0.8s;
         }
 
         .logo img:hover {
-            transform: scale(1.3) rotate(30deg);
+            transform: scale(1.35) rotate(35deg);
         }
 
         nav {
@@ -286,30 +290,30 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            max-width: 900px;
+            max-width: 1000px;
         }
 
         nav a {
-            color: var(--text-lumen);
+            color: var(--light-flux);
             text-decoration: none;
-            margin: 0 3rem;
-            font-family: 'Exo 2', sans-serif;
-            font-size: 1.5rem;
+            margin: 0 3.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.6rem;
             font-weight: 900;
             text-transform: uppercase;
             position: relative;
-            transition: all 0.6s;
+            transition: all 0.7s;
         }
 
         nav a::after {
             content: '';
             position: absolute;
             width: 0;
-            height: 4px;
-            bottom: -12px;
+            height: 5px;
+            bottom: -15px;
             left: 0;
-            background: var(--cyber-blue);
-            transition: width 0.6s ease;
+            background: var(--nova-blue);
+            transition: width 0.7s ease;
         }
 
         nav a:hover::after {
@@ -317,191 +321,190 @@
         }
 
         nav a:hover {
-            color: var(--cyber-blue);
-            text-shadow: 0 0 18px var(--cyber-blue);
+            color: var(--nova-blue);
+            text-shadow: 0 0 20px var(--nova-blue);
         }
 
         .hamburger {
             display: none;
             cursor: pointer;
-            font-size: 3rem;
-            color: var(--text-lumen);
-            transition: transform 0.6s;
+            font-size: 3.5rem;
+            color: var(--light-flux);
+            transition: transform 0.7s;
         }
 
         .hamburger:hover {
-            transform: scale(1.3);
+            transform: scale(1.35);
         }
 
-        /* Cyber Utilities */
-        .back-to-top, .audio-toggle {
+        /* Orbital Controls */
+        .orbit-top, .audio-core {
             position: fixed;
-            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-magenta));
-            color: var(--text-lumen);
-            width: 75px;
-            height: 75px;
+            background: linear-gradient(135deg, var(--nova-blue), var(--nova-purple));
+            color: var(--light-flux);
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 2.4rem;
+            font-size: 2.6rem;
             text-decoration: none;
-            box-shadow: 0 0 var(--glow-max) var(--cyber-blue);
-            transition: transform 0.6s, box-shadow 0.6s;
+            box-shadow: 0 0 var(--glow-core) var(--nova-blue);
+            transition: transform 0.7s, box-shadow 0.7s;
             z-index: 1000;
         }
 
-        .back-to-top {
-            bottom: 4rem;
-            right: 4rem;
+        .orbit-top {
+            bottom: 4.5rem;
+            right: 4.5rem;
             opacity: 0;
         }
 
-        .back-to-top.visible {
+        .orbit-top.visible {
             opacity: 1;
         }
 
-        .audio-toggle {
-            bottom: 4rem;
-            left: 4rem;
+        .audio-core {
+            bottom: 4.5rem;
+            left: 4.5rem;
         }
 
-        .back-to-top:hover, .audio-toggle:hover {
-            transform: scale(1.25);
-            box-shadow: 0 0 calc(var(--glow-max) * 2) var(--cyber-magenta);
+        .orbit-top:hover, .audio-core:hover {
+            transform: scale(1.3);
+            box-shadow: 0 0 calc(var(--glow-core) * 2) var(--nova-purple);
         }
 
-        /* Core Nexus (Hero) */
-        .hero {
+        /* Core Horizon (Hero) */
+        .horizon {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 3.5rem;
+            padding: 4rem 3rem;
             position: relative;
             overflow: hidden;
             z-index: 1;
         }
 
-        .hero::before {
+        .horizon::before {
             content: '';
             position: absolute;
-            width: 300%;
-            height: 300%;
-            background: radial-gradient(circle, rgba(0, 212, 255, 0.15), transparent 70%);
-            animation: nexusWave 12s infinite ease-in-out;
+            width: 350%;
+            height: 350%;
+            background: radial-gradient(circle, rgba(0, 244, 255, 0.18), transparent 80%);
+            animation: horizonFlux 14s infinite ease-in-out;
             z-index: -1;
         }
 
-        @keyframes nexusWave {
-            0% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.15; }
-            50% { transform: scale(1.1) translateX(-50%) translateY(-50%); opacity: 0.3; }
-            100% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.15; }
+        @keyframes horizonFlux {
+            0% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.18; }
+            50% { transform: scale(1.15) translateX(-50%) translateY(-50%); opacity: 0.35; }
+            100% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.18; }
         }
 
-        .hero img {
-            width: 320px;
-            height: 320px;
+        .horizon img {
+            width: 350px;
+            height: 350px;
             border-radius: 50%;
-            border: 5px solid var(--cyber-blue);
-            box-shadow: 0 0 35px var(--cyber-blue);
-            margin-bottom: 3rem;
-            transition: transform 0.8s ease;
+            border: 6px solid var(--nova-blue);
+            box-shadow: 0 0 40px var(--nova-blue);
+            margin-bottom: 3.5rem;
+            transition: transform 0.9s ease;
             z-index: 99999;
         }
 
-        .hero img:hover {
-            transform: scale(1.12);
+        .horizon img:hover {
+            transform: scale(1.15);
         }
 
-        .hero h1 {
-            font-family: 'Exo 2', sans-serif;
-            font-size: clamp(4.5rem, 11vw, 8rem);
+        .horizon h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(5rem, 12vw, 9rem);
             font-weight: 900;
-            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-magenta));
+            background: linear-gradient(135deg, var(--nova-blue), var(--nova-purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 2rem;
-            text-shadow: 0 0 12px var(--cyber-blue);
+            margin-bottom: 2.5rem;
+            text-shadow: 0 0 15px var(--nova-blue);
             position: relative;
             z-index: 2;
         }
 
-        .hero h1::after {
+        .horizon h1::after {
             content: '';
             position: absolute;
-            width: 80%;
-            height: 4px;
-            bottom: -18px;
-            left: 10%;
-            background: linear-gradient(90deg, transparent, var(--cyber-blue), transparent);
-            animation: corePulse 3.5s infinite ease-in-out;
+            width: 85%;
+            height: 5px;
+            bottom: -20px;
+            left: 7.5%;
+            background: linear-gradient(90deg, transparent, var(--nova-blue), transparent);
+            animation: coreWave 4s infinite ease-in-out;
         }
 
-        @keyframes corePulse {
-            0% { width: 80%; opacity: 1; }
-            50% { width: 100%; opacity: 0.7; }
-            100% { width: 80%; opacity: 1; }
+        @keyframes coreWave {
+            0% { width: 85%; opacity: 1; }
+            50% { width: 100%; opacity: 0.8; }
+            100% { width: 85%; opacity: 1; }
         }
 
-        .hero p {
-            font-size: clamp(1.8rem, 5vw, 2.5rem);
-            color: var(--text-shadow);
-            margin-bottom: 3rem;
-            max-width: 1100px;
+        .horizon p {
+            font-size: clamp(2rem, 6vw, 2.8rem);
+            color: var(--shadow-flux);
+            margin-bottom: 3.5rem;
+            max-width: 1200px;
             z-index: 2;
         }
 
-        .hero .cta-button {
-            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-magenta));
-            color: var(--text-lumen);
-            padding: 2.2rem 5.5rem;
+        .horizon .launch-core {
+            background: linear-gradient(135deg, var(--nova-blue), var(--nova-purple));
+            color: var(--light-flux);
+            padding: 2.5rem 6rem;
             text-decoration: none;
-            border-radius: 70px;
-            font-family: 'Exo 2', sans-serif;
+            border-radius: 80px;
+            font-family: 'Orbitron', sans-serif;
             font-weight: 900;
-            font-size: 2rem;
+            font-size: 2.2rem;
             text-transform: uppercase;
-            box-shadow: 0 0 var(--glow-max) var(--cyber-blue);
-            transition: all 0.7s;
+            box-shadow: 0 0 var(--glow-core) var(--nova-blue);
+            transition: all 0.8s;
             position: relative;
             overflow: hidden;
             z-index: 2;
         }
 
-        .hero .cta-button::before {
+        .horizon .launch-core::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
-            transition: left 0.7s;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.8s;
         }
 
-        .hero .cta-button:hover::before {
+        .horizon .launch-core:hover::before {
             left: 100%;
         }
 
-        .hero .cta-button:hover {
-            box-shadow: 0 0 calc(var(--glow-max) * 2) var(--cyber-magenta);
-            transform: scale(1.15);
+        .horizon .launch-core:hover {
+            box-shadow: 0 0 calc(var(--glow-core) * 2) var(--nova-purple);
+            transform: scale(1.18);
         }
 
-        /* Sections */
+        /* Nexus Zones */
         section {
-            padding: 9rem 2.5rem;
-            max-width: 2200px;
+            padding: 10rem 3rem;
+            max-width: 2400px;
             margin: 0 auto;
-            scroll-margin-top: 140px;
             position: relative;
             z-index: 1;
             opacity: 0;
-            transform: translateY(100px);
-            transition: opacity 1.2s ease, transform 1.2s ease;
+            transform: translateY(120px);
+            transition: opacity 1.5s ease, transform 1.5s ease;
         }
 
         section.visible {
@@ -509,11 +512,11 @@
             transform: translateY(0);
         }
 
-        #about {
+        #nexus-info {
             min-height: auto;
         }
 
-        #skills, #projects, #contact {
+        #nexus-skills, #nexus-tutorials, #nexus-contact {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -522,16 +525,16 @@
         }
 
         section h2 {
-            font-family: 'Exo 2', sans-serif;
-            font-size: clamp(4rem, 10vw, 6rem);
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(4.5rem, 11vw, 7rem);
             font-weight: 900;
             text-align: center;
-            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-magenta));
+            background: linear-gradient(135deg, var(--nova-blue), var(--nova-purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 5rem;
+            margin-bottom: 6rem;
             text-transform: uppercase;
-            text-shadow: 0 0 12px var(--cyber-blue);
+            text-shadow: 0 0 15px var(--nova-blue);
             position: relative;
             z-index: 2;
         }
@@ -539,279 +542,279 @@
         section h2::after {
             content: '';
             position: absolute;
-            width: 60%;
-            height: 4px;
-            bottom: -20px;
-            left: 20%;
-            background: linear-gradient(90deg, transparent, var(--cyber-blue), transparent);
-            animation: sectionWave 3s infinite ease-in-out;
+            width: 70%;
+            height: 5px;
+            bottom: -25px;
+            left: 15%;
+            background: linear-gradient(90deg, transparent, var(--nova-blue), transparent);
+            animation: zoneFlux 3.5s infinite ease-in-out;
             z-index: 2;
         }
 
-        @keyframes sectionWave {
-            0% { width: 60%; opacity: 0.9; }
-            50% { width: 80%; opacity: 0.6; }
-            100% { width: 60%; opacity: 0.9; }
+        @keyframes zoneFlux {
+            0% { width: 70%; opacity: 0.9; }
+            50% { width: 90%; opacity: 0.7; }
+            100% { width: 70%; opacity: 0.9; }
         }
 
-        .about {
-            background: var(--glass-fusion);
-            backdrop-filter: blur(25px);
-            border-radius: 35px;
-            padding: 7rem;
-            border: 1px solid rgba(0, 212, 255, 0.2);
-            box-shadow: 0 0 var(--glow-max) rgba(0, 212, 255, 0.3);
-            max-width: 1800px;
+        .nexus-info {
+            background: var(--plasma-glass);
+            backdrop-filter: blur(30px);
+            border-radius: 40px;
+            padding: 8rem;
+            border: 1px solid rgba(0, 244, 255, 0.25);
+            box-shadow: 0 0 var(--glow-core) rgba(0, 244, 255, 0.35);
+            max-width: 2000px;
             width: 100%;
         }
 
-        .about-content {
+        .info-core {
             display: flex;
             flex-wrap: wrap;
-            gap: 6rem;
+            gap: 7rem;
             align-items: center;
             justify-content: center;
         }
 
-        .about img {
-            max-width: 500px;
+        .nexus-info img {
+            max-width: 550px;
             width: 100%;
             height: auto;
-            border-radius: 30px;
-            border: 5px solid var(--cyber-blue);
-            box-shadow: 0 0 var(--glow-max) var(--cyber-blue);
-            transition: transform 0.8s ease;
+            border-radius: 35px;
+            border: 6px solid var(--nova-blue);
+            box-shadow: 0 0 var(--glow-core) var(--nova-blue);
+            transition: transform 0.9s ease;
             loading: lazy;
         }
 
-        .about img:hover {
-            transform: scale(1.1);
+        .nexus-info img:hover {
+            transform: scale(1.12);
         }
 
-        .about-text {
+        .info-text {
             flex: 1;
-            min-width: 400px;
+            min-width: 450px;
             text-align: center;
         }
 
-        .about-text p {
-            line-height: 2.3;
-            color: var(--text-shadow);
-            font-size: 1.5rem;
+        .info-text p {
+            line-height: 2.5;
+            color: var(--shadow-flux);
+            font-size: 1.6rem;
         }
 
-        .skills-grid, .projects-grid {
+        .skills-matrix, .tutorials-matrix {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
-            gap: 5rem;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 6rem;
             width: 100%;
-            max-width: 2000px;
+            max-width: 2200px;
             justify-items: center;
         }
 
-        .skill-card, .project-card {
-            background: var(--glass-fusion);
-            backdrop-filter: blur(25px);
-            border-radius: 35px;
-            padding: 5rem;
-            border: 1px solid rgba(0, 212, 255, 0.2);
-            box-shadow: 0 0 var(--glow-max) rgba(0, 212, 255, 0.3);
-            transition: all 0.8s;
+        .skill-pod, .tutorial-pod {
+            background: var(--plasma-glass);
+            backdrop-filter: blur(30px);
+            border-radius: 40px;
+            padding: 5.5rem;
+            border: 1px solid rgba(0, 244, 255, 0.25);
+            box-shadow: 0 0 var(--glow-core) rgba(0, 244, 255, 0.35);
+            transition: all 0.9s;
             position: relative;
             overflow: hidden;
             z-index: 2;
             width: 100%;
-            max-width: 500px;
+            max-width: 550px;
         }
 
-        .skill-card::before, .project-card::before {
+        .skill-pod::before, .tutorial-pod::before {
             content: '';
             position: absolute;
             top: -50%;
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(0, 212, 255, 0.1), transparent);
-            animation: fusionFlux 4s infinite;
+            background: linear-gradient(45deg, transparent, rgba(0, 244, 255, 0.12), transparent);
+            animation: podFlux 4.5s infinite;
         }
 
-        @keyframes fusionFlux {
+        @keyframes podFlux {
             0% { transform: translateX(-100%) rotate(45deg); }
             100% { transform: translateX(100%) rotate(45deg); }
         }
 
-        .skill-card:hover, .project-card:hover {
-            transform: translateY(-30px) scale(1.06);
-            box-shadow: 0 0 calc(var(--glow-max) * 2) var(--cyber-magenta);
+        .skill-pod:hover, .tutorial-pod:hover {
+            transform: translateY(-35px) scale(1.08);
+            box-shadow: 0 0 calc(var(--glow-core) * 2) var(--nova-purple);
         }
 
-        .skill-card img, .project-card img {
-            width: 120px;
+        .skill-pod img, .tutorial-pod img {
+            width: 130px;
             height: auto;
-            margin-bottom: 2.5rem;
-            filter: drop-shadow(0 0 18px var(--cyber-blue));
-            transition: transform 0.7s ease;
+            margin-bottom: 3rem;
+            filter: drop-shadow(0 0 20px var(--nova-blue));
+            transition: transform 0.8s ease;
             loading: lazy;
         }
 
-        .skill-card:hover img, .project-card:hover img {
-            transform: scale(1.25);
+        .skill-pod:hover img, .tutorial-pod:hover img {
+            transform: scale(1.3);
         }
 
-        .skill-card h3, .project-card h3 {
-            font-family: 'Exo 2', sans-serif;
-            font-size: 2.2rem;
+        .skill-pod h3, .tutorial-pod h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.4rem;
             font-weight: 900;
-            color: var(--text-lumen);
+            color: var(--light-flux);
             margin-bottom: 1.5rem;
-            text-shadow: 0 0 10px var(--cyber-blue);
+            text-shadow: 0 0 12px var(--nova-blue);
         }
 
-        .skill-card p, .project-card p {
-            font-size: 1.4rem;
-            color: var(--text-shadow);
-            line-height: 2;
-        }
-
-        .project-card a {
-            color: var(--cyber-blue);
-            text-decoration: none;
-            font-weight: 600;
+        .skill-pod p, .tutorial-pod p {
             font-size: 1.5rem;
-            transition: all 0.6s;
+            color: var(--shadow-flux);
+            line-height: 2.2;
+        }
+
+        .tutorial-pod a {
+            color: var(--nova-blue);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.6rem;
+            transition: all 0.7s;
             position: relative;
         }
 
-        .project-card a::after {
+        .tutorial-pod a::after {
             content: '→';
             position: absolute;
-            right: -40px;
+            right: -45px;
             opacity: 0;
-            transition: all 0.6s;
+            transition: all 0.7s;
         }
 
-        .project-card a:hover::after {
+        .tutorial-pod a:hover::after {
             opacity: 1;
-            right: -25px;
+            right: -30px;
         }
 
-        .project-card a:hover {
-            color: var(--cyber-magenta);
-            text-shadow: 0 0 18px var(--cyber-magenta);
+        .tutorial-pod a:hover {
+            color: var(--nova-purple);
+            text-shadow: 0 0 20px var(--nova-purple);
         }
 
-        .video-container {
+        .media-core {
             position: relative;
             width: 100%;
-            height: 350px;
-            border-radius: 30px;
-            margin-top: 2.5rem;
+            height: 380px;
+            border-radius: 35px;
+            margin-top: 3rem;
             overflow: hidden;
         }
 
-        .project-card iframe {
+        .tutorial-pod iframe {
             width: 100%;
             height: 100%;
-            border-radius: 30px;
-            border: 5px solid var(--cyber-blue);
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.45);
+            border-radius: 35px;
+            border: 6px solid var(--nova-blue);
+            box-shadow: 0 0 35px rgba(0, 244, 255, 0.5);
             loading: lazy;
         }
 
-        .contact {
+        .nexus-contact {
             text-align: center;
             position: relative;
-            max-width: 1800px;
+            max-width: 2000px;
             width: 100%;
         }
 
-        .contact p {
-            color: var(--text-shadow);
-            margin-bottom: 4rem;
-            max-width: 1100px;
+        .nexus-contact p {
+            color: var(--shadow-flux);
+            margin-bottom: 5rem;
+            max-width: 1200px;
             margin-left: auto;
             margin-right: auto;
-            font-size: 1.6rem;
+            font-size: 1.7rem;
         }
 
-        .contact-links {
+        .contact-relays {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 5rem;
+            gap: 6rem;
         }
 
-        .contact a {
-            color: var(--cyber-blue);
+        .nexus-contact a {
+            color: var(--nova-blue);
             text-decoration: none;
-            font-weight: 600;
-            font-family: 'Exo 2', sans-serif;
-            font-size: 1.8rem;
-            padding: 1.5rem 4rem;
-            border: 3px solid var(--cyber-blue);
-            border-radius: 60px;
-            transition: all 0.7s;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            padding: 1.8rem 4.5rem;
+            border: 4px solid var(--nova-blue);
+            border-radius: 70px;
+            transition: all 0.8s;
             position: relative;
             overflow: hidden;
         }
 
-        .contact a::before {
+        .nexus-contact a::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
-            transition: left 0.7s;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.8s;
         }
 
-        .contact a:hover::before {
+        .nexus-contact a:hover::before {
             left: 100%;
         }
 
-        .contact a:hover {
-            color: var(--cyber-magenta);
-            box-shadow: 0 0 var(--glow-max) var(--cyber-magenta);
+        .nexus-contact a:hover {
+            color: var(--nova-purple);
+            box-shadow: 0 0 var(--glow-core) var(--nova-purple);
         }
 
         footer {
-            background: rgba(6, 6, 30, 0.96);
-            backdrop-filter: blur(25px);
-            padding: 6rem;
+            background: rgba(10, 10, 31, 0.95);
+            backdrop-filter: blur(30px);
+            padding: 7rem;
             text-align: center;
-            border-top: 1px solid rgba(0, 212, 255, 0.18);
+            border-top: 1px solid rgba(0, 244, 255, 0.2);
             position: relative;
             z-index: 1;
         }
 
         footer p {
-            color: var(--text-shadow);
-            font-size: 1.4rem;
-            margin-bottom: 3rem;
+            color: var(--shadow-flux);
+            font-size: 1.5rem;
+            margin-bottom: 3.5rem;
         }
 
         footer a {
-            color: var(--cyber-blue);
+            color: var(--nova-blue);
             text-decoration: none;
-            margin: 0 3rem;
-            font-size: 1.5rem;
-            transition: all 0.6s;
+            margin: 0 3.5rem;
+            font-size: 1.6rem;
+            transition: all 0.7s;
         }
 
         footer a:hover {
-            color: var(--cyber-magenta);
-            text-shadow: 0 0 18px var(--cyber-magenta);
+            color: var(--nova-purple);
+            text-shadow: 0 0 20px var(--nova-purple);
         }
 
-        /* Responsive Design */
+        /* Responsive Orbit */
         @media (max-width: 1024px) {
-            .skills-grid, .projects-grid {
-                grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            .skills-matrix, .tutorials-matrix {
+                grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
             }
 
-            .about {
-                padding: 5rem;
+            .nexus-info {
+                padding: 6rem;
             }
         }
 
@@ -823,13 +826,13 @@
             nav {
                 display: none;
                 position: fixed;
-                top: 120px;
+                top: 130px;
                 left: 0;
                 right: 0;
-                background: rgba(6, 6, 30, 0.98);
+                background: rgba(10, 10, 31, 0.98);
                 flex-direction: column;
-                padding: 6rem 2.5rem;
-                box-shadow: 0 0 var(--glow-max) var(--cyber-blue);
+                padding: 7rem 3rem;
+                box-shadow: 0 0 var(--glow-core) var(--nova-blue);
                 width: 100%;
             }
 
@@ -838,189 +841,189 @@
             }
 
             nav a {
-                margin: 3rem 0;
-                font-size: 1.8rem;
+                margin: 3.5rem 0;
+                font-size: 1.9rem;
             }
 
-            .about-content {
+            .info-core {
                 flex-direction: column;
                 text-align: center;
-                gap: 4rem;
+                gap: 5rem;
             }
 
-            .hero {
-                padding: 2.5rem;
+            .horizon {
+                padding: 3rem 2rem;
             }
 
-            .hero img {
-                width: 260px;
-                height: 260px;
+            .horizon img {
+                width: 280px;
+                height: 280px;
             }
 
-            .back-to-top, .audio-toggle {
-                width: 65px;
-                height: 65px;
-                font-size: 2.2rem;
-                bottom: 3rem;
+            .orbit-top, .audio-core {
+                width: 70px;
+                height: 70px;
+                font-size: 2.4rem;
+                bottom: 3.5rem;
             }
 
-            .back-to-top {
-                right: 3rem;
+            .orbit-top {
+                right: 3.5rem;
             }
 
-            .audio-toggle {
-                left: 3rem;
+            .audio-core {
+                left: 3.5rem;
             }
 
-            .cyber-node {
+            .nebula-orb {
                 display: none;
             }
         }
 
         @media (max-width: 480px) {
             section {
-                padding: 7rem 1.5rem;
+                padding: 8rem 2rem;
             }
 
-            .skill-card, .project-card {
-                padding: 4rem;
+            .skill-pod, .tutorial-pod {
+                padding: 4.5rem;
                 max-width: 100%;
             }
 
-            .hero h1 {
-                font-size: clamp(3.5rem, 9vw, 5rem);
+            .horizon h1 {
+                font-size: clamp(4rem, 10vw, 6rem);
             }
 
-            .hero p {
-                font-size: clamp(1.4rem, 4vw, 1.8rem);
+            .horizon p {
+                font-size: clamp(1.6rem, 5vw, 2rem);
             }
 
-            .project-card iframe {
-                height: 280px;
+            .tutorial-pod iframe {
+                height: 300px;
             }
 
-            .nexus-portal button {
-                padding: 2.5rem 6rem;
-                font-size: 2.2rem;
+            .vortex-gate button {
+                padding: 3rem 7rem;
+                font-size: 2.4rem;
             }
 
-            .about {
-                padding: 4rem;
+            .nexus-info {
+                padding: 5rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="quantum-loader"></div>
-    <div class="nexus-portal">
-        <button>Enter LabVerse</button>
+    <div class="flux-loader"></div>
+    <div class="vortex-gate">
+        <button>Activate Nexus</button>
     </div>
-    <div id="quantum-grid"></div>
-    <div class="grid-overlay"></div>
-    <audio id="bg-audio" src="/music/lofi.mp3" loop preload="auto" style="display: none;"></audio>
+    <div id="cosmic-grid"></div>
+    <div class="grid-veil"></div>
+    <audio id="core-audio" src="/audio/future-beats.mp3" loop preload="auto" style="display: none;"></audio>
     <header>
         <div class="logo">
             <a href="https://labverse.co.za">
-                <img src="icons/siteicon.svg" alt="LabVerse Logo" loading="lazy">
+                <img src="assets/nexus-icon.svg" alt="LabVerse Nexus" loading="lazy">
             </a>
         </div>
         <div class="hamburger">☰</div>
         <nav>
-            <a href="#about">About</a>
-            <a href="#skills">Skills</a>
-            <a href="#projects">Tutorials</a>
-            <a href="#contact">Contact</a>
+            <a href="#nexus-info">Info</a>
+            <a href="#nexus-skills">Skills</a>
+            <a href="#nexus-tutorials">Tutorials</a>
+            <a href="#nexus-contact">Contact</a>
         </nav>
     </header>
-    <a href="#" class="back-to-top" title="Back to Top">↑</a>
-    <button class="audio-toggle" title="Toggle Music">♫</button>
-    <section class="hero">
-        <img src="/channel-pictures/my-picture.jpeg" alt="LabVerse" id="hero-image">
+    <a href="#" class="orbit-top" title="Return to Core">↑</a>
+    <button class="audio-core" title="Toggle Sound">♫</button>
+    <section class="horizon">
+        <img src="/core-images/nexus-core.jpeg" alt="Nexus Core" id="horizon-image">
         <h1>LabVerse | Technical University</h1>
-        <p>South Africa’s Premier Free IT Training Nexus | Master the Future Today</p>
-        <a href="#projects" class="cta-button">Explore Tutorials</a>
+        <p>South Africa’s Elite Free IT Training Nexus | Forge Your Future in the Cyber Cosmos</p>
+        <a href="#nexus-tutorials" class="launch-core">Launch Tutorials</a>
     </section>
-    <section id="about" class="about">
-        <div class="about-content">
-            <img src="thumbnails/thumbnail-13.webp" alt="About LabVerse" loading="lazy">
-            <div class="about-text">
-                <h2>About LabVerse</h2>
-                <p>LabVerse | Technical University, rooted in Johannesburg, is South Africa’s leading free IT training platform. We deliver elite tutorials in hybrid cloud, cybersecurity, networking, and more.</p>
-                <p>Our mission: ignite a tech revolution by equipping learners with cutting-edge skills—free, accessible, and future-ready.</p>
+    <section id="nexus-info" class="nexus-info">
+        <div class="info-core">
+            <img src="assets/thumbnail-core.webp" alt="Nexus Info" loading="lazy">
+            <div class="info-text">
+                <h2>Nexus Core</h2>
+                <p>LabVerse | Technical University, based in Johannesburg, is South Africa’s pinnacle of free, elite IT training. We fuse hybrid cloud, cybersecurity, and networking into a future-tech curriculum.</p>
+                <p>Our vision: empower a global workforce with unparalleled skills—bridging today’s talent with tomorrow’s innovation.</p>
             </div>
         </div>
     </section>
-    <section id="skills">
-        <h2>Skill Nexus</h2>
-        <div class="skills-grid">
-            <div class="skill-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="Hybrid Cloud Icon" loading="lazy">
+    <section id="nexus-skills">
+        <h2>Skill Matrix</h2>
+        <div class="skills-matrix">
+            <div class="skill-pod">
+                <img src="assets/thumbnail-core.webp" alt="Hybrid Cloud" loading="lazy">
                 <h3>Hybrid Cloud</h3>
-                <p>Architect Azure-powered hybrid solutions for ultimate scalability.</p>
+                <p>Engineer interstellar Azure systems for seamless scalability.</p>
             </div>
-            <div class="skill-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="Cybersecurity Icon" loading="lazy">
+            <div class="skill-pod">
+                <img src="assets/thumbnail-core.webp" alt="Cybersecurity" loading="lazy">
                 <h3>Cybersecurity</h3>
-                <p>Secure networks with Cisco, Defender XDR, and advanced protocols.</p>
+                <p>Defend galaxies with Cisco, Defender XDR, and quantum shields.</p>
             </div>
-            <div class="skill-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="Networking Icon" loading="lazy">
+            <div class="skill-pod">
+                <img src="assets/thumbnail-core.webp" alt="Networking" loading="lazy">
                 <h3>Networking</h3>
-                <p>Design SD-WAN, Cisco, Unifi, and intricate network blueprints.</p>
+                <p>Construct SD-WAN, Cisco, and cosmic network architectures.</p>
             </div>
-            <div class="skill-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="Digital Marketing Icon" loading="lazy">
+            <div class="skill-pod">
+                <img src="assets/thumbnail-core.webp" alt="Digital Marketing" loading="lazy">
                 <h3>Digital Marketing & SEO</h3>
-                <p>Boost online presence with SEO and cyber-marketing mastery.</p>
+                <p>Propel brands to hyperspace with SEO and cyber-strategies.</p>
             </div>
-            <div class="skill-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="Management Icon" loading="lazy">
-                <h3>Management & Leadership</h3>
-                <p>Lead with a future-proof mindset for IT success.</p>
+            <div class="skill-pod">
+                <img src="assets/thumbnail-core.webp" alt="Leadership" loading="lazy">
+                <h3>Leadership Core</h3>
+                <p>Command teams with a visionary, future-tech mindset.</p>
             </div>
         </div>
     </section>
-    <section id="projects">
+    <section id="nexus-tutorials">
         <h2>Tutorial Vault</h2>
-        <div class="projects-grid">
-            <div class="project-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="SD-WAN Tutorial" loading="lazy">
-                <h3>Global SD-WAN Mastery</h3>
-                <p>Deploy FortiGate SD-WAN across 50+ nodes—maximize efficiency.</p>
-                <a href="https://labverse.co.za/sdwan" target="_blank">Watch Now</a>
+        <div class="tutorials-matrix">
+            <div class="tutorial-pod">
+                <img src="assets/thumbnail-core.webp" alt="SD-WAN" loading="lazy">
+                <h3>SD-WAN Nebula</h3>
+                <p>Deploy FortiGate SD-WAN across 50+ nodes—stellar performance.</p>
+                <a href="https://labverse.co.za/sdwan" target="_blank">Engage</a>
             </div>
-            <div class="project-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="Azure Migration Tutorial" loading="lazy">
-                <h3>Azure Mega-Migration</h3>
-                <p>Migrate 10,000 users to Azure with precision and savings.</p>
-                <a href="https://labverse.co.za/azure" target="_blank">Watch Now</a>
+            <div class="tutorial-pod">
+                <img src="assets/thumbnail-core.webp" alt="Azure Migration" loading="lazy">
+                <h3>Azure Warp</h3>
+                <p>Migrate 10,000 users to Azure—efficiency at light speed.</p>
+                <a href="https://labverse.co.za/azure" target="_blank">Engage</a>
             </div>
-            <div class="project-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="Lo-Fi Stream Tutorial" loading="lazy">
-                <h3>24/7 Lo-Fi Stream</h3>
-                <p>Create a Linux Azure-hosted YouTube stream—always live.</p>
-                <div class="video-container">
+            <div class="tutorial-pod">
+                <img src="assets/thumbnail-core.webp" alt="Lo-Fi Stream" loading="lazy">
+                <h3>Infinite Lo-Fi Orbit</h3>
+                <p>Launch a Linux Azure YouTube stream—beats forever.</p>
+                <div class="media-core">
                     <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk" frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
-            <div class="project-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="Support Tool Tutorial" loading="lazy">
-                <h3>T1 Cyber Toolkit</h3>
-                <p>Build a PowerShell diagnostic tool with AI efficiency.</p>
-                <a href="https://labverse.co.za/support-tool" target="_blank">Watch Now</a>
+            <div class="tutorial-pod">
+                <img src="assets/thumbnail-core.webp" alt="Support Tool" loading="lazy">
+                <h3>T1 Quantum Kit</h3>
+                <p>Craft a PowerShell tool—AI-driven support acceleration.</p>
+                <a href="https://labverse.co.za/support-tool" target="_blank">Engage</a>
             </div>
-            <div class="project-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="Website Maintenance Tutorial" loading="lazy">
-                <h3>Website Fusion</h3>
-                <p>Optimize and maintain next-gen sites like LabVerse.</p>
-                <a href="https://labverse.co.za" target="_blank">Watch Now</a>
+            <div class="tutorial-pod">
+                <img src="assets/thumbnail-core.webp" alt="Website Maintenance" loading="lazy">
+                <h3>Cyber Fusion</h3>
+                <p>Master next-gen site optimization—LabVerse style.</p>
+                <a href="https://labverse.co.za" target="_blank">Engage</a>
             </div>
         </div>
     </section>
-    <section id="contact" class="contact">
-        <h2>Connect to the Nexus</h2>
-        <p>Join the free IT training revolution or reach out for tailored support.</p>
-        <div class="contact-links">
+    <section id="nexus-contact" class="nexus-contact">
+        <h2>Contact Relay</h2>
+        <p>Tap into elite IT training or connect for cosmic collaboration.</p>
+        <div class="contact-relays">
             <a href="mailto:labversemail@gmail.com">Email</a>
             <a href="https://linkedin.com/in/labverse" target="_blank">LinkedIn</a>
             <a href="https://www.youtube.com/@labversity" target="_blank">YouTube</a>
@@ -1035,17 +1038,17 @@
     </footer>
 
     <script>
-        const audio = document.getElementById('bg-audio');
-        audio.volume = 0.1;
+        const audio = document.getElementById('core-audio');
+        audio.volume = 0.12;
 
-        const portal = document.querySelector('.nexus-portal');
-        const portalButton = portal.querySelector('button');
-        portalButton.addEventListener('click', () => {
+        const gate = document.querySelector('.vortex-gate');
+        const gateButton = gate.querySelector('button');
+        gateButton.addEventListener('click', () => {
             audio.play().then(() => {
-                portal.classList.add('hidden');
+                gsap.to(gate, { opacity: 0, scale: 1.4, duration: 2, ease: 'power4.out', onComplete: () => gate.classList.add('hidden') });
             }).catch(error => {
                 console.error("Audio Play Error:", error);
-                portal.classList.add('hidden');
+                gsap.to(gate, { opacity: 0, scale: 1.4, duration: 2, ease: 'power4.out', onComplete: () => gate.classList.add('hidden') });
             });
         });
 
@@ -1081,96 +1084,94 @@
             scrollVelocity = scrollTop - lastScrollTop;
 
             if (scrollTop > lastScrollTop) {
-                document.querySelector('header').classList.add('hidden');
+                gsap.to('header', { y: '-100%', duration: 0.8, ease: 'power3.inOut' });
             } else {
-                document.querySelector('header').classList.remove('hidden');
+                gsap.to('header', { y: '0%', duration: 0.8, ease: 'power3.inOut' });
             }
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
 
-            const backToTop = document.querySelector('.back-to-top');
-            if (scrollTop > 700) {
-                backToTop.classList.add('visible');
+            const orbitTop = document.querySelector('.orbit-top');
+            if (scrollTop > 800) {
+                orbitTop.classList.add('visible');
             } else {
-                backToTop.classList.remove('visible');
+                orbitTop.classList.remove('visible');
             }
 
             document.querySelectorAll('section').forEach(section => {
                 const rect = section.getBoundingClientRect();
-                if (rect.top <= window.innerHeight * 0.85 && rect.bottom >= 0 && !section.classList.contains('visible')) {
+                if (rect.top <= window.innerHeight * 0.9 && rect.bottom >= 0 && !section.classList.contains('visible')) {
                     section.classList.add('visible');
+                    const rift = document.createElement('div');
+                    rift.className = 'flux-rift';
+                    rift.style.top = `${rect.top + window.scrollY + rect.height / 2}px`;
+                    document.body.appendChild(rift);
+                    setTimeout(() => rift.remove(), 800);
                 }
             });
 
-            if (Math.abs(scrollVelocity) > 10) {
-                const sweep = document.createElement('div');
-                sweep.className = 'flux-sweep';
-                sweep.style.top = `${scrollTop + window.innerHeight / 2}px`;
-                document.body.appendChild(sweep);
-                setTimeout(() => sweep.remove(), 700);
+            if (Math.abs(scrollVelocity) > 12) {
+                const rift = document.createElement('div');
+                rift.className = 'flux-rift';
+                rift.style.top = `${scrollTop + window.innerHeight / 2}px`;
+                document.body.appendChild(rift);
+                setTimeout(() => rift.remove(), 800);
             }
-        }, { passive: true });
+        }, { passive: true }); /* Priority 1: Scroll Guaranteed */
 
-        let rippleCount = 0;
-        const maxRipples = 35;
+        let burstCount = 0;
+        const maxBursts = 40;
         document.addEventListener('mousemove', throttle((e) => {
-            if (rippleCount < maxRipples) {
-                const ripple = document.createElement('div');
-                ripple.className = 'cyber-ripple';
-                ripple.style.left = `${e.clientX}px`;
-                ripple.style.top = `${e.clientY}px`;
-                document.body.appendChild(ripple);
-                rippleCount++;
+            if (burstCount < maxBursts) {
+                const burst = document.createElement('div');
+                burst.className = 'nova-burst';
+                burst.style.left = `${e.clientX}px`;
+                burst.style.top = `${e.clientY}px`;
+                document.body.appendChild(burst);
+                burstCount++;
                 setTimeout(() => {
-                    ripple.remove();
-                    rippleCount--;
-                }, 900);
+                    burst.remove();
+                    burstCount--;
+                }, 1000);
             }
-        }, 25));
+        }, 20));
 
-        function spawnNanoStream() {
-            if (Math.random() < 0.18) {
-                const stream = document.createElement('div');
-                stream.className = 'nano-stream';
-                stream.style.left = `${Math.random() * 100}vw`;
-                stream.style.top = `${-70}px`;
-                document.body.appendChild(stream);
-                setTimeout(() => stream.remove(), 2200);
+        function spawnPlasmaTrail() {
+            if (Math.random() < 0.2) {
+                const trail = document.createElement('div');
+                trail.className = 'plasma-trail';
+                trail.style.left = `${Math.random() * 100}vw`;
+                trail.style.top = `${-80}px`;
+                document.body.appendChild(trail);
+                setTimeout(() => trail.remove(), 2500);
             }
         }
 
-        setInterval(spawnNanoStream, 80);
+        setInterval(spawnPlasmaTrail, 70);
 
-        const audioToggle = document.querySelector('.audio-toggle');
-        audioToggle.addEventListener('click', () => {
+        const audioCore = document.querySelector('.audio-core');
+        audioCore.addEventListener('click', () => {
             if (audio.paused) {
                 audio.play();
-                audioToggle.textContent = '♫';
+                audioCore.textContent = '♫';
             } else {
                 audio.pause();
-                audioToggle.textContent = '♪';
+                audioCore.textContent = '♪';
             }
         });
 
-        VanillaTilt.init(document.querySelectorAll('.skill-card, .project-card'), {
-            max: 22,
-            speed: 900,
-            glare: true,
-            'max-glare': 0.8
-        });
-
         window.addEventListener('load', () => {
-            document.querySelector('.quantum-loader').classList.add('hidden');
+            gsap.to('.flux-loader', { opacity: 0, duration: 1.5, ease: 'power4.out', onComplete: () => document.querySelector('.flux-loader').classList.add('hidden') });
 
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             const renderer = new THREE.WebGLRenderer({ alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
-            document.getElementById('quantum-grid').appendChild(renderer.domElement);
+            document.getElementById('cosmic-grid').appendChild(renderer.domElement);
 
-            const gridSize = 35;
-            const spacing = 3.5;
-            const geometry = new THREE.SphereGeometry(0.18, 32, 32);
-            const material = new THREE.MeshBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.6 });
+            const gridSize = 40;
+            const spacing = 4;
+            const geometry = new THREE.SphereGeometry(0.2, 32, 32);
+            const material = new THREE.MeshBasicMaterial({ color: 0x00f4ff, transparent: true, opacity: 0.7 });
 
             for (let x = -gridSize; x <= gridSize; x += spacing) {
                 for (let z = -gridSize; z <= gridSize; z += spacing) {
@@ -1180,13 +1181,13 @@
                 }
             }
 
-            camera.position.z = 45;
-            camera.position.y = 35;
+            camera.position.z = 50;
+            camera.position.y = 40;
             camera.lookAt(0, 0, 0);
 
             function animate() {
                 requestAnimationFrame(animate);
-                scene.rotation.y += 0.0008;
+                scene.rotation.y += 0.0006;
                 renderer.render(scene, camera);
             }
             animate();
@@ -1197,46 +1198,46 @@
                 renderer.setSize(window.innerWidth, window.innerHeight);
             });
 
-            for (let i = 0; i < 30; i++) {
-                const node = document.createElement('div');
-                node.className = 'cyber-node';
-                node.style.left = `${Math.random() * 100}vw`;
-                node.style.top = `${Math.random() * 100}vh`;
-                node.style.animationDuration = `${6 + Math.random() * 6}s`;
-                node.style.animationDelay = `${Math.random() * 3}s`;
-                document.body.appendChild(node);
+            for (let i = 0; i < 35; i++) {
+                const orb = document.createElement('div');
+                orb.className = 'nebula-orb';
+                orb.style.left = `${Math.random() * 100}vw`;
+                orb.style.top = `${Math.random() * 100}vh`;
+                orb.style.animationDuration = `${7 + Math.random() * 7}s`;
+                orb.style.animationDelay = `${Math.random() * 3.5}s`;
+                document.body.appendChild(orb);
             }
 
-            const heroImage = document.getElementById('hero-image');
+            const horizonImage = document.getElementById('horizon-image');
             const pathsToTry = [
-                '/channel-pictures/my-picture.jpeg',
-                './channel-pictures/my-picture.jpeg',
-                'channel-pictures/my-picture.jpeg',
-                'thumbnails/thumbnail-13.webp'
+                '/core-images/nexus-core.jpeg',
+                './core-images/nexus-core.jpeg',
+                'core-images/nexus-core.jpeg',
+                'assets/thumbnail-core.webp'
             ];
             let currentPathIndex = 0;
 
             function tryNextPath() {
                 if (currentPathIndex >= pathsToTry.length) {
-                    console.error('All paths failed. Check file existence and server config.');
+                    console.error('All paths failed. Verify file paths and server setup.');
                     return;
                 }
-                heroImage.src = pathsToTry[currentPathIndex];
-                console.log(`Trying path: ${pathsToTry[currentPathIndex]}`);
+                horizonImage.src = pathsToTry[currentPathIndex];
+                console.log(`Attempting path: ${pathsToTry[currentPathIndex]}`);
                 currentPathIndex++;
             }
 
-            heroImage.addEventListener('load', () => {
-                console.log(`Image loaded successfully at ${heroImage.src}`);
-                heroImage.style.opacity = 1;
+            horizonImage.addEventListener('load', () => {
+                console.log(`Image loaded at ${horizonImage.src}`);
+                gsap.to(horizonImage, { opacity: 1, duration: 1, ease: 'power3.out' });
             });
 
-            heroImage.addEventListener('error', () => {
-                console.error(`Failed to load ${heroImage.src}`);
+            horizonImage.addEventListener('error', () => {
+                console.error(`Failed to load ${horizonImage.src}`);
                 tryNextPath();
             });
 
-            heroImage.style.opacity = 0;
+            horizonImage.style.opacity = 0;
             tryNextPath();
         });
     </script>
