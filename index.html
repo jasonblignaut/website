@@ -286,7 +286,7 @@
         .terminal-loader.hidden {
             opacity: 0;
             pointer-events: none;
-            display: none; /* Ensures it’s fully removed */
+            display: none;
         }
 
         .terminal-text {
@@ -296,10 +296,6 @@
             text-align: center;
             animation: blink 0.8s infinite;
             text-shadow: 0 0 20px var(--cyber-blue);
-        }
-
-        @keyframes blink {
-            50% { opacity: 0.6; }
         }
 
         .terminal-bar {
@@ -324,6 +320,45 @@
         @keyframes load {
             0% { transform: translateX(-100%); }
             100% { transform: translateX(0); }
+        }
+
+        .enter-button {
+            font-family: 'Exo 2', sans-serif;
+            font-size: 2.5rem;
+            color: var(--cyber-pink);
+            background: var(--holo-glass);
+            border: 4px solid var(--cyber-pink);
+            border-radius: 15px;
+            padding: 1rem 3rem;
+            cursor: pointer;
+            text-shadow: 0 0 20px var(--cyber-pink);
+            box-shadow: 0 0 30px var(--cyber-pink);
+            transition: all 0.4s;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        .enter-button.visible {
+            opacity: 1;
+            transform: scale(1);
+            animation: pulseButton 2s infinite;
+        }
+
+        .enter-button:hover {
+            color: var(--nano-green);
+            border-color: var(--nano-green);
+            box-shadow: 0 0 50px var(--nano-green);
+            transform: scale(1.1);
+        }
+
+        @keyframes pulseButton {
+            0% { box-shadow: 0 0 30px var(--cyber-pink); }
+            50% { box-shadow: 0 0 50px var(--cyber-pink); }
+            100% { box-shadow: 0 0 30px var(--cyber-pink); }
+        }
+
+        @keyframes blink {
+            50% { opacity: 0.6; }
         }
 
         /* Holographic Dashboard */
@@ -587,6 +622,11 @@
             margin: 0 auto;
             position: relative;
             z-index: 1;
+            display: none; /* Hidden until button clicked */
+        }
+
+        main.visible {
+            display: block;
         }
 
         .holo-section {
@@ -799,6 +839,11 @@
             background: var(--holo-glass);
             border-top: 2px solid var(--cyber-blue);
             box-shadow: 0 0 30px var(--cyber-blue);
+            display: none; /* Hidden until button clicked */
+        }
+
+        footer.visible {
+            display: block;
         }
 
         footer p {
@@ -877,6 +922,11 @@
             font-size: 1rem;
             z-index: 1000;
             box-shadow: 0 0 20px var(--nano-green);
+            display: none; /* Hidden until button clicked */
+        }
+
+        .analytics-hud.visible {
+            display: block;
         }
 
         /* User Profile */
@@ -890,6 +940,11 @@
             padding: 1.5rem;
             z-index: 1000;
             box-shadow: 0 0 30px var(--cyber-blue);
+            display: none; /* Hidden until button clicked */
+        }
+
+        .user-profile.visible {
+            display: block;
         }
 
         .profile-avatar {
@@ -950,14 +1005,14 @@
     <div class="terminal-loader">
         <div class="terminal-text">Initializing CyberVerse</div>
         <div class="terminal-bar"></div>
+        <button class="enter-button" id="enter-labverse">Enter LabVerse</button>
     </div>
-    <div class="infinite-bg"></div>
-    <div class="cyber-grid"></div>
-    <div class="weather-effect"></div>
-    <audio id="cyber-ambient" src="/music/cyber-ambient.mp3" loop preload="auto" style="display: none;"></audio>
-    <audio id="cyber-pulse" src="/music/cyber-pulse.mp3" loop preload="auto" style="display: none;"></audio>
+    <div class="infinite-bg" style="display: none;"></div>
+    <div class="cyber-grid" style="display: none;"></div>
+    <div class="weather-effect" style="display: none;"></div>
+    <audio id="lofi-audio" src="/music/lofi.mp3" loop preload="auto" style="display: none;"></audio>
     <audio id="node-hover" src="/sounds/node-hover.mp3" preload="auto" style="display: none;"></audio>
-    <div class="holo-dashboard">
+    <div class="holo-dashboard" style="display: none;">
         <canvas id="dashboard-canvas"></canvas>
         <div class="dashboard-overlay">
             <div class="dashboard-stat">Systems: Online</div>
@@ -966,7 +1021,7 @@
             <div class="dashboard-stat">Energy: <span id="energy-level">100%</span></div>
         </div>
     </div>
-    <div class="cyber-sphere">
+    <div class="cyber-sphere" style="display: none;">
         <canvas id="sphere-nav"></canvas>
     </div>
     <div class="nav-overlay">
@@ -977,27 +1032,27 @@
             <a href="#hub">Hub</a>
         </div>
     </div>
-    <div class="ar-overlay">
+    <div class="ar-overlay" style="display: none;">
         <div class="ar-point" style="top: 20%; left: 30%;"></div>
         <div class="ar-point plasma" style="top: 50%; left: 70%;"></div>
         <div class="ar-point" style="top: 80%; left: 20%;"></div>
         <div class="ar-point plasma" style="top: 40%; left: 90%;"></div>
     </div>
-    <div class="terminal-console">
+    <div class="terminal-console" style="display: none;">
         <div class="console-output" id="console-output"></div>
         <input type="text" class="console-input" id="console-input" placeholder="> Enter command">
     </div>
-    <div class="control-panel">
+    <div class="control-panel" style="display: none;">
         <button class="control-btn top-btn" title="Back to Top">↑</button>
         <button class="control-btn audio-control" title="Toggle Audio">♫</button>
         <button class="control-btn ar-toggle" title="Toggle AR">AR</button>
         <button class="control-btn console-toggle" title="Toggle Console">⌨</button>
         <button class="control-btn weather-toggle" title="Toggle Weather">☔</button>
     </div>
-    <div class="cyber-widget" id="cyber-clock"></div>
-    <div class="cyber-widget" id="cyber-map"><canvas id="map-canvas"></canvas></div>
-    <div class="cyber-widget" id="cyber-resource">CPU: <span id="cpu-usage">0%</span></div>
-    <div class="cyber-widget" id="cyber-energy">Energy: <span id="energy-level-display">100%</span></div>
+    <div class="cyber-widget" id="cyber-clock" style="display: none;"></div>
+    <div class="cyber-widget" id="cyber-map" style="display: none;"><canvas id="map-canvas"></canvas></div>
+    <div class="cyber-widget" id="cyber-resource" style="display: none;">CPU: <span id="cpu-usage">0%</span></div>
+    <div class="cyber-widget" id="cyber-energy" style="display: none;">Energy: <span id="energy-level-display">100%</span></div>
     <div class="analytics-hud">
         Time: <span id="time-spent">0s</span> | Interactions: <span id="interactions">0</span>
     </div>
@@ -1088,8 +1143,7 @@
     </footer>
 
     <script>
-        const ambientAudio = new Howl({ src: ['/music/cyber-ambient.mp3'], loop: true, volume: 0.4 });
-        const pulseAudio = new Howl({ src: ['/music/cyber-pulse.mp3'], loop: true, volume: 0.3 });
+        const lofiAudio = new Howl({ src: ['/music/lofi.mp3'], loop: true, volume: 0.5 });
         const nodeHover = new Howl({ src: ['/sounds/node-hover.mp3'], volume: 0.6 });
 
         function throttle(func, limit) {
@@ -1105,16 +1159,57 @@
 
         window.addEventListener('load', () => {
             const loader = document.querySelector('.terminal-loader');
-            // Force loader to hide after exactly 3 seconds
+            const enterButton = document.getElementById('enter-labverse');
+            const mainContent = document.querySelector('main');
+            const footer = document.querySelector('footer');
+            const infiniteBg = document.querySelector('.infinite-bg');
+            const cyberGrid = document.querySelector('.cyber-grid');
+            const weatherEffect = document.querySelector('.weather-effect');
+            const holoDashboard = document.querySelector('.holo-dashboard');
+            const cyberSphere = document.querySelector('.cyber-sphere');
+            const arOverlay = document.querySelector('.ar-overlay');
+            const terminalConsole = document.querySelector('.terminal-console');
+            const controlPanel = document.querySelector('.control-panel');
+            const cyberClock = document.getElementById('cyber-clock');
+            const cyberMap = document.getElementById('cyber-map');
+            const cyberResource = document.getElementById('cyber-resource');
+            const cyberEnergy = document.getElementById('cyber-energy');
+            const analyticsHud = document.querySelector('.analytics-hud');
+            const userProfile = document.querySelector('.user-profile');
+
+            // After 3 seconds, show the Enter button
             setTimeout(() => {
-                loader.classList.add('hidden');
-                ambientAudio.play();
-                pulseAudio.play();
-                document.body.addEventListener('click', () => {
-                    if (!ambientAudio.playing()) ambientAudio.play();
-                    if (!pulseAudio.playing()) pulseAudio.play();
-                }, { once: true });
+                document.querySelector('.terminal-text').style.display = 'none';
+                document.querySelector('.terminal-bar').style.display = 'none';
+                enterButton.classList.add('visible');
             }, 3000);
+
+            // On button click, reveal site and play Lo-Fi
+            enterButton.addEventListener('click', () => {
+                loader.classList.add('hidden');
+                mainContent.classList.add('visible');
+                footer.classList.add('visible');
+                infiniteBg.style.display = 'block';
+                cyberGrid.style.display = 'block';
+                weatherEffect.style.display = 'block';
+                holoDashboard.style.display = 'block';
+                cyberSphere.style.display = 'block';
+                arOverlay.style.display = 'block';
+                terminalConsole.style.display = 'block';
+                controlPanel.style.display = 'flex';
+                cyberClock.style.display = 'block';
+                cyberMap.style.display = 'block';
+                cyberResource.style.display = 'block';
+                cyberEnergy.style.display = 'block';
+                analyticsHud.classList.add('visible');
+                userProfile.classList.add('visible');
+                lofiAudio.play();
+
+                // Ensure audio resumes on interaction
+                document.body.addEventListener('click', () => {
+                    if (!lofiAudio.playing()) lofiAudio.play();
+                }, { once: true });
+            });
 
             // Holo Dashboard
             const dashScene = new THREE.Scene();
@@ -1227,12 +1322,12 @@
             setInterval(spawnStream, 150);
 
             // Weather Effects
-            const weatherEffect = document.querySelector('.weather-effect');
+            const weatherEffectElement = document.querySelector('.weather-effect');
             function spawnRain() {
                 const drop = document.createElement('div');
                 drop.className = 'rain-drop';
                 drop.style.left = `${Math.random() * 100}vw`;
-                weatherEffect.appendChild(drop);
+                weatherEffectElement.appendChild(drop);
                 setTimeout(() => drop.remove(), 1200);
             }
 
@@ -1240,7 +1335,7 @@
                 const line = document.createElement('div');
                 line.className = 'glitch-line';
                 line.style.top = `${Math.random() * 100}vh`;
-                weatherEffect.appendChild(line);
+                weatherEffectElement.appendChild(line);
                 setTimeout(() => line.remove(), 600);
             }
 
@@ -1249,7 +1344,7 @@
                 wave.className = 'plasma-wave';
                 wave.style.left = `${Math.random() * 100}vw`;
                 wave.style.top = `${Math.random() * 100}vh`;
-                weatherEffect.appendChild(wave);
+                weatherEffectElement.appendChild(wave);
                 setTimeout(() => wave.remove(), 3000);
             }
 
@@ -1258,7 +1353,7 @@
             let weatherState = 'none';
             weatherToggle.addEventListener('click', () => {
                 clearInterval(weatherInterval);
-                weatherEffect.innerHTML = '';
+                weatherEffectElement.innerHTML = '';
                 if (weatherState === 'none') {
                     weatherState = 'rain';
                     document.body.classList.add('weather-rain');
@@ -1323,35 +1418,33 @@
             // Audio Control
             const audioBtn = document.querySelector('.audio-control');
             audioBtn.addEventListener('click', () => {
-                if (ambientAudio.playing()) {
-                    ambientAudio.pause();
-                    pulseAudio.pause();
+                if (lofiAudio.playing()) {
+                    lofiAudio.pause();
                     audioBtn.textContent = '♪';
                 } else {
-                    ambientAudio.play();
-                    pulseAudio.play();
+                    lofiAudio.play();
                     audioBtn.textContent = '♫';
                 }
             });
 
             // AR Toggle
             const arToggle = document.querySelector('.ar-toggle');
-            const arOverlay = document.querySelector('.ar-overlay');
+            const arOverlayElement = document.querySelector('.ar-overlay');
             arToggle.addEventListener('click', () => {
-                arOverlay.classList.toggle('active');
-                arToggle.textContent = arOverlay.classList.contains('active') ? 'AR+' : 'AR';
+                arOverlayElement.classList.toggle('active');
+                arToggle.textContent = arOverlayElement.classList.contains('active') ? 'AR+' : 'AR';
             });
 
             // Terminal Console
             const consoleToggle = document.querySelector('.console-toggle');
-            const terminalConsole = document.querySelector('.terminal-console');
+            const terminalConsoleElement = document.querySelector('.terminal-console');
             const consoleInput = document.getElementById('console-input');
             const consoleOutput = document.getElementById('console-output');
 
             consoleToggle.addEventListener('click', () => {
-                terminalConsole.classList.toggle('active');
-                consoleToggle.textContent = terminalConsole.classList.contains('active') ? '⌨-' : '⌨';
-                if (terminalConsole.classList.contains('active')) consoleInput.focus();
+                terminalConsoleElement.classList.toggle('active');
+                consoleToggle.textContent = terminalConsoleElement.classList.contains('active') ? '⌨-' : '⌨';
+                if (terminalConsoleElement.classList.contains('active')) consoleInput.focus();
             });
 
             consoleInput.addEventListener('keypress', (e) => {
@@ -1365,10 +1458,10 @@
                     } else if (command === 'weather') {
                         consoleOutput.innerHTML += '<p>Toggle weather with button</p>';
                     } else if (command === 'ar') {
-                        arOverlay.classList.toggle('active');
-                        consoleOutput.innerHTML += `<p>AR ${arOverlay.classList.contains('active') ? 'enabled' : 'disabled'}</p>';
+                        arOverlayElement.classList.toggle('active');
+                        consoleOutput.innerHTML += `<p>AR ${arOverlayElement.classList.contains('active') ? 'enabled' : 'disabled'}</p>`;
                     } else if (command === 'exit') {
-                        terminalConsole.classList.remove('active');
+                        terminalConsoleElement.classList.remove('active');
                         consoleToggle.textContent = '⌨';
                     } else if (command === 'plasma') {
                         document.body.classList.toggle('weather-plasma');
