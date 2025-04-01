@@ -3,39 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="LabVerse | Technical University: South Africa’s Premier Free IT Training Nexus. Master Hybrid Cloud, Cybersecurity, Networking, and More in a Luxury Cyber Cosmos.">
-    <meta name="keywords" content="Technical University South Africa, Free IT Training, Hybrid Cloud, Cybersecurity, Networking, Digital Marketing, SEO Optimization, Cisco, Unifi, Network Diagrams, Management, Leadership Mindset, Aura Tech, Cyber Luxury, LabVerse">
+    <meta name="description" content="LabVerse | Technical University V2.0: South Africa’s Elite Free IT Training Nexus. Master Hybrid Cloud, Cybersecurity, and Networking in an Innovative Cyber Realm.">
+    <meta name="keywords" content="Technical University South Africa, Free IT Training, Hybrid Cloud, Cybersecurity, Networking, Digital Marketing, SEO Optimization, Cisco, Unifi, Network Diagrams, Management, Leadership Mindset, Cyber Innovation, LabVerse V2.0">
     <meta name="author" content="LabVerse">
     <meta name="robots" content="index, follow">
-    <meta property="og:title" content="LabVerse | Technical University">
-    <meta property="og:description" content="Enter the Future with LabVerse | Technical University. Elite Free Tutorials in a Luxury Cyber Realm.">
-    <meta property="og:image" content="assets/aura-core.webp">
+    <meta property="og:title" content="LabVerse | Technical University V2.0">
+    <meta property="og:description" content="Step Into Innovation with LabVerse | Technical University V2.0. Elite Free Tutorials in a Cyber Awe Realm.">
+    <meta property="og:image" content="assets/cyber-core.webp">
     <meta property="og:url" content="https://labverse.co.za">
     <meta property="og:type" content="website">
     <link rel="icon" type="image/png" href="assets/favicon.ico">
-    <title>LabVerse | Technical University</title>
+    <title>LabVerse | Technical University V2.0</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;700&family=Fira+Code:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;800&family=Source+Code+Pro:wght@300;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
     <style>
         :root {
-            --aura-cyan: #00eaff;
-            --aura-violet: #ff00ea;
-            --void-core: #050515;
-            --aura-glass: rgba(255, 255, 255, 0.08);
-            --light-aura: #fafaff;
-            --shadow-flux: #d8d8f0;
-            --glow-core: 22px;
+            --cyber-neon: #00ffcc;
+            --cyber-magenta: #ff00cc;
+            --dark-abyss: #03031a;
+            --crystal-glass: rgba(255, 255, 255, 0.1);
+            --light-pulse: #fdfcff;
+            --shadow-pulse: #e0e0f5;
+            --glow-edge: 25px;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Fira Code', monospace;
+            font-family: 'Source Code Pro', monospace;
         }
 
         html {
@@ -45,230 +44,224 @@
         }
 
         body {
-            background-color: var(--void-core);
-            color: var(--light-aura);
-            line-height: 1.8;
+            background-color: var(--dark-abyss);
+            color: var(--light-pulse);
+            line-height: 1.9;
             position: relative;
             overflow-x: hidden;
-            overflow-y: auto; /* 100% Scroll Guarantee */
+            overflow-y: auto; /* Scroll Locked In */
             min-height: 100vh;
             will-change: scroll-position;
         }
 
-        /* Aura Pulse (Mouse Effect) */
-        .aura-pulse {
+        /* Cyber Flare (Mouse & Scroll Effect) */
+        .cyber-flare {
             position: fixed;
-            width: 16px;
-            height: 16px;
-            background: var(--aura-cyan);
+            width: 18px;
+            height: 18px;
+            background: var(--cyber-neon);
             border-radius: 50%;
             pointer-events: none;
             z-index: 10007;
-            opacity: 0.9;
-            box-shadow: 0 0 40px var(--aura-cyan), 0 0 55px var(--aura-violet);
-            animation: auraBurst 1.1s ease-out forwards;
+            opacity: 0.95;
+            box-shadow: 0 0 45px var(--cyber-neon), 0 0 60px var(--cyber-magenta);
+            animation: flareBurst 1.2s ease-out forwards;
             will-change: transform, opacity;
         }
 
-        @keyframes auraBurst {
-            0% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(6); opacity: 0.85; }
+        @keyframes flareBurst {
+            0% { transform: scale(1); opacity: 0.95; }
+            50% { transform: scale(7); opacity: 0.9; }
             100% { transform: scale(0); opacity: 0; }
         }
 
-        /* Aura Flux (Scroll Effect) */
-        .aura-flux {
-            position: fixed;
+        .cyber-flare.scroll {
             width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, transparent, var(--aura-violet), transparent);
-            pointer-events: none;
-            z-index: 10006;
-            opacity: 0;
-            box-shadow: 0 0 45px var(--aura-violet);
-            animation: fluxSweep 0.9s ease-out forwards;
-            will-change: transform, opacity;
+            height: 6px;
+            background: linear-gradient(90deg, transparent, var(--cyber-magenta), transparent);
+            border-radius: 0;
+            animation: flareSweep 1s ease-out forwards;
         }
 
-        @keyframes fluxSweep {
-            0% { transform: translateY(-100vh) skewX(40deg); opacity: 1; }
-            50% { transform: translateY(0) skewX(0deg); opacity: 0.8; }
-            100% { transform: translateY(100vh) skewX(-40deg); opacity: 0; }
+        @keyframes flareSweep {
+            0% { transform: translateY(-100vh) skewX(45deg); opacity: 1; }
+            50% { transform: translateY(0) skewX(0deg); opacity: 0.85; }
+            100% { transform: translateY(100vh) skewX(-45deg); opacity: 0; }
         }
 
-        /* Pulse Trails */
-        .pulse-trail {
+        /* Neon Trails */
+        .neon-trail {
             position: fixed;
-            width: 10px;
-            height: 90px;
-            background: linear-gradient(180deg, var(--aura-cyan), transparent);
+            width: 12px;
+            height: 100px;
+            background: linear-gradient(180deg, var(--cyber-neon), transparent);
             pointer-events: none;
             z-index: 10005;
-            opacity: 0.95;
-            box-shadow: 0 0 40px var(--aura-cyan);
-            animation: trailDrop 2.8s linear forwards;
+            opacity: 0.98;
+            box-shadow: 0 0 45px var(--cyber-neon);
+            animation: trailFall 3s linear forwards;
             will-change: transform, opacity;
         }
 
-        @keyframes trailDrop {
-            0% { transform: translateY(-100vh) rotate(22deg); opacity: 0.95; }
-            70% { opacity: 0.8; }
-            100% { transform: translateY(100vh) rotate(22deg); opacity: 0; }
+        @keyframes trailFall {
+            0% { transform: translateY(-110vh) rotate(25deg); opacity: 0.98; }
+            70% { opacity: 0.85; }
+            100% { transform: translateY(110vh) rotate(25deg); opacity: 0; }
         }
 
-        /* Aura Grid (3D Background) */
-        #aura-grid {
+        /* Cyber Grid (3D Background) */
+        #cyber-grid {
             position: fixed;
             inset: 0;
             z-index: -1;
-            pointer-events: none; /* Scroll Immunity */
-            opacity: 0.85;
+            pointer-events: none; /* Scroll Untouched */
+            opacity: 0.8;
         }
 
-        .grid-aura {
+        .grid-pulse {
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(0, 234, 255, 0.15) 0%, transparent 65%);
-            opacity: 0.75;
-            animation: auraDrift 50s linear infinite;
+            background: linear-gradient(135deg, rgba(0, 255, 204, 0.18) 0%, transparent 70%);
+            opacity: 0.7;
+            animation: pulseDrift 55s linear infinite;
         }
 
-        @keyframes auraDrift {
+        @keyframes pulseDrift {
             0% { transform: translate(0, 0); }
-            100% { transform: translate(-120px, 120px); }
+            100% { transform: translate(-140px, 140px); }
         }
 
-        /* Void Orbs */
-        .void-orb {
+        /* Abyss Spheres */
+        .abyss-sphere {
             position: absolute;
-            width: 18px;
-            height: 18px;
-            background: var(--aura-violet);
+            width: 20px;
+            height: 20px;
+            background: var(--cyber-magenta);
             border-radius: 50%;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.9;
-            box-shadow: 0 0 45px var(--aura-violet);
-            animation: orbDrift 10s ease-in-out infinite;
+            opacity: 0.92;
+            box-shadow: 0 0 50px var(--cyber-magenta);
+            animation: sphereOrbit 11s ease-in-out infinite;
             will-change: transform, opacity;
         }
 
-        @keyframes orbDrift {
-            0%, 100% { transform: translate(0, 0); opacity: 0.9; }
-            50% { transform: translate(45px, -45px); opacity: 1; }
+        @keyframes sphereOrbit {
+            0%, 100% { transform: translate(0, 0); opacity: 0.92; }
+            50% { transform: translate(50px, -50px); opacity: 1; }
         }
 
-        /* Aura Portal */
-        .aura-portal {
+        /* Quantum Gate */
+        .quantum-gate {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(0, 234, 255, 0.22), var(--void-core) 80%);
+            background: radial-gradient(circle, rgba(0, 255, 204, 0.25), var(--dark-abyss) 85%);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 10000;
-            transition: opacity 2.2s ease, transform 2.2s ease;
+            transition: opacity 2.5s ease, transform 2.5s ease;
         }
 
-        .aura-portal.hidden {
+        .quantum-gate.hidden {
             opacity: 0;
-            transform: scale(1.45);
+            transform: scale(1.5) rotate(10deg);
             pointer-events: none;
         }
 
-        .aura-portal button {
-            background: linear-gradient(135deg, var(--aura-cyan), var(--aura-violet));
-            color: var(--light-aura);
-            padding: 4.5rem 10rem;
+        .quantum-gate button {
+            background: linear-gradient(135deg, var(--cyber-neon), var(--cyber-magenta));
+            color: var(--light-pulse);
+            padding: 5rem 11rem;
             border: none;
-            border-radius: 100px;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 3.2rem;
-            font-weight: 700;
+            border-radius: 110px;
+            font-family: 'Exo 2', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
             text-transform: uppercase;
             cursor: pointer;
-            box-shadow: 0 0 var(--glow-core) var(--aura-cyan);
+            box-shadow: 0 0 var(--glow-edge) var(--cyber-neon);
             position: relative;
             overflow: hidden;
-            transition: transform 0.9s, box-shadow 0.9s;
+            transition: transform 1s, box-shadow 1s;
         }
 
-        .aura-portal button::before {
+        .quantum-gate button::before {
             content: '';
             position: absolute;
             top: -50%;
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.45), transparent);
-            animation: portalFlux 2.8s infinite;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            animation: gatePulse 3s infinite;
         }
 
-        @keyframes portalFlux {
+        @keyframes gatePulse {
             0% { transform: translateX(-100%) rotate(45deg); }
             100% { transform: translateX(100%) rotate(45deg); }
         }
 
-        .aura-portal button:hover {
-            transform: scale(1.25);
-            box-shadow: 0 0 calc(var(--glow-core) * 2) var(--aura-violet);
+        .quantum-gate button:hover {
+            transform: scale(1.3) rotate(5deg);
+            box-shadow: 0 0 calc(var(--glow-edge) * 2) var(--cyber-magenta);
         }
 
-        /* Aura Loader */
-        .aura-loader {
+        /* Cyber Loader */
+        .cyber-loader {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--void-core);
+            background: var(--dark-abyss);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 1.8s ease;
+            transition: opacity 2s ease;
         }
 
-        .aura-loader::before {
+        .cyber-loader::before {
             content: '';
-            width: 90px;
-            height: 90px;
-            border: 10px solid var(--aura-cyan);
-            border-top: 10px solid var(--aura-violet);
+            width: 100px;
+            height: 100px;
+            border: 12px solid var(--cyber-neon);
+            border-top: 12px solid var(--cyber-magenta);
             border-radius: 50%;
-            animation: auraSpin 1.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
-            box-shadow: 0 0 50px var(--aura-cyan);
+            animation: cyberSpin 2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+            box-shadow: 0 0 55px var(--cyber-neon);
         }
 
-        @keyframes auraSpin {
+        @keyframes cyberSpin {
             0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.45); }
+            50% { transform: rotate(180deg) scale(1.5); }
             100% { transform: rotate(360deg) scale(1); }
         }
 
-        .aura-loader.hidden {
+        .cyber-loader.hidden {
             opacity: 0;
             pointer-events: none;
         }
 
-        /* Void Header */
+        /* Abyss Header */
         header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(5, 5, 21, 0.95);
-            backdrop-filter: blur(35px);
-            padding: 2.5rem 3.5rem;
+            background: rgba(3, 3, 26, 0.95);
+            backdrop-filter: blur(40px);
+            padding: 3rem 4rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            border-bottom: 1px solid rgba(0, 234, 255, 0.25);
-            transition: transform 0.9s ease;
+            border-bottom: 1px solid rgba(0, 255, 204, 0.3);
+            transition: transform 1s ease;
         }
 
         header.hidden {
@@ -276,13 +269,13 @@
         }
 
         .logo img {
-            height: 75px;
-            filter: drop-shadow(0 0 18px var(--aura-cyan));
-            transition: transform 0.9s;
+            height: 80px;
+            filter: drop-shadow(0 0 20px var(--cyber-neon));
+            transition: transform 1s;
         }
 
         .logo img:hover {
-            transform: scale(1.4) rotate(40deg);
+            transform: scale(1.45) rotate(45deg);
         }
 
         nav {
@@ -290,30 +283,30 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            max-width: 1100px;
+            max-width: 1200px;
         }
 
         nav a {
-            color: var(--light-aura);
+            color: var(--light-pulse);
             text-decoration: none;
-            margin: 0 4rem;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 700;
+            margin: 0 4.5rem;
+            font-family: 'Exo 2', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
             text-transform: uppercase;
             position: relative;
-            transition: all 0.8s;
+            transition: all 0.9s;
         }
 
         nav a::after {
             content: '';
             position: absolute;
             width: 0;
-            height: 6px;
-            bottom: -18px;
+            height: 7px;
+            bottom: -20px;
             left: 0;
-            background: var(--aura-cyan);
-            transition: width 0.8s ease;
+            background: var(--cyber-neon);
+            transition: width 0.9s ease;
         }
 
         nav a:hover::after {
@@ -321,191 +314,198 @@
         }
 
         nav a:hover {
-            color: var(--aura-cyan);
-            text-shadow: 0 0 25px var(--aura-cyan);
+            color: var(--cyber-neon);
+            text-shadow: 0 0 30px var(--cyber-neon);
         }
 
         .hamburger {
             display: none;
             cursor: pointer;
-            font-size: 4rem;
-            color: var(--light-aura);
-            transition: transform 0.8s;
+            font-size: 4.5rem;
+            color: var(--light-pulse);
+            transition: transform 0.9s;
         }
 
         .hamburger:hover {
-            transform: scale(1.4);
+            transform: scale(1.45);
         }
 
-        /* Aura Controls */
-        .void-top, .audio-void {
+        /* Cyber Controls */
+        .abyss-top, .audio-abyss {
             position: fixed;
-            background: linear-gradient(135deg, var(--aura-cyan), var(--aura-violet));
-            color: var(--light-aura);
-            width: 85px;
-            height: 85px;
+            background: linear-gradient(135deg, var(--cyber-neon), var(--cyber-magenta));
+            color: var(--light-pulse);
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 2.8rem;
+            font-size: 3rem;
             text-decoration: none;
-            box-shadow: 0 0 var(--glow-core) var(--aura-cyan);
-            transition: transform 0.8s, box-shadow 0.8s;
+            box-shadow: 0 0 var(--glow-edge) var(--cyber-neon);
+            transition: transform 0.9s, box-shadow 0.9s;
             z-index: 1000;
         }
 
-        .void-top {
-            bottom: 5rem;
-            right: 5rem;
+        .abyss-top {
+            bottom: 5.5rem;
+            right: 5.5rem;
             opacity: 0;
         }
 
-        .void-top.visible {
+        .abyss-top.visible {
             opacity: 1;
         }
 
-        .audio-void {
-            bottom: 5rem;
-            left: 5rem;
+        .audio-abyss {
+            bottom: 5.5rem;
+            left: 5.5rem;
         }
 
-        .void-top:hover, .audio-void:hover {
-            transform: scale(1.35);
-            box-shadow: 0 0 calc(var(--glow-core) * 2) var(--aura-violet);
+        .abyss-top:hover, .audio-abyss:hover {
+            transform: scale(1.4) rotate(15deg);
+            box-shadow: 0 0 calc(var(--glow-edge) * 2) var(--cyber-magenta);
         }
 
-        /* Core Void (Hero) */
-        .void-core {
+        /* Cyber Abyss (Hero) */
+        .cyber-abyss {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 5rem 4rem;
+            padding: 6rem 5rem;
             position: relative;
             overflow: hidden;
             z-index: 1;
         }
 
-        .void-core::before {
+        .cyber-abyss::before {
             content: '';
             position: absolute;
-            width: 400%;
-            height: 400%;
-            background: radial-gradient(circle, rgba(0, 234, 255, 0.2), transparent 85%);
-            animation: voidPulse 16s infinite ease-in-out;
+            width: 450%;
+            height: 450%;
+            background: radial-gradient(circle, rgba(0, 255, 204, 0.22), transparent 90%);
+            animation: abyssPulse 18s infinite ease-in-out;
             z-index: -1;
         }
 
-        @keyframes voidPulse {
-            0% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.2; }
-            50% { transform: scale(1.2) translateX(-50%) translateY(-50%); opacity: 0.4; }
-            100% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.2; }
+        @keyframes abyssPulse {
+            0% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.22; }
+            50% { transform: scale(1.25) translateX(-50%) translateY(-50%); opacity: 0.45; }
+            100% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.22; }
         }
 
-        .void-core img {
-            width: 380px;
-            height: 380px;
+        .cyber-abyss img {
+            width: 400px;
+            height: 400px;
             border-radius: 50%;
-            border: 7px solid var(--aura-cyan);
-            box-shadow: 0 0 45px var(--aura-cyan);
-            margin-bottom: 4rem;
-            transition: transform 1s ease;
+            border: 8px solid var(--cyber-neon);
+            box-shadow: 0 0 50px var(--cyber-neon);
+            margin-bottom: 4.5rem;
+            transition: transform 1.1s ease;
             z-index: 99999;
+            animation: imageOrbit 10s infinite ease-in-out;
         }
 
-        .void-core img:hover {
-            transform: scale(1.18);
+        @keyframes imageOrbit {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
 
-        .void-core h1 {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: clamp(5.5rem, 13vw, 10rem);
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--aura-cyan), var(--aura-violet));
+        .cyber-abyss img:hover {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        .cyber-abyss h1 {
+            font-family: 'Exo 2', sans-serif;
+            font-size: clamp(6rem, 14vw, 11rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--cyber-neon), var(--cyber-magenta));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 3rem;
-            text-shadow: 0 0 18px var(--aura-cyan);
+            margin-bottom: 3.5rem;
+            text-shadow: 0 0 20px var(--cyber-neon);
             position: relative;
             z-index: 2;
+            letter-spacing: 0.05em;
         }
 
-        .void-core h1::after {
+        .cyber-abyss h1::after {
             content: '';
             position: absolute;
-            width: 90%;
-            height: 6px;
-            bottom: -25px;
-            left: 5%;
-            background: linear-gradient(90deg, transparent, var(--aura-cyan), transparent);
-            animation: coreFlux 4.5s infinite ease-in-out;
+            width: 95%;
+            height: 7px;
+            bottom: -30px;
+            left: 2.5%;
+            background: linear-gradient(90deg, transparent, var(--cyber-neon), transparent);
+            animation: abyssFlux 5s infinite ease-in-out;
         }
 
-        @keyframes coreFlux {
-            0% { width: 90%; opacity: 1; }
-            50% { width: 100%; opacity: 0.85; }
-            100% { width: 90%; opacity: 1; }
+        @keyframes abyssFlux {
+            0% { width: 95%; opacity: 1; }
+            50% { width: 100%; opacity: 0.9; }
+            100% { width: 95%; opacity: 1; }
         }
 
-        .void-core p {
-            font-size: clamp(2.2rem, 7vw, 3rem);
-            color: var(--shadow-flux);
-            margin-bottom: 4rem;
-            max-width: 1300px;
+        .cyber-abyss p {
+            font-size: clamp(2.4rem, 8vw, 3.2rem);
+            color: var(--shadow-pulse);
+            margin-bottom: 4.5rem;
+            max-width: 1400px;
             z-index: 2;
         }
 
-        .void-core .core-launch {
-            background: linear-gradient(135deg, var(--aura-cyan), var(--aura-violet));
-            color: var(--light-aura);
-            padding: 2.8rem 6.5rem;
+        .cyber-abyss .abyss-launch {
+            background: linear-gradient(135deg, var(--cyber-neon), var(--cyber-magenta));
+            color: var(--light-pulse);
+            padding: 3rem 7rem;
             text-decoration: none;
-            border-radius: 90px;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 700;
-            font-size: 2.4rem;
+            border-radius: 100px;
+            font-family: 'Exo 2', sans-serif;
+            font-weight: 800;
+            font-size: 2.6rem;
             text-transform: uppercase;
-            box-shadow: 0 0 var(--glow-core) var(--aura-cyan);
-            transition: all 0.9s;
+            box-shadow: 0 0 var(--glow-edge) var(--cyber-neon);
+            transition: all 1s;
             position: relative;
             overflow: hidden;
             z-index: 2;
         }
 
-        .void-core .core-launch::before {
+        .cyber-abyss .abyss-launch::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
-            transition: left 0.9s;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            transition: left 1s;
         }
 
-        .void-core .core-launch:hover::before {
+        .cyber-abyss .abyss-launch:hover::before {
             left: 100%;
         }
 
-        .void-core .core-launch:hover {
-            box-shadow: 0 0 calc(var(--glow-core) * 2) var(--aura-violet);
-            transform: scale(1.2);
+        .cyber-abyss .abyss-launch:hover {
+            box-shadow: 0 0 calc(var(--glow-edge) * 2) var(--cyber-magenta);
+            transform: scale(1.25) rotate(5deg);
         }
 
-        /* Aura Zones */
+        /* Cyber Zones */
         section {
-            padding: 10rem 4rem;
-            max-width: 2600px;
+            padding: 12rem 5rem;
+            max-width: 2800px;
             margin: 0 auto;
-            scroll-margin-top: 150px;
+            scroll-margin-top: 160px;
             position: relative;
             z-index: 1;
             opacity: 0;
-            transform: translateY(150px);
-            transition: opacity 1.8s ease, transform 1.8s ease;
+            transform: translateY(180px);
+            transition: opacity 2s ease, transform 2s ease;
         }
 
         section.visible {
@@ -513,11 +513,11 @@
             transform: translateY(0);
         }
 
-        #aura-info {
+        #cyber-info {
             min-height: auto;
         }
 
-        #aura-skills, #aura-tutorials, #aura-contact {
+        #cyber-skills, #cyber-tutorials, #cyber-contact {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -526,16 +526,16 @@
         }
 
         section h2 {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: clamp(5rem, 12vw, 8rem);
-            font-weight: 700;
+            font-family: 'Exo 2', sans-serif;
+            font-size: clamp(5.5rem, 13vw, 9rem);
+            font-weight: 800;
             text-align: center;
-            background: linear-gradient(135deg, var(--aura-cyan), var(--aura-violet));
+            background: linear-gradient(135deg, var(--cyber-neon), var(--cyber-magenta));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 7rem;
+            margin-bottom: 8rem;
             text-transform: uppercase;
-            text-shadow: 0 0 18px var(--aura-cyan);
+            text-shadow: 0 0 20px var(--cyber-neon);
             position: relative;
             z-index: 2;
         }
@@ -543,279 +543,286 @@
         section h2::after {
             content: '';
             position: absolute;
-            width: 75%;
-            height: 6px;
-            bottom: -30px;
-            left: 12.5%;
-            background: linear-gradient(90deg, transparent, var(--aura-cyan), transparent);
-            animation: zonePulse 4s infinite ease-in-out;
+            width: 80%;
+            height: 7px;
+            bottom: -35px;
+            left: 10%;
+            background: linear-gradient(90deg, transparent, var(--cyber-neon), transparent);
+            animation: zonePulse 4.5s infinite ease-in-out;
             z-index: 2;
         }
 
         @keyframes zonePulse {
-            0% { width: 75%; opacity: 0.9; }
-            50% { width: 95%; opacity: 0.75; }
-            100% { width: 75%; opacity: 0.9; }
+            0% { width: 80%; opacity: 0.95; }
+            50% { width: 100%; opacity: 0.8; }
+            100% { width: 80%; opacity: 0.95; }
         }
 
-        .aura-info {
-            background: var(--aura-glass);
-            backdrop-filter: blur(35px);
-            border-radius: 40px;
-            padding: 9rem;
-            border: 1px solid rgba(0, 234, 255, 0.3);
-            box-shadow: 0 0 var(--glow-core) rgba(0, 234, 255, 0.4);
-            max-width: 2200px;
+        .cyber-info {
+            background: var(--crystal-glass);
+            backdrop-filter: blur(40px);
+            border-radius: 45px;
+            padding: 10rem;
+            border: 1px solid rgba(0, 255, 204, 0.35);
+            box-shadow: 0 0 var(--glow-edge) rgba(0, 255, 204, 0.45);
+            max-width: 2400px;
             width: 100%;
         }
 
-        .info-aura {
+        .info-cyber {
             display: flex;
             flex-wrap: wrap;
-            gap: 8rem;
+            gap: 9rem;
             align-items: center;
             justify-content: center;
         }
 
-        .aura-info img {
-            max-width: 600px;
+        .cyber-info img {
+            max-width: 650px;
             width: 100%;
             height: auto;
-            border-radius: 40px;
-            border: 7px solid var(--aura-cyan);
-            box-shadow: 0 0 var(--glow-core) var(--aura-cyan);
-            transition: transform 1s ease;
+            border-radius: 45px;
+            border: 8px solid var(--cyber-neon);
+            box-shadow: 0 0 var(--glow-edge) var(--cyber-neon);
+            transition: transform 1.1s ease;
             loading: lazy;
         }
 
-        .aura-info img:hover {
-            transform: scale(1.15);
+        .cyber-info img:hover {
+            transform: scale(1.18) rotate(8deg);
         }
 
         .info-text {
             flex: 1;
-            min-width: 500px;
+            min-width: 550px;
             text-align: center;
         }
 
         .info-text p {
-            line-height: 2.8;
-            color: var(--shadow-flux);
-            font-size: 1.8rem;
+            line-height: 3;
+            color: var(--shadow-pulse);
+            font-size: 2rem;
         }
 
-        .skills-aura, .tutorials-aura {
+        .skills-cyber, .tutorials-cyber {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
-            gap: 7rem;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 8rem;
             width: 100%;
-            max-width: 2400px;
+            max-width: 2600px;
             justify-items: center;
         }
 
-        .skill-pod, .tutorial-pod {
-            background: var(--aura-glass);
-            backdrop-filter: blur(35px);
-            border-radius: 40px;
-            padding: 6rem;
-            border: 1px solid rgba(0, 234, 255, 0.3);
-            box-shadow: 0 0 var(--glow-core) rgba(0, 234, 255, 0.4);
-            transition: all 1s;
+        .skill-orbit, .tutorial-orbit {
+            background: var(--crystal-glass);
+            backdrop-filter: blur(40px);
+            border-radius: 45px;
+            padding: 6.5rem;
+            border: 1px solid rgba(0, 255, 204, 0.35);
+            box-shadow: 0 0 var(--glow-edge) rgba(0, 255, 204, 0.45);
+            transition: all 1.1s;
             position: relative;
             overflow: hidden;
             z-index: 2;
             width: 100%;
-            max-width: 600px;
+            max-width: 650px;
+            animation: orbitSway 12s infinite ease-in-out;
         }
 
-        .skill-pod::before, .tutorial-pod::before {
+        @keyframes orbitSway {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .skill-orbit::before, .tutorial-orbit::before {
             content: '';
             position: absolute;
             top: -50%;
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(0, 234, 255, 0.15), transparent);
-            animation: auraFlux 5s infinite;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 204, 0.18), transparent);
+            animation: cyberFlux 5.5s infinite;
         }
 
-        @keyframes auraFlux {
+        @keyframes cyberFlux {
             0% { transform: translateX(-100%) rotate(45deg); }
             100% { transform: translateX(100%) rotate(45deg); }
         }
 
-        .skill-pod:hover, .tutorial-pod:hover {
-            transform: translateY(-40px) scale(1.1);
-            box-shadow: 0 0 calc(var(--glow-core) * 2) var(--aura-violet);
+        .skill-orbit:hover, .tutorial-orbit:hover {
+            transform: translateY(-45px) scale(1.12) rotate(5deg);
+            box-shadow: 0 0 calc(var(--glow-edge) * 2) var(--cyber-magenta);
         }
 
-        .skill-pod img, .tutorial-pod img {
-            width: 140px;
+        .skill-orbit img, .tutorial-orbit img {
+            width: 150px;
             height: auto;
-            margin-bottom: 3.5rem;
-            filter: drop-shadow(0 0 25px var(--aura-cyan));
-            transition: transform 0.9s ease;
+            margin-bottom: 4rem;
+            filter: drop-shadow(0 0 30px var(--cyber-neon));
+            transition: transform 1s ease;
             loading: lazy;
         }
 
-        .skill-pod:hover img, .tutorial-pod:hover img {
-            transform: scale(1.35);
+        .skill-orbit:hover img, .tutorial-orbit:hover img {
+            transform: scale(1.4) rotate(15deg);
         }
 
-        .skill-pod h3, .tutorial-pod h3 {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 2.6rem;
-            font-weight: 700;
-            color: var(--light-aura);
-            margin-bottom: 2rem;
-            text-shadow: 0 0 15px var(--aura-cyan);
+        .skill-orbit h3, .tutorial-orbit h3 {
+            font-family: 'Exo 2', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--light-pulse);
+            margin-bottom: 2.5rem;
+            text-shadow: 0 0 18px var(--cyber-neon);
         }
 
-        .skill-pod p, .tutorial-pod p {
-            font-size: 1.6rem;
-            color: var(--shadow-flux);
-            line-height: 2.4;
-        }
-
-        .tutorial-pod a {
-            color: var(--aura-cyan);
-            text-decoration: none;
-            font-weight: 600;
+        .skill-orbit p, .tutorial-orbit p {
             font-size: 1.8rem;
-            transition: all 0.8s;
+            color: var(--shadow-pulse);
+            line-height: 2.6;
+        }
+
+        .tutorial-orbit a {
+            color: var(--cyber-neon);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 2rem;
+            transition: all 0.9s;
             position: relative;
         }
 
-        .tutorial-pod a::after {
+        .tutorial-orbit a::after {
             content: '→';
             position: absolute;
-            right: -50px;
+            right: -55px;
             opacity: 0;
-            transition: all 0.8s;
+            transition: all 0.9s;
         }
 
-        .tutorial-pod a:hover::after {
+        .tutorial-orbit a:hover::after {
             opacity: 1;
-            right: -35px;
+            right: -40px;
         }
 
-        .tutorial-pod a:hover {
-            color: var(--aura-violet);
-            text-shadow: 0 0 25px var(--aura-violet);
+        .tutorial-orbit a:hover {
+            color: var(--cyber-magenta);
+            text-shadow: 0 0 30px var(--cyber-magenta);
         }
 
-        .media-aura {
+        .media-cyber {
             position: relative;
             width: 100%;
-            height: 400px;
-            border-radius: 40px;
-            margin-top: 3.5rem;
+            height: 420px;
+            border-radius: 45px;
+            margin-top: 4rem;
             overflow: hidden;
         }
 
-        .tutorial-pod iframe {
+        .tutorial-orbit iframe {
             width: 100%;
             height: 100%;
-            border-radius: 40px;
-            border: 7px solid var(--aura-cyan);
-            box-shadow: 0 0 40px rgba(0, 234, 255, 0.55);
+            border-radius: 45px;
+            border: 8px solid var(--cyber-neon);
+            box-shadow: 0 0 45px rgba(0, 255, 204, 0.6);
             loading: lazy;
         }
 
-        .aura-contact {
+        .cyber-contact {
             text-align: center;
             position: relative;
-            max-width: 2200px;
+            max-width: 2400px;
             width: 100%;
         }
 
-        .aura-contact p {
-            color: var(--shadow-flux);
-            margin-bottom: 6rem;
-            max-width: 1300px;
+        .cyber-contact p {
+            color: var(--shadow-pulse);
+            margin-bottom: 7rem;
+            max-width: 1400px;
             margin-left: auto;
             margin-right: auto;
-            font-size: 1.9rem;
+            font-size: 2.2rem;
         }
 
-        .contact-nexus {
+        .contact-array {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 7rem;
+            gap: 8rem;
         }
 
-        .aura-contact a {
-            color: var(--aura-cyan);
+        .cyber-contact a {
+            color: var(--cyber-neon);
             text-decoration: none;
-            font-weight: 600;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 2.2rem;
-            padding: 2rem 5rem;
-            border: 5px solid var(--aura-cyan);
-            border-radius: 80px;
-            transition: all 0.9s;
+            font-weight: 700;
+            font-family: 'Exo 2', sans-serif;
+            font-size: 2.4rem;
+            padding: 2.5rem 6rem;
+            border: 6px solid var(--cyber-neon);
+            border-radius: 90px;
+            transition: all 1s;
             position: relative;
             overflow: hidden;
         }
 
-        .aura-contact a::before {
+        .cyber-contact a::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
-            transition: left 0.9s;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            transition: left 1s;
         }
 
-        .aura-contact a:hover::before {
+        .cyber-contact a:hover::before {
             left: 100%;
         }
 
-        .aura-contact a:hover {
-            color: var(--aura-violet);
-            box-shadow: 0 0 var(--glow-core) var(--aura-violet);
+        .cyber-contact a:hover {
+            color: var(--cyber-magenta);
+            box-shadow: 0 0 var(--glow-edge) var(--cyber-magenta);
+            transform: scale(1.15) rotate(5deg);
         }
 
         footer {
-            background: rgba(5, 5, 21, 0.95);
-            backdrop-filter: blur(35px);
-            padding: 8rem;
+            background: rgba(3, 3, 26, 0.95);
+            backdrop-filter: blur(40px);
+            padding: 9rem;
             text-align: center;
-            border-top: 1px solid rgba(0, 234, 255, 0.25);
+            border-top: 1px solid rgba(0, 255, 204, 0.3);
             position: relative;
             z-index: 1;
         }
 
         footer p {
-            color: var(--shadow-flux);
-            font-size: 1.6rem;
-            margin-bottom: 4rem;
+            color: var(--shadow-pulse);
+            font-size: 1.8rem;
+            margin-bottom: 4.5rem;
         }
 
         footer a {
-            color: var(--aura-cyan);
+            color: var(--cyber-neon);
             text-decoration: none;
-            margin: 0 4rem;
-            font-size: 1.8rem;
-            transition: all 0.8s;
+            margin: 0 4.5rem;
+            font-size: 2rem;
+            transition: all 0.9s;
         }
 
         footer a:hover {
-            color: var(--aura-violet);
-            text-shadow: 0 0 25px var(--aura-violet);
+            color: var(--cyber-magenta);
+            text-shadow: 0 0 30px var(--cyber-magenta);
         }
 
-        /* Responsive Luxury */
+        /* Responsive Innovation */
         @media (max-width: 1024px) {
-            .skills-aura, .tutorials-aura {
-                grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            .skills-cyber, .tutorials-cyber {
+                grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
             }
 
-            .aura-info {
-                padding: 7rem;
+            .cyber-info {
+                padding: 8rem;
             }
         }
 
@@ -827,13 +834,13 @@
             nav {
                 display: none;
                 position: fixed;
-                top: 140px;
+                top: 150px;
                 left: 0;
                 right: 0;
-                background: rgba(5, 5, 21, 0.98);
+                background: rgba(3, 3, 26, 0.98);
                 flex-direction: column;
-                padding: 8rem 4rem;
-                box-shadow: 0 0 var(--glow-core) var(--aura-cyan);
+                padding: 9rem 5rem;
+                box-shadow: 0 0 var(--glow-edge) var(--cyber-neon);
                 width: 100%;
             }
 
@@ -842,196 +849,196 @@
             }
 
             nav a {
-                margin: 4rem 0;
-                font-size: 2rem;
+                margin: 4.5rem 0;
+                font-size: 2.2rem;
             }
 
-            .info-aura {
+            .info-cyber {
                 flex-direction: column;
                 text-align: center;
-                gap: 6rem;
+                gap: 7rem;
             }
 
-            .void-core {
-                padding: 4rem 3rem;
+            .cyber-abyss {
+                padding: 5rem 4rem;
             }
 
-            .void-core img {
-                width: 300px;
-                height: 300px;
+            .cyber-abyss img {
+                width: 320px;
+                height: 320px;
             }
 
-            .void-top, .audio-void {
-                width: 75px;
-                height: 75px;
-                font-size: 2.6rem;
-                bottom: 4rem;
+            .abyss-top, .audio-abyss {
+                width: 80px;
+                height: 80px;
+                font-size: 2.8rem;
+                bottom: 4.5rem;
             }
 
-            .void-top {
-                right: 4rem;
+            .abyss-top {
+                right: 4.5rem;
             }
 
-            .audio-void {
-                left: 4rem;
+            .audio-abyss {
+                left: 4.5rem;
             }
 
-            .void-orb {
+            .abyss-sphere {
                 display: none;
             }
         }
 
         @media (max-width: 480px) {
             section {
-                padding: 9rem 3rem;
+                padding: 10rem 4rem;
             }
 
-            .skill-pod, .tutorial-pod {
-                padding: 5rem;
+            .skill-orbit, .tutorial-orbit {
+                padding: 5.5rem;
                 max-width: 100%;
             }
 
-            .void-core h1 {
-                font-size: clamp(4.5rem, 11vw, 7rem);
+            .cyber-abyss h1 {
+                font-size: clamp(5rem, 12vw, 8rem);
             }
 
-            .void-core p {
-                font-size: clamp(1.8rem, 6vw, 2.2rem);
+            .cyber-abyss p {
+                font-size: clamp(2rem, 7vw, 2.4rem);
             }
 
-            .tutorial-pod iframe {
-                height: 320px;
+            .tutorial-orbit iframe {
+                height: 340px;
             }
 
-            .aura-portal button {
-                padding: 3.5rem 8rem;
-                font-size: 2.6rem;
+            .quantum-gate button {
+                padding: 4rem 9rem;
+                font-size: 2.8rem;
             }
 
-            .aura-info {
-                padding: 6rem;
+            .cyber-info {
+                padding: 7rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="aura-loader"></div>
-    <div class="aura-portal">
-        <button>Enter the Aura</button>
+    <div class="cyber-loader"></div>
+    <div class="quantum-gate">
+        <button>Enter V2.0</button>
     </div>
-    <div id="aura-grid"></div>
-    <div class="grid-aura"></div>
-    <audio id="aura-audio" src="/audio/cyber-lux.mp3" loop preload="auto" style="display: none;"></audio>
+    <div id="cyber-grid"></div>
+    <div class="grid-pulse"></div>
+    <audio id="cyber-audio" src="/audio/cyber-synth.mp3" loop preload="auto" style="display: none;"></audio>
     <header>
         <div class="logo">
             <a href="https://labverse.co.za">
-                <img src="assets/aura-icon.svg" alt="LabVerse Aura" loading="lazy">
+                <img src="assets/cyber-icon.svg" alt="LabVerse V2.0" loading="lazy">
             </a>
         </div>
         <div class="hamburger">☰</div>
         <nav>
-            <a href="#aura-info">Info</a>
-            <a href="#aura-skills">Skills</a>
-            <a href="#aura-tutorials">Tutorials</a>
-            <a href="#aura-contact">Contact</a>
+            <a href="#cyber-info">Info</a>
+            <a href="#cyber-skills">Skills</a>
+            <a href="#cyber-tutorials">Tutorials</a>
+            <a href="#cyber-contact">Contact</a>
         </nav>
     </header>
-    <a href="#" class="void-top" title="Back to Void">↑</a>
-    <button class="audio-void" title="Toggle Aura Sound">♫</button>
-    <section class="void-core">
-        <img src="/aura-images/core-aura.jpeg" alt="Aura Core" id="core-image">
-        <h1>LabVerse | Technical University</h1>
-        <p>South Africa’s Premier Free IT Training Nexus | Elevate Skills in a Cyber Luxury Realm</p>
-        <a href="#aura-tutorials" class="core-launch">Launch Vault</a>
+    <a href="#" class="abyss-top" title="Back to Abyss">↑</a>
+    <button class="audio-abyss" title="Toggle Cyber Sound">♫</button>
+    <section class="cyber-abyss">
+        <img src="/cyber-images/core-cyber.jpeg" alt="Cyber Core" id="abyss-image">
+        <h1>LabVerse | Technical University V2.0</h1>
+        <p>South Africa’s Elite Free IT Training Nexus | Unleash Skills in an Innovative Cyber Realm</p>
+        <a href="#cyber-tutorials" class="abyss-launch">Launch Vault</a>
     </section>
-    <section id="aura-info" class="aura-info">
-        <div class="info-aura">
-            <img src="assets/aura-core.webp" alt="Aura Info" loading="lazy">
+    <section id="cyber-info" class="cyber-info">
+        <div class="info-cyber">
+            <img src="assets/cyber-core.webp" alt="Cyber Info" loading="lazy">
             <div class="info-text">
-                <h2>Aura Nexus</h2>
-                <p>LabVerse | Technical University, forged in Johannesburg, redefines free IT training with a luxury cyber edge. Master hybrid cloud, cybersecurity, and networking in an aura-tech cosmos.</p>
-                <p>Our creed: deliver elite skills to a global elite—bridging talent with tomorrow’s tech opulence.</p>
+                <h2>Cyber Nexus</h2>
+                <p>LabVerse | Technical University V2.0, born in Johannesburg, sets the gold standard for free IT training. Hybrid cloud, cybersecurity, and networking fuse into an innovative cyber realm.</p>
+                <p>Our mission: empower a global elite with cutting-edge skills—bridging today with tomorrow’s tech empire.</p>
             </div>
         </div>
     </section>
-    <section id="aura-skills">
-        <h2>Skills Aura</h2>
-        <div class="skills-aura">
-            <div class="skill-pod">
-                <img src="assets/aura-core.webp" alt="Hybrid Cloud" loading="lazy">
+    <section id="cyber-skills">
+        <h2>Skills Orbit</h2>
+        <div class="skills-cyber">
+            <div class="skill-orbit">
+                <img src="assets/cyber-core.webp" alt="Hybrid Cloud" loading="lazy">
                 <h3>Hybrid Cloud</h3>
-                <p>Craft Azure-driven systems for celestial scalability.</p>
+                <p>Design Azure systems for infinite scalability.</p>
             </div>
-            <div class="skill-pod">
-                <img src="assets/aura-core.webp" alt="Cybersecurity" loading="lazy">
+            <div class="skill-orbit">
+                <img src="assets/cyber-core.webp" alt="Cybersecurity" loading="lazy">
                 <h3>Cybersecurity</h3>
-                <p>Fortify realms with Cisco and quantum-grade defenses.</p>
+                <p>Shield domains with Cisco and next-gen defenses.</p>
             </div>
-            <div class="skill-pod">
-                <img src="assets/aura-core.webp" alt="Networking" loading="lazy">
+            <div class="skill-orbit">
+                <img src="assets/cyber-core.webp" alt="Networking" loading="lazy">
                 <h3>Networking</h3>
-                <p>Architect SD-WAN and cosmic network frameworks.</p>
+                <p>Build SD-WAN and interstellar networks.</p>
             </div>
-            <div class="skill-pod">
-                <img src="assets/aura-core.webp" alt="Digital Marketing" loading="lazy">
+            <div class="skill-orbit">
+                <img src="assets/cyber-core.webp" alt="Digital Marketing" loading="lazy">
                 <h3>Digital Marketing & SEO</h3>
-                <p>Elevate brands to astral heights with cyber-strategy.</p>
+                <p>Launch brands into orbit with cyber-tactics.</p>
             </div>
-            <div class="skill-pod">
-                <img src="assets/aura-core.webp" alt="Leadership" loading="lazy">
-                <h3>Leadership Aura</h3>
-                <p>Lead with a visionary mindset for tech supremacy.</p>
+            <div class="skill-orbit">
+                <img src="assets/cyber-core.webp" alt="Leadership" loading="lazy">
+                <h3>Leadership Core</h3>
+                <p>Master a futuristic mindset for tech dominance.</p>
             </div>
         </div>
     </section>
-    <section id="aura-tutorials">
+    <section id="cyber-tutorials">
         <h2>Tutorial Vault</h2>
-        <div class="tutorials-aura">
-            <div class="tutorial-pod">
-                <img src="assets/aura-core.webp" alt="SD-WAN" loading="lazy">
-                <h3>SD-WAN Aura</h3>
-                <p>Deploy FortiGate SD-WAN across 50+ nodes—luxury uptime.</p>
-                <a href="https://labverse.co.za/sdwan" target="_blank">Unlock</a>
+        <div class="tutorials-cyber">
+            <div class="tutorial-orbit">
+                <img src="assets/cyber-core.webp" alt="SD-WAN" loading="lazy">
+                <h3>SD-WAN Pulse</h3>
+                <p>Deploy FortiGate SD-WAN across 50+ nodes—elite uptime.</p>
+                <a href="https://labverse.co.za/sdwan" target="_blank">Access</a>
             </div>
-            <div class="tutorial-pod">
-                <img src="assets/aura-core.webp" alt="Azure Migration" loading="lazy">
-                <h3>Azure Ascension</h3>
-                <p>Migrate 10,000 users to Azure—opulent efficiency.</p>
-                <a href="https://labverse.co.za/azure" target="_blank">Unlock</a>
+            <div class="tutorial-orbit">
+                <img src="assets/cyber-core.webp" alt="Azure Migration" loading="lazy">
+                <h3>Azure Surge</h3>
+                <p>Migrate 10,000 users to Azure—peak precision.</p>
+                <a href="https://labverse.co.za/azure" target="_blank">Access</a>
             </div>
-            <div class="tutorial-pod">
-                <img src="assets/aura-core.webp" alt="Lo-Fi Stream" loading="lazy">
-                <h3>Eternal Lo-Fi Void</h3>
-                <p>Launch a Linux Azure stream—beats in perpetuity.</p>
-                <div class="media-aura">
+            <div class="tutorial-orbit">
+                <img src="assets/cyber-core.webp" alt="Lo-Fi Stream" loading="lazy">
+                <h3>Cyber Lo-Fi Orbit</h3>
+                <p>Launch a Linux Azure stream—endless vibes.</p>
+                <div class="media-cyber">
                     <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk" frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
-            <div class="tutorial-pod">
-                <img src="assets/aura-core.webp" alt="Support Tool" loading="lazy">
-                <h3>T1 Aura Kit</h3>
-                <p>Build a PowerShell tool—AI-enhanced precision.</p>
-                <a href="https://labverse.co.za/support-tool" target="_blank">Unlock</a>
+            <div class="tutorial-orbit">
+                <img src="assets/cyber-core.webp" alt="Support Tool" loading="lazy">
+                <h3>T1 Cyber Kit</h3>
+                <p>Create a PowerShell tool—AI-powered speed.</p>
+                <a href="https://labverse.co.za/support-tool" target="_blank">Access</a>
             </div>
-            <div class="tutorial-pod">
-                <img src="assets/aura-core.webp" alt="Website Maintenance" loading="lazy">
-                <h3>Cyber Lux</h3>
-                <p>Master site optimization—LabVerse elegance.</p>
-                <a href="https://labverse.co.za" target="_blank">Unlock</a>
+            <div class="tutorial-orbit">
+                <img src="assets/cyber-core.webp" alt="Website Maintenance" loading="lazy">
+                <h3>Cyber V2.0</h3>
+                <p>Optimize sites with LabVerse innovation.</p>
+                <a href="https://labverse.co.za" target="_blank">Access</a>
             </div>
         </div>
     </section>
-    <section id="aura-contact" class="aura-contact">
-        <h2>Contact Nexus</h2>
-        <p>Access elite IT training or forge connections in the aura-tech realm.</p>
-        <div class="contact-nexus">
+    <section id="cyber-contact" class="cyber-contact">
+        <h2>Contact Array</h2>
+        <p>Tap into elite IT training or connect in the cyber realm.</p>
+        <div class="contact-array">
             <a href="mailto:labversemail@gmail.com">Email</a>
             <a href="https://linkedin.com/in/labverse" target="_blank">LinkedIn</a>
             <a href="https://www.youtube.com/@labversity" target="_blank">YouTube</a>
         </div>
     </section>
     <footer>
-        <p>© 2025 LabVerse | Technical University</p>
+        <p>© 2025 LabVerse | Technical University V2.0</p>
         <div class="footer-links">
             <a href="mailto:labversemail@gmail.com">Contact</a>
             <a href="https://linkedin.com/in/labverse" target="_blank">LinkedIn</a>
@@ -1039,17 +1046,17 @@
     </footer>
 
     <script>
-        const audio = document.getElementById('aura-audio');
-        audio.volume = 0.15;
+        const audio = document.getElementById('cyber-audio');
+        audio.volume = 0.18;
 
-        const portal = document.querySelector('.aura-portal');
-        const portalButton = portal.querySelector('button');
-        portalButton.addEventListener('click', () => {
+        const gate = document.querySelector('.quantum-gate');
+        const gateButton = gate.querySelector('button');
+        gateButton.addEventListener('click', () => {
             audio.play().then(() => {
-                gsap.to(portal, { opacity: 0, scale: 1.45, duration: 2.2, ease: 'power4.out', onComplete: () => portal.classList.add('hidden') });
+                gsap.to(gate, { opacity: 0, scale: 1.5, rotate: 10, duration: 2.5, ease: 'power4.out', onComplete: () => gate.classList.add('hidden') });
             }).catch(error => {
                 console.error("Audio Play Error:", error);
-                gsap.to(portal, { opacity: 0, scale: 1.45, duration: 2.2, ease: 'power4.out', onComplete: () => portal.classList.add('hidden') });
+                gsap.to(gate, { opacity: 0, scale: 1.5, rotate: 10, duration: 2.5, ease: 'power4.out', onComplete: () => gate.classList.add('hidden') });
             });
         });
 
@@ -1085,101 +1092,94 @@
             scrollVelocity = scrollTop - lastScrollTop;
 
             if (scrollTop > lastScrollTop) {
-                gsap.to('header', { y: '-100%', duration: 0.9, ease: 'power3.inOut' });
+                gsap.to('header', { y: '-100%', duration: 1, ease: 'power3.inOut' });
             } else {
-                gsap.to('header', { y: '0%', duration: 0.9, ease: 'power3.inOut' });
+                gsap.to('header', { y: '0%', duration: 1, ease: 'power3.inOut' });
             }
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
 
-            const voidTop = document.querySelector('.void-top');
-            if (scrollTop > 900) {
-                voidTop.classList.add('visible');
+            const abyssTop = document.querySelector('.abyss-top');
+            if (scrollTop > 1000) {
+                abyssTop.classList.add('visible');
             } else {
-                voidTop.classList.remove('visible');
+                abyssTop.classList.remove('visible');
             }
 
             document.querySelectorAll('section').forEach(section => {
                 const rect = section.getBoundingClientRect();
                 if (rect.top <= window.innerHeight * 0.95 && rect.bottom >= 0 && !section.classList.contains('visible')) {
                     section.classList.add('visible');
-                    const flux = document.createElement('div');
-                    flux.className = 'aura-flux';
-                    flux.style.top = `${rect.top + window.scrollY + rect.height / 2}px`;
-                    document.body.appendChild(flux);
-                    setTimeout(() => flux.remove(), 900);
+                    const flare = document.createElement('div');
+                    flare.className = 'cyber-flare scroll';
+                    flare.style.top = `${rect.top + window.scrollY + rect.height / 2}px`;
+                    document.body.appendChild(flare);
+                    setTimeout(() => flare.remove(), 1000);
                 }
             });
 
-            if (Math.abs(scrollVelocity) > 15) {
-                const flux = document.createElement('div');
-                flux.className = 'aura-flux';
-                flux.style.top = `${scrollTop + window.innerHeight / 2}px`;
-                document.body.appendChild(flux);
-                setTimeout(() => flux.remove(), 900);
+            if (Math.abs(scrollVelocity) > 18) {
+                const flare = document.createElement('div');
+                flare.className = 'cyber-flare scroll';
+                flare.style.top = `${scrollTop + window.innerHeight / 2}px`;
+                document.body.appendChild(flare);
+                setTimeout(() => flare.remove(), 1000);
             }
-        }, { passive: true }); /* Scroll Perfection */
+        }, { passive: true }); /* Scroll Elite */
 
-        let pulseCount = 0;
-        const maxPulses = 45;
+        let flareCount = 0;
+        const maxFlares = 50;
         document.addEventListener('mousemove', throttle((e) => {
-            if (pulseCount < maxPulses) {
-                const pulse = document.createElement('div');
-                pulse.className = 'aura-pulse';
-                pulse.style.left = `${e.clientX}px`;
-                pulse.style.top = `${e.clientY}px`;
-                document.body.appendChild(pulse);
-                pulseCount++;
+            if (flareCount < maxFlares) {
+                const flare = document.createElement('div');
+                flare.className = 'cyber-flare';
+                flare.style.left = `${e.clientX}px`;
+                flare.style.top = `${e.clientY}px`;
+                document.body.appendChild(flare);
+                flareCount++;
                 setTimeout(() => {
-                    pulse.remove();
-                    pulseCount--;
-                }, 1100);
+                    flare.remove();
+                    flareCount--;
+                }, 1200);
             }
-        }, 15));
+        }, 10));
 
-        function spawnPulseTrail() {
-            if (Math.random() < 0.25) {
+        function spawnNeonTrail() {
+            if (Math.random() < 0.3) {
                 const trail = document.createElement('div');
-                trail.className = 'pulse-trail';
+                trail.className = 'neon-trail';
                 trail.style.left = `${Math.random() * 100}vw`;
-                trail.style.top = `${-90}px`;
+                trail.style.top = `${-100}px`;
                 document.body.appendChild(trail);
-                setTimeout(() => trail.remove(), 2800);
+                setTimeout(() => trail.remove(), 3000);
             }
         }
 
-        setInterval(spawnPulseTrail, 60);
+        setInterval(spawnNeonTrail, 50);
 
-        const audioVoid = document.querySelector('.audio-void');
-        audioVoid.addEventListener('click', () => {
+        const audioAbyss = document.querySelector('.audio-abyss');
+        audioAbyss.addEventListener('click', () => {
             if (audio.paused) {
                 audio.play();
-                audioVoid.textContent = '♫';
+                audioAbyss.textContent = '♫';
             } else {
                 audio.pause();
-                audioVoid.textContent = '♪';
+                audioAbyss.textContent = '♪';
             }
         });
 
-        VanillaTilt.init(document.querySelectorAll('.skill-pod, .tutorial-pod'), {
-            max: 20,
-            speed: 1000,
-            glare: true,
-            'max-glare': 0.9
-        });
-
         window.addEventListener('load', () => {
-            gsap.to('.aura-loader', { opacity: 0, duration: 1.8, ease: 'power4.out', onComplete: () => document.querySelector('.aura-loader').classList.add('hidden') });
+            gsap.to('.cyber-loader', { opacity: 0, duration: 2, ease: 'power4.out', onComplete: () => document.querySelector('.cyber-loader').classList.add('hidden') });
 
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             const renderer = new THREE.WebGLRenderer({ alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
-            document.getElementById('aura-grid').appendChild(renderer.domElement);
+            document.getElementById('cyber-grid').appendChild(renderer.domElement);
 
-            const gridSize = 45;
-            const spacing = 4.5;
-            const geometry = new THREE.SphereGeometry(0.22, 32, 32);
-            const material = new THREE.MeshBasicMaterial({ color: 0x00eaff, transparent: true, opacity: 0.75 });
+            const gridSize = 50;
+            const spacing = 5;
+            const geometry = new THREE.SphereGeometry(0.25, 32, 32);
+            const material = new THREE.MeshBasicMaterial({ color: 0x00ffcc, transparent: true, opacity: 0.8 });
 
             for (let x = -gridSize; x <= gridSize; x += spacing) {
                 for (let z = -gridSize; z <= gridSize; z += spacing) {
@@ -1189,13 +1189,13 @@
                 }
             }
 
-            camera.position.z = 55;
-            camera.position.y = 45;
+            camera.position.z = 60;
+            camera.position.y = 50;
             camera.lookAt(0, 0, 0);
 
             function animate() {
                 requestAnimationFrame(animate);
-                scene.rotation.y += 0.0005;
+                scene.rotation.y += 0.0004;
                 renderer.render(scene, camera);
             }
             animate();
@@ -1206,46 +1206,46 @@
                 renderer.setSize(window.innerWidth, window.innerHeight);
             });
 
-            for (let i = 0; i < 40; i++) {
-                const orb = document.createElement('div');
-                orb.className = 'void-orb';
-                orb.style.left = `${Math.random() * 100}vw`;
-                orb.style.top = `${Math.random() * 100}vh`;
-                orb.style.animationDuration = `${8 + Math.random() * 8}s`;
-                orb.style.animationDelay = `${Math.random() * 4}s`;
-                document.body.appendChild(orb);
+            for (let i = 0; i < 45; i++) {
+                const sphere = document.createElement('div');
+                sphere.className = 'abyss-sphere';
+                sphere.style.left = `${Math.random() * 100}vw`;
+                sphere.style.top = `${Math.random() * 100}vh`;
+                sphere.style.animationDuration = `${9 + Math.random() * 9}s`;
+                sphere.style.animationDelay = `${Math.random() * 4.5}s`;
+                document.body.appendChild(sphere);
             }
 
-            const coreImage = document.getElementById('core-image');
+            const abyssImage = document.getElementById('abyss-image');
             const pathsToTry = [
-                '/aura-images/core-aura.jpeg',
-                './aura-images/core-aura.jpeg',
-                'aura-images/core-aura.jpeg',
-                'assets/aura-core.webp'
+                '/cyber-images/core-cyber.jpeg',
+                './cyber-images/core-cyber.jpeg',
+                'cyber-images/core-cyber.jpeg',
+                'assets/cyber-core.webp'
             ];
             let currentPathIndex = 0;
 
             function tryNextPath() {
                 if (currentPathIndex >= pathsToTry.length) {
-                    console.error('All paths failed. Check file paths and server config.');
+                    console.error('All paths failed. Verify file paths and server setup.');
                     return;
                 }
-                coreImage.src = pathsToTry[currentPathIndex];
-                console.log(`Trying path: ${pathsToTry[currentPathIndex]}`);
+                abyssImage.src = pathsToTry[currentPathIndex];
+                console.log(`Attempting path: ${pathsToTry[currentPathIndex]}`);
                 currentPathIndex++;
             }
 
-            coreImage.addEventListener('load', () => {
-                console.log(`Image loaded at ${coreImage.src}`);
-                gsap.to(coreImage, { opacity: 1, duration: 1.2, ease: 'power3.out' });
+            abyssImage.addEventListener('load', () => {
+                console.log(`Image loaded at ${abyssImage.src}`);
+                gsap.to(abyssImage, { opacity: 1, duration: 1.5, ease: 'power3.out' });
             });
 
-            coreImage.addEventListener('error', () => {
-                console.error(`Failed to load ${coreImage.src}`);
+            abyssImage.addEventListener('error', () => {
+                console.error(`Failed to load ${abyssImage.src}`);
                 tryNextPath();
             });
 
-            coreImage.style.opacity = 0;
+            abyssImage.style.opacity = 0;
             tryNextPath();
         });
     </script>
