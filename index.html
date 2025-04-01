@@ -1155,4 +1155,442 @@
             console.log('Node hover sound failed to initialize:', e);
         }
 
-        //
+        // Throttle utility
+        function throttle(func, limit) {
+            let inThrottle;
+            return function() {
+                if (!inThrottle) {
+                    func.apply(this, arguments);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            };
+        }
+
+        // DOM ready
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM elements with null checks
+            const entryScreen = document.getElementById('entry-screen');
+            const enterButton = document.getElementById('enter-labverse');
+            const mainContent = document.getElementById('main-content');
+            const footer = document.getElementById('footer');
+            const infiniteBg = document.getElementById('infinite-bg');
+            const cyberGrid = document.getElementById('cyber-grid');
+            const weatherEffect = document.getElementById('weather-effect');
+            const holoDashboard = document.getElementById('holo-dashboard');
+            const cyberSphere = document.getElementById('cyber-sphere');
+            const arOverlay = document.getElementById('ar-overlay');
+            const terminalConsole = document.getElementById('terminal-console');
+            const controlPanel = document.getElementById('control-panel');
+            const cyberClock = document.getElementById('cyber-clock');
+            const cyberMap = document.getElementById('cyber-map');
+            const cyberResource = document.getElementById('cyber-resource');
+            const cyberEnergy = document.getElementById('cyber-energy');
+            const analyticsHud = document.getElementById('analytics-hud');
+            const userProfile = document.getElementById('user-profile');
+
+            // Verify critical elements exist
+            if (!entryScreen || !enterButton) {
+                console.error('Entry screen or button not found in DOM');
+                return;
+            }
+
+            // Button click handler
+            enterButton.addEventListener('click', () => {
+                console.log('Enter LabVerse clicked'); // Debug log
+                if (entryScreen) entryScreen.classList.add('hidden');
+                if (mainContent) mainContent.classList.add('visible');
+                if (footer) footer.classList.add('visible');
+                if (infiniteBg) infiniteBg.classList.add('visible');
+                if (cyberGrid) cyberGrid.classList.add('visible');
+                if (weatherEffect) weatherEffect.classList.add('visible');
+                if (holoDashboard) holoDashboard.classList.add('visible');
+                if (cyberSphere) cyberSphere.classList.add('visible');
+                if (arOverlay) arOverlay.classList.add('visible');
+                if (terminalConsole) terminalConsole.classList.add('visible');
+                if (controlPanel) controlPanel.classList.add('visible');
+                if (cyberClock) cyberClock.classList.add('visible');
+                if (cyberMap) cyberMap.classList.add('visible');
+                if (cyberResource) cyberResource.classList.add('visible');
+                if (cyberEnergy) cyberEnergy.classList.add('visible');
+                if (analyticsHud) analyticsHud.classList.add('visible');
+                if (userProfile) userProfile.classList.add('visible');
+
+                // Play audio with fallback
+                if (lofiAudio) {
+                    lofiAudio.play().catch(e => console.log('Audio play failed:', e));
+                } else {
+                    console.log('Lo-Fi audio not initialized');
+                }
+
+                // Initialize features
+                initFeatures();
+            });
+
+            function initFeatures() {
+                // Holo Dashboard
+                const dashCanvas = document.getElementById('dashboard-canvas');
+                if (dashCanvas && typeof THREE !== 'undefined') {
+                    const dashScene = new THREE.Scene();
+                    const dashCamera = new THREE.PerspectiveCamera(75, 350 / 350, 0.1, 1000);
+                    const dashRenderer = new THREE.WebGLRenderer({ canvas: dashCanvas, alpha: true });
+                    dashRenderer.setSize(350, 350);
+                    const dashGeometry = new THREE.TorusKnotGeometry(10, 3, 100, 16);
+                    const dashMaterial = new THREE.MeshBasicMaterial({ color: 0x00d4ff, wireframe: true });
+                    const dashTorus = new THREE.Mesh(dashGeometry, dashMaterial);
+                    dashScene.add(dashTorus);
+                    dashCamera.position.z = 25;
+
+                    function animateDashboard() {
+                        requestAnimationFrame(animateDashboard);
+                        dashTorus.rotation.x += 0.02;
+                        dashTorus.rotation.y += 0.02;
+                        dashRenderer.render(dashScene, dashCamera);
+                    }
+                    animateDashboard();
+                }
+
+                // Cyber Sphere Navigation
+                const sphereCanvas = document.getElementById('sphere-nav');
+                if (sphereCanvas && typeof THREE !== 'undefined') {
+                    const navScene = new THREE.Scene();
+                    const navCamera = new THREE.PerspectiveCamera(75, 200 / 200, 0.1, 1000);
+                    const navRenderer = new THREE.WebGLRenderer({ canvas: sphereCanvas, alpha: true });
+                    navRenderer.setSize(200, 200);
+                    const navGeometry = new THREE.IcosahedronGeometry(8, 1);
+                    const navMaterial = new THREE.MeshBasicMaterial({ color: 0xff007a, wireframe: true });
+                    const navSphere = new THREE.Mesh(navGeometry, navMaterial);
+                    navScene.add(navSphere);
+                    navCamera.position.z = 15;
+
+                    function animateNav() {
+                        requestAnimationFrame(animateNav);
+                        navSphere.rotation.x += 0.015;
+                        navSphere.rotation.y += 0.015;
+                        navRenderer.render(navScene, navCamera);
+                    }
+                    animateNav();
+                }
+
+                // Navigation Overlay
+                const sphereNav = document.getElementById('cyber-sphere');
+                const navOverlay = document.getElementById('nav-overlay');
+                if (sphereNav && navOverlay) {
+                    sphereNav.addEventListener('click', () => navOverlay.classList.toggle('active'));
+                    navOverlay.querySelectorAll('a').forEach(link => {
+                        link.addEventListener('click', () => {
+                            navOverlay.classList.remove('active');
+                            const transition = document.createElement('div');
+                            transition.className = 'glitch-transition';
+                            document.body.appendChild(transition);
+                            setTimeout(() => transition.remove(), 600);
+                        });
+                    });
+                }
+
+                // Particles
+                for (let i = 0; i < 40; i++) {
+                    const particle = document.createElement('div');
+                    const type = i % 3 === 0 ? 'nano' : i % 3 === 1 ? 'plasma' : '';
+                    particle.className = `cyber-particle ${type}`;
+                    particle.style.left = `${Math.random() * 100}vw`;
+                    particle.style.top = `${Math.random() * 100}vh`;
+                    particle.style.animationDelay = `${Math.random() * 6}s`;
+                    document.body.appendChild(particle);
+                }
+
+                // Mouse Trail
+                let trailCount = 0;
+                const maxTrails = 25;
+                const glyphs = ['△', '□', '○', '◇', '✦'];
+                document.addEventListener('mousemove', throttle((e) => {
+                    if (trailCount < maxTrails) {
+                        const trail = document.createElement('div');
+                        const rand = Math.random();
+                        const type = rand > 0.8 ? 'glyph' : '';
+                        trail.className = `mouse-trail ${type}`;
+                        trail.style.left = `${e.clientX}px`;
+                        trail.style.top = `${e.clientY}px`;
+                        if (type === 'glyph') trail.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+                        document.body.appendChild(trail);
+                        trailCount++;
+                        setTimeout(() => {
+                            trail.remove();
+                            trailCount--;
+                        }, 700);
+                    }
+                }, 15));
+
+                // Data Streams
+                function spawnStream() {
+                    const stream = document.createElement('div');
+                    stream.className = `data-stream ${Math.random() > 0.5 ? 'nano' : ''}`;
+                    stream.style.left = `${Math.random() * 100}vw`;
+                    document.body.appendChild(stream);
+                    setTimeout(() => stream.remove(), 2500);
+                }
+                setInterval(spawnStream, 150);
+
+                // Weather Effects
+                const weatherEffectElement = document.getElementById('weather-effect');
+                if (weatherEffectElement) {
+                    function spawnRain() {
+                        const drop = document.createElement('div');
+                        drop.className = 'rain-drop';
+                        drop.style.left = `${Math.random() * 100}vw`;
+                        weatherEffectElement.appendChild(drop);
+                        setTimeout(() => drop.remove(), 1200);
+                    }
+
+                    function spawnGlitch() {
+                        const line = document.createElement('div');
+                        line.className = 'glitch-line';
+                        line.style.top = `${Math.random() * 100}vh`;
+                        weatherEffectElement.appendChild(line);
+                        setTimeout(() => line.remove(), 600);
+                    }
+
+                    function spawnPlasma() {
+                        const wave = document.createElement('div');
+                        wave.className = 'plasma-wave';
+                        wave.style.left = `${Math.random() * 100}vw`;
+                        wave.style.top = `${Math.random() * 100}vh`;
+                        weatherEffectElement.appendChild(wave);
+                        setTimeout(() => wave.remove(), 3000);
+                    }
+
+                    let weatherInterval;
+                    const weatherToggle = document.querySelector('.weather-toggle');
+                    if (weatherToggle) {
+                        let weatherState = 'none';
+                        weatherToggle.addEventListener('click', () => {
+                            clearInterval(weatherInterval);
+                            weatherEffectElement.innerHTML = '';
+                            if (weatherState === 'none') {
+                                weatherState = 'rain';
+                                document.body.classList.add('weather-rain');
+                                weatherInterval = setInterval(spawnRain, 40);
+                                weatherToggle.textContent = '☔';
+                            } else if (weatherState === 'rain') {
+                                weatherState = 'glitch';
+                                document.body.classList.remove('weather-rain');
+                                document.body.classList.add('weather-glitch');
+                                weatherInterval = setInterval(spawnGlitch, 80);
+                                weatherToggle.textContent = '⚡';
+                            } else if (weatherState === 'glitch') {
+                                weatherState = 'plasma';
+                                document.body.classList.remove('weather-glitch');
+                                document.body.classList.add('weather-plasma');
+                                weatherInterval = setInterval(spawnPlasma, 200);
+                                weatherToggle.textContent = '🌌';
+                            } else {
+                                weatherState = 'none';
+                                document.body.classList.remove('weather-plasma');
+                                weatherToggle.textContent = '☼';
+                            }
+                        });
+                    }
+                }
+
+                // Scroll Effects
+                window.addEventListener('scroll', throttle(() => {
+                    const scrollY = window.scrollY;
+                    document.querySelectorAll('.holo-section').forEach(section => {
+                        const rect = section.getBoundingClientRect();
+                        if (rect.top <= window.innerHeight * 0.9 && !section.classList.contains('visible')) {
+                            section.classList.add('visible');
+                            const swoosh = document.createElement('div');
+                            swoosh.className = 'scroll-swoosh';
+                            swoosh.style.top = `${rect.top + scrollY + rect.height / 2}px`;
+                            document.body.appendChild(swoosh);
+                            setTimeout(() => swoosh.remove(), 900);
+                        }
+                    });
+
+                    document.querySelectorAll('.data-node').forEach(node => {
+                        const rect = node.getBoundingClientRect();
+                        if (rect.top <= window.innerHeight * 0.9 && !node.classList.contains('visible')) {
+                            node.classList.add('visible');
+                        }
+                    });
+
+                    if (cyberGrid) {
+                        cyberGrid.style.transform = `translateY(${-scrollY * 0.15}px) rotate(${scrollY * 0.05}deg)`;
+                    }
+                    const scrollDepth = document.getElementById('scroll-depth');
+                    if (scrollDepth) {
+                        scrollDepth.textContent = `${Math.round((scrollY / (document.body.scrollHeight - window.innerHeight)) * 100)}%`;
+                    }
+                }, 30));
+
+                // Node Hover Sound
+                document.querySelectorAll('.data-node').forEach(node => {
+                    node.addEventListener('mouseenter', () => {
+                        if (nodeHover) nodeHover.play();
+                    });
+                });
+
+                // Back to Top
+                const topBtn = document.querySelector('.top-btn');
+                if (topBtn) {
+                    topBtn.addEventListener('click', () => {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    });
+                }
+
+                // Audio Control
+                const audioBtn = document.querySelector('.audio-control');
+                if (audioBtn && lofiAudio) {
+                    audioBtn.addEventListener('click', () => {
+                        if (lofiAudio.playing()) {
+                            lofiAudio.pause();
+                            audioBtn.textContent = '♪';
+                        } else {
+                            lofiAudio.play();
+                            audioBtn.textContent = '♫';
+                        }
+                    });
+                }
+
+                // AR Toggle
+                const arToggle = document.querySelector('.ar-toggle');
+                const arOverlayElement = document.getElementById('ar-overlay');
+                if (arToggle && arOverlayElement) {
+                    arToggle.addEventListener('click', () => {
+                        arOverlayElement.classList.toggle('active');
+                        arToggle.textContent = arOverlayElement.classList.contains('active') ? 'AR+' : 'AR';
+                    });
+                }
+
+                // Terminal Console
+                const consoleToggle = document.querySelector('.console-toggle');
+                const terminalConsoleElement = document.getElementById('terminal-console');
+                const consoleInput = document.getElementById('console-input');
+                const consoleOutput = document.getElementById('console-output');
+                if (consoleToggle && terminalConsoleElement && consoleInput && consoleOutput) {
+                    consoleToggle.addEventListener('click', () => {
+                        terminalConsoleElement.classList.toggle('active');
+                        consoleToggle.textContent = terminalConsoleElement.classList.contains('active') ? '⌨-' : '⌨';
+                        if (terminalConsoleElement.classList.contains('active')) consoleInput.focus();
+                    });
+
+                    consoleInput.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            const command = consoleInput.value.toLowerCase();
+                            consoleOutput.innerHTML += `<p>> ${command}</p>`;
+                            if (command === 'help') {
+                                consoleOutput.innerHTML += '<p>Commands: help, clear, weather, ar, exit</p>';
+                            } else if (command === 'clear') {
+                                consoleOutput.innerHTML = '';
+                            } else if (command === 'weather') {
+                                consoleOutput.innerHTML += '<p>Toggle weather with button</p>';
+                            } else if (command === 'ar') {
+                                arOverlayElement.classList.toggle('active');
+                                consoleOutput.innerHTML += `<p>AR ${arOverlayElement.classList.contains('active') ? 'enabled' : 'disabled'}</p>`;
+                            } else if (command === 'exit') {
+                                terminalConsoleElement.classList.remove('active');
+                                consoleToggle.textContent = '⌨';
+                            } else {
+                                consoleOutput.innerHTML += '<p>Unknown command</p>';
+                            }
+                            consoleInput.value = '';
+                            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+                        }
+                    });
+                }
+
+                // Cyber Orbs
+                for (let i = 0; i < 10; i++) {
+                    const orb = document.createElement('div');
+                    orb.className = 'cyber-orb';
+                    orb.style.left = `${Math.random() * 100}vw`;
+                    orb.style.top = `${Math.random() * 100}vh`;
+                    orb.style.animationDelay = `${Math.random() * 8}s`;
+                    document.body.appendChild(orb);
+                }
+
+                // Cyber Widgets
+                if (cyberClock) {
+                    function updateClock() {
+                        const now = new Date();
+                        cyberClock.textContent = now.toLocaleTimeString();
+                    }
+                    setInterval(updateClock, 1000);
+                    updateClock();
+                }
+
+                const mapCanvas = document.getElementById('map-canvas');
+                if (mapCanvas) {
+                    const mapCtx = mapCanvas.getContext('2d');
+                    mapCanvas.width = 120;
+                    mapCanvas.height = 120;
+                    function drawMap() {
+                        mapCtx.clearRect(0, 0, 120, 120);
+                        mapCtx.strokeStyle = 'var(--nano-green)';
+                        mapCtx.lineWidth = 3;
+                        mapCtx.beginPath();
+                        mapCtx.arc(60, 60, 50, 0, Math.PI * 2);
+                        mapCtx.stroke();
+                        mapCtx.fillStyle = 'var(--cyber-pink)';
+                        mapCtx.fillRect(58, 58, 4, 4);
+                        requestAnimationFrame(drawMap);
+                    }
+                    drawMap();
+                }
+
+                if (cyberResource) {
+                    let cpuUsage = 0;
+                    function updateResource() {
+                        cpuUsage = Math.min(cpuUsage + (Math.random() - 0.5) * 15, 100);
+                        document.getElementById('cpu-usage').textContent = `${Math.round(cpuUsage)}%`;
+                    }
+                    setInterval(updateResource, 1500);
+                }
+
+                if (cyberEnergy) {
+                    let energyLevel = 100;
+                    function updateEnergy() {
+                        energyLevel = Math.max(energyLevel - Math.random() * 5, 0);
+                        document.getElementById('energy-level').textContent = `${Math.round(energyLevel)}%`;
+                        document.getElementById('energy-level-display').textContent = `${Math.round(energyLevel)}%`;
+                    }
+                    setInterval(updateEnergy, 3000);
+                }
+
+                // Analytics HUD
+                const timeSpentSpan = document.getElementById('time-spent');
+                const interactionsSpan = document.getElementById('interactions');
+                if (timeSpentSpan && interactionsSpan) {
+                    let timeSpent = 0;
+                    let interactions = 0;
+                    setInterval(() => {
+                        timeSpent++;
+                        timeSpentSpan.textContent = `${timeSpent}s`;
+                    }, 1000);
+
+                    document.addEventListener('click', () => {
+                        interactions++;
+                        interactionsSpan.textContent = interactions;
+                        document.getElementById('user-count').textContent = 1;
+                    });
+                }
+
+                // User Profile
+                const profileName = document.getElementById('profile-name');
+                const profileAvatar = document.querySelector('.profile-avatar');
+                if (profileName && profileAvatar) {
+                    const storedName = localStorage.getItem('profileName') || 'CyberUser';
+                    profileName.textContent = storedName;
+                    profileAvatar.addEventListener('click', () => {
+                        const newName = prompt('Enter your cyber name:', storedName);
+                        if (newName) {
+                            localStorage.setItem('profileName', newName);
+                            profileName.textContent = newName;
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
