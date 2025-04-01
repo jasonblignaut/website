@@ -3,31 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="LabVerse | Technical University V3.0: South Africa’s Ultimate Free IT Training Cosmos. Master Skills in a Futuristic, Fancy Realm.">
-    <meta name="keywords" content="Technical University South Africa, Free IT Training, Hybrid Cloud, Cybersecurity, Networking, Digital Marketing, SEO, Cisco, Unifi, Leadership, LabVerse V3.0, Cosmic Innovation">
+    <meta name="description" content="LabVerse Online Technical University: South Africa’s Ultimate Free IT Training Cosmos. Master Skills with Free Tutorials & Consultancy.">
+    <meta name="keywords" content="Free IT Training, Hybrid Cloud, Cybersecurity, Networking, Digital Marketing, SEO, Cisco, Azure, LabVerse, Technical University">
     <meta name="author" content="LabVerse">
-    <meta name="robots" content="index, follow">
-    <meta property="og:title" content="LabVerse | Technical University V3.0">
-    <meta property="og:description" content="Explore LabVerse | Technical University V3.0: Elite Free IT Tutorials in a Cosmic, Fancy Realm.">
+    <meta property="og:title" content="LabVerse Online Technical University">
+    <meta property="og:description" content="Master IT Skills with Free Tutorials & Expert Consultancy in a Cosmic Realm.">
     <meta property="og:image" content="assets/cosmo-core.webp">
     <meta property="og:url" content="https://labverse.co.za">
     <meta property="og:type" content="website">
     <link rel="icon" type="image/png" href="assets/favicon.ico">
-    <title>LabVerse | Technical University V3.0</title>
+    <title>LabVerse Online Technical University</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Roboto+Mono:wght@300;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono:wght@300;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js" defer></script>
     <style>
         :root {
-            --cosmo-lime: #39ff14;
-            --cosmo-purple: #d400ff;
-            --cosmo-abyss: #02020f;
-            --luna-glass: rgba(255, 255, 255, 0.12);
-            --star-white: #fffbff;
-            --shadow-luna: #d0d0f0;
-            --glow-cosmo: 28px;
+            --primary: #39ff14;
+            --secondary: #d400ff;
+            --dark: #02020f;
+            --glass: rgba(255, 255, 255, 0.12);
+            --text: #fffbff;
+            --muted: #d0d0f0;
+            --glow: 20px;
+            --light-bg: #f0f0f5;
+            --light-text: #1a1a2e;
         }
 
         * {
@@ -37,801 +39,444 @@
             font-family: 'Roboto Mono', monospace;
         }
 
-        html, body {
-            overflow-x: hidden;
-            overflow-y: auto; /* Scroll Fix 1 */
-            height: auto;
+        html {
             scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch; /* Scroll Fix 7 */
-            touch-action: pan-y;
         }
 
         body {
-            background-color: var(--cosmo-abyss);
-            color: var(--star-white);
-            line-height: 2;
+            background-color: var(--dark);
+            color: var(--text);
+            line-height: 1.8;
             position: relative;
             min-height: 100vh;
-            will-change: scroll-position;
+            transition: background-color 0.5s, color 0.5s;
         }
 
-        /* Cosmo Flare (Mouse & Scroll) */
-        .cosmo-flare {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: var(--cosmo-lime);
+        body.light {
+            background-color: var(--light-bg);
+            color: var(--light-text);
+        }
+
+        /* Effects */
+        .trail {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
             border-radius: 50%;
             pointer-events: none;
-            z-index: 10008;
-            opacity: 0.98;
-            box-shadow: 0 0 50px var(--cosmo-lime), 0 0 65px var(--cosmo-purple);
-            animation: cosmoBurst 1.3s ease-out forwards;
-            will-change: transform, opacity;
+            z-index: 1001;
+            opacity: 0.9;
+            box-shadow: 0 0 20px var(--primary);
+            animation: burst 0.8s ease-out forwards;
         }
 
-        @keyframes cosmoBurst {
-            0% { transform: scale(1) rotate(0deg); opacity: 0.98; }
-            50% { transform: scale(8) rotate(180deg); opacity: 0.92; }
-            100% { transform: scale(0) rotate(360deg); opacity: 0; }
+        @keyframes burst {
+            0% { transform: scale(1); opacity: 0.9; }
+            100% { transform: scale(0); opacity: 0; }
         }
 
-        .cosmo-flare.scroll {
-            width: 110%;
-            height: 8px;
-            background: linear-gradient(90deg, transparent, var(--cosmo-purple), transparent);
-            border-radius: 0;
-            animation: cosmoSweep 1.1s ease-out forwards;
-        }
-
-        @keyframes cosmoSweep {
-            0% { transform: translateY(-120vh) skewX(50deg); opacity: 1; }
-            50% { transform: translateY(0) skewX(0deg); opacity: 0.9; }
-            100% { transform: translateY(120vh) skewX(-50deg); opacity: 0; }
-        }
-
-        /* Luna Trails */
-        .luna-trail {
-            position: absolute;
-            width: 14px;
-            height: 120px;
-            background: linear-gradient(180deg, var(--cosmo-lime), transparent);
-            pointer-events: none;
-            z-index: 10006;
-            opacity: 0.99;
-            box-shadow: 0 0 50px var(--cosmo-lime);
-            animation: lunaDrop 3.2s linear forwards;
-            will-change: transform, opacity;
-        }
-
-        @keyframes lunaDrop {
-            0% { transform: translateY(-130vh) rotate(30deg); opacity: 0.99; }
-            70% { opacity: 0.9; }
-            100% { transform: translateY(130vh) rotate(30deg); opacity: 0; }
-        }
-
-        /* Cosmo Grid Wrapper */
         .grid-wrapper {
-            position: absolute;
+            position: fixed;
             inset: 0;
-            z-index: -1; /* Scroll Fix 2 */
+            z-index: -1;
             pointer-events: none;
-            overflow: hidden; /* Scroll Fix 3 */
+            opacity: 0.3;
         }
 
         #cosmo-grid {
-            position: absolute; /* Scroll Fix 2 */
-            inset: 0;
-            opacity: 0.82;
-        }
-
-        .grid-luna {
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(57, 255, 20, 0.2) 0%, transparent 75%);
-            opacity: 0.72;
-            animation: lunaDrift 60s linear infinite;
         }
 
-        @keyframes lunaDrift {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(-160px, 160px); }
-        }
-
-        /* Star Nodes */
-        .star-node {
-            position: absolute;
-            width: 22px;
-            height: 22px;
-            background: var(--cosmo-purple);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.95;
-            box-shadow: 0 0 55px var(--cosmo-purple);
-            animation: nodePulse 12s ease-in-out infinite;
-            will-change: transform, opacity;
-        }
-
-        @keyframes nodePulse {
-            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.95; }
-            50% { transform: translate(55px, -55px) scale(1.2); opacity: 1; }
-        }
-
-        /* Cosmo Gate */
-        .cosmo-gate {
-            position: absolute;
+        /* Loader & Gate */
+        .loader, .gate {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(57, 255, 20, 0.28), var(--cosmo-abyss) 90%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            transition: opacity 2.8s ease, transform 2.8s ease; /* Scroll Fix 6 */
-        }
-
-        .cosmo-gate.hidden {
-            opacity: 0;
-            transform: scale(1.6) rotate(15deg);
-            pointer-events: none;
-        }
-
-        .cosmo-gate button {
-            background: linear-gradient(135deg, var(--cosmo-lime), var(--cosmo-purple));
-            color: var(--star-white);
-            padding: 5.5rem 12rem;
-            border: none;
-            border-radius: 120px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3.8rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            cursor: pointer;
-            box-shadow: 0 0 var(--glow-cosmo) var(--cosmo-lime);
-            position: relative;
-            overflow: hidden;
-            transition: transform 1.1s, box-shadow 1.1s;
-        }
-
-        .cosmo-gate button::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.55), transparent);
-            animation: gateFlux 3.2s infinite;
-        }
-
-        @keyframes gateFlux {
-            0% { transform: translateX(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) rotate(45deg); }
-        }
-
-        .cosmo-gate button:hover {
-            transform: scale(1.35) rotate(10deg);
-            box-shadow: 0 0 calc(var(--glow-cosmo) * 2) var(--cosmo-purple);
-        }
-
-        /* Cosmo Loader */
-        .cosmo-loader {
-            position: absolute; /* Scroll Fix 2 */
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--cosmo-abyss);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 2.2s ease; /* Scroll Fix 5 */
+            transition: opacity 1s;
         }
 
-        .cosmo-loader::before {
+        .loader {
+            background: var(--dark);
+        }
+
+        .loader::before {
             content: '';
-            width: 110px;
-            height: 110px;
-            border: 14px solid var(--cosmo-lime);
-            border-top: 14px solid var(--cosmo-purple);
+            width: 60px;
+            height: 60px;
+            border: 6px solid var(--primary);
+            border-top: 6px solid var(--secondary);
             border-radius: 50%;
-            animation: cosmoSpin 2.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
-            box-shadow: 0 0 60px var(--cosmo-lime);
+            animation: spin 1.5s ease-in-out infinite;
         }
 
-        @keyframes cosmoSpin {
-            0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.6); }
-            100% { transform: rotate(360deg) scale(1); }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .cosmo-loader.hidden {
+        .loader.hidden, .gate.hidden {
             opacity: 0;
             pointer-events: none;
-            display: none; /* Scroll Fix 5 */
         }
 
-        /* Luna Header */
+        .gate {
+            background: radial-gradient(circle, rgba(57, 255, 20, 0.2), var(--dark) 90%);
+            z-index: 10000;
+        }
+
+        .gate button {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--text);
+            padding: 2rem 5rem;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 0 var(--glow) var(--primary);
+            transition: transform 0.5s, box-shadow 0.5s;
+        }
+
+        .gate button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 calc(var(--glow) * 2) var(--secondary);
+        }
+
+        /* Header */
         header {
             position: sticky;
             top: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(2, 2, 15, 0.96);
-            backdrop-filter: blur(45px);
-            padding: 3.5rem 5rem;
+            background: rgba(2, 2, 15, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem 3rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            border-bottom: 1px solid rgba(57, 255, 20, 0.35);
-            transition: transform 1.1s ease;
-        }
-
-        header.hidden {
-            transform: translateY(-100%);
+            border-bottom: 1px solid rgba(57, 255, 20, 0.2);
         }
 
         .logo img {
-            height: 85px;
-            filter: drop-shadow(0 0 22px var(--cosmo-lime));
-            transition: transform 1.1s;
-        }
-
-        .logo img:hover {
-            transform: scale(1.5) rotate(50deg);
-        }
-
-        nav {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            max-width: 1300px;
+            height: 60px;
+            filter: drop-shadow(0 0 10px var(--primary));
         }
 
         nav a {
-            color: var(--star-white);
+            color: var(--text);
             text-decoration: none;
-            margin: 0 5rem;
+            margin: 0 2rem;
             font-family: 'Orbitron', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 900;
+            font-size: 1.2rem;
             text-transform: uppercase;
             position: relative;
-            transition: all 1s;
         }
 
         nav a::after {
             content: '';
             position: absolute;
             width: 0;
-            height: 8px;
-            bottom: -22px;
+            height: 2px;
+            bottom: -5px;
             left: 0;
-            background: var(--cosmo-lime);
-            transition: width 1s ease;
+            background: var(--primary);
+            transition: width 0.3s;
         }
 
         nav a:hover::after {
             width: 100%;
         }
 
-        nav a:hover {
-            color: var(--cosmo-lime);
-            text-shadow: 0 0 35px var(--cosmo-lime);
-        }
-
         .hamburger {
             display: none;
             cursor: pointer;
-            font-size: 5rem;
-            color: var(--star-white);
-            transition: transform 1s;
+            font-size: 2rem;
+            color: var(--text);
         }
 
-        .hamburger:hover {
-            transform: scale(1.5);
-        }
-
-        /* Cosmo Controls */
-        .luna-top, .audio-luna {
+        /* Controls */
+        .top-btn, .audio-btn, .mode-toggle {
             position: fixed;
-            background: linear-gradient(135deg, var(--cosmo-lime), var(--cosmo-purple));
-            color: var(--star-white);
-            width: 95px;
-            height: 95px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--text);
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 3.2rem;
-            text-decoration: none;
-            box-shadow: 0 0 var(--glow-cosmo) var(--cosmo-lime);
-            transition: transform 1s, box-shadow 1s;
+            font-size: 1.5rem;
+            box-shadow: 0 0 var(--glow) var(--primary);
+            transition: transform 0.3s, box-shadow 0.3s;
             z-index: 1000;
         }
 
-        .luna-top {
-            bottom: 6rem;
-            right: 6rem;
+        .top-btn {
+            bottom: 2rem;
+            right: 2rem;
             opacity: 0;
         }
 
-        .luna-top.visible {
+        .top-btn.visible {
             opacity: 1;
         }
 
-        .audio-luna {
-            bottom: 6rem;
-            left: 6rem;
+        .audio-btn {
+            bottom: 2rem;
+            left: 2rem;
         }
 
-        .luna-top:hover, .audio-luna:hover {
-            transform: scale(1.45) rotate(20deg);
-            box-shadow: 0 0 calc(var(--glow-cosmo) * 2) var(--cosmo-purple);
+        .mode-toggle {
+            bottom: 7rem;
+            left: 2rem;
         }
 
-        /* Cosmo Luna (Hero) */
-        .cosmo-luna {
+        .top-btn:hover, .audio-btn:hover, .mode-toggle:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 calc(var(--glow) * 2) var(--secondary);
+        }
+
+        /* Hero */
+        .hero {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 7rem 6rem;
+            padding: 3rem;
             position: relative;
             z-index: 1;
         }
 
-        .cosmo-luna::before {
-            content: '';
-            position: absolute;
-            width: 500%;
-            height: 500%;
-            background: radial-gradient(circle, rgba(57, 255, 20, 0.25), transparent 95%);
-            animation: lunaPulse 20s infinite ease-in-out;
-            z-index: -1;
-        }
-
-        @keyframes lunaPulse {
-            0% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.25; }
-            50% { transform: scale(1.3) translateX(-50%) translateY(-50%); opacity: 0.5; }
-            100% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.25; }
-        }
-
-        .cosmo-luna img {
-            width: 420px;
-            height: 420px;
+        .hero img {
+            width: 250px;
+            height: 250px;
             border-radius: 50%;
-            border: 9px solid var(--cosmo-lime);
-            box-shadow: 0 0 55px var(--cosmo-lime);
-            margin-bottom: 5rem;
-            transition: transform 1.2s ease;
-            animation: lunaOrbit 11s infinite ease-in-out;
+            border: 5px solid var(--primary);
+            box-shadow: 0 0 30px var(--primary);
+            margin-bottom: 2rem;
+            animation: float 5s ease-in-out infinite;
         }
 
-        @keyframes lunaOrbit {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-25px) rotate(10deg); }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
 
-        .cosmo-luna img:hover {
-            transform: scale(1.25) rotate(15deg);
-        }
-
-        .cosmo-luna h1 {
+        .hero h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(6.5rem, 15vw, 12rem);
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--cosmo-lime), var(--cosmo-purple));
+            font-size: clamp(3rem, 8vw, 5rem);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 4rem;
-            text-shadow: 0 0 22px var(--cosmo-lime);
-            position: relative;
-            z-index: 2;
-            letter-spacing: 0.06em;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px var(--primary);
         }
 
-        .cosmo-luna h1::after {
-            content: '';
-            position: absolute;
-            width: 98%;
-            height: 8px;
-            bottom: -35px;
-            left: 1%;
-            background: linear-gradient(90deg, transparent, var(--cosmo-lime), transparent);
-            animation: lunaFlux 5.5s infinite ease-in-out;
+        .hero p {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            color: var(--muted);
+            margin-bottom: 2rem;
+            max-width: 800px;
         }
 
-        @keyframes lunaFlux {
-            0% { width: 98%; opacity: 1; }
-            50% { width: 100%; opacity: 0.95; }
-            100% { width: 98%; opacity: 1; }
-        }
-
-        .cosmo-luna p {
-            font-size: clamp(2.6rem, 9vw, 3.4rem);
-            color: var(--shadow-luna);
-            margin-bottom: 5rem;
-            max-width: 1500px;
-            z-index: 2;
-        }
-
-        .cosmo-luna .luna-launch {
-            background: linear-gradient(135deg, var(--cosmo-lime), var(--cosmo-purple));
-            color: var(--star-white);
-            padding: 3.2rem 7.5rem;
+        .hero .cta {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--text);
+            padding: 1.2rem 3rem;
             text-decoration: none;
-            border-radius: 110px;
+            border-radius: 30px;
             font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            font-size: 2.8rem;
-            text-transform: uppercase;
-            box-shadow: 0 0 var(--glow-cosmo) var(--cosmo-lime);
-            transition: all 1.1s;
-            position: relative;
-            overflow: hidden;
-            z-index: 2;
+            font-size: 1.2rem;
+            box-shadow: 0 0 var(--glow) var(--primary);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        .cosmo-luna .luna-launch::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
-            transition: left 1.1s;
+        .hero .cta:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 calc(var(--glow) * 2) var(--secondary);
         }
 
-        .cosmo-luna .luna-launch:hover::before {
-            left: 100%;
-        }
-
-        .cosmo-luna .luna-launch:hover {
-            box-shadow: 0 0 calc(var(--glow-cosmo) * 2) var(--cosmo-purple);
-            transform: scale(1.3) rotate(8deg);
-        }
-
-        /* Cosmo Zones */
+        /* Sections */
         section {
-            padding: 14rem 6rem;
-            max-width: 3000px;
+            padding: 6rem 2rem;
+            max-width: 1400px;
             margin: 0 auto;
-            scroll-margin-top: 170px;
+            scroll-margin-top: 100px;
             position: relative;
             z-index: 1;
-            opacity: 0;
-            transform: translateY(200px);
-            transition: opacity 2.2s ease, transform 2.2s ease;
-        }
-
-        section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        #cosmo-info {
-            min-height: auto;
-        }
-
-        #cosmo-skills, #cosmo-tutorials, #cosmo-contact {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
         }
 
         section h2 {
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(6rem, 14vw, 10rem);
-            font-weight: 900;
+            font-size: clamp(2.5rem, 6vw, 4rem);
             text-align: center;
-            background: linear-gradient(135deg, var(--cosmo-lime), var(--cosmo-purple));
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 9rem;
-            text-transform: uppercase;
-            text-shadow: 0 0 22px var(--cosmo-lime);
-            position: relative;
-            z-index: 2;
+            margin-bottom: 4rem;
+            text-shadow: 0 0 10px var(--primary);
         }
 
-        section h2::after {
-            content: '';
-            position: absolute;
-            width: 85%;
-            height: 8px;
-            bottom: -40px;
-            left: 7.5%;
-            background: linear-gradient(90deg, transparent, var(--cosmo-lime), transparent);
-            animation: zonePulse 5s infinite ease-in-out;
-            z-index: 2;
+        .info {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 3rem;
+            border: 1px solid rgba(57, 255, 20, 0.3);
+            box-shadow: 0 0 var(--glow) rgba(57, 255, 20, 0.4);
         }
 
-        @keyframes zonePulse {
-            0% { width: 85%; opacity: 1; }
-            50% { width: 100%; opacity: 0.85; }
-            100% { width: 85%; opacity: 1; }
-        }
-
-        .cosmo-info {
-            background: var(--luna-glass);
-            backdrop-filter: blur(45px);
-            border-radius: 50px;
-            padding: 11rem;
-            border: 1px solid rgba(57, 255, 20, 0.4);
-            box-shadow: 0 0 var(--glow-cosmo) rgba(57, 255, 20, 0.5);
-            max-width: 2600px;
-            width: 100%;
-        }
-
-        .info-cosmo {
+        .info-content {
             display: flex;
             flex-wrap: wrap;
-            gap: 10rem;
+            gap: 3rem;
             align-items: center;
-            justify-content: center;
         }
 
-        .cosmo-info img {
-            max-width: 700px;
+        .info img {
+            max-width: 400px;
             width: 100%;
-            height: auto;
-            border-radius: 50px;
-            border: 9px solid var(--cosmo-lime);
-            box-shadow: 0 0 var(--glow-cosmo) var(--cosmo-lime);
-            transition: transform 1.2s ease;
-            loading: lazy;
-        }
-
-        .cosmo-info img:hover {
-            transform: scale(1.2) rotate(10deg);
+            border-radius: 15px;
+            border: 3px solid var(--primary);
+            box-shadow: 0 0 var(--glow) var(--primary);
+            animation: float 5s ease-in-out infinite;
         }
 
         .info-text {
             flex: 1;
-            min-width: 600px;
-            text-align: center;
+            min-width: 300px;
         }
 
         .info-text p {
-            line-height: 3.2;
-            color: var(--shadow-luna);
-            font-size: 2.2rem;
+            color: var(--muted);
+            font-size: 1.2rem;
         }
 
-        .skills-cosmo, .tutorials-cosmo {
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
-            gap: 9rem;
-            width: 100%;
-            max-width: 2800px;
-            justify-items: center;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
         }
 
-        .skill-star, .tutorial-star {
-            background: var(--luna-glass);
-            backdrop-filter: blur(45px);
-            border-radius: 50px;
-            padding: 7rem;
-            border: 1px solid rgba(57, 255, 20, 0.4);
-            box-shadow: 0 0 var(--glow-cosmo) rgba(57, 255, 20, 0.5);
-            transition: all 1.2s;
-            position: relative;
-            overflow: hidden;
-            z-index: 2;
-            width: 100%;
-            max-width: 700px;
-            animation: starSway 13s infinite ease-in-out;
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(57, 255, 20, 0.3);
+            box-shadow: 0 0 var(--glow) rgba(57, 255, 20, 0.4);
+            transition: transform 0.5s;
         }
 
-        @keyframes starSway {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
+        .card:hover {
+            transform: translateY(-10px);
         }
 
-        .skill-star::before, .tutorial-star::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(57, 255, 20, 0.2), transparent);
-            animation: cosmoFlux 6s infinite;
-        }
-
-        @keyframes cosmoFlux {
-            0% { transform: translateX(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) rotate(45deg); }
-        }
-
-        .skill-star:hover, .tutorial-star:hover {
-            transform: translateY(-50px) scale(1.15) rotate(8deg);
-            box-shadow: 0 0 calc(var(--glow-cosmo) * 2) var(--cosmo-purple);
-        }
-
-        .skill-star img, .tutorial-star img {
-            width: 160px;
+        .card img {
+            width: 80px;
             height: auto;
-            margin-bottom: 4.5rem;
-            filter: drop-shadow(0 0 35px var(--cosmo-lime));
-            transition: transform 1.1s ease;
-            loading: lazy;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 0 15px var(--primary));
         }
 
-        .skill-star:hover img, .tutorial-star:hover img {
-            transform: scale(1.45) rotate(20deg);
-        }
-
-        .skill-star h3, .tutorial-star h3 {
+        .card h3 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 3rem;
-            font-weight: 900;
-            color: var(--star-white);
-            margin-bottom: 3rem;
-            text-shadow: 0 0 20px var(--cosmo-lime);
+            font-size: 1.5rem;
+            color: var(--text);
+            margin-bottom: 1rem;
         }
 
-        .skill-star p, .tutorial-star p {
-            font-size: 2rem;
-            color: var(--shadow-luna);
-            line-height: 2.8;
+        .card p {
+            color: var(--muted);
+            font-size: 1rem;
         }
 
-        .tutorial-star a {
-            color: var(--cosmo-lime);
+        .card a {
+            color: var(--primary);
             text-decoration: none;
-            font-weight: 700;
-            font-size: 2.2rem;
-            transition: all 1s;
-            position: relative;
+            font-weight: 600;
+            transition: color 0.3s;
         }
 
-        .tutorial-star a::after {
-            content: '→';
-            position: absolute;
-            right: -60px;
-            opacity: 0;
-            transition: all 1s;
+        .card a:hover {
+            color: var(--secondary);
         }
 
-        .tutorial-star a:hover::after {
-            opacity: 1;
-            right: -45px;
-        }
-
-        .tutorial-star a:hover {
-            color: var(--cosmo-purple);
-            text-shadow: 0 0 35px var(--cosmo-purple);
-        }
-
-        .media-cosmo {
-            position: relative;
+        .video-container {
             width: 100%;
-            height: 450px;
-            border-radius: 50px;
-            margin-top: 4.5rem;
+            height: 200px;
+            border-radius: 15px;
+            margin-top: 1.5rem;
             overflow: hidden;
         }
 
-        .tutorial-star iframe {
+        .card iframe {
             width: 100%;
             height: 100%;
-            border-radius: 50px;
-            border: 9px solid var(--cosmo-lime);
-            box-shadow: 0 0 50px rgba(57, 255, 20, 0.65);
-            loading: lazy;
+            border: 2px solid var(--primary);
+            border-radius: 15px;
         }
 
-        .cosmo-contact {
+        .contact {
             text-align: center;
-            position: relative;
-            max-width: 2600px;
-            width: 100%;
         }
 
-        .cosmo-contact p {
-            color: var(--shadow-luna);
-            margin-bottom: 8rem;
-            max-width: 1500px;
+        .contact p {
+            color: var(--muted);
+            margin-bottom: 3rem;
+            max-width: 800px;
             margin-left: auto;
             margin-right: auto;
-            font-size: 2.4rem;
+            font-size: 1.2rem;
         }
 
-        .contact-cosmo {
+        .contact-links {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 9rem;
+            gap: 2rem;
         }
 
-        .cosmo-contact a {
-            color: var(--cosmo-lime);
+        .contact a {
+            color: var(--primary);
             text-decoration: none;
-            font-weight: 700;
             font-family: 'Orbitron', sans-serif;
-            font-size: 2.6rem;
-            padding: 3rem 6.5rem;
-            border: 7px solid var(--cosmo-lime);
-            border-radius: 100px;
-            transition: all 1.1s;
-            position: relative;
-            overflow: hidden;
+            font-size: 1.2rem;
+            padding: 0.8rem 2rem;
+            border: 2px solid var(--primary);
+            border-radius: 25px;
+            transition: all 0.3s;
         }
 
-        .cosmo-contact a::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
-            transition: left 1.1s;
-        }
-
-        .cosmo-contact a:hover::before {
-            left: 100%;
-        }
-
-        .cosmo-contact a:hover {
-            color: var(--cosmo-purple);
-            box-shadow: 0 0 var(--glow-cosmo) var(--cosmo-purple);
-            transform: scale(1.2) rotate(6deg);
+        .contact a:hover {
+            color: var(--secondary);
+            box-shadow: 0 0 var(--glow) var(--secondary);
         }
 
         footer {
-            background: rgba(2, 2, 15, 0.96);
-            backdrop-filter: blur(45px);
-            padding: 10rem;
+            background: rgba(2, 2, 15, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 3rem;
             text-align: center;
-            border-top: 1px solid rgba(57, 255, 20, 0.35);
-            position: relative;
-            z-index: 1;
+            border-top: 1px solid rgba(57, 255, 20, 0.2);
         }
 
         footer p {
-            color: var(--shadow-luna);
-            font-size: 2rem;
-            margin-bottom: 5rem;
+            color: var(--muted);
+            font-size: 1rem;
         }
 
-        footer a {
-            color: var(--cosmo-lime);
-            text-decoration: none;
-            margin: 0 5rem;
-            font-size: 2.2rem;
-            transition: all 1s;
-        }
-
-        footer a:hover {
-            color: var(--cosmo-purple);
-            text-shadow: 0 0 35px var(--cosmo-purple);
-        }
-
-        /* Responsive Fancy */
-        @media (max-width: 1024px) {
-            .skills-cosmo, .tutorials-cosmo {
-                grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-            }
-
-            .cosmo-info {
-                padding: 9rem;
-            }
-        }
-
+        /* Responsive */
         @media (max-width: 768px) {
             .hamburger {
                 display: block;
@@ -840,14 +485,12 @@
             nav {
                 display: none;
                 position: fixed;
-                top: 160px;
+                top: 80px;
                 left: 0;
                 right: 0;
-                background: rgba(2, 2, 15, 0.98);
+                background: rgba(2, 2, 15, 0.95);
                 flex-direction: column;
-                padding: 10rem 6rem;
-                box-shadow: 0 0 var(--glow-cosmo) var(--cosmo-lime);
-                width: 100%;
+                padding: 2rem;
             }
 
             nav.active {
@@ -855,216 +498,146 @@
             }
 
             nav a {
-                margin: 5rem 0;
-                font-size: 2.4rem;
+                margin: 1rem 0;
+                font-size: 1.5rem;
             }
 
-            .info-cosmo {
+            .info-content {
                 flex-direction: column;
                 text-align: center;
-                gap: 8rem;
-            }
-
-            .cosmo-luna {
-                padding: 6rem 5rem;
-            }
-
-            .cosmo-luna img {
-                width: 340px;
-                height: 340px;
-            }
-
-            .luna-top, .audio-luna {
-                width: 85px;
-                height: 85px;
-                font-size: 3rem;
-                bottom: 5rem;
-            }
-
-            .luna-top {
-                right: 5rem;
-            }
-
-            .audio-luna {
-                left: 5rem;
-            }
-
-            .star-node {
-                display: none;
             }
         }
 
-        @media (max-width: 480px) {
-            section {
-                padding: 12rem 5rem;
-            }
-
-            .skill-star, .tutorial-star {
-                padding: 6rem;
-                max-width: 100%;
-            }
-
-            .cosmo-luna h1 {
-                font-size: clamp(5.5rem, 13vw, 9rem);
-            }
-
-            .cosmo-luna p {
-                font-size: clamp(2.2rem, 8vw, 2.6rem);
-            }
-
-            .tutorial-star iframe {
-                height: 360px;
-            }
-
-            .cosmo-gate button {
-                padding: 4.5rem 10rem;
-                font-size: 3rem;
-            }
-
-            .cosmo-info {
-                padding: 8rem;
+        @media (prefers-reduced-motion) {
+            * {
+                animation: none !important;
+                transition: none !important;
             }
         }
     </style>
 </head>
 <body>
-    <div class="cosmo-loader"></div>
-    <div class="cosmo-gate">
-        <button>Enter V3.0</button>
+    <div class="loader"></div>
+    <div class="gate">
+        <button>Enter LabVerse</button>
     </div>
     <div class="grid-wrapper">
         <div id="cosmo-grid"></div>
-        <div class="grid-luna"></div>
     </div>
-    <audio id="cosmo-audio" src="/audio/cosmo-wave.mp3" loop preload="auto" style="display: none;"></audio>
+    <audio id="bg-audio" src="/audio/cosmo-wave.mp3" loop preload="auto" style="display: none;"></audio>
     <header>
         <div class="logo">
             <a href="https://labverse.co.za">
-                <img src="assets/cosmo-icon.svg" alt="LabVerse V3.0" loading="lazy">
+                <img src="assets/cosmo-icon.svg" alt="LabVerse Logo" loading="lazy">
             </a>
         </div>
         <div class="hamburger">☰</div>
         <nav>
-            <a href="#cosmo-info">Info</a>
-            <a href="#cosmo-skills">Skills</a>
-            <a href="#cosmo-tutorials">Tutorials</a>
-            <a href="#cosmo-contact">Contact</a>
+            <a href="#info">Info</a>
+            <a href="#skills">Skills</a>
+            <a href="#tutorials">Tutorials</a>
+            <a href="#contact">Contact</a>
         </nav>
     </header>
-    <a href="#" class="luna-top" title="Back to Luna">↑</a>
-    <button class="audio-luna" title="Toggle Cosmo Sound">♫</button>
-    <section class="cosmo-luna">
-        <img src="/cosmo-images/core-cosmo.jpeg" alt="Cosmo Core" id="luna-image">
-        <h1>LabVerse | Technical University V3.0</h1>
-        <p>South Africa’s Ultimate Free IT Training Cosmos | Ascend Skills in a Fancy Realm</p>
-        <a href="#cosmo-tutorials" class="luna-launch">Launch Cosmos</a>
+    <a href="#" class="top-btn" title="Back to Top">↑</a>
+    <button class="audio-btn" title="Toggle Sound">♫</button>
+    <button class="mode-toggle" title="Toggle Mode">☀</button>
+    <section class="hero">
+        <img src="assets/cosmo-core.webp" alt="LabVerse Core">
+        <h1>LabVerse Online Technical University</h1>
+        <p>South Africa’s Ultimate Free IT Training Cosmos</p>
+        <a href="#tutorials" class="cta">Launch Tutorials</a>
     </section>
-    <section id="cosmo-info" class="cosmo-info">
-        <div class="info-cosmo">
+    <section id="info" class="info">
+        <div class="info-content">
             <img src="assets/cosmo-core.webp" alt="Cosmo Info" loading="lazy">
             <div class="info-text">
-                <h2>Cosmo Core</h2>
-                <p>LabVerse | Technical University V3.0, launched from Johannesburg, redefines free IT training with cosmic flair. Master hybrid cloud, cybersecurity, and networking in a futuristic realm.</p>
-                <p>Our vision: propel a global elite into the tech cosmos—where innovation reigns supreme.</p>
+                <h2>About LabVerse</h2>
+                <p>LabVerse Online Technical University, based in Johannesburg, offers free IT training with a cosmic twist. From hybrid cloud to cybersecurity, elevate your skills with expert-led tutorials and one-on-one consultancy—all free.</p>
+                <p>Join a global community mastering technology in a futuristic realm.</p>
             </div>
         </div>
     </section>
-    <section id="cosmo-skills">
+    <section id="skills">
         <h2>Skills Cosmos</h2>
-        <div class="skills-cosmo">
-            <div class="skill-star">
+        <div class="grid">
+            <div class="card">
                 <img src="assets/cosmo-core.webp" alt="Hybrid Cloud" loading="lazy">
                 <h3>Hybrid Cloud</h3>
-                <p>Engineer Azure systems for cosmic scalability.</p>
+                <p>Master Azure systems for scalable solutions.</p>
             </div>
-            <div class="skill-star">
+            <div class="card">
                 <img src="assets/cosmo-core.webp" alt="Cybersecurity" loading="lazy">
                 <h3>Cybersecurity</h3>
-                <p>Fortify galaxies with Cisco and stellar defenses.</p>
+                <p>Secure networks with Cisco and advanced defenses.</p>
             </div>
-            <div class="skill-star">
+            <div class="card">
                 <img src="assets/cosmo-core.webp" alt="Networking" loading="lazy">
                 <h3>Networking</h3>
-                <p>Construct SD-WAN and interstellar frameworks.</p>
+                <p>Build SD-WAN and robust frameworks.</p>
             </div>
-            <div class="skill-star">
+            <div class="card">
                 <img src="assets/cosmo-core.webp" alt="Digital Marketing" loading="lazy">
                 <h3>Digital Marketing & SEO</h3>
-                <p>Elevate brands to lunar heights with cosmic strategy.</p>
-            </div>
-            <div class="skill-star">
-                <img src="assets/cosmo-core.webp" alt="Leadership" loading="lazy">
-                <h3>Leadership Nova</h3>
-                <p>Command with a visionary cosmic mindset.</p>
+                <p>Boost brands with cosmic strategies.</p>
             </div>
         </div>
     </section>
-    <section id="cosmo-tutorials">
+    <section id="tutorials">
         <h2>Tutorial Nebula</h2>
-        <div class="tutorials-cosmo">
-            <div class="tutorial-star">
+        <div class="grid">
+            <div class="card">
                 <img src="assets/cosmo-core.webp" alt="SD-WAN" loading="lazy">
-                <h3>SD-WAN Nova</h3>
-                <p>Deploy FortiGate SD-WAN across 50+ nodes—stellar uptime.</p>
+                <h3>SD-WAN Deployment</h3>
+                <p>Deploy FortiGate SD-WAN for optimal uptime.</p>
                 <a href="https://labverse.co.za/sdwan" target="_blank">Explore</a>
             </div>
-            <div class="tutorial-star">
+            <div class="card">
                 <img src="assets/cosmo-core.webp" alt="Azure Migration" loading="lazy">
-                <h3>Azure Orbit</h3>
-                <p>Migrate 10,000 users to Azure—cosmic efficiency.</p>
+                <h3>Azure Migration</h3>
+                <p>Migrate users to Azure with efficiency.</p>
                 <a href="https://labverse.co.za/azure" target="_blank">Explore</a>
             </div>
-            <div class="tutorial-star">
+            <div class="card">
                 <img src="assets/cosmo-core.webp" alt="Lo-Fi Stream" loading="lazy">
-                <h3>Luna Lo-Fi Wave</h3>
-                <p>Launch a Linux Azure stream—eternal cosmic beats.</p>
-                <div class="media-cosmo">
-                    <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk" frameborder="0" allowfullscreen></iframe>
+                <h3>Lo-Fi Stream</h3>
+                <p>Create a Linux Azure-hosted stream.</p>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk" frameborder="0" allowfullscreen loading="lazy"></iframe>
                 </div>
             </div>
-            <div class="tutorial-star">
+            <div class="card">
                 <img src="assets/cosmo-core.webp" alt="Support Tool" loading="lazy">
-                <h3>T1 Cosmo Kit</h3>
-                <p>Build a PowerShell tool—AI-driven precision.</p>
+                <h3>T1 Support Tool</h3>
+                <p>Build a PowerShell diagnostic kit.</p>
                 <a href="https://labverse.co.za/support-tool" target="_blank">Explore</a>
-            </div>
-            <div class="tutorial-star">
-                <img src="assets/cosmo-core.webp" alt="Website Maintenance" loading="lazy">
-                <h3>Cosmo V3.0</h3>
-                <p>Master site optimization—LabVerse cosmic flair.</p>
-                <a href="https://labverse.co.za" target="_blank">Explore</a>
             </div>
         </div>
     </section>
-    <section id="cosmo-contact" class="cosmo-contact">
+    <section id="contact" class="contact">
         <h2>Contact Nebula</h2>
-        <p>Engage with elite IT training or link up in the cosmic realm.</p>
-        <div class="contact-cosmo">
+        <p>Get free one-on-one video tutorials or expert advice consultancy. Reach out!</p>
+        <div class="contact-links">
             <a href="mailto:labversemail@gmail.com">Email</a>
             <a href="https://linkedin.com/in/labverse" target="_blank">LinkedIn</a>
             <a href="https://www.youtube.com/@labversity" target="_blank">YouTube</a>
+            <a href="tel:0815307738">Call: 0815307738</a>
         </div>
     </section>
     <footer>
-        <p>© 2025 LabVerse | Technical University V3.0</p>
-        <div class="footer-links">
-            <a href="mailto:labversemail@gmail.com">Contact</a>
-            <a href="https://linkedin.com/in/labverse" target="_blank">LinkedIn</a>
-        </div>
+        <p>© 2025 LabVerse Online Technical University</p>
     </footer>
 
     <script>
-        const audio = document.getElementById('cosmo-audio');
+        const audio = document.getElementById('bg-audio');
         audio.volume = 0.2;
 
-        const gate = document.querySelector('.cosmo-gate');
-        const gateButton = gate.querySelector('button');
-        gateButton.addEventListener('click', () => {
+        const gate = document.querySelector('.gate');
+        gate.querySelector('button').addEventListener('click', () => {
             audio.play().then(() => {
-                gsap.to(gate, { opacity: 0, scale: 1.6, rotate: 15, duration: 2.8, ease: 'power4.out', onComplete: () => gate.classList.add('hidden') });
-            }).catch(error => {
-                console.error("Audio Play Error:", error);
-                gsap.to(gate, { opacity: 0, scale: 1.6, rotate: 15, duration: 2.8, ease: 'power4.out', onComplete: () => gate.classList.add('hidden') });
+                gsap.to(gate, { opacity: 0, duration: 1, onComplete: () => gate.classList.add('hidden') });
+            }).catch(() => {
+                gsap.to(gate, { opacity: 0, duration: 1, onComplete: () => gate.classList.add('hidden') });
             });
         });
 
@@ -1093,90 +666,49 @@
             };
         }
 
-        let lastScrollTop = 0;
-        let scrollVelocity = 0;
         window.addEventListener('scroll', throttle(() => {
-            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            scrollVelocity = scrollTop - lastScrollTop;
+            const scrollTop = window.pageYOffset;
+            gsap.to('header', { y: scrollTop > 100 ? '-100%' : '0%', duration: 0.5 });
+            document.querySelector('.top-btn').classList.toggle('visible', scrollTop > 300);
+        }, 100));
 
-            if (scrollTop > lastScrollTop) {
-                gsap.to('header', { y: '-100%', duration: 1.1, ease: 'power3.inOut' });
-            } else {
-                gsap.to('header', { y: '0%', duration: 1.1, ease: 'power3.inOut' });
-            }
-            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-
-            const lunaTop = document.querySelector('.luna-top');
-            if (scrollTop > 1100) {
-                lunaTop.classList.add('visible');
-            } else {
-                lunaTop.classList.remove('visible');
-            }
-
-            document.querySelectorAll('section').forEach(section => {
-                const rect = section.getBoundingClientRect();
-                if (rect.top <= window.innerHeight * 0.9 && rect.bottom >= 0 && !section.classList.contains('visible')) {
-                    section.classList.add('visible');
-                    const flare = document.createElement('div');
-                    flare.className = 'cosmo-flare scroll';
-                    flare.style.top = `${rect.top + window.scrollY + rect.height / 2}px`;
-                    document.body.appendChild(flare);
-                    setTimeout(() => flare.remove(), 1100);
-                }
-            });
-
-            if (Math.abs(scrollVelocity) > 20) {
-                const flare = document.createElement('div');
-                flare.className = 'cosmo-flare scroll';
-                flare.style.top = `${scrollTop + window.innerHeight / 2}px`;
-                document.body.appendChild(flare);
-                setTimeout(() => flare.remove(), 1100);
-            }
-        }, 50), { passive: true }); /* Scroll Fix 4 */
-
-        let flareCount = 0;
-        const maxFlares = 55;
+        let trailCount = 0;
+        const maxTrails = 20;
         document.addEventListener('mousemove', throttle((e) => {
-            if (flareCount < maxFlares) {
-                const flare = document.createElement('div');
-                flare.className = 'cosmo-flare';
-                flare.style.left = `${e.clientX}px`;
-                flare.style.top = `${e.clientY}px`;
-                document.body.appendChild(flare);
-                flareCount++;
-                setTimeout(() => {
-                    flare.remove();
-                    flareCount--;
-                }, 1300);
-            }
-        }, 8));
-
-        function spawnLunaTrail() {
-            if (Math.random() < 0.35) {
+            if (trailCount < maxTrails) {
                 const trail = document.createElement('div');
-                trail.className = 'luna-trail';
-                trail.style.left = `${Math.random() * 100}vw`;
-                trail.style.top = `${-120}px`;
+                trail.className = 'trail';
+                trail.style.left = `${e.clientX}px`;
+                trail.style.top = `${e.clientY}px`;
                 document.body.appendChild(trail);
-                setTimeout(() => trail.remove(), 3200);
+                trailCount++;
+                setTimeout(() => {
+                    trail.remove();
+                    trailCount--;
+                }, 800);
             }
-        }
+        }, 50));
 
-        setInterval(spawnLunaTrail, 45);
-
-        const audioLuna = document.querySelector('.audio-luna');
-        audioLuna.addEventListener('click', () => {
+        const audioBtn = document.querySelector('.audio-btn');
+        audioBtn.addEventListener('click', () => {
             if (audio.paused) {
                 audio.play();
-                audioLuna.textContent = '♫';
+                audioBtn.textContent = '♫';
             } else {
                 audio.pause();
-                audioLuna.textContent = '♪';
+                audioBtn.textContent = '♪';
             }
         });
 
+        const modeToggle = document.querySelector('.mode-toggle');
+        modeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light');
+            modeToggle.textContent = document.body.classList.contains('light') ? '☾' : '☀';
+            localStorage.setItem('mode', document.body.classList.contains('light') ? 'light' : 'dark');
+        });
+
         window.addEventListener('load', () => {
-            gsap.to('.cosmo-loader', { opacity: 0, duration: 2.2, ease: 'power4.out', onComplete: () => document.querySelector('.cosmo-loader').classList.add('hidden') });
+            gsap.to('.loader', { opacity: 0, duration: 1, onComplete: () => document.querySelector('.loader').classList.add('hidden') });
 
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -1184,10 +716,10 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.getElementById('cosmo-grid').appendChild(renderer.domElement);
 
-            const gridSize = 55;
-            const spacing = 5.5;
-            const geometry = new THREE.SphereGeometry(0.28, 32, 32);
-            const material = new THREE.MeshBasicMaterial({ color: 0x39ff14, transparent: true, opacity: 0.85 });
+            const gridSize = 20;
+            const spacing = 10;
+            const geometry = new THREE.SphereGeometry(0.2, 16, 16);
+            const material = new THREE.MeshBasicMaterial({ color: 0x39ff14, transparent: true, opacity: 0.5 });
 
             for (let x = -gridSize; x <= gridSize; x += spacing) {
                 for (let z = -gridSize; z <= gridSize; z += spacing) {
@@ -1197,13 +729,13 @@
                 }
             }
 
-            camera.position.z = 65;
-            camera.position.y = 55;
+            camera.position.z = 30;
+            camera.position.y = 20;
             camera.lookAt(0, 0, 0);
 
             function animate() {
                 requestAnimationFrame(animate);
-                scene.rotation.y += 0.0003;
+                scene.rotation.y += 0.001;
                 renderer.render(scene, camera);
             }
             animate();
@@ -1214,47 +746,12 @@
                 renderer.setSize(window.innerWidth, window.innerHeight);
             });
 
-            for (let i = 0; i < 50; i++) {
-                const node = document.createElement('div');
-                node.className = 'star-node';
-                node.style.left = `${Math.random() * 100}vw`;
-                node.style.top = `${Math.random() * 100}vh`;
-                node.style.animationDuration = `${10 + Math.random() * 10}s`;
-                node.style.animationDelay = `${Math.random() * 5}s`;
-                document.body.appendChild(node);
+            VanillaTilt.init(document.querySelectorAll('.card'), { max: 15, speed: 400, glare: true, 'max-glare': 0.5 });
+
+            if (localStorage.getItem('mode') === 'light') {
+                document.body.classList.add('light');
+                modeToggle.textContent = '☾';
             }
-
-            const lunaImage = document.getElementById('luna-image');
-            const pathsToTry = [
-                '/cosmo-images/core-cosmo.jpeg',
-                './cosmo-images/core-cosmo.jpeg',
-                'cosmo-images/core-cosmo.jpeg',
-                'assets/cosmo-core.webp'
-            ];
-            let currentPathIndex = 0;
-
-            function tryNextPath() {
-                if (currentPathIndex >= pathsToTry.length) {
-                    console.error('All paths failed. Check file paths and server config.');
-                    return;
-                }
-                lunaImage.src = pathsToTry[currentPathIndex];
-                console.log(`Trying path: ${pathsToTry[currentPathIndex]}`);
-                currentPathIndex++;
-            }
-
-            lunaImage.addEventListener('load', () => {
-                console.log(`Image loaded at ${lunaImage.src}`);
-                gsap.to(lunaImage, { opacity: 1, duration: 1.6, ease: 'power3.out' });
-            });
-
-            lunaImage.addEventListener('error', () => {
-                console.error(`Failed to load ${lunaImage.src}`);
-                tryNextPath();
-            });
-
-            lunaImage.style.opacity = 0;
-            tryNextPath();
         });
     </script>
 </body>
