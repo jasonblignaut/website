@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Jason Blignaut, a Hybrid Engineer focused on cybersecurity and solving problems through innovation. Check out my portfolio.">
-    <meta name="keywords" content="Hybrid Engineer, Cybersecurity, Azure, SD-WAN, AI, MSP, Network Security, Technolgoy">
+    <meta name="keywords" content="Hybrid Engineer, Cybersecurity, Azure, SD-WAN, AI, MSP, Network Security, Technology">
     <meta name="author" content="Jason Blignaut">
     <meta property="og:title" content="Jason Blignaut | LabVerse">
     <meta property="og:description" content="Step into the LabVerse: a portfolio of Jason Blignaut.">
@@ -19,13 +19,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
     <style>
         :root {
-            --primary-color: #00aaff;
-            --secondary-color: #ff00ff;
-            --bg-dark: #0d0d1b;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --text-light: #e4e4e4;
-            --text-muted: #b0b0b0;
-            --glow-intensity: 20px;
+            --primary-color: #00ccff;
+            --secondary-color: #ff00cc;
+            --bg-dark: #0a0a15;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --text-light: #e6e6e6;
+            --text-muted: #a0a0a0;
+            --glow-intensity: 15px;
         }
 
         * {
@@ -47,106 +47,71 @@
             position: relative;
         }
 
-        /* Enhanced Particle Effects */
-        .trail {
-            position: fixed;
-            width: 8px;
-            height: 8px;
-            background: var(--primary-color);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 10001;
-            opacity: 0.7;
-            box-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--secondary-color);
-            animation: particleBurst 0.5s ease-out forwards;
-            will-change: transform, opacity;
-        }
-
-        .spark {
-            position: fixed;
-            width: 3px;
-            height: 12px;
-            background: linear-gradient(180deg, var(--secondary-color), transparent);
-            pointer-events: none;
-            z-index: 10001;
-            opacity: 0.5;
-            animation: sparkFall 0.7s ease-out forwards;
-            will-change: transform, opacity;
-        }
-
-        @keyframes particleBurst {
-            0% { transform: scale(1); opacity: 0.7; }
-            50% { transform: scale(1.5); opacity: 0.4; }
-            100% { transform: scale(0); opacity: 0; }
-        }
-
-        @keyframes sparkFall {
-            0% { transform: translateY(0) rotate(45deg); opacity: 0.5; }
-            100% { transform: translateY(15px) rotate(45deg); opacity: 0; }
-        }
-
-        /* New Shooting Star Effect */
-        .shooting-star {
+        /* Neon-Charged Shooting Stars */
+        .neon-star {
             position: fixed;
             width: 2px;
-            height: 40px;
+            height: 60px;
             background: linear-gradient(180deg, var(--primary-color), transparent);
             pointer-events: none;
-            z-index: 10002;
-            opacity: 0.8;
-            box-shadow: 0 0 15px var(--primary-color);
-            animation: shootStar 1.5s linear forwards;
+            z-index: 10003;
+            opacity: 0.9;
+            box-shadow: 0 0 20px var(--primary-color), 0 0 30px var(--secondary-color);
+            animation: neonShoot 1.2s linear forwards;
             will-change: transform, opacity;
         }
 
-        @keyframes shootStar {
-            0% { transform: translateX(0) translateY(0) rotate(-45deg); opacity: 0.8; }
-            70% { opacity: 0.5; }
-            100% { transform: translateX(-300px) translateY(300px) rotate(-45deg); opacity: 0; }
+        @keyframes neonShoot {
+            0% { transform: translateX(0) translateY(0) rotate(-30deg); opacity: 0.9; }
+            60% { opacity: 0.6; }
+            100% { transform: translateX(-400px) translateY(400px) rotate(-30deg); opacity: 0; }
         }
 
-        /* Velocity Swish Effect */
-        .velocity-swish {
+        /* Holographic Ripples */
+        .holo-ripple {
             position: fixed;
-            width: 50px;
-            height: 2px;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, rgba(0, 204, 255, 0.2), transparent);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10002;
+            opacity: 0.5;
+            animation: rippleExpand 1s ease-out forwards;
+            will-change: transform, opacity;
+        }
+
+        @keyframes rippleExpand {
+            0% { transform: scale(0.5); opacity: 0.5; }
+            50% { transform: scale(2); opacity: 0.3; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+
+        /* Velocity Trails */
+        .velocity-trail {
+            position: fixed;
+            width: 80px;
+            height: 1px;
             background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
             pointer-events: none;
             z-index: 10002;
-            opacity: 0.6;
-            animation: swishMove 0.8s ease-out forwards;
+            opacity: 0.7;
+            box-shadow: 0 0 10px var(--secondary-color);
+            animation: trailSweep 0.6s ease-out forwards;
             will-change: transform, opacity;
         }
 
-        @keyframes swishMove {
-            0% { transform: translateX(0) scaleX(1); opacity: 0.6; }
-            50% { transform: translateX(100px) scaleX(1.5); opacity: 0.4; }
+        @keyframes trailSweep {
+            0% { transform: translateX(0) scaleX(1); opacity: 0.7; }
+            50% { transform: translateX(120px) scaleX(1.2); opacity: 0.4; }
             100% { transform: translateX(200px) scaleX(0); opacity: 0; }
         }
 
-        /* Floating Cyber-Orbs with Tech Glow */
-        .cyber-orb {
-            position: absolute;
-            background: radial-gradient(circle, var(--primary-color), transparent);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.25;
-            box-shadow: 0 0 10px var(--primary-color);
-            animation: floatOrb 6s ease-in-out infinite;
-            will-change: transform, opacity;
-        }
-
-        @keyframes floatOrb {
-            0%, 100% { transform: translateY(0) scale(1); opacity: 0.25; }
-            50% { transform: translateY(-20px) scale(1.1); opacity: 0.35; }
-        }
-
-        /* Enhanced Circuit Background */
+        /* Cyber Grid Background */
         .background {
             position: fixed;
             inset: 0;
-            background: linear-gradient(135deg, #1a1a2e 0%, var(--bg-dark) 100%);
+            background: linear-gradient(145deg, #12122e 0%, var(--bg-dark) 100%);
             z-index: -2;
             overflow: hidden;
         }
@@ -156,30 +121,50 @@
             position: absolute;
             inset: 0;
             background: url('thumbnails/circuit-pattern.webp') repeat;
-            background-size: 150% 150%;
-            opacity: 0.15;
-            animation: moveBackground 60s ease-in-out infinite;
-            filter: blur(1px);
+            background-size: 120% 120%;
+            opacity: 0.1;
+            animation: gridFlow 40s linear infinite;
+            filter: blur(0.5px);
         }
 
         .background::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle, rgba(0, 170, 255, 0.1), transparent 70%);
-            opacity: 0.3;
-            animation: nebulaPulse 10s infinite alternate;
+            background: radial-gradient(circle, rgba(0, 204, 255, 0.08), transparent 60%);
+            opacity: 0.4;
+            animation: gridPulse 15s infinite alternate;
         }
 
-        @keyframes moveBackground {
+        @keyframes gridFlow {
             0% { background-position: 0 0; }
-            50% { background-position: 50% 50%; }
-            100% { background-position: 0 0; }
+            100% { background-position: 100% 100%; }
         }
 
-        @keyframes nebulaPulse {
-            0% { transform: scale(1); opacity: 0.3; }
-            100% { transform: scale(1.1); opacity: 0.5; }
+        @keyframes gridPulse {
+            0% { transform: scale(1); opacity: 0.4; }
+            100% { transform: scale(1.08); opacity: 0.6; }
+        }
+
+        /* Floating Data Nodes */
+        .data-node {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+            box-shadow: 0 0 15px var(--primary-color);
+            animation: nodeDrift 8s ease-in-out infinite;
+            will-change: transform, opacity;
+        }
+
+        @keyframes nodeDrift {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+            25% { transform: translateY(-15px) translateX(10px); opacity: 0.5; }
+            75% { transform: translateY(10px) translateX(-15px); opacity: 0.4; }
         }
 
         /* Audio Overlay */
@@ -189,7 +174,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(13, 13, 27, 0.95);
+            background: rgba(10, 10, 21, 0.95);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -225,8 +210,8 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            animation: hologramSwipe 2.5s infinite;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            animation: hologramSwipe 2s infinite;
         }
 
         @keyframes hologramSwipe {
@@ -235,11 +220,11 @@
         }
 
         .audio-overlay button:hover {
-            transform: scale(1.1);
+            transform: scale(1.05);
             box-shadow: 0 0 calc(var(--glow-intensity) * 1.5) var(--primary-color);
         }
 
-        /* Preloader with Futuristic Spin */
+        /* Preloader */
         .preloader {
             position: fixed;
             top: 0;
@@ -256,16 +241,17 @@
 
         .preloader::before {
             content: '';
-            width: 60px;
-            height: 60px;
-            border: 6px solid var(--primary-color);
-            border-top: 6px solid var(--secondary-color);
+            width: 50px;
+            height: 50px;
+            border: 4px solid transparent;
+            border-top: 4px solid var(--primary-color);
+            border-right: 4px solid var(--secondary-color);
             border-radius: 50%;
-            animation: cyberSpin 1s linear infinite;
-            box-shadow: 0 0 15px var(--primary-color), 0 0 25px var(--secondary-color);
+            animation: dataSpin 1s ease-in-out infinite;
+            box-shadow: 0 0 20px var(--primary-color);
         }
 
-        @keyframes cyberSpin {
+        @keyframes dataSpin {
             0% { transform: rotate(0deg) scale(1); }
             50% { transform: rotate(180deg) scale(1.1); }
             100% { transform: rotate(360deg) scale(1); }
@@ -280,14 +266,14 @@
         header {
             position: sticky;
             top: 0;
-            background: rgba(26, 26, 46, 0.85);
-            backdrop-filter: blur(15px);
+            background: rgba(18, 18, 46, 0.9);
+            backdrop-filter: blur(10px);
             padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             transition: opacity 0.3s ease, transform 0.3s;
         }
 
@@ -329,7 +315,7 @@
             height: 2px;
             bottom: -5px;
             left: 0;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            background: var(--primary-color);
             transition: width 0.3s;
         }
 
@@ -339,7 +325,7 @@
 
         nav a:hover {
             color: var(--primary-color);
-            text-shadow: 0 0 10px var(--primary-color);
+            text-shadow: 0 0 8px var(--primary-color);
         }
 
         .hamburger {
@@ -388,11 +374,11 @@
         }
 
         .back-to-top:hover, .audio-toggle:hover {
-            transform: scale(1.15);
+            transform: scale(1.1);
             box-shadow: 0 0 calc(var(--glow-intensity) * 1.5) var(--primary-color);
         }
 
-        /* Hero Section with Enhanced Effects */
+        /* Hero Section */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -404,46 +390,46 @@
             position: relative;
             overflow: hidden;
             opacity: 0;
-            animation: fadeIn 2s forwards 1s;
+            animation: fadeIn 1.5s forwards 0.5s;
             z-index: 1;
         }
 
         .hero::before {
             content: '';
             position: absolute;
-            width: 300%;
-            height: 300%;
-            background: radial-gradient(circle, rgba(0, 170, 255, 0.15), transparent 70%);
-            animation: heroPulse 8s infinite;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 204, 255, 0.1), transparent 70%);
+            animation: heroGlow 6s infinite;
             z-index: -1;
         }
 
-        @keyframes heroPulse {
-            0% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.15; }
-            50% { transform: scale(1.05) translateX(-50%) translateY(-50%); opacity: 0.3; }
-            100% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.15; }
+        @keyframes heroGlow {
+            0% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.1; }
+            50% { transform: scale(1.03) translateX(-50%) translateY(-50%); opacity: 0.25; }
+            100% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.1; }
         }
 
         .hero img {
             width: 200px;
             height: 200px;
             border-radius: 50%;
-            border: 3px solid var(--primary-color);
-            box-shadow: 0 0 20px rgba(0, 170, 255, 0.5), 0 0 30px rgba(0, 170, 255, 0.8);
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 25px rgba(0, 204, 255, 0.6);
             margin-bottom: 2rem;
-            animation: glow 2s infinite alternate, float 4s ease-in-out infinite;
+            animation: glowPulse 2s infinite alternate, float 3s ease-in-out infinite;
             z-index: 99999;
             position: relative;
         }
 
-        @keyframes glow {
-            0% { box-shadow: 0 0 20px rgba(0, 170, 255, 0.5); }
-            100% { box-shadow: 0 0 30px rgba(0, 170, 255, 0.8); }
+        @keyframes glowPulse {
+            0% { box-shadow: 0 0 15px rgba(0, 204, 255, 0.4); }
+            100% { box-shadow: 0 0 25px rgba(0, 204, 255, 0.6); }
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+            50% { transform: translateY(-15px); }
         }
 
         .hero h1 {
@@ -453,7 +439,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 1rem;
-            text-shadow: 0 0 2px var(--primary-color), 0 0 4px var(--secondary-color);
+            text-shadow: 0 0 3px var(--primary-color);
             z-index: 2;
         }
 
@@ -488,7 +474,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
             transition: left 0.3s;
         }
 
@@ -497,12 +483,12 @@
         }
 
         .hero .cta-button:hover {
-            box-shadow: 0 0 calc(var(--glow-intensity) * 2) var(--primary-color);
-            transform: scale(1.1);
+            box-shadow: 0 0 calc(var(--glow-intensity) * 1.5) var(--primary-color);
+            transform: scale(1.05);
         }
 
         @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(30px); }
+            0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
         }
 
@@ -536,7 +522,7 @@
             -webkit-text-fill-color: transparent;
             margin-bottom: 3rem;
             text-transform: uppercase;
-            text-shadow: 0 0 2px var(--primary-color), 0 0 4px var(--secondary-color);
+            text-shadow: 0 0 3px var(--primary-color);
             position: relative;
             z-index: 2;
         }
@@ -544,39 +530,39 @@
         section h2::after {
             content: '';
             position: absolute;
-            width: 50%;
-            height: 2px;
-            bottom: -10px;
-            left: 25%;
+            width: 40%;
+            height: 1px;
+            bottom: -8px;
+            left: 30%;
             background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
-            animation: underlinePulse 2s infinite;
+            animation: underlineFlow 2s infinite;
             z-index: 2;
         }
 
-        @keyframes underlinePulse {
-            0% { width: 50%; opacity: 1; }
-            50% { width: 70%; opacity: 0.5; }
-            100% { width: 50%; opacity: 1; }
+        @keyframes underlineFlow {
+            0% { width: 40%; opacity: 0.8; }
+            50% { width: 60%; opacity: 0.4; }
+            100% { width: 40%; opacity: 0.8; }
         }
 
         section > * {
             opacity: 0;
-            transform: translateY(30px);
-            animation: fadeInSection 1.5s forwards;
+            transform: translateY(20px);
+            animation: fadeInSection 1s forwards;
         }
 
         @keyframes fadeInSection {
-            0% { opacity: 0; transform: translateY(30px); }
+            0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
         }
 
         .about {
             background: var(--card-bg);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
             padding: 3rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 var(--glow-intensity) rgba(0, 170, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 var(--glow-intensity) rgba(0, 204, 255, 0.2);
         }
 
         .about-content {
@@ -590,10 +576,10 @@
             max-width: 300px;
             width: 100%;
             height: auto;
-            border-radius: 15px;
-            border: 3px solid var(--primary-color);
+            border-radius: 10px;
+            border: 2px solid var(--primary-color);
             box-shadow: 0 0 var(--glow-intensity) var(--primary-color);
-            animation: float 5s ease-in-out infinite;
+            animation: float 4s ease-in-out infinite;
             loading: lazy;
         }
 
@@ -611,16 +597,16 @@
         .skills-grid, .projects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2.5rem;
+            gap: 2rem;
         }
 
         .skill-card, .project-card {
             background: var(--card-bg);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
             padding: 2.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 var(--glow-intensity) rgba(0, 170, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 var(--glow-intensity) rgba(0, 204, 255, 0.2);
             transition: all 0.4s;
             position: relative;
             overflow: hidden;
@@ -634,8 +620,8 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(0, 170, 255, 0.1), transparent);
-            animation: cardShine 4s infinite;
+            background: linear-gradient(45deg, transparent, rgba(0, 204, 255, 0.08), transparent);
+            animation: cardShine 3s infinite;
         }
 
         @keyframes cardShine {
@@ -644,16 +630,16 @@
         }
 
         .skill-card:hover, .project-card:hover {
-            transform: translateY(-15px);
-            box-shadow: 0 0 calc(var(--glow-intensity) * 2) var(--primary-color);
+            transform: translateY(-10px);
+            box-shadow: 0 0 calc(var(--glow-intensity) * 1.5) var(--primary-color);
         }
 
         .skill-card img, .project-card img {
             width: 70px;
             height: auto;
             margin-bottom: 1.5rem;
-            filter: drop-shadow(0 0 10px var(--primary-color));
-            animation: spinHover 3s infinite paused;
+            filter: drop-shadow(0 0 8px var(--primary-color));
+            animation: spinHover 2s infinite paused;
             loading: lazy;
         }
 
@@ -703,14 +689,14 @@
 
         .project-card a:hover {
             color: var(--secondary-color);
-            text-shadow: 0 0 10px var(--secondary-color);
+            text-shadow: 0 0 8px var(--secondary-color);
         }
 
         .video-container {
             position: relative;
             width: 100%;
             height: 250px;
-            border-radius: 15px;
+            border-radius: 10px;
             margin-top: 1.5rem;
             overflow: hidden;
         }
@@ -718,9 +704,9 @@
         .project-card iframe {
             width: 100%;
             height: 100%;
-            border-radius: 15px;
+            border-radius: 10px;
             border: 2px solid var(--primary-color);
-            box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
+            box-shadow: 0 0 10px rgba(0, 204, 255, 0.4);
             loading: lazy;
         }
 
@@ -766,7 +752,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
             transition: left 0.3s;
         }
 
@@ -780,11 +766,11 @@
         }
 
         footer {
-            background: rgba(26, 26, 46, 0.85);
-            backdrop-filter: blur(15px);
+            background: rgba(18, 18, 46, 0.9);
+            backdrop-filter: blur(10px);
             padding: 3rem;
             text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
             position: relative;
             z-index: 1;
         }
@@ -805,7 +791,7 @@
 
         footer a:hover {
             color: var(--secondary-color);
-            text-shadow: 0 0 10px var(--secondary-color);
+            text-shadow: 0 0 8px var(--secondary-color);
         }
 
         /* Responsive Design */
@@ -826,7 +812,7 @@
                 top: 80px;
                 left: 0;
                 right: 0;
-                background: rgba(26, 26, 46, 0.95);
+                background: rgba(18, 18, 46, 0.95);
                 flex-direction: column;
                 padding: 2.5rem;
                 box-shadow: 0 0 var(--glow-intensity) var(--primary-color);
@@ -870,7 +856,7 @@
                 left: 1.5rem;
             }
 
-            .cyber-orb {
+            .data-node {
                 display: none;
             }
         }
@@ -937,7 +923,7 @@
             <img src="thumbnails/thumbnail-13.webp" alt="About Me" loading="lazy">
             <div class="about-text">
                 <h2>About Me</h2>
-                <p>I’m a Hybrid Engineer from Johannesburg, South Africa, with 8+ years of experience securing and designing networks. From Azure cloud architecture to FortiGate SD-WAN deployments, I turn difficult challenges into perfect solutions.</p>
+                <p>I’m a Hybrid Engineer from Johannesburg, South Africa, with over a decade of experience securing and designing networks. Specialities include Networking, Azure cloud architecture and FortiGate Firewalls, I turn difficult challenges into perfect solutions.</p>
                 <p>My obsession with creating, troubleshooting, technology and cybersecurity drives me to innovate relentlessly, delivering value to MSPs and enterprises. I thrive in high pressure environments.</p>
             </div>
         </div>
@@ -953,11 +939,11 @@
             <div class="skill-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Cybersecurity Icon" loading="lazy">
                 <h3>Cybersecurity</h3>
-                <p>Securing networks with Cisco switching, Defender XDR, and advanced firewall configs, neutralizing threats before they strike.</p>
+                <p>Securing networks with Cisco switching, Defender XDR, and firewall configs, neutralizing threats.</p>
             </div>
             <div class="skill-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Cloud Icon" loading="lazy">
-                <h3>Cloud Command</h3>
+                <h3>Cloud Solutions</h3>
                 <p>Spinning up Azure VMs and hybrid cloud infrastructure, reducing costs and increasing uptime for MSPs with exact precision.</p>
             </div>
             <div class="skill-card">
@@ -967,8 +953,8 @@
             </div>
             <div class="skill-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Strategy Icon" loading="lazy">
-                <h3>Business Strategies</h3>
-                <p>OKRs and RICE frameworks to prioritize and deliver high ROI outcomes in critical scenarios.</p>
+                <h3>Digital Marketing</h3>
+                <p>Creating custom websites, SEO optimisation, Business Profiles, Social Media and logo designs.</p>
             </div>
         </div>
     </section>
@@ -977,20 +963,20 @@
         <div class="projects-grid">
             <div class="project-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="SD-WAN Deployment" loading="lazy">
-                <h3>Global SD-WAN Rollout</h3>
-                <p>Deployed FortiGate SD-WAN across 50+ sites, boosting network uptime by 30% and slashing latency for a Fortune 500 client.</p>
+                <h3>SD-WAN Migration</h3>
+                <p>Deployed FortiGate SD-WAN across 50+ sites, increasing network uptime by 30% and reducing latency.</p>
                 <a href="https://labverse.co.za/sdwan" target="_blank">Explore</a>
             </div>
             <div class="project-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Azure Migration" loading="lazy">
-                <h3>Azure Migration Overhaul</h3>
-                <p>Migrated 10,000 users to Azure hybrid cloud, cutting costs by 25% and locking down security with Defender XDR.</p>
+                <h3>Exchange Hynrid Migration</h3>
+                <p>Migrated 10,000 users to Exchange Online, cutting costs by 25% and locking down security with Defender XDR.</p>
                 <a href="https://labverse.co.za/azure" target="_blank">Explore</a>
             </div>
             <div class="project-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Lo-Fi Livestream" loading="lazy">
                 <h3>24/7 Lo-Fi Stream</h3>
-                <p>Created a Linux Azure-hosted YouTube livestream with nonstop lo-fi beats.</p>
+                <p>Created a Linux Azure hosted YouTube livestream with nonstop lofi beats.</p>
                 <div class="video-container">
                     <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk" frameborder="0" allowfullscreen></iframe>
                 </div>
@@ -998,7 +984,7 @@
             <div class="project-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="T1 Support Tool" loading="lazy">
                 <h3>T1 Network Toolkit</h3>
-                <p>Built a PowerShell diagnostic tool for MSPs, reducing Tier 1 resolution times by 40% with real-time AI responses on network troubleshooting.</p>
+                <p>Built a PowerShell diagnostic tool for MSPs, reducing Tier 1 resolution times with real-time AI responses on network troubleshooting.</p>
                 <a href="https://labverse.co.za/support-tool" target="_blank">Explore</a>
             </div>
             <div class="project-card">
@@ -1028,7 +1014,7 @@
 
     <script>
         const audio = document.getElementById('bg-audio');
-        audio.volume = 0.1; // Reduced to 10% volume
+        audio.volume = 0.1; // 10% volume for subtle ambiance
 
         const overlay = document.querySelector('.audio-overlay');
         const overlayButton = overlay.querySelector('button');
@@ -1087,17 +1073,15 @@
         }, 100));
 
         let effectCount = 0;
-        const maxEffects = 20;
+        const maxEffects = 15;
         document.addEventListener('mousemove', throttle((e) => {
             if (effectCount < maxEffects) {
                 const type = Math.random();
                 const effect = document.createElement('div');
-                if (type < 0.4) {
-                    effect.className = 'trail';
-                } else if (type < 0.7) {
-                    effect.className = 'spark';
+                if (type < 0.5) {
+                    effect.className = 'holo-ripple';
                 } else {
-                    effect.className = 'velocity-swish';
+                    effect.className = 'velocity-trail';
                 }
                 effect.style.left = `${e.clientX}px`;
                 effect.style.top = `${e.clientY}px`;
@@ -1106,23 +1090,23 @@
                 setTimeout(() => {
                     effect.remove();
                     effectCount--;
-                }, effect.className === 'velocity-swish' ? 800 : 700);
+                }, effect.className === 'velocity-trail' ? 600 : 1000);
             }
-        }, 50));
+        }, 80));
 
-        // Random Shooting Stars
-        function createShootingStar() {
-            if (Math.random() < 0.05) { // 5% chance per frame
+        // Neon Stars Generator
+        function spawnNeonStar() {
+            if (Math.random() < 0.07) { // 7% chance per frame
                 const star = document.createElement('div');
-                star.className = 'shooting-star';
+                star.className = 'neon-star';
                 star.style.left = `${Math.random() * 100}vw`;
-                star.style.top = `${Math.random() * 20}vh`; // Start near top
+                star.style.top = `${Math.random() * 30}vh`;
                 document.body.appendChild(star);
-                setTimeout(() => star.remove(), 1500);
+                setTimeout(() => star.remove(), 1200);
             }
         }
 
-        setInterval(createShootingStar, 100);
+        setInterval(spawnNeonStar, 150);
 
         const audioToggle = document.querySelector('.audio-toggle');
         audioToggle.addEventListener('click', () => {
@@ -1136,26 +1120,25 @@
         });
 
         VanillaTilt.init(document.querySelectorAll('.skill-card, .project-card'), {
-            max: 20,
-            speed: 300,
+            max: 15,
+            speed: 400,
             glare: true,
-            'max-glare': 0.6
+            'max-glare': 0.5
         });
 
         window.addEventListener('load', () => {
             document.querySelector('.preloader').classList.add('hidden');
-            for (let i = 0; i < 8; i++) {
-                const orb = document.createElement('div');
-                orb.className = 'cyber-orb';
-                orb.style.width = `${15 + Math.random() * 20}px`;
-                orb.style.height = orb.style.width;
-                orb.style.left = `${Math.random() * 100}vw`;
-                orb.style.top = `${Math.random() * 100}vh`;
-                orb.style.animationDuration = `${4 + Math.random() * 4}s`;
-                document.body.appendChild(orb);
+            for (let i = 0; i < 10; i++) {
+                const node = document.createElement('div');
+                node.className = 'data-node';
+                node.style.left = `${Math.random() * 100}vw`;
+                node.style.top = `${Math.random() * 100}vh`;
+                node.style.animationDuration = `${6 + Math.random() * 4}s`;
+                node.style.animationDelay = `${Math.random() * 2}s`;
+                document.body.appendChild(node);
             }
 
-            // Ensure hero image loads and shows
+            // Hero Image Fallback
             const heroImage = document.getElementById('hero-image');
             const pathsToTry = [
                 '/channel-pictures/my-picture.jpeg',
