@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="LabVerse | Technical University: South Africa’s Premier Free IT Training Hub. Learn Hybrid Cloud, Cybersecurity, Networking, SEO, and More via Expert Tutorials.">
-    <meta name="keywords" content="Technical University South Africa, Free IT Training, Hybrid Cloud, Cybersecurity, Networking, Digital Marketing, SEO Optimization, Cisco, Unifi, Network Diagrams, Management, Leadership Mindset, LabVerse, Technology College">
+    <meta name="description" content="LabVerse | Technical University: South Africa’s Cyber-Future Free IT Training Nexus. Master Hybrid Cloud, Cybersecurity, Networking, and More with Cutting-Edge Tutorials.">
+    <meta name="keywords" content="Technical University South Africa, Free IT Training, Hybrid Cloud, Cybersecurity, Networking, Digital Marketing, SEO Optimization, Cisco, Unifi, Network Diagrams, Management, Leadership Mindset, Cyber Future, LabVerse, Technology College">
     <meta name="author" content="LabVerse">
     <meta name="robots" content="index, follow">
     <meta property="og:title" content="LabVerse | Technical University">
-    <meta property="og:description" content="Master IT Skills for Free at LabVerse | Technical University. Tutorials on Cloud, Security, Networking, and More.">
+    <meta property="og:description" content="Step Into the Future at LabVerse | Technical University. Free Tutorials on Cloud, Security, Networking, and Beyond.">
     <meta property="og:image" content="thumbnails/thumbnail-13.webp">
     <meta property="og:url" content="https://labverse.co.za">
     <meta property="og:type" content="website">
@@ -16,18 +16,18 @@
     <title>LabVerse | Technical University</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700&family=IBM+Plex+Mono:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;800&family=IBM+Plex+Mono:wght@300;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
     <style>
         :root {
-            --tech-teal: #00d4cc;
-            --tech-indigo: #6a00e6;
-            --space-black: #050514;
-            --glass-layer: rgba(255, 255, 255, 0.04);
-            --text-luminous: #f2f2ff;
-            --text-dim: #b0b0cc;
-            --glow-peak: 15px;
+            --neon-cyan: #00e6e6;
+            --neon-violet: #7a00ff;
+            --void-dark: #04041c;
+            --glass-cyber: rgba(255, 255, 255, 0.05);
+            --text-glow: #f5f5ff;
+            --text-faint: #b8b8d4;
+            --glow-max: 18px;
         }
 
         * {
@@ -40,227 +40,232 @@
         html {
             scroll-behavior: smooth;
             overflow-x: hidden;
+            scroll-snap-type: y proximity;
         }
 
         body {
-            background-color: var(--space-black);
-            color: var(--text-luminous);
+            background-color: var(--void-dark);
+            color: var(--text-glow);
             line-height: 1.6;
             position: relative;
             overflow-x: hidden;
+            overflow-y: auto;
+            transform-style: preserve-3d;
+            will-change: transform;
         }
 
-        /* Tech Ripple (Mouse Trail) */
-        .tech-ripple {
+        /* Cyber Pulse (Mouse Trail) */
+        .cyber-pulse {
             position: fixed;
-            width: 8px;
-            height: 8px;
-            background: var(--tech-teal);
+            width: 10px;
+            height: 10px;
+            background: var(--neon-cyan);
             border-radius: 50%;
             pointer-events: none;
             z-index: 10006;
             opacity: 0.9;
-            box-shadow: 0 0 20px var(--tech-teal), 0 0 30px var(--tech-indigo);
-            animation: rippleExpand 0.7s ease-out forwards;
+            box-shadow: 0 0 25px var(--neon-cyan), 0 0 35px var(--neon-violet);
+            animation: pulseBurst 0.8s ease-out forwards;
             will-change: transform, opacity;
         }
 
-        @keyframes rippleExpand {
+        @keyframes pulseBurst {
             0% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(3); opacity: 0.6; }
+            50% { transform: scale(3.5); opacity: 0.7; }
             100% { transform: scale(0); opacity: 0; }
         }
 
-        /* Holo Beam (Scroll Reveal) */
-        .holo-beam {
-            position: absolute;
-            width: 140%;
+        /* Flux Drag (Scroll Effect) */
+        .flux-drag {
+            position: fixed;
+            width: 100%;
             height: 2px;
-            background: linear-gradient(90deg, transparent, var(--tech-indigo), transparent);
+            background: linear-gradient(90deg, transparent, var(--neon-violet), transparent);
             pointer-events: none;
             z-index: 10005;
             opacity: 0;
-            box-shadow: 0 0 25px var(--tech-indigo);
-            animation: beamSweep 0.9s ease-out forwards;
+            box-shadow: 0 0 30px var(--neon-violet);
+            animation: dragSwoosh 0.6s ease-out forwards;
             will-change: transform, opacity;
         }
 
-        @keyframes beamSweep {
-            0% { transform: translateX(-140%) skewX(20deg); opacity: 1; }
-            50% { transform: translateX(0) skewX(0deg); opacity: 0.7; }
-            100% { transform: translateX(140%) skewX(-20deg); opacity: 0; }
+        @keyframes dragSwoosh {
+            0% { transform: translateY(-100vh) skewX(25deg); opacity: 0.8; }
+            50% { transform: translateY(0) skewX(0deg); opacity: 0.5; }
+            100% { transform: translateY(100vh) skewX(-25deg); opacity: 0; }
         }
 
-        /* Nano Flux */
-        .nano-flux {
+        /* Nano Trails */
+        .nano-trail {
             position: fixed;
-            width: 4px;
-            height: 50px;
-            background: linear-gradient(180deg, var(--tech-teal), transparent);
+            width: 5px;
+            height: 60px;
+            background: linear-gradient(180deg, var(--neon-cyan), transparent);
             pointer-events: none;
             z-index: 10004;
-            opacity: 0.7;
-            box-shadow: 0 0 20px var(--tech-teal);
-            animation: fluxDrop 1.8s linear forwards;
+            opacity: 0.8;
+            box-shadow: 0 0 25px var(--neon-cyan);
+            animation: trailFall 2s linear forwards;
             will-change: transform, opacity;
         }
 
-        @keyframes fluxDrop {
-            0% { transform: translateY(-60vh) rotate(12deg); opacity: 0.7; }
-            80% { opacity: 0.4; }
-            100% { transform: translateY(100vh) rotate(12deg); opacity: 0; }
+        @keyframes trailFall {
+            0% { transform: translateY(-70vh) rotate(15deg); opacity: 0.8; }
+            75% { opacity: 0.5; }
+            100% { transform: translateY(100vh) rotate(15deg); opacity: 0; }
         }
 
-        /* Neural Lattice (3D Background) */
-        #neural-lattice {
+        /* Quantum Matrix (3D Background) */
+        #quantum-matrix {
             position: fixed;
             inset: 0;
             z-index: -2;
         }
 
-        .lattice-overlay {
+        .matrix-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(145deg, rgba(0, 212, 204, 0.06) 0%, transparent 60%);
-            opacity: 0.5;
-            animation: latticeFlow 30s linear infinite;
+            background: linear-gradient(135deg, rgba(0, 230, 230, 0.08) 0%, transparent 50%);
+            opacity: 0.6;
+            animation: matrixDrift 35s linear infinite;
         }
 
-        @keyframes latticeFlow {
+        @keyframes matrixDrift {
             0% { transform: translate(0, 0); }
-            100% { transform: translate(-60px, 60px); }
+            100% { transform: translate(-70px, 70px); }
         }
 
-        /* Tech Nodes */
-        .tech-node {
+        /* Cyber Orbs */
+        .cyber-orb {
             position: absolute;
-            width: 10px;
-            height: 10px;
-            background: var(--tech-indigo);
+            width: 12px;
+            height: 12px;
+            background: var(--neon-violet);
             border-radius: 50%;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.6;
-            box-shadow: 0 0 20px var(--tech-indigo);
-            animation: nodePulse 5s ease-in-out infinite;
+            opacity: 0.7;
+            box-shadow: 0 0 25px var(--neon-violet);
+            animation: orbFloat 7s ease-in-out infinite;
             will-change: transform, opacity;
         }
 
-        @keyframes nodePulse {
-            0%, 100% { transform: translate(0, 0); opacity: 0.6; }
-            50% { transform: translate(25px, -25px); opacity: 0.8; }
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0); opacity: 0.7; }
+            50% { transform: translate(30px, -30px); opacity: 0.9; }
         }
 
-        /* Nexus Gateway */
-        .nexus-gateway {
+        /* Cyber Gateway */
+        .cyber-gateway {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(0, 212, 204, 0.12), var(--space-black) 70%);
+            background: radial-gradient(circle, rgba(0, 230, 230, 0.15), var(--void-dark) 70%);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 10000;
-            transition: opacity 1.2s ease, transform 1.2s ease;
+            transition: opacity 1.5s ease, transform 1.5s ease;
         }
 
-        .nexus-gateway.hidden {
+        .cyber-gateway.hidden {
             opacity: 0;
-            transform: scale(1.25);
+            transform: scale(1.3);
             pointer-events: none;
         }
 
-        .nexus-gateway button {
-            background: linear-gradient(135deg, var(--tech-teal), var(--tech-indigo));
-            color: var(--text-luminous);
-            padding: 2.5rem 6rem;
+        .cyber-gateway button {
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet));
+            color: var(--text-glow);
+            padding: 3rem 7rem;
             border: none;
-            border-radius: 60px;
+            border-radius: 70px;
             font-family: 'Exo 2', sans-serif;
-            font-size: 2.2rem;
+            font-size: 2.5rem;
+            font-weight: 800;
             text-transform: uppercase;
             cursor: pointer;
-            box-shadow: 0 0 var(--glow-peak) var(--tech-teal);
+            box-shadow: 0 0 var(--glow-max) var(--neon-cyan);
             position: relative;
             overflow: hidden;
-            transition: transform 0.5s, box-shadow 0.5s;
+            transition: transform 0.6s, box-shadow 0.6s;
         }
 
-        .nexus-gateway button::before {
+        .cyber-gateway button::before {
             content: '';
             position: absolute;
             top: -50%;
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-            animation: nexusSwipe 1.8s infinite;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: cyberSwipe 2s infinite;
         }
 
-        @keyframes nexusSwipe {
+        @keyframes cyberSwipe {
             0% { transform: translateX(-100%) rotate(45deg); }
             100% { transform: translateX(100%) rotate(45deg); }
         }
 
-        .nexus-gateway button:hover {
-            transform: scale(1.12);
-            box-shadow: 0 0 calc(var(--glow-peak) * 2) var(--tech-indigo);
+        .cyber-gateway button:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 calc(var(--glow-max) * 2) var(--neon-violet);
         }
 
-        /* Tech Loader */
-        .tech-loader {
+        /* Future Loader */
+        .future-loader {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--space-black);
+            background: var(--void-dark);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 0.9s ease;
+            transition: opacity 1s ease;
         }
 
-        .tech-loader::before {
+        .future-loader::before {
             content: '';
-            width: 50px;
-            height: 50px;
-            border: 4px solid var(--tech-teal);
-            border-top: 4px solid var(--tech-indigo);
+            width: 60px;
+            height: 60px;
+            border: 5px solid var(--neon-cyan);
+            border-top: 5px solid var(--neon-violet);
             border-radius: 50%;
-            animation: techSpin 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
-            box-shadow: 0 0 25px var(--tech-teal);
+            animation: futureSpin 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+            box-shadow: 0 0 30px var(--neon-cyan);
         }
 
-        @keyframes techSpin {
+        @keyframes futureSpin {
             0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.25); }
+            50% { transform: rotate(180deg) scale(1.3); }
             100% { transform: rotate(360deg) scale(1); }
         }
 
-        .tech-loader.hidden {
+        .future-loader.hidden {
             opacity: 0;
             pointer-events: none;
         }
 
-        /* Orbital Header */
+        /* Neuro Header */
         header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(10, 10, 36, 0.92);
-            backdrop-filter: blur(15px);
+            background: rgba(8, 8, 34, 0.95);
+            backdrop-filter: blur(20px);
             padding: 1.5rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            border-bottom: 1px solid rgba(0, 212, 204, 0.12);
-            transition: transform 0.5s ease;
+            border-bottom: 1px solid rgba(0, 230, 230, 0.15);
+            transition: transform 0.6s ease;
         }
 
         header.hidden {
@@ -268,40 +273,44 @@
         }
 
         .logo img {
-            height: 55px;
-            filter: drop-shadow(0 0 8px var(--tech-teal));
-            transition: transform 0.5s;
+            height: 60px;
+            filter: drop-shadow(0 0 10px var(--neon-cyan));
+            transition: transform 0.6s;
         }
 
         .logo img:hover {
-            transform: scale(1.2) rotate(20deg);
+            transform: scale(1.25) rotate(25deg);
         }
 
         nav {
             display: flex;
             align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 800px;
         }
 
         nav a {
-            color: var(--text-luminous);
+            color: var(--text-glow);
             text-decoration: none;
-            margin: 0 2rem;
+            margin: 0 2.5rem;
             font-family: 'Exo 2', sans-serif;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
+            font-weight: 800;
             text-transform: uppercase;
             position: relative;
-            transition: all 0.4s;
+            transition: all 0.5s;
         }
 
         nav a::after {
             content: '';
             position: absolute;
             width: 0;
-            height: 2px;
-            bottom: -8px;
+            height: 3px;
+            bottom: -10px;
             left: 0;
-            background: var(--tech-teal);
-            transition: width 0.4s ease;
+            background: var(--neon-cyan);
+            transition: width 0.5s ease;
         }
 
         nav a:hover::after {
@@ -309,43 +318,43 @@
         }
 
         nav a:hover {
-            color: var(--tech-teal);
-            text-shadow: 0 0 12px var(--tech-teal);
+            color: var(--neon-cyan);
+            text-shadow: 0 0 15px var(--neon-cyan);
         }
 
         .hamburger {
             display: none;
             cursor: pointer;
-            font-size: 2.5rem;
-            color: var(--text-luminous);
-            transition: transform 0.4s;
+            font-size: 2.8rem;
+            color: var(--text-glow);
+            transition: transform 0.5s;
         }
 
         .hamburger:hover {
-            transform: scale(1.2);
+            transform: scale(1.25);
         }
 
-        /* Utility Orbs */
+        /* Cyber Controls */
         .back-to-top, .audio-toggle {
             position: fixed;
-            background: linear-gradient(135deg, var(--tech-teal), var(--tech-indigo));
-            color: var(--text-luminous);
-            width: 65px;
-            height: 65px;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet));
+            color: var(--text-glow);
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 2rem;
+            font-size: 2.2rem;
             text-decoration: none;
-            box-shadow: 0 0 var(--glow-peak) var(--tech-teal);
-            transition: transform 0.4s, box-shadow 0.4s;
+            box-shadow: 0 0 var(--glow-max) var(--neon-cyan);
+            transition: transform 0.5s, box-shadow 0.5s;
             z-index: 1000;
         }
 
         .back-to-top {
-            bottom: 3rem;
-            right: 3rem;
+            bottom: 3.5rem;
+            right: 3.5rem;
             opacity: 0;
         }
 
@@ -354,16 +363,16 @@
         }
 
         .audio-toggle {
-            bottom: 3rem;
-            left: 3rem;
+            bottom: 3.5rem;
+            left: 3.5rem;
         }
 
         .back-to-top:hover, .audio-toggle:hover {
-            transform: scale(1.15);
-            box-shadow: 0 0 calc(var(--glow-peak) * 2) var(--tech-indigo);
+            transform: scale(1.2);
+            box-shadow: 0 0 calc(var(--glow-max) * 2) var(--neon-violet);
         }
 
-        /* Tech Core (Hero) */
+        /* Future Core (Hero) */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -371,51 +380,53 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 2rem;
+            padding: 3rem;
             position: relative;
             overflow: hidden;
             z-index: 1;
+            scroll-snap-align: start;
         }
 
         .hero::before {
             content: '';
             position: absolute;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0, 212, 204, 0.1), transparent 70%);
-            animation: coreWave 8s infinite ease-in-out;
+            width: 250%;
+            height: 250%;
+            background: radial-gradient(circle, rgba(0, 230, 230, 0.12), transparent 70%);
+            animation: coreFlux 10s infinite ease-in-out;
             z-index: -1;
         }
 
-        @keyframes coreWave {
-            0% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.1; }
-            50% { transform: scale(1.05) translateX(-50%) translateY(-50%); opacity: 0.2; }
-            100% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.1; }
+        @keyframes coreFlux {
+            0% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.12; }
+            50% { transform: scale(1.08) translateX(-50%) translateY(-50%); opacity: 0.25; }
+            100% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.12; }
         }
 
         .hero img {
-            width: 280px;
-            height: 280px;
+            width: 300px;
+            height: 300px;
             border-radius: 50%;
-            border: 3px solid var(--tech-teal);
-            box-shadow: 0 0 25px var(--tech-teal);
-            margin-bottom: 2rem;
-            transition: transform 0.6s ease;
+            border: 4px solid var(--neon-cyan);
+            box-shadow: 0 0 30px var(--neon-cyan);
+            margin-bottom: 2.5rem;
+            transition: transform 0.7s ease;
             z-index: 99999;
         }
 
         .hero img:hover {
-            transform: scale(1.08);
+            transform: scale(1.1);
         }
 
         .hero h1 {
             font-family: 'Exo 2', sans-serif;
-            font-size: clamp(3.5rem, 9vw, 6rem);
-            background: linear-gradient(135deg, var(--tech-teal), var(--tech-indigo));
+            font-size: clamp(4rem, 10vw, 7rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 8px var(--tech-teal);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px var(--neon-cyan);
             position: relative;
             z-index: 2;
         }
@@ -423,39 +434,40 @@
         .hero h1::after {
             content: '';
             position: absolute;
-            width: 60%;
-            height: 2px;
-            bottom: -12px;
-            left: 20%;
-            background: linear-gradient(90deg, transparent, var(--tech-teal), transparent);
-            animation: corePulse 2.5s infinite ease-in-out;
+            width: 70%;
+            height: 3px;
+            bottom: -15px;
+            left: 15%;
+            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+            animation: coreWave 3s infinite ease-in-out;
         }
 
-        @keyframes corePulse {
-            0% { width: 60%; opacity: 0.8; }
-            50% { width: 80%; opacity: 0.5; }
-            100% { width: 60%; opacity: 0.8; }
+        @keyframes coreWave {
+            0% { width: 70%; opacity: 0.9; }
+            50% { width: 90%; opacity: 0.6; }
+            100% { width: 70%; opacity: 0.9; }
         }
 
         .hero p {
-            font-size: clamp(1.5rem, 4vw, 2rem);
-            color: var(--text-dim);
-            margin-bottom: 2rem;
-            max-width: 900px;
+            font-size: clamp(1.6rem, 4vw, 2.2rem);
+            color: var(--text-faint);
+            margin-bottom: 2.5rem;
+            max-width: 1000px;
             z-index: 2;
         }
 
         .hero .cta-button {
-            background: linear-gradient(135deg, var(--tech-teal), var(--tech-indigo));
-            color: var(--text-luminous);
-            padding: 1.8rem 4.5rem;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet));
+            color: var(--text-glow);
+            padding: 2rem 5rem;
             text-decoration: none;
-            border-radius: 50px;
+            border-radius: 60px;
             font-family: 'Exo 2', sans-serif;
-            font-weight: 700;
+            font-weight: 800;
+            font-size: 1.8rem;
             text-transform: uppercase;
-            box-shadow: 0 0 var(--glow-peak) var(--tech-teal);
-            transition: all 0.5s;
+            box-shadow: 0 0 var(--glow-max) var(--neon-cyan);
+            transition: all 0.6s;
             position: relative;
             overflow: hidden;
             z-index: 2;
@@ -468,8 +480,8 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-            transition: left 0.5s;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
         }
 
         .hero .cta-button:hover::before {
@@ -477,21 +489,22 @@
         }
 
         .hero .cta-button:hover {
-            box-shadow: 0 0 calc(var(--glow-peak) * 2) var(--tech-indigo);
-            transform: scale(1.1);
+            box-shadow: 0 0 calc(var(--glow-max) * 2) var(--neon-violet);
+            transform: scale(1.12);
         }
 
-        /* Sections */
+        /* Cyber Sections */
         section {
-            padding: 7rem 1rem;
-            max-width: 1800px;
+            padding: 8rem 2rem;
+            max-width: 2000px;
             margin: 0 auto;
-            scroll-margin-top: 100px;
+            scroll-margin-top: 120px;
             position: relative;
             z-index: 1;
             opacity: 0;
-            transform: translateY(60px);
-            transition: opacity 0.9s ease, transform 0.9s ease;
+            transform: translateY(80px);
+            transition: opacity 1s ease, transform 1s ease;
+            scroll-snap-align: start;
         }
 
         section.visible {
@@ -508,18 +521,20 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: center;
         }
 
         section h2 {
             font-family: 'Exo 2', sans-serif;
-            font-size: clamp(3rem, 8vw, 4.5rem);
+            font-size: clamp(3.5rem, 9vw, 5rem);
+            font-weight: 800;
             text-align: center;
-            background: linear-gradient(135deg, var(--tech-teal), var(--tech-indigo));
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
             text-transform: uppercase;
-            text-shadow: 0 0 8px var(--tech-teal);
+            text-shadow: 0 0 10px var(--neon-cyan);
             position: relative;
             z-index: 2;
         }
@@ -527,80 +542,89 @@
         section h2::after {
             content: '';
             position: absolute;
-            width: 40%;
-            height: 2px;
-            bottom: -15px;
-            left: 30%;
-            background: linear-gradient(90deg, transparent, var(--tech-teal), transparent);
-            animation: sectionWave 2s infinite ease-in-out;
+            width: 50%;
+            height: 3px;
+            bottom: -18px;
+            left: 25%;
+            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+            animation: sectionFlux 2.5s infinite ease-in-out;
             z-index: 2;
         }
 
-        @keyframes sectionWave {
-            0% { width: 40%; opacity: 0.7; }
-            50% { width: 60%; opacity: 0.4; }
-            100% { width: 40%; opacity: 0.7; }
+        @keyframes sectionFlux {
+            0% { width: 50%; opacity: 0.8; }
+            50% { width: 70%; opacity: 0.5; }
+            100% { width: 50%; opacity: 0.8; }
         }
 
         .about {
-            background: var(--glass-layer);
-            backdrop-filter: blur(18px);
-            border-radius: 25px;
-            padding: 5rem;
-            border: 1px solid rgba(0, 212, 204, 0.15);
-            box-shadow: 0 0 var(--glow-peak) rgba(0, 212, 204, 0.2);
+            background: var(--glass-cyber);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 6rem;
+            border: 1px solid rgba(0, 230, 230, 0.18);
+            box-shadow: 0 0 var(--glow-max) rgba(0, 230, 230, 0.25);
+            max-width: 1600px;
+            width: 100%;
         }
 
         .about-content {
             display: flex;
             flex-wrap: wrap;
-            gap: 4rem;
+            gap: 5rem;
             align-items: center;
+            justify-content: center;
         }
 
         .about img {
-            max-width: 400px;
+            max-width: 450px;
             width: 100%;
             height: auto;
-            border-radius: 20px;
-            border: 3px solid var(--tech-teal);
-            box-shadow: 0 0 var(--glow-peak) var(--tech-teal);
-            transition: transform 0.6s ease;
+            border-radius: 25px;
+            border: 4px solid var(--neon-cyan);
+            box-shadow: 0 0 var(--glow-max) var(--neon-cyan);
+            transition: transform 0.7s ease;
             loading: lazy;
         }
 
         .about img:hover {
-            transform: scale(1.06);
+            transform: scale(1.08);
         }
 
         .about-text {
             flex: 1;
-            min-width: 340px;
+            min-width: 360px;
+            text-align: center;
         }
 
         .about-text p {
-            line-height: 2;
-            color: var(--text-dim);
-            font-size: 1.3rem;
+            line-height: 2.2;
+            color: var(--text-faint);
+            font-size: 1.4rem;
         }
 
         .skills-grid, .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-            gap: 3.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 4rem;
+            width: 100%;
+            max-width: 1800px;
+            justify-items: center;
         }
 
         .skill-card, .project-card {
-            background: var(--glass-layer);
-            backdrop-filter: blur(18px);
-            border-radius: 25px;
-            padding: 3.5rem;
-            border: 1px solid rgba(0, 212, 204, 0.15);
-            box-shadow: 0 0 var(--glow-peak) rgba(0, 212, 204, 0.2);
-            transition: all 0.6s;
+            background: var(--glass-cyber);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 4rem;
+            border: 1px solid rgba(0, 230, 230, 0.18);
+            box-shadow: 0 0 var(--glow-max) rgba(0, 230, 230, 0.25);
+            transition: all 0.7s;
             position: relative;
             overflow: hidden;
             z-index: 2;
+            width: 100%;
+            max-width: 450px;
         }
 
         .skill-card::before, .project-card::before {
@@ -610,122 +634,126 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(0, 212, 204, 0.06), transparent);
-            animation: techFlux 3s infinite;
+            background: linear-gradient(45deg, transparent, rgba(0, 230, 230, 0.08), transparent);
+            animation: cyberFlux 3.5s infinite;
         }
 
-        @keyframes techFlux {
+        @keyframes cyberFlux {
             0% { transform: translateX(-100%) rotate(45deg); }
             100% { transform: translateX(100%) rotate(45deg); }
         }
 
         .skill-card:hover, .project-card:hover {
-            transform: translateY(-20px) scale(1.03);
-            box-shadow: 0 0 calc(var(--glow-peak) * 2) var(--tech-indigo);
+            transform: translateY(-25px) scale(1.05);
+            box-shadow: 0 0 calc(var(--glow-max) * 2) var(--neon-violet);
         }
 
         .skill-card img, .project-card img {
-            width: 100px;
+            width: 110px;
             height: auto;
-            margin-bottom: 1.5rem;
-            filter: drop-shadow(0 0 12px var(--tech-teal));
-            transition: transform 0.5s ease;
+            margin-bottom: 2rem;
+            filter: drop-shadow(0 0 15px var(--neon-cyan));
+            transition: transform 0.6s ease;
             loading: lazy;
         }
 
         .skill-card:hover img, .project-card:hover img {
-            transform: scale(1.15);
+            transform: scale(1.2);
         }
 
         .skill-card h3, .project-card h3 {
             font-family: 'Exo 2', sans-serif;
-            font-size: 1.8rem;
-            color: var(--text-luminous);
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-glow);
             margin-bottom: 1rem;
-            text-shadow: 0 0 6px var(--tech-teal);
+            text-shadow: 0 0 8px var(--neon-cyan);
         }
 
         .skill-card p, .project-card p {
-            font-size: 1.2rem;
-            color: var(--text-dim);
-            line-height: 1.8;
+            font-size: 1.3rem;
+            color: var(--text-faint);
+            line-height: 1.9;
         }
 
         .project-card a {
-            color: var(--tech-teal);
+            color: var(--neon-cyan);
             text-decoration: none;
             font-weight: 600;
-            transition: all 0.4s;
+            font-size: 1.4rem;
+            transition: all 0.5s;
             position: relative;
         }
 
         .project-card a::after {
             content: '→';
             position: absolute;
-            right: -30px;
+            right: -35px;
             opacity: 0;
-            transition: all 0.4s;
+            transition: all 0.5s;
         }
 
         .project-card a:hover::after {
             opacity: 1;
-            right: -15px;
+            right: -20px;
         }
 
         .project-card a:hover {
-            color: var(--tech-indigo);
-            text-shadow: 0 0 12px var(--tech-indigo);
+            color: var(--neon-violet);
+            text-shadow: 0 0 15px var(--neon-violet);
         }
 
         .video-container {
             position: relative;
             width: 100%;
-            height: 300px;
-            border-radius: 20px;
-            margin-top: 1.5rem;
+            height: 320px;
+            border-radius: 25px;
+            margin-top: 2rem;
             overflow: hidden;
         }
 
         .project-card iframe {
             width: 100%;
             height: 100%;
-            border-radius: 20px;
-            border: 3px solid var(--tech-teal);
-            box-shadow: 0 0 20px rgba(0, 212, 204, 0.35);
+            border-radius: 25px;
+            border: 4px solid var(--neon-cyan);
+            box-shadow: 0 0 25px rgba(0, 230, 230, 0.4);
             loading: lazy;
         }
 
         .contact {
             text-align: center;
             position: relative;
+            max-width: 1600px;
+            width: 100%;
         }
 
         .contact p {
-            color: var(--text-dim);
-            margin-bottom: 3rem;
-            max-width: 900px;
+            color: var(--text-faint);
+            margin-bottom: 3.5rem;
+            max-width: 1000px;
             margin-left: auto;
             margin-right: auto;
-            font-size: 1.4rem;
+            font-size: 1.5rem;
         }
 
         .contact-links {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 3.5rem;
+            gap: 4rem;
         }
 
         .contact a {
-            color: var(--tech-teal);
+            color: var(--neon-cyan);
             text-decoration: none;
             font-weight: 600;
             font-family: 'Exo 2', sans-serif;
-            font-size: 1.5rem;
-            padding: 1rem 3rem;
-            border: 2px solid var(--tech-teal);
-            border-radius: 40px;
-            transition: all 0.5s;
+            font-size: 1.6rem;
+            padding: 1.2rem 3.5rem;
+            border: 2px solid var(--neon-cyan);
+            border-radius: 50px;
+            transition: all 0.6s;
             position: relative;
             overflow: hidden;
         }
@@ -737,8 +765,8 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-            transition: left 0.5s;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
         }
 
         .contact a:hover::before {
@@ -746,43 +774,47 @@
         }
 
         .contact a:hover {
-            color: var(--tech-indigo);
-            box-shadow: 0 0 var(--glow-peak) var(--tech-indigo);
+            color: var(--neon-violet);
+            box-shadow: 0 0 var(--glow-max) var(--neon-violet);
         }
 
         footer {
-            background: rgba(10, 10, 36, 0.92);
-            backdrop-filter: blur(15px);
-            padding: 4rem;
+            background: rgba(8, 8, 34, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 5rem;
             text-align: center;
-            border-top: 1px solid rgba(0, 212, 204, 0.12);
+            border-top: 1px solid rgba(0, 230, 230, 0.15);
             position: relative;
             z-index: 1;
         }
 
         footer p {
-            color: var(--text-dim);
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
+            color: var(--text-faint);
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
         }
 
         footer a {
-            color: var(--tech-teal);
+            color: var(--neon-cyan);
             text-decoration: none;
-            margin: 0 2rem;
-            font-size: 1.3rem;
-            transition: all 0.4s;
+            margin: 0 2.5rem;
+            font-size: 1.4rem;
+            transition: all 0.5s;
         }
 
         footer a:hover {
-            color: var(--tech-indigo);
-            text-shadow: 0 0 12px var(--tech-indigo);
+            color: var(--neon-violet);
+            text-shadow: 0 0 15px var(--neon-violet);
         }
 
-        /* Responsive Design */
+        /* Responsive Alignment */
         @media (max-width: 1024px) {
             .skills-grid, .projects-grid {
-                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            }
+
+            .about {
+                padding: 4rem;
             }
         }
 
@@ -794,13 +826,14 @@
             nav {
                 display: none;
                 position: fixed;
-                top: 100px;
+                top: 110px;
                 left: 0;
                 right: 0;
-                background: rgba(10, 10, 36, 0.95);
+                background: rgba(8, 8, 34, 0.98);
                 flex-direction: column;
-                padding: 4rem;
-                box-shadow: 0 0 var(--glow-peak) var(--tech-teal);
+                padding: 5rem 2rem;
+                box-shadow: 0 0 var(--glow-max) var(--neon-cyan);
+                width: 100%;
             }
 
             nav.active {
@@ -808,79 +841,85 @@
             }
 
             nav a {
-                margin: 2rem 0;
-                font-size: 1.5rem;
+                margin: 2.5rem 0;
+                font-size: 1.6rem;
             }
 
             .about-content {
                 flex-direction: column;
                 text-align: center;
+                gap: 3rem;
             }
 
             .hero {
-                padding: 1.5rem;
+                padding: 2rem;
             }
 
             .hero img {
-                width: 220px;
-                height: 220px;
+                width: 240px;
+                height: 240px;
             }
 
             .back-to-top, .audio-toggle {
-                width: 55px;
-                height: 55px;
-                font-size: 1.8rem;
-                bottom: 2rem;
+                width: 60px;
+                height: 60px;
+                font-size: 2rem;
+                bottom: 2.5rem;
             }
 
             .back-to-top {
-                right: 2rem;
+                right: 2.5rem;
             }
 
             .audio-toggle {
-                left: 2rem;
+                left: 2.5rem;
             }
 
-            .tech-node {
+            .cyber-orb {
                 display: none;
             }
         }
 
         @media (max-width: 480px) {
             section {
-                padding: 5rem 1rem;
+                padding: 6rem 1rem;
             }
 
             .skill-card, .project-card {
-                padding: 2.5rem;
+                padding: 3rem;
+                max-width: 100%;
             }
 
             .hero h1 {
-                font-size: clamp(2.5rem, 7vw, 3.5rem);
+                font-size: clamp(3rem, 8vw, 4rem);
             }
 
             .hero p {
-                font-size: clamp(1.2rem, 3vw, 1.5rem);
+                font-size: clamp(1.3rem, 3vw, 1.6rem);
             }
 
             .project-card iframe {
-                height: 240px;
+                height: 260px;
             }
 
-            .nexus-gateway button {
-                padding: 1.5rem 4rem;
-                font-size: 1.8rem;
+            .cyber-gateway button {
+                padding: 2rem 5rem;
+                font-size: 2rem;
+            }
+
+            .about {
+                padding: 3rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="tech-loader"></div>
-    <div class="nexus-gateway">
-        <button>Enter LabVerse</button>
+    <div class="future-loader"></div>
+    <div class="cyber-gateway">
+        <button>Unlock LabVerse</button>
     </div>
-    <div id="neural-lattice"></div>
-    <div class="lattice-overlay"></div>
+    <div id="quantum-matrix"></div>
+    <div class="matrix-overlay"></div>
     <audio id="bg-audio" src="/music/lofi.mp3" loop preload="auto" style="display: none;"></audio>
     <header>
         <div class="logo">
@@ -901,89 +940,89 @@
     <section class="hero">
         <img src="/channel-pictures/my-picture.jpeg" alt="LabVerse" id="hero-image">
         <h1>LabVerse | Technical University</h1>
-        <p>South Africa’s Elite Free IT Training Hub | Master Hybrid Cloud, Cybersecurity, Networking, and More</p>
-        <a href="#projects" class="cta-button">Explore Tutorials</a>
+        <p>South Africa’s Cyber-Future IT Training Nexus | Free Tutorials for the Next Generation</p>
+        <a href="#projects" class="cta-button">Dive Into the Future</a>
     </section>
     <section id="about" class="about">
         <div class="about-content">
             <img src="thumbnails/thumbnail-13.webp" alt="About LabVerse" loading="lazy">
             <div class="about-text">
                 <h2>About LabVerse</h2>
-                <p>LabVerse | Technical University is South Africa’s premier destination for free IT training, based in Johannesburg. We empower learners with cutting-edge skills in hybrid cloud, cybersecurity, networking, and beyond through expert-led tutorials.</p>
-                <p>Our mission: democratize tech education with comprehensive, high-demand project videos—bridging the gap between ambition and mastery for students, professionals, and enterprises.</p>
+                <p>LabVerse | Technical University, based in Johannesburg, is South Africa’s ultimate free IT training nexus. We fuse hybrid cloud, cybersecurity, networking, and futuristic skills into advanced tutorials for all.</p>
+                <p>Our vision: empower a cyber-ready generation with elite, accessible education—bridging tomorrow’s tech with today’s learners.</p>
             </div>
         </div>
     </section>
     <section id="skills">
-        <h2>Skill Matrix</h2>
+        <h2>Cyber Skillset</h2>
         <div class="skills-grid">
             <div class="skill-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Hybrid Cloud Icon" loading="lazy">
                 <h3>Hybrid Cloud</h3>
-                <p>Master Azure ecosystems, migrations, and hybrid deployments for seamless, scalable infrastructure.</p>
+                <p>Architect Azure ecosystems and hybrid migrations for next-gen scalability.</p>
             </div>
             <div class="skill-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Cybersecurity Icon" loading="lazy">
                 <h3>Cybersecurity</h3>
-                <p>Learn to secure networks with Cisco, Defender XDR, and advanced firewall strategies.</p>
+                <p>Fortify networks with Cisco, Defender XDR, and futuristic defenses.</p>
             </div>
             <div class="skill-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Networking Icon" loading="lazy">
                 <h3>Networking</h3>
-                <p>Build robust networks with SD-WAN, Cisco, Unifi, and detailed network diagrams.</p>
+                <p>Master SD-WAN, Cisco, Unifi, and advanced network diagrams.</p>
             </div>
             <div class="skill-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Digital Marketing Icon" loading="lazy">
                 <h3>Digital Marketing & SEO</h3>
-                <p>Optimize online presence with SEO, website maintenance, and digital marketing techniques.</p>
+                <p>Elevate online impact with SEO, maintenance, and cyber-marketing.</p>
             </div>
             <div class="skill-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Management Icon" loading="lazy">
                 <h3>Management & Leadership</h3>
-                <p>Develop a success-driven mindset to lead teams and manage high-stakes IT projects.</p>
+                <p>Cultivate a cyber-future mindset to lead teams to victory.</p>
             </div>
         </div>
     </section>
     <section id="projects">
-        <h2>Tutorial Library</h2>
+        <h2>Tutorial Nexus</h2>
         <div class="projects-grid">
             <div class="project-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="SD-WAN Tutorial" loading="lazy">
-                <h3>Global SD-WAN Setup</h3>
-                <p>Deploy FortiGate SD-WAN across 50+ nodes—boost uptime and crush latency.</p>
-                <a href="https://labverse.co.za/sdwan" target="_blank">Watch Tutorial</a>
+                <h3>Global SD-WAN Deployment</h3>
+                <p>Launch FortiGate SD-WAN across 50+ nodes—optimize uptime and speed.</p>
+                <a href="https://labverse.co.za/sdwan" target="_blank">Watch Now</a>
             </div>
             <div class="project-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Azure Migration Tutorial" loading="lazy">
-                <h3>Azure Cloud Migration</h3>
-                <p>Migrate 10,000 users to Azure hybrid cloud with cost savings and security.</p>
-                <a href="https://labverse.co.za/azure" target="_blank">Watch Tutorial</a>
+                <h3>Azure Hyper-Migration</h3>
+                <p>Migrate 10,000 users to Azure with cost efficiency and security.</p>
+                <a href="https://labverse.co.za/azure" target="_blank">Watch Now</a>
             </div>
             <div class="project-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Lo-Fi Stream Tutorial" loading="lazy">
                 <h3>24/7 Lo-Fi Stream</h3>
-                <p>Build a Linux Azure-hosted YouTube stream for continuous playback.</p>
+                <p>Build a Linux Azure-hosted YouTube stream for infinite beats.</p>
                 <div class="video-container">
                     <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk" frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
             <div class="project-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Support Tool Tutorial" loading="lazy">
-                <h3>T1 Support Toolkit</h3>
-                <p>Create a PowerShell diagnostic tool to slash resolution times with AI.</p>
-                <a href="https://labverse.co.za/support-tool" target="_blank">Watch Tutorial</a>
+                <h3>T1 Cyber Toolkit</h3>
+                <p>Develop a PowerShell tool to slash support times with AI.</p>
+                <a href="https://labverse.co.za/support-tool" target="_blank">Watch Now</a>
             </div>
             <div class="project-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Website Maintenance Tutorial" loading="lazy">
-                <h3>Website Maintenance</h3>
-                <p>Learn to maintain and optimize sites like LabVerse with modern tech.</p>
-                <a href="https://labverse.co.za" target="_blank">Watch Tutorial</a>
+                <h3>Website Cyber-Maintenance</h3>
+                <p>Optimize and maintain futuristic sites like LabVerse.</p>
+                <a href="https://labverse.co.za" target="_blank">Watch Now</a>
             </div>
         </div>
     </section>
     <section id="contact" class="contact">
-        <h2>Contact LabVerse</h2>
-        <p>Join our free IT training community or request personalized guidance today.</p>
+        <h2>Link to the Future</h2>
+        <p>Access free IT training or connect with LabVerse for custom guidance.</p>
         <div class="contact-links">
             <a href="mailto:labversemail@gmail.com">Email</a>
             <a href="https://linkedin.com/in/labverse" target="_blank">LinkedIn</a>
@@ -1002,7 +1041,7 @@
         const audio = document.getElementById('bg-audio');
         audio.volume = 0.1;
 
-        const gateway = document.querySelector('.nexus-gateway');
+        const gateway = document.querySelector('.cyber-gateway');
         const gatewayButton = gateway.querySelector('button');
         gatewayButton.addEventListener('click', () => {
             audio.play().then(() => {
@@ -1039,8 +1078,11 @@
         }
 
         let lastScrollTop = 0;
-        window.addEventListener('scroll', throttle(() => {
+        let scrollVelocity = 0;
+        window.addEventListener('scroll', () => {
             let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            scrollVelocity = scrollTop - lastScrollTop;
+
             if (scrollTop > lastScrollTop) {
                 document.querySelector('header').classList.add('hidden');
             } else {
@@ -1049,7 +1091,7 @@
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
 
             const backToTop = document.querySelector('.back-to-top');
-            if (scrollTop > 500) {
+            if (scrollTop > 600) {
                 backToTop.classList.add('visible');
             } else {
                 backToTop.classList.remove('visible');
@@ -1057,46 +1099,50 @@
 
             document.querySelectorAll('section').forEach(section => {
                 const rect = section.getBoundingClientRect();
-                if (rect.top <= window.innerHeight * 0.75 && rect.bottom >= 0 && !section.classList.contains('visible')) {
+                if (rect.top <= window.innerHeight * 0.8 && rect.bottom >= 0 && !section.classList.contains('visible')) {
                     section.classList.add('visible');
-                    const beam = document.createElement('div');
-                    beam.className = 'holo-beam';
-                    beam.style.top = `${rect.top + window.scrollY + rect.height / 2}px`;
-                    document.body.appendChild(beam);
-                    setTimeout(() => beam.remove(), 900);
                 }
             });
-        }, 100));
 
-        let rippleCount = 0;
-        const maxRipples = 25;
-        document.addEventListener('mousemove', throttle((e) => {
-            if (rippleCount < maxRipples) {
-                const ripple = document.createElement('div');
-                ripple.className = 'tech-ripple';
-                ripple.style.left = `${e.clientX}px`;
-                ripple.style.top = `${e.clientY}px`;
-                document.body.appendChild(ripple);
-                rippleCount++;
-                setTimeout(() => {
-                    ripple.remove();
-                    rippleCount--;
-                }, 700);
+            // Swoosh Drag Effect
+            if (Math.abs(scrollVelocity) > 5) {
+                const drag = document.createElement('div');
+                drag.className = 'flux-drag';
+                drag.style.top = `${scrollTop + window.innerHeight / 2}px`;
+                document.body.appendChild(drag);
+                setTimeout(() => drag.remove(), 600);
             }
-        }, 40));
+        }, { passive: true });
 
-        function spawnNanoFlux() {
-            if (Math.random() < 0.12) { // 12% chance
-                const flux = document.createElement('div');
-                flux.className = 'nano-flux';
-                flux.style.left = `${Math.random() * 100}vw`;
-                flux.style.top = `${-50}px`;
-                document.body.appendChild(flux);
-                setTimeout(() => flux.remove(), 1800);
+        let pulseCount = 0;
+        const maxPulses = 30;
+        document.addEventListener('mousemove', throttle((e) => {
+            if (pulseCount < maxPulses) {
+                const pulse = document.createElement('div');
+                pulse.className = 'cyber-pulse';
+                pulse.style.left = `${e.clientX}px`;
+                pulse.style.top = `${e.clientY}px`;
+                document.body.appendChild(pulse);
+                pulseCount++;
+                setTimeout(() => {
+                    pulse.remove();
+                    pulseCount--;
+                }, 800);
+            }
+        }, 30));
+
+        function spawnNanoTrail() {
+            if (Math.random() < 0.15) { // 15% chance
+                const trail = document.createElement('div');
+                trail.className = 'nano-trail';
+                trail.style.left = `${Math.random() * 100}vw`;
+                trail.style.top = `${-60}px`;
+                document.body.appendChild(trail);
+                setTimeout(() => trail.remove(), 2000);
             }
         }
 
-        setInterval(spawnNanoFlux, 120);
+        setInterval(spawnNanoTrail, 100);
 
         const audioToggle = document.querySelector('.audio-toggle');
         audioToggle.addEventListener('click', () => {
@@ -1110,25 +1156,25 @@
         });
 
         VanillaTilt.init(document.querySelectorAll('.skill-card, .project-card'), {
-            max: 18,
-            speed: 700,
+            max: 20,
+            speed: 800,
             glare: true,
-            'max-glare': 0.6
+            'max-glare': 0.7
         });
 
         window.addEventListener('load', () => {
-            document.querySelector('.tech-loader').classList.add('hidden');
+            document.querySelector('.future-loader').classList.add('hidden');
 
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             const renderer = new THREE.WebGLRenderer({ alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
-            document.getElementById('neural-lattice').appendChild(renderer.domElement);
+            document.getElementById('quantum-matrix').appendChild(renderer.domElement);
 
-            const gridSize = 25;
-            const spacing = 2.5;
-            const geometry = new THREE.SphereGeometry(0.12, 32, 32);
-            const material = new THREE.MeshBasicMaterial({ color: 0x00d4cc, transparent: true, opacity: 0.4 });
+            const gridSize = 30;
+            const spacing = 3;
+            const geometry = new THREE.SphereGeometry(0.15, 32, 32);
+            const material = new THREE.MeshBasicMaterial({ color: 0x00e6e6, transparent: true, opacity: 0.5 });
 
             for (let x = -gridSize; x <= gridSize; x += spacing) {
                 for (let z = -gridSize; z <= gridSize; z += spacing) {
@@ -1138,13 +1184,13 @@
                 }
             }
 
-            camera.position.z = 35;
-            camera.position.y = 25;
+            camera.position.z = 40;
+            camera.position.y = 30;
             camera.lookAt(0, 0, 0);
 
             function animate() {
                 requestAnimationFrame(animate);
-                scene.rotation.y += 0.0015;
+                scene.rotation.y += 0.001;
                 renderer.render(scene, camera);
             }
             animate();
@@ -1155,14 +1201,14 @@
                 renderer.setSize(window.innerWidth, window.innerHeight);
             });
 
-            for (let i = 0; i < 20; i++) {
-                const node = document.createElement('div');
-                node.className = 'tech-node';
-                node.style.left = `${Math.random() * 100}vw`;
-                node.style.top = `${Math.random() * 100}vh`;
-                node.style.animationDuration = `${4 + Math.random() * 4}s`;
-                node.style.animationDelay = `${Math.random() * 2}s`;
-                document.body.appendChild(node);
+            for (let i = 0; i < 25; i++) {
+                const orb = document.createElement('div');
+                orb.className = 'cyber-orb';
+                orb.style.left = `${Math.random() * 100}vw`;
+                orb.style.top = `${Math.random() * 100}vh`;
+                orb.style.animationDuration = `${5 + Math.random() * 5}s`;
+                orb.style.animationDelay = `${Math.random() * 2.5}s`;
+                document.body.appendChild(orb);
             }
 
             const heroImage = document.getElementById('hero-image');
