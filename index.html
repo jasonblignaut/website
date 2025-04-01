@@ -3,30 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="LabVerse | Technical University: South Africa’s Elite Free IT Training Nexus. Master Tomorrow’s Tech Today—Hybrid Cloud, Cybersecurity, Networking, and Beyond.">
-    <meta name="keywords" content="Technical University South Africa, Free IT Training, Hybrid Cloud, Cybersecurity, Networking, Digital Marketing, SEO Optimization, Cisco, Unifi, Network Diagrams, Management, Leadership Mindset, Future Tech, LabVerse, Cyber Nexus">
+    <meta name="description" content="LabVerse | Technical University: South Africa’s Premier Free IT Training Nexus. Master Hybrid Cloud, Cybersecurity, Networking, and More in a Luxury Cyber Cosmos.">
+    <meta name="keywords" content="Technical University South Africa, Free IT Training, Hybrid Cloud, Cybersecurity, Networking, Digital Marketing, SEO Optimization, Cisco, Unifi, Network Diagrams, Management, Leadership Mindset, Aura Tech, Cyber Luxury, LabVerse">
     <meta name="author" content="LabVerse">
     <meta name="robots" content="index, follow">
     <meta property="og:title" content="LabVerse | Technical University">
-    <meta property="og:description" content="Step Into Tomorrow with LabVerse | Technical University. Free Elite Tutorials for the Cyber-Future.">
-    <meta property="og:image" content="assets/thumbnail-core.webp">
+    <meta property="og:description" content="Enter the Future with LabVerse | Technical University. Elite Free Tutorials in a Luxury Cyber Realm.">
+    <meta property="og:image" content="assets/aura-core.webp">
     <meta property="og:url" content="https://labverse.co.za">
     <meta property="og:type" content="website">
     <link rel="icon" type="image/png" href="assets/favicon.ico">
     <title>LabVerse | Technical University</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Roboto+Mono:wght@300;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;700&family=Fira+Code:wght@300;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
     <style>
         :root {
-            --nova-blue: #00f4ff;
-            --nova-purple: #ff00ff;
-            --black-hole: #0a0a1f;
-            --plasma-glass: rgba(255, 255, 255, 0.08);
-            --light-flux: #f9f9ff;
-            --shadow-flux: #d0d0e8;
+            --aura-cyan: #00eaff;
+            --aura-violet: #ff00ea;
+            --void-core: #050515;
+            --aura-glass: rgba(255, 255, 255, 0.08);
+            --light-aura: #fafaff;
+            --shadow-flux: #d8d8f0;
             --glow-core: 22px;
         }
 
@@ -34,7 +35,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Roboto Mono', monospace;
+            font-family: 'Fira Code', monospace;
         }
 
         html {
@@ -44,231 +45,230 @@
         }
 
         body {
-            background-color: var(--black-hole);
-            color: var(--light-flux);
-            line-height: 1.7;
+            background-color: var(--void-core);
+            color: var(--light-aura);
+            line-height: 1.8;
             position: relative;
             overflow-x: hidden;
-            overflow-y: scroll; /* Priority 1: Guaranteed Scroll */
+            overflow-y: auto; /* 100% Scroll Guarantee */
             min-height: 100vh;
-            transform-style: preserve-3d;
             will-change: scroll-position;
         }
 
-        /* Nova Burst (Mouse Effect) */
-        .nova-burst {
+        /* Aura Pulse (Mouse Effect) */
+        .aura-pulse {
             position: fixed;
-            width: 15px;
-            height: 15px;
-            background: var(--nova-blue);
+            width: 16px;
+            height: 16px;
+            background: var(--aura-cyan);
             border-radius: 50%;
             pointer-events: none;
             z-index: 10007;
-            opacity: 0.95;
-            box-shadow: 0 0 35px var(--nova-blue), 0 0 50px var(--nova-purple);
-            animation: novaExpand 1s ease-out forwards;
+            opacity: 0.9;
+            box-shadow: 0 0 40px var(--aura-cyan), 0 0 55px var(--aura-violet);
+            animation: auraBurst 1.1s ease-out forwards;
             will-change: transform, opacity;
         }
 
-        @keyframes novaExpand {
-            0% { transform: scale(1); opacity: 0.95; }
-            50% { transform: scale(5); opacity: 0.8; }
+        @keyframes auraBurst {
+            0% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(6); opacity: 0.85; }
             100% { transform: scale(0); opacity: 0; }
         }
 
-        /* Flux Rift (Scroll Effect) */
-        .flux-rift {
+        /* Aura Flux (Scroll Effect) */
+        .aura-flux {
             position: fixed;
             width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, transparent, var(--nova-purple), transparent);
+            height: 5px;
+            background: linear-gradient(90deg, transparent, var(--aura-violet), transparent);
             pointer-events: none;
             z-index: 10006;
             opacity: 0;
-            box-shadow: 0 0 40px var(--nova-purple);
-            animation: riftDrag 0.8s ease-out forwards;
+            box-shadow: 0 0 45px var(--aura-violet);
+            animation: fluxSweep 0.9s ease-out forwards;
             will-change: transform, opacity;
         }
 
-        @keyframes riftDrag {
-            0% { transform: translateY(-100vh) skewX(35deg); opacity: 1; }
-            50% { transform: translateY(0) skewX(0deg); opacity: 0.7; }
-            100% { transform: translateY(100vh) skewX(-35deg); opacity: 0; }
+        @keyframes fluxSweep {
+            0% { transform: translateY(-100vh) skewX(40deg); opacity: 1; }
+            50% { transform: translateY(0) skewX(0deg); opacity: 0.8; }
+            100% { transform: translateY(100vh) skewX(-40deg); opacity: 0; }
         }
 
-        /* Plasma Trails */
-        .plasma-trail {
+        /* Pulse Trails */
+        .pulse-trail {
             position: fixed;
-            width: 8px;
-            height: 80px;
-            background: linear-gradient(180deg, var(--nova-blue), transparent);
+            width: 10px;
+            height: 90px;
+            background: linear-gradient(180deg, var(--aura-cyan), transparent);
             pointer-events: none;
             z-index: 10005;
-            opacity: 0.9;
-            box-shadow: 0 0 35px var(--nova-blue);
-            animation: plasmaFall 2.5s linear forwards;
+            opacity: 0.95;
+            box-shadow: 0 0 40px var(--aura-cyan);
+            animation: trailDrop 2.8s linear forwards;
             will-change: transform, opacity;
         }
 
-        @keyframes plasmaFall {
-            0% { transform: translateY(-90vh) rotate(20deg); opacity: 0.9; }
-            70% { opacity: 0.7; }
-            100% { transform: translateY(100vh) rotate(20deg); opacity: 0; }
+        @keyframes trailDrop {
+            0% { transform: translateY(-100vh) rotate(22deg); opacity: 0.95; }
+            70% { opacity: 0.8; }
+            100% { transform: translateY(100vh) rotate(22deg); opacity: 0; }
         }
 
-        /* Cosmic Grid (3D Background) */
-        #cosmic-grid {
+        /* Aura Grid (3D Background) */
+        #aura-grid {
             position: fixed;
             inset: 0;
             z-index: -1;
-            pointer-events: none; /* Priority 1: No Scroll Interference */
-            opacity: 0.9;
+            pointer-events: none; /* Scroll Immunity */
+            opacity: 0.85;
         }
 
-        .grid-veil {
+        .grid-aura {
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(0, 244, 255, 0.12) 0%, transparent 60%);
-            opacity: 0.8;
-            animation: veilDrift 45s linear infinite;
+            background: linear-gradient(135deg, rgba(0, 234, 255, 0.15) 0%, transparent 65%);
+            opacity: 0.75;
+            animation: auraDrift 50s linear infinite;
         }
 
-        @keyframes veilDrift {
+        @keyframes auraDrift {
             0% { transform: translate(0, 0); }
-            100% { transform: translate(-100px, 100px); }
+            100% { transform: translate(-120px, 120px); }
         }
 
-        /* Nebula Orbs */
-        .nebula-orb {
+        /* Void Orbs */
+        .void-orb {
             position: absolute;
-            width: 16px;
-            height: 16px;
-            background: var(--nova-purple);
+            width: 18px;
+            height: 18px;
+            background: var(--aura-violet);
             border-radius: 50%;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.85;
-            box-shadow: 0 0 40px var(--nova-purple);
-            animation: orbPulse 9s ease-in-out infinite;
+            opacity: 0.9;
+            box-shadow: 0 0 45px var(--aura-violet);
+            animation: orbDrift 10s ease-in-out infinite;
             will-change: transform, opacity;
         }
 
-        @keyframes orbPulse {
-            0%, 100% { transform: translate(0, 0); opacity: 0.85; }
-            50% { transform: translate(40px, -40px); opacity: 1; }
+        @keyframes orbDrift {
+            0%, 100% { transform: translate(0, 0); opacity: 0.9; }
+            50% { transform: translate(45px, -45px); opacity: 1; }
         }
 
-        /* Vortex Gate */
-        .vortex-gate {
+        /* Aura Portal */
+        .aura-portal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(0, 244, 255, 0.2), var(--black-hole) 75%);
+            background: radial-gradient(circle, rgba(0, 234, 255, 0.22), var(--void-core) 80%);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 10000;
-            transition: opacity 2s ease, transform 2s ease;
+            transition: opacity 2.2s ease, transform 2.2s ease;
         }
 
-        .vortex-gate.hidden {
+        .aura-portal.hidden {
             opacity: 0;
-            transform: scale(1.4);
+            transform: scale(1.45);
             pointer-events: none;
         }
 
-        .vortex-gate button {
-            background: linear-gradient(135deg, var(--nova-blue), var(--nova-purple));
-            color: var(--light-flux);
-            padding: 4rem 9rem;
+        .aura-portal button {
+            background: linear-gradient(135deg, var(--aura-cyan), var(--aura-violet));
+            color: var(--light-aura);
+            padding: 4.5rem 10rem;
             border: none;
-            border-radius: 90px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3rem;
-            font-weight: 900;
+            border-radius: 100px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 3.2rem;
+            font-weight: 700;
             text-transform: uppercase;
             cursor: pointer;
-            box-shadow: 0 0 var(--glow-core) var(--nova-blue);
+            box-shadow: 0 0 var(--glow-core) var(--aura-cyan);
             position: relative;
             overflow: hidden;
-            transition: transform 0.8s, box-shadow 0.8s;
+            transition: transform 0.9s, box-shadow 0.9s;
         }
 
-        .vortex-gate button::before {
+        .aura-portal button::before {
             content: '';
             position: absolute;
             top: -50%;
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            animation: vortexSweep 2.5s infinite;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+            animation: portalFlux 2.8s infinite;
         }
 
-        @keyframes vortexSweep {
+        @keyframes portalFlux {
             0% { transform: translateX(-100%) rotate(45deg); }
             100% { transform: translateX(100%) rotate(45deg); }
         }
 
-        .vortex-gate button:hover {
-            transform: scale(1.2);
-            box-shadow: 0 0 calc(var(--glow-core) * 2) var(--nova-purple);
+        .aura-portal button:hover {
+            transform: scale(1.25);
+            box-shadow: 0 0 calc(var(--glow-core) * 2) var(--aura-violet);
         }
 
-        /* Flux Loader */
-        .flux-loader {
+        /* Aura Loader */
+        .aura-loader {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--black-hole);
+            background: var(--void-core);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 1.5s ease;
+            transition: opacity 1.8s ease;
         }
 
-        .flux-loader::before {
+        .aura-loader::before {
             content: '';
-            width: 80px;
-            height: 80px;
-            border: 8px solid var(--nova-blue);
-            border-top: 8px solid var(--nova-purple);
+            width: 90px;
+            height: 90px;
+            border: 10px solid var(--aura-cyan);
+            border-top: 10px solid var(--aura-violet);
             border-radius: 50%;
-            animation: fluxSpin 1.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
-            box-shadow: 0 0 45px var(--nova-blue);
+            animation: auraSpin 1.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+            box-shadow: 0 0 50px var(--aura-cyan);
         }
 
-        @keyframes fluxSpin {
+        @keyframes auraSpin {
             0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.4); }
+            50% { transform: rotate(180deg) scale(1.45); }
             100% { transform: rotate(360deg) scale(1); }
         }
 
-        .flux-loader.hidden {
+        .aura-loader.hidden {
             opacity: 0;
             pointer-events: none;
         }
 
-        /* Nebula Nav */
+        /* Void Header */
         header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(10, 10, 31, 0.95);
-            backdrop-filter: blur(30px);
-            padding: 2rem 3rem;
+            background: rgba(5, 5, 21, 0.95);
+            backdrop-filter: blur(35px);
+            padding: 2.5rem 3.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            border-bottom: 1px solid rgba(0, 244, 255, 0.2);
-            transition: transform 0.8s ease;
+            border-bottom: 1px solid rgba(0, 234, 255, 0.25);
+            transition: transform 0.9s ease;
         }
 
         header.hidden {
@@ -276,13 +276,13 @@
         }
 
         .logo img {
-            height: 70px;
-            filter: drop-shadow(0 0 15px var(--nova-blue));
-            transition: transform 0.8s;
+            height: 75px;
+            filter: drop-shadow(0 0 18px var(--aura-cyan));
+            transition: transform 0.9s;
         }
 
         .logo img:hover {
-            transform: scale(1.35) rotate(35deg);
+            transform: scale(1.4) rotate(40deg);
         }
 
         nav {
@@ -290,30 +290,30 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            max-width: 1000px;
+            max-width: 1100px;
         }
 
         nav a {
-            color: var(--light-flux);
+            color: var(--light-aura);
             text-decoration: none;
-            margin: 0 3.5rem;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.6rem;
-            font-weight: 900;
+            margin: 0 4rem;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
             text-transform: uppercase;
             position: relative;
-            transition: all 0.7s;
+            transition: all 0.8s;
         }
 
         nav a::after {
             content: '';
             position: absolute;
             width: 0;
-            height: 5px;
-            bottom: -15px;
+            height: 6px;
+            bottom: -18px;
             left: 0;
-            background: var(--nova-blue);
-            transition: width 0.7s ease;
+            background: var(--aura-cyan);
+            transition: width 0.8s ease;
         }
 
         nav a:hover::after {
@@ -321,190 +321,191 @@
         }
 
         nav a:hover {
-            color: var(--nova-blue);
-            text-shadow: 0 0 20px var(--nova-blue);
+            color: var(--aura-cyan);
+            text-shadow: 0 0 25px var(--aura-cyan);
         }
 
         .hamburger {
             display: none;
             cursor: pointer;
-            font-size: 3.5rem;
-            color: var(--light-flux);
-            transition: transform 0.7s;
+            font-size: 4rem;
+            color: var(--light-aura);
+            transition: transform 0.8s;
         }
 
         .hamburger:hover {
-            transform: scale(1.35);
+            transform: scale(1.4);
         }
 
-        /* Orbital Controls */
-        .orbit-top, .audio-core {
+        /* Aura Controls */
+        .void-top, .audio-void {
             position: fixed;
-            background: linear-gradient(135deg, var(--nova-blue), var(--nova-purple));
-            color: var(--light-flux);
-            width: 80px;
-            height: 80px;
+            background: linear-gradient(135deg, var(--aura-cyan), var(--aura-violet));
+            color: var(--light-aura);
+            width: 85px;
+            height: 85px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 2.6rem;
+            font-size: 2.8rem;
             text-decoration: none;
-            box-shadow: 0 0 var(--glow-core) var(--nova-blue);
-            transition: transform 0.7s, box-shadow 0.7s;
+            box-shadow: 0 0 var(--glow-core) var(--aura-cyan);
+            transition: transform 0.8s, box-shadow 0.8s;
             z-index: 1000;
         }
 
-        .orbit-top {
-            bottom: 4.5rem;
-            right: 4.5rem;
+        .void-top {
+            bottom: 5rem;
+            right: 5rem;
             opacity: 0;
         }
 
-        .orbit-top.visible {
+        .void-top.visible {
             opacity: 1;
         }
 
-        .audio-core {
-            bottom: 4.5rem;
-            left: 4.5rem;
+        .audio-void {
+            bottom: 5rem;
+            left: 5rem;
         }
 
-        .orbit-top:hover, .audio-core:hover {
-            transform: scale(1.3);
-            box-shadow: 0 0 calc(var(--glow-core) * 2) var(--nova-purple);
+        .void-top:hover, .audio-void:hover {
+            transform: scale(1.35);
+            box-shadow: 0 0 calc(var(--glow-core) * 2) var(--aura-violet);
         }
 
-        /* Core Horizon (Hero) */
-        .horizon {
+        /* Core Void (Hero) */
+        .void-core {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 4rem 3rem;
+            padding: 5rem 4rem;
             position: relative;
             overflow: hidden;
             z-index: 1;
         }
 
-        .horizon::before {
+        .void-core::before {
             content: '';
             position: absolute;
-            width: 350%;
-            height: 350%;
-            background: radial-gradient(circle, rgba(0, 244, 255, 0.18), transparent 80%);
-            animation: horizonFlux 14s infinite ease-in-out;
+            width: 400%;
+            height: 400%;
+            background: radial-gradient(circle, rgba(0, 234, 255, 0.2), transparent 85%);
+            animation: voidPulse 16s infinite ease-in-out;
             z-index: -1;
         }
 
-        @keyframes horizonFlux {
-            0% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.18; }
-            50% { transform: scale(1.15) translateX(-50%) translateY(-50%); opacity: 0.35; }
-            100% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.18; }
+        @keyframes voidPulse {
+            0% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.2; }
+            50% { transform: scale(1.2) translateX(-50%) translateY(-50%); opacity: 0.4; }
+            100% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.2; }
         }
 
-        .horizon img {
-            width: 350px;
-            height: 350px;
+        .void-core img {
+            width: 380px;
+            height: 380px;
             border-radius: 50%;
-            border: 6px solid var(--nova-blue);
-            box-shadow: 0 0 40px var(--nova-blue);
-            margin-bottom: 3.5rem;
-            transition: transform 0.9s ease;
+            border: 7px solid var(--aura-cyan);
+            box-shadow: 0 0 45px var(--aura-cyan);
+            margin-bottom: 4rem;
+            transition: transform 1s ease;
             z-index: 99999;
         }
 
-        .horizon img:hover {
-            transform: scale(1.15);
+        .void-core img:hover {
+            transform: scale(1.18);
         }
 
-        .horizon h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(5rem, 12vw, 9rem);
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--nova-blue), var(--nova-purple));
+        .void-core h1 {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: clamp(5.5rem, 13vw, 10rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--aura-cyan), var(--aura-violet));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 2.5rem;
-            text-shadow: 0 0 15px var(--nova-blue);
+            margin-bottom: 3rem;
+            text-shadow: 0 0 18px var(--aura-cyan);
             position: relative;
             z-index: 2;
         }
 
-        .horizon h1::after {
+        .void-core h1::after {
             content: '';
             position: absolute;
-            width: 85%;
-            height: 5px;
-            bottom: -20px;
-            left: 7.5%;
-            background: linear-gradient(90deg, transparent, var(--nova-blue), transparent);
-            animation: coreWave 4s infinite ease-in-out;
+            width: 90%;
+            height: 6px;
+            bottom: -25px;
+            left: 5%;
+            background: linear-gradient(90deg, transparent, var(--aura-cyan), transparent);
+            animation: coreFlux 4.5s infinite ease-in-out;
         }
 
-        @keyframes coreWave {
-            0% { width: 85%; opacity: 1; }
-            50% { width: 100%; opacity: 0.8; }
-            100% { width: 85%; opacity: 1; }
+        @keyframes coreFlux {
+            0% { width: 90%; opacity: 1; }
+            50% { width: 100%; opacity: 0.85; }
+            100% { width: 90%; opacity: 1; }
         }
 
-        .horizon p {
-            font-size: clamp(2rem, 6vw, 2.8rem);
+        .void-core p {
+            font-size: clamp(2.2rem, 7vw, 3rem);
             color: var(--shadow-flux);
-            margin-bottom: 3.5rem;
-            max-width: 1200px;
+            margin-bottom: 4rem;
+            max-width: 1300px;
             z-index: 2;
         }
 
-        .horizon .launch-core {
-            background: linear-gradient(135deg, var(--nova-blue), var(--nova-purple));
-            color: var(--light-flux);
-            padding: 2.5rem 6rem;
+        .void-core .core-launch {
+            background: linear-gradient(135deg, var(--aura-cyan), var(--aura-violet));
+            color: var(--light-aura);
+            padding: 2.8rem 6.5rem;
             text-decoration: none;
-            border-radius: 80px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            font-size: 2.2rem;
+            border-radius: 90px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 2.4rem;
             text-transform: uppercase;
-            box-shadow: 0 0 var(--glow-core) var(--nova-blue);
-            transition: all 0.8s;
+            box-shadow: 0 0 var(--glow-core) var(--aura-cyan);
+            transition: all 0.9s;
             position: relative;
             overflow: hidden;
             z-index: 2;
         }
 
-        .horizon .launch-core::before {
+        .void-core .core-launch::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: left 0.8s;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+            transition: left 0.9s;
         }
 
-        .horizon .launch-core:hover::before {
+        .void-core .core-launch:hover::before {
             left: 100%;
         }
 
-        .horizon .launch-core:hover {
-            box-shadow: 0 0 calc(var(--glow-core) * 2) var(--nova-purple);
-            transform: scale(1.18);
+        .void-core .core-launch:hover {
+            box-shadow: 0 0 calc(var(--glow-core) * 2) var(--aura-violet);
+            transform: scale(1.2);
         }
 
-        /* Nexus Zones */
+        /* Aura Zones */
         section {
-            padding: 10rem 3rem;
-            max-width: 2400px;
+            padding: 10rem 4rem;
+            max-width: 2600px;
             margin: 0 auto;
+            scroll-margin-top: 150px;
             position: relative;
             z-index: 1;
             opacity: 0;
-            transform: translateY(120px);
-            transition: opacity 1.5s ease, transform 1.5s ease;
+            transform: translateY(150px);
+            transition: opacity 1.8s ease, transform 1.8s ease;
         }
 
         section.visible {
@@ -512,11 +513,11 @@
             transform: translateY(0);
         }
 
-        #nexus-info {
+        #aura-info {
             min-height: auto;
         }
 
-        #nexus-skills, #nexus-tutorials, #nexus-contact {
+        #aura-skills, #aura-tutorials, #aura-contact {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -525,16 +526,16 @@
         }
 
         section h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(4.5rem, 11vw, 7rem);
-            font-weight: 900;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: clamp(5rem, 12vw, 8rem);
+            font-weight: 700;
             text-align: center;
-            background: linear-gradient(135deg, var(--nova-blue), var(--nova-purple));
+            background: linear-gradient(135deg, var(--aura-cyan), var(--aura-violet));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 6rem;
+            margin-bottom: 7rem;
             text-transform: uppercase;
-            text-shadow: 0 0 15px var(--nova-blue);
+            text-shadow: 0 0 18px var(--aura-cyan);
             position: relative;
             z-index: 2;
         }
@@ -542,89 +543,89 @@
         section h2::after {
             content: '';
             position: absolute;
-            width: 70%;
-            height: 5px;
-            bottom: -25px;
-            left: 15%;
-            background: linear-gradient(90deg, transparent, var(--nova-blue), transparent);
-            animation: zoneFlux 3.5s infinite ease-in-out;
+            width: 75%;
+            height: 6px;
+            bottom: -30px;
+            left: 12.5%;
+            background: linear-gradient(90deg, transparent, var(--aura-cyan), transparent);
+            animation: zonePulse 4s infinite ease-in-out;
             z-index: 2;
         }
 
-        @keyframes zoneFlux {
-            0% { width: 70%; opacity: 0.9; }
-            50% { width: 90%; opacity: 0.7; }
-            100% { width: 70%; opacity: 0.9; }
+        @keyframes zonePulse {
+            0% { width: 75%; opacity: 0.9; }
+            50% { width: 95%; opacity: 0.75; }
+            100% { width: 75%; opacity: 0.9; }
         }
 
-        .nexus-info {
-            background: var(--plasma-glass);
-            backdrop-filter: blur(30px);
+        .aura-info {
+            background: var(--aura-glass);
+            backdrop-filter: blur(35px);
             border-radius: 40px;
-            padding: 8rem;
-            border: 1px solid rgba(0, 244, 255, 0.25);
-            box-shadow: 0 0 var(--glow-core) rgba(0, 244, 255, 0.35);
-            max-width: 2000px;
+            padding: 9rem;
+            border: 1px solid rgba(0, 234, 255, 0.3);
+            box-shadow: 0 0 var(--glow-core) rgba(0, 234, 255, 0.4);
+            max-width: 2200px;
             width: 100%;
         }
 
-        .info-core {
+        .info-aura {
             display: flex;
             flex-wrap: wrap;
-            gap: 7rem;
+            gap: 8rem;
             align-items: center;
             justify-content: center;
         }
 
-        .nexus-info img {
-            max-width: 550px;
+        .aura-info img {
+            max-width: 600px;
             width: 100%;
             height: auto;
-            border-radius: 35px;
-            border: 6px solid var(--nova-blue);
-            box-shadow: 0 0 var(--glow-core) var(--nova-blue);
-            transition: transform 0.9s ease;
+            border-radius: 40px;
+            border: 7px solid var(--aura-cyan);
+            box-shadow: 0 0 var(--glow-core) var(--aura-cyan);
+            transition: transform 1s ease;
             loading: lazy;
         }
 
-        .nexus-info img:hover {
-            transform: scale(1.12);
+        .aura-info img:hover {
+            transform: scale(1.15);
         }
 
         .info-text {
             flex: 1;
-            min-width: 450px;
+            min-width: 500px;
             text-align: center;
         }
 
         .info-text p {
-            line-height: 2.5;
+            line-height: 2.8;
             color: var(--shadow-flux);
-            font-size: 1.6rem;
+            font-size: 1.8rem;
         }
 
-        .skills-matrix, .tutorials-matrix {
+        .skills-aura, .tutorials-aura {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-            gap: 6rem;
+            grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+            gap: 7rem;
             width: 100%;
-            max-width: 2200px;
+            max-width: 2400px;
             justify-items: center;
         }
 
         .skill-pod, .tutorial-pod {
-            background: var(--plasma-glass);
-            backdrop-filter: blur(30px);
+            background: var(--aura-glass);
+            backdrop-filter: blur(35px);
             border-radius: 40px;
-            padding: 5.5rem;
-            border: 1px solid rgba(0, 244, 255, 0.25);
-            box-shadow: 0 0 var(--glow-core) rgba(0, 244, 255, 0.35);
-            transition: all 0.9s;
+            padding: 6rem;
+            border: 1px solid rgba(0, 234, 255, 0.3);
+            box-shadow: 0 0 var(--glow-core) rgba(0, 234, 255, 0.4);
+            transition: all 1s;
             position: relative;
             overflow: hidden;
             z-index: 2;
             width: 100%;
-            max-width: 550px;
+            max-width: 600px;
         }
 
         .skill-pod::before, .tutorial-pod::before {
@@ -634,187 +635,187 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(0, 244, 255, 0.12), transparent);
-            animation: podFlux 4.5s infinite;
+            background: linear-gradient(45deg, transparent, rgba(0, 234, 255, 0.15), transparent);
+            animation: auraFlux 5s infinite;
         }
 
-        @keyframes podFlux {
+        @keyframes auraFlux {
             0% { transform: translateX(-100%) rotate(45deg); }
             100% { transform: translateX(100%) rotate(45deg); }
         }
 
         .skill-pod:hover, .tutorial-pod:hover {
-            transform: translateY(-35px) scale(1.08);
-            box-shadow: 0 0 calc(var(--glow-core) * 2) var(--nova-purple);
+            transform: translateY(-40px) scale(1.1);
+            box-shadow: 0 0 calc(var(--glow-core) * 2) var(--aura-violet);
         }
 
         .skill-pod img, .tutorial-pod img {
-            width: 130px;
+            width: 140px;
             height: auto;
-            margin-bottom: 3rem;
-            filter: drop-shadow(0 0 20px var(--nova-blue));
-            transition: transform 0.8s ease;
+            margin-bottom: 3.5rem;
+            filter: drop-shadow(0 0 25px var(--aura-cyan));
+            transition: transform 0.9s ease;
             loading: lazy;
         }
 
         .skill-pod:hover img, .tutorial-pod:hover img {
-            transform: scale(1.3);
+            transform: scale(1.35);
         }
 
         .skill-pod h3, .tutorial-pod h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.4rem;
-            font-weight: 900;
-            color: var(--light-flux);
-            margin-bottom: 1.5rem;
-            text-shadow: 0 0 12px var(--nova-blue);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 2.6rem;
+            font-weight: 700;
+            color: var(--light-aura);
+            margin-bottom: 2rem;
+            text-shadow: 0 0 15px var(--aura-cyan);
         }
 
         .skill-pod p, .tutorial-pod p {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             color: var(--shadow-flux);
-            line-height: 2.2;
+            line-height: 2.4;
         }
 
         .tutorial-pod a {
-            color: var(--nova-blue);
+            color: var(--aura-cyan);
             text-decoration: none;
-            font-weight: 700;
-            font-size: 1.6rem;
-            transition: all 0.7s;
+            font-weight: 600;
+            font-size: 1.8rem;
+            transition: all 0.8s;
             position: relative;
         }
 
         .tutorial-pod a::after {
             content: '→';
             position: absolute;
-            right: -45px;
+            right: -50px;
             opacity: 0;
-            transition: all 0.7s;
+            transition: all 0.8s;
         }
 
         .tutorial-pod a:hover::after {
             opacity: 1;
-            right: -30px;
+            right: -35px;
         }
 
         .tutorial-pod a:hover {
-            color: var(--nova-purple);
-            text-shadow: 0 0 20px var(--nova-purple);
+            color: var(--aura-violet);
+            text-shadow: 0 0 25px var(--aura-violet);
         }
 
-        .media-core {
+        .media-aura {
             position: relative;
             width: 100%;
-            height: 380px;
-            border-radius: 35px;
-            margin-top: 3rem;
+            height: 400px;
+            border-radius: 40px;
+            margin-top: 3.5rem;
             overflow: hidden;
         }
 
         .tutorial-pod iframe {
             width: 100%;
             height: 100%;
-            border-radius: 35px;
-            border: 6px solid var(--nova-blue);
-            box-shadow: 0 0 35px rgba(0, 244, 255, 0.5);
+            border-radius: 40px;
+            border: 7px solid var(--aura-cyan);
+            box-shadow: 0 0 40px rgba(0, 234, 255, 0.55);
             loading: lazy;
         }
 
-        .nexus-contact {
+        .aura-contact {
             text-align: center;
             position: relative;
-            max-width: 2000px;
+            max-width: 2200px;
             width: 100%;
         }
 
-        .nexus-contact p {
+        .aura-contact p {
             color: var(--shadow-flux);
-            margin-bottom: 5rem;
-            max-width: 1200px;
+            margin-bottom: 6rem;
+            max-width: 1300px;
             margin-left: auto;
             margin-right: auto;
-            font-size: 1.7rem;
+            font-size: 1.9rem;
         }
 
-        .contact-relays {
+        .contact-nexus {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 6rem;
+            gap: 7rem;
         }
 
-        .nexus-contact a {
-            color: var(--nova-blue);
+        .aura-contact a {
+            color: var(--aura-cyan);
             text-decoration: none;
-            font-weight: 700;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2rem;
-            padding: 1.8rem 4.5rem;
-            border: 4px solid var(--nova-blue);
-            border-radius: 70px;
-            transition: all 0.8s;
+            font-weight: 600;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 2.2rem;
+            padding: 2rem 5rem;
+            border: 5px solid var(--aura-cyan);
+            border-radius: 80px;
+            transition: all 0.9s;
             position: relative;
             overflow: hidden;
         }
 
-        .nexus-contact a::before {
+        .aura-contact a::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: left 0.8s;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+            transition: left 0.9s;
         }
 
-        .nexus-contact a:hover::before {
+        .aura-contact a:hover::before {
             left: 100%;
         }
 
-        .nexus-contact a:hover {
-            color: var(--nova-purple);
-            box-shadow: 0 0 var(--glow-core) var(--nova-purple);
+        .aura-contact a:hover {
+            color: var(--aura-violet);
+            box-shadow: 0 0 var(--glow-core) var(--aura-violet);
         }
 
         footer {
-            background: rgba(10, 10, 31, 0.95);
-            backdrop-filter: blur(30px);
-            padding: 7rem;
+            background: rgba(5, 5, 21, 0.95);
+            backdrop-filter: blur(35px);
+            padding: 8rem;
             text-align: center;
-            border-top: 1px solid rgba(0, 244, 255, 0.2);
+            border-top: 1px solid rgba(0, 234, 255, 0.25);
             position: relative;
             z-index: 1;
         }
 
         footer p {
             color: var(--shadow-flux);
-            font-size: 1.5rem;
-            margin-bottom: 3.5rem;
+            font-size: 1.6rem;
+            margin-bottom: 4rem;
         }
 
         footer a {
-            color: var(--nova-blue);
+            color: var(--aura-cyan);
             text-decoration: none;
-            margin: 0 3.5rem;
-            font-size: 1.6rem;
-            transition: all 0.7s;
+            margin: 0 4rem;
+            font-size: 1.8rem;
+            transition: all 0.8s;
         }
 
         footer a:hover {
-            color: var(--nova-purple);
-            text-shadow: 0 0 20px var(--nova-purple);
+            color: var(--aura-violet);
+            text-shadow: 0 0 25px var(--aura-violet);
         }
 
-        /* Responsive Orbit */
+        /* Responsive Luxury */
         @media (max-width: 1024px) {
-            .skills-matrix, .tutorials-matrix {
+            .skills-aura, .tutorials-aura {
                 grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
             }
 
-            .nexus-info {
-                padding: 6rem;
+            .aura-info {
+                padding: 7rem;
             }
         }
 
@@ -826,13 +827,13 @@
             nav {
                 display: none;
                 position: fixed;
-                top: 130px;
+                top: 140px;
                 left: 0;
                 right: 0;
-                background: rgba(10, 10, 31, 0.98);
+                background: rgba(5, 5, 21, 0.98);
                 flex-direction: column;
-                padding: 7rem 3rem;
-                box-shadow: 0 0 var(--glow-core) var(--nova-blue);
+                padding: 8rem 4rem;
+                box-shadow: 0 0 var(--glow-core) var(--aura-cyan);
                 width: 100%;
             }
 
@@ -841,189 +842,189 @@
             }
 
             nav a {
-                margin: 3.5rem 0;
-                font-size: 1.9rem;
+                margin: 4rem 0;
+                font-size: 2rem;
             }
 
-            .info-core {
+            .info-aura {
                 flex-direction: column;
                 text-align: center;
-                gap: 5rem;
+                gap: 6rem;
             }
 
-            .horizon {
-                padding: 3rem 2rem;
+            .void-core {
+                padding: 4rem 3rem;
             }
 
-            .horizon img {
-                width: 280px;
-                height: 280px;
+            .void-core img {
+                width: 300px;
+                height: 300px;
             }
 
-            .orbit-top, .audio-core {
-                width: 70px;
-                height: 70px;
-                font-size: 2.4rem;
-                bottom: 3.5rem;
+            .void-top, .audio-void {
+                width: 75px;
+                height: 75px;
+                font-size: 2.6rem;
+                bottom: 4rem;
             }
 
-            .orbit-top {
-                right: 3.5rem;
+            .void-top {
+                right: 4rem;
             }
 
-            .audio-core {
-                left: 3.5rem;
+            .audio-void {
+                left: 4rem;
             }
 
-            .nebula-orb {
+            .void-orb {
                 display: none;
             }
         }
 
         @media (max-width: 480px) {
             section {
-                padding: 8rem 2rem;
+                padding: 9rem 3rem;
             }
 
             .skill-pod, .tutorial-pod {
-                padding: 4.5rem;
+                padding: 5rem;
                 max-width: 100%;
             }
 
-            .horizon h1 {
-                font-size: clamp(4rem, 10vw, 6rem);
+            .void-core h1 {
+                font-size: clamp(4.5rem, 11vw, 7rem);
             }
 
-            .horizon p {
-                font-size: clamp(1.6rem, 5vw, 2rem);
+            .void-core p {
+                font-size: clamp(1.8rem, 6vw, 2.2rem);
             }
 
             .tutorial-pod iframe {
-                height: 300px;
+                height: 320px;
             }
 
-            .vortex-gate button {
-                padding: 3rem 7rem;
-                font-size: 2.4rem;
+            .aura-portal button {
+                padding: 3.5rem 8rem;
+                font-size: 2.6rem;
             }
 
-            .nexus-info {
-                padding: 5rem;
+            .aura-info {
+                padding: 6rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="flux-loader"></div>
-    <div class="vortex-gate">
-        <button>Activate Nexus</button>
+    <div class="aura-loader"></div>
+    <div class="aura-portal">
+        <button>Enter the Aura</button>
     </div>
-    <div id="cosmic-grid"></div>
-    <div class="grid-veil"></div>
-    <audio id="core-audio" src="/audio/future-beats.mp3" loop preload="auto" style="display: none;"></audio>
+    <div id="aura-grid"></div>
+    <div class="grid-aura"></div>
+    <audio id="aura-audio" src="/audio/cyber-lux.mp3" loop preload="auto" style="display: none;"></audio>
     <header>
         <div class="logo">
             <a href="https://labverse.co.za">
-                <img src="assets/nexus-icon.svg" alt="LabVerse Nexus" loading="lazy">
+                <img src="assets/aura-icon.svg" alt="LabVerse Aura" loading="lazy">
             </a>
         </div>
         <div class="hamburger">☰</div>
         <nav>
-            <a href="#nexus-info">Info</a>
-            <a href="#nexus-skills">Skills</a>
-            <a href="#nexus-tutorials">Tutorials</a>
-            <a href="#nexus-contact">Contact</a>
+            <a href="#aura-info">Info</a>
+            <a href="#aura-skills">Skills</a>
+            <a href="#aura-tutorials">Tutorials</a>
+            <a href="#aura-contact">Contact</a>
         </nav>
     </header>
-    <a href="#" class="orbit-top" title="Return to Core">↑</a>
-    <button class="audio-core" title="Toggle Sound">♫</button>
-    <section class="horizon">
-        <img src="/core-images/nexus-core.jpeg" alt="Nexus Core" id="horizon-image">
+    <a href="#" class="void-top" title="Back to Void">↑</a>
+    <button class="audio-void" title="Toggle Aura Sound">♫</button>
+    <section class="void-core">
+        <img src="/aura-images/core-aura.jpeg" alt="Aura Core" id="core-image">
         <h1>LabVerse | Technical University</h1>
-        <p>South Africa’s Elite Free IT Training Nexus | Forge Your Future in the Cyber Cosmos</p>
-        <a href="#nexus-tutorials" class="launch-core">Launch Tutorials</a>
+        <p>South Africa’s Premier Free IT Training Nexus | Elevate Skills in a Cyber Luxury Realm</p>
+        <a href="#aura-tutorials" class="core-launch">Launch Vault</a>
     </section>
-    <section id="nexus-info" class="nexus-info">
-        <div class="info-core">
-            <img src="assets/thumbnail-core.webp" alt="Nexus Info" loading="lazy">
+    <section id="aura-info" class="aura-info">
+        <div class="info-aura">
+            <img src="assets/aura-core.webp" alt="Aura Info" loading="lazy">
             <div class="info-text">
-                <h2>Nexus Core</h2>
-                <p>LabVerse | Technical University, based in Johannesburg, is South Africa’s pinnacle of free, elite IT training. We fuse hybrid cloud, cybersecurity, and networking into a future-tech curriculum.</p>
-                <p>Our vision: empower a global workforce with unparalleled skills—bridging today’s talent with tomorrow’s innovation.</p>
+                <h2>Aura Nexus</h2>
+                <p>LabVerse | Technical University, forged in Johannesburg, redefines free IT training with a luxury cyber edge. Master hybrid cloud, cybersecurity, and networking in an aura-tech cosmos.</p>
+                <p>Our creed: deliver elite skills to a global elite—bridging talent with tomorrow’s tech opulence.</p>
             </div>
         </div>
     </section>
-    <section id="nexus-skills">
-        <h2>Skill Matrix</h2>
-        <div class="skills-matrix">
+    <section id="aura-skills">
+        <h2>Skills Aura</h2>
+        <div class="skills-aura">
             <div class="skill-pod">
-                <img src="assets/thumbnail-core.webp" alt="Hybrid Cloud" loading="lazy">
+                <img src="assets/aura-core.webp" alt="Hybrid Cloud" loading="lazy">
                 <h3>Hybrid Cloud</h3>
-                <p>Engineer interstellar Azure systems for seamless scalability.</p>
+                <p>Craft Azure-driven systems for celestial scalability.</p>
             </div>
             <div class="skill-pod">
-                <img src="assets/thumbnail-core.webp" alt="Cybersecurity" loading="lazy">
+                <img src="assets/aura-core.webp" alt="Cybersecurity" loading="lazy">
                 <h3>Cybersecurity</h3>
-                <p>Defend galaxies with Cisco, Defender XDR, and quantum shields.</p>
+                <p>Fortify realms with Cisco and quantum-grade defenses.</p>
             </div>
             <div class="skill-pod">
-                <img src="assets/thumbnail-core.webp" alt="Networking" loading="lazy">
+                <img src="assets/aura-core.webp" alt="Networking" loading="lazy">
                 <h3>Networking</h3>
-                <p>Construct SD-WAN, Cisco, and cosmic network architectures.</p>
+                <p>Architect SD-WAN and cosmic network frameworks.</p>
             </div>
             <div class="skill-pod">
-                <img src="assets/thumbnail-core.webp" alt="Digital Marketing" loading="lazy">
+                <img src="assets/aura-core.webp" alt="Digital Marketing" loading="lazy">
                 <h3>Digital Marketing & SEO</h3>
-                <p>Propel brands to hyperspace with SEO and cyber-strategies.</p>
+                <p>Elevate brands to astral heights with cyber-strategy.</p>
             </div>
             <div class="skill-pod">
-                <img src="assets/thumbnail-core.webp" alt="Leadership" loading="lazy">
-                <h3>Leadership Core</h3>
-                <p>Command teams with a visionary, future-tech mindset.</p>
+                <img src="assets/aura-core.webp" alt="Leadership" loading="lazy">
+                <h3>Leadership Aura</h3>
+                <p>Lead with a visionary mindset for tech supremacy.</p>
             </div>
         </div>
     </section>
-    <section id="nexus-tutorials">
+    <section id="aura-tutorials">
         <h2>Tutorial Vault</h2>
-        <div class="tutorials-matrix">
+        <div class="tutorials-aura">
             <div class="tutorial-pod">
-                <img src="assets/thumbnail-core.webp" alt="SD-WAN" loading="lazy">
-                <h3>SD-WAN Nebula</h3>
-                <p>Deploy FortiGate SD-WAN across 50+ nodes—stellar performance.</p>
-                <a href="https://labverse.co.za/sdwan" target="_blank">Engage</a>
+                <img src="assets/aura-core.webp" alt="SD-WAN" loading="lazy">
+                <h3>SD-WAN Aura</h3>
+                <p>Deploy FortiGate SD-WAN across 50+ nodes—luxury uptime.</p>
+                <a href="https://labverse.co.za/sdwan" target="_blank">Unlock</a>
             </div>
             <div class="tutorial-pod">
-                <img src="assets/thumbnail-core.webp" alt="Azure Migration" loading="lazy">
-                <h3>Azure Warp</h3>
-                <p>Migrate 10,000 users to Azure—efficiency at light speed.</p>
-                <a href="https://labverse.co.za/azure" target="_blank">Engage</a>
+                <img src="assets/aura-core.webp" alt="Azure Migration" loading="lazy">
+                <h3>Azure Ascension</h3>
+                <p>Migrate 10,000 users to Azure—opulent efficiency.</p>
+                <a href="https://labverse.co.za/azure" target="_blank">Unlock</a>
             </div>
             <div class="tutorial-pod">
-                <img src="assets/thumbnail-core.webp" alt="Lo-Fi Stream" loading="lazy">
-                <h3>Infinite Lo-Fi Orbit</h3>
-                <p>Launch a Linux Azure YouTube stream—beats forever.</p>
-                <div class="media-core">
+                <img src="assets/aura-core.webp" alt="Lo-Fi Stream" loading="lazy">
+                <h3>Eternal Lo-Fi Void</h3>
+                <p>Launch a Linux Azure stream—beats in perpetuity.</p>
+                <div class="media-aura">
                     <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk" frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
             <div class="tutorial-pod">
-                <img src="assets/thumbnail-core.webp" alt="Support Tool" loading="lazy">
-                <h3>T1 Quantum Kit</h3>
-                <p>Craft a PowerShell tool—AI-driven support acceleration.</p>
-                <a href="https://labverse.co.za/support-tool" target="_blank">Engage</a>
+                <img src="assets/aura-core.webp" alt="Support Tool" loading="lazy">
+                <h3>T1 Aura Kit</h3>
+                <p>Build a PowerShell tool—AI-enhanced precision.</p>
+                <a href="https://labverse.co.za/support-tool" target="_blank">Unlock</a>
             </div>
             <div class="tutorial-pod">
-                <img src="assets/thumbnail-core.webp" alt="Website Maintenance" loading="lazy">
-                <h3>Cyber Fusion</h3>
-                <p>Master next-gen site optimization—LabVerse style.</p>
-                <a href="https://labverse.co.za" target="_blank">Engage</a>
+                <img src="assets/aura-core.webp" alt="Website Maintenance" loading="lazy">
+                <h3>Cyber Lux</h3>
+                <p>Master site optimization—LabVerse elegance.</p>
+                <a href="https://labverse.co.za" target="_blank">Unlock</a>
             </div>
         </div>
     </section>
-    <section id="nexus-contact" class="nexus-contact">
-        <h2>Contact Relay</h2>
-        <p>Tap into elite IT training or connect for cosmic collaboration.</p>
-        <div class="contact-relays">
+    <section id="aura-contact" class="aura-contact">
+        <h2>Contact Nexus</h2>
+        <p>Access elite IT training or forge connections in the aura-tech realm.</p>
+        <div class="contact-nexus">
             <a href="mailto:labversemail@gmail.com">Email</a>
             <a href="https://linkedin.com/in/labverse" target="_blank">LinkedIn</a>
             <a href="https://www.youtube.com/@labversity" target="_blank">YouTube</a>
@@ -1038,17 +1039,17 @@
     </footer>
 
     <script>
-        const audio = document.getElementById('core-audio');
-        audio.volume = 0.12;
+        const audio = document.getElementById('aura-audio');
+        audio.volume = 0.15;
 
-        const gate = document.querySelector('.vortex-gate');
-        const gateButton = gate.querySelector('button');
-        gateButton.addEventListener('click', () => {
+        const portal = document.querySelector('.aura-portal');
+        const portalButton = portal.querySelector('button');
+        portalButton.addEventListener('click', () => {
             audio.play().then(() => {
-                gsap.to(gate, { opacity: 0, scale: 1.4, duration: 2, ease: 'power4.out', onComplete: () => gate.classList.add('hidden') });
+                gsap.to(portal, { opacity: 0, scale: 1.45, duration: 2.2, ease: 'power4.out', onComplete: () => portal.classList.add('hidden') });
             }).catch(error => {
                 console.error("Audio Play Error:", error);
-                gsap.to(gate, { opacity: 0, scale: 1.4, duration: 2, ease: 'power4.out', onComplete: () => gate.classList.add('hidden') });
+                gsap.to(portal, { opacity: 0, scale: 1.45, duration: 2.2, ease: 'power4.out', onComplete: () => portal.classList.add('hidden') });
             });
         });
 
@@ -1084,94 +1085,101 @@
             scrollVelocity = scrollTop - lastScrollTop;
 
             if (scrollTop > lastScrollTop) {
-                gsap.to('header', { y: '-100%', duration: 0.8, ease: 'power3.inOut' });
+                gsap.to('header', { y: '-100%', duration: 0.9, ease: 'power3.inOut' });
             } else {
-                gsap.to('header', { y: '0%', duration: 0.8, ease: 'power3.inOut' });
+                gsap.to('header', { y: '0%', duration: 0.9, ease: 'power3.inOut' });
             }
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
 
-            const orbitTop = document.querySelector('.orbit-top');
-            if (scrollTop > 800) {
-                orbitTop.classList.add('visible');
+            const voidTop = document.querySelector('.void-top');
+            if (scrollTop > 900) {
+                voidTop.classList.add('visible');
             } else {
-                orbitTop.classList.remove('visible');
+                voidTop.classList.remove('visible');
             }
 
             document.querySelectorAll('section').forEach(section => {
                 const rect = section.getBoundingClientRect();
-                if (rect.top <= window.innerHeight * 0.9 && rect.bottom >= 0 && !section.classList.contains('visible')) {
+                if (rect.top <= window.innerHeight * 0.95 && rect.bottom >= 0 && !section.classList.contains('visible')) {
                     section.classList.add('visible');
-                    const rift = document.createElement('div');
-                    rift.className = 'flux-rift';
-                    rift.style.top = `${rect.top + window.scrollY + rect.height / 2}px`;
-                    document.body.appendChild(rift);
-                    setTimeout(() => rift.remove(), 800);
+                    const flux = document.createElement('div');
+                    flux.className = 'aura-flux';
+                    flux.style.top = `${rect.top + window.scrollY + rect.height / 2}px`;
+                    document.body.appendChild(flux);
+                    setTimeout(() => flux.remove(), 900);
                 }
             });
 
-            if (Math.abs(scrollVelocity) > 12) {
-                const rift = document.createElement('div');
-                rift.className = 'flux-rift';
-                rift.style.top = `${scrollTop + window.innerHeight / 2}px`;
-                document.body.appendChild(rift);
-                setTimeout(() => rift.remove(), 800);
+            if (Math.abs(scrollVelocity) > 15) {
+                const flux = document.createElement('div');
+                flux.className = 'aura-flux';
+                flux.style.top = `${scrollTop + window.innerHeight / 2}px`;
+                document.body.appendChild(flux);
+                setTimeout(() => flux.remove(), 900);
             }
-        }, { passive: true }); /* Priority 1: Scroll Guaranteed */
+        }, { passive: true }); /* Scroll Perfection */
 
-        let burstCount = 0;
-        const maxBursts = 40;
+        let pulseCount = 0;
+        const maxPulses = 45;
         document.addEventListener('mousemove', throttle((e) => {
-            if (burstCount < maxBursts) {
-                const burst = document.createElement('div');
-                burst.className = 'nova-burst';
-                burst.style.left = `${e.clientX}px`;
-                burst.style.top = `${e.clientY}px`;
-                document.body.appendChild(burst);
-                burstCount++;
+            if (pulseCount < maxPulses) {
+                const pulse = document.createElement('div');
+                pulse.className = 'aura-pulse';
+                pulse.style.left = `${e.clientX}px`;
+                pulse.style.top = `${e.clientY}px`;
+                document.body.appendChild(pulse);
+                pulseCount++;
                 setTimeout(() => {
-                    burst.remove();
-                    burstCount--;
-                }, 1000);
+                    pulse.remove();
+                    pulseCount--;
+                }, 1100);
             }
-        }, 20));
+        }, 15));
 
-        function spawnPlasmaTrail() {
-            if (Math.random() < 0.2) {
+        function spawnPulseTrail() {
+            if (Math.random() < 0.25) {
                 const trail = document.createElement('div');
-                trail.className = 'plasma-trail';
+                trail.className = 'pulse-trail';
                 trail.style.left = `${Math.random() * 100}vw`;
-                trail.style.top = `${-80}px`;
+                trail.style.top = `${-90}px`;
                 document.body.appendChild(trail);
-                setTimeout(() => trail.remove(), 2500);
+                setTimeout(() => trail.remove(), 2800);
             }
         }
 
-        setInterval(spawnPlasmaTrail, 70);
+        setInterval(spawnPulseTrail, 60);
 
-        const audioCore = document.querySelector('.audio-core');
-        audioCore.addEventListener('click', () => {
+        const audioVoid = document.querySelector('.audio-void');
+        audioVoid.addEventListener('click', () => {
             if (audio.paused) {
                 audio.play();
-                audioCore.textContent = '♫';
+                audioVoid.textContent = '♫';
             } else {
                 audio.pause();
-                audioCore.textContent = '♪';
+                audioVoid.textContent = '♪';
             }
         });
 
+        VanillaTilt.init(document.querySelectorAll('.skill-pod, .tutorial-pod'), {
+            max: 20,
+            speed: 1000,
+            glare: true,
+            'max-glare': 0.9
+        });
+
         window.addEventListener('load', () => {
-            gsap.to('.flux-loader', { opacity: 0, duration: 1.5, ease: 'power4.out', onComplete: () => document.querySelector('.flux-loader').classList.add('hidden') });
+            gsap.to('.aura-loader', { opacity: 0, duration: 1.8, ease: 'power4.out', onComplete: () => document.querySelector('.aura-loader').classList.add('hidden') });
 
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             const renderer = new THREE.WebGLRenderer({ alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
-            document.getElementById('cosmic-grid').appendChild(renderer.domElement);
+            document.getElementById('aura-grid').appendChild(renderer.domElement);
 
-            const gridSize = 40;
-            const spacing = 4;
-            const geometry = new THREE.SphereGeometry(0.2, 32, 32);
-            const material = new THREE.MeshBasicMaterial({ color: 0x00f4ff, transparent: true, opacity: 0.7 });
+            const gridSize = 45;
+            const spacing = 4.5;
+            const geometry = new THREE.SphereGeometry(0.22, 32, 32);
+            const material = new THREE.MeshBasicMaterial({ color: 0x00eaff, transparent: true, opacity: 0.75 });
 
             for (let x = -gridSize; x <= gridSize; x += spacing) {
                 for (let z = -gridSize; z <= gridSize; z += spacing) {
@@ -1181,13 +1189,13 @@
                 }
             }
 
-            camera.position.z = 50;
-            camera.position.y = 40;
+            camera.position.z = 55;
+            camera.position.y = 45;
             camera.lookAt(0, 0, 0);
 
             function animate() {
                 requestAnimationFrame(animate);
-                scene.rotation.y += 0.0006;
+                scene.rotation.y += 0.0005;
                 renderer.render(scene, camera);
             }
             animate();
@@ -1198,46 +1206,46 @@
                 renderer.setSize(window.innerWidth, window.innerHeight);
             });
 
-            for (let i = 0; i < 35; i++) {
+            for (let i = 0; i < 40; i++) {
                 const orb = document.createElement('div');
-                orb.className = 'nebula-orb';
+                orb.className = 'void-orb';
                 orb.style.left = `${Math.random() * 100}vw`;
                 orb.style.top = `${Math.random() * 100}vh`;
-                orb.style.animationDuration = `${7 + Math.random() * 7}s`;
-                orb.style.animationDelay = `${Math.random() * 3.5}s`;
+                orb.style.animationDuration = `${8 + Math.random() * 8}s`;
+                orb.style.animationDelay = `${Math.random() * 4}s`;
                 document.body.appendChild(orb);
             }
 
-            const horizonImage = document.getElementById('horizon-image');
+            const coreImage = document.getElementById('core-image');
             const pathsToTry = [
-                '/core-images/nexus-core.jpeg',
-                './core-images/nexus-core.jpeg',
-                'core-images/nexus-core.jpeg',
-                'assets/thumbnail-core.webp'
+                '/aura-images/core-aura.jpeg',
+                './aura-images/core-aura.jpeg',
+                'aura-images/core-aura.jpeg',
+                'assets/aura-core.webp'
             ];
             let currentPathIndex = 0;
 
             function tryNextPath() {
                 if (currentPathIndex >= pathsToTry.length) {
-                    console.error('All paths failed. Verify file paths and server setup.');
+                    console.error('All paths failed. Check file paths and server config.');
                     return;
                 }
-                horizonImage.src = pathsToTry[currentPathIndex];
-                console.log(`Attempting path: ${pathsToTry[currentPathIndex]}`);
+                coreImage.src = pathsToTry[currentPathIndex];
+                console.log(`Trying path: ${pathsToTry[currentPathIndex]}`);
                 currentPathIndex++;
             }
 
-            horizonImage.addEventListener('load', () => {
-                console.log(`Image loaded at ${horizonImage.src}`);
-                gsap.to(horizonImage, { opacity: 1, duration: 1, ease: 'power3.out' });
+            coreImage.addEventListener('load', () => {
+                console.log(`Image loaded at ${coreImage.src}`);
+                gsap.to(coreImage, { opacity: 1, duration: 1.2, ease: 'power3.out' });
             });
 
-            horizonImage.addEventListener('error', () => {
-                console.error(`Failed to load ${horizonImage.src}`);
+            coreImage.addEventListener('error', () => {
+                console.error(`Failed to load ${coreImage.src}`);
                 tryNextPath();
             });
 
-            horizonImage.style.opacity = 0;
+            coreImage.style.opacity = 0;
             tryNextPath();
         });
     </script>
