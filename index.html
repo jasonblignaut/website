@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="LabVerse | Technical University: South Africa’s Cyber-Future Free IT Training Nexus. Master Hybrid Cloud, Cybersecurity, Networking, and More with Cutting-Edge Tutorials.">
+    <meta name="description" content="LabVerse | Technical University: South Africa’s Ultimate Free IT Training Nexus. Master Hybrid Cloud, Cybersecurity, Networking, and More with Elite Tutorials.">
     <meta name="keywords" content="Technical University South Africa, Free IT Training, Hybrid Cloud, Cybersecurity, Networking, Digital Marketing, SEO Optimization, Cisco, Unifi, Network Diagrams, Management, Leadership Mindset, Cyber Future, LabVerse, Technology College">
     <meta name="author" content="LabVerse">
     <meta name="robots" content="index, follow">
     <meta property="og:title" content="LabVerse | Technical University">
-    <meta property="og:description" content="Step Into the Future at LabVerse | Technical University. Free Tutorials on Cloud, Security, Networking, and Beyond.">
+    <meta property="og:description" content="Unlock the Future at LabVerse | Technical University. Free Tutorials on Cloud, Security, Networking, and Beyond.">
     <meta property="og:image" content="thumbnails/thumbnail-13.webp">
     <meta property="og:url" content="https://labverse.co.za">
     <meta property="og:type" content="website">
@@ -16,18 +16,18 @@
     <title>LabVerse | Technical University</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;800&family=IBM+Plex+Mono:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;900&family=IBM+Plex+Mono:wght@300;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
     <style>
         :root {
-            --neon-cyan: #00e6e6;
-            --neon-violet: #7a00ff;
-            --void-dark: #04041c;
-            --glass-cyber: rgba(255, 255, 255, 0.05);
-            --text-glow: #f5f5ff;
-            --text-faint: #b8b8d4;
-            --glow-max: 18px;
+            --cyber-blue: #00d4ff;
+            --cyber-magenta: #ff00cc;
+            --deep-space: #03031a;
+            --glass-fusion: rgba(255, 255, 255, 0.06);
+            --text-lumen: #f8f8ff;
+            --text-shadow: #c0c0d8;
+            --glow-max: 20px;
         }
 
         * {
@@ -40,232 +40,231 @@
         html {
             scroll-behavior: smooth;
             overflow-x: hidden;
-            scroll-snap-type: y proximity;
         }
 
         body {
-            background-color: var(--void-dark);
-            color: var(--text-glow);
+            background-color: var(--deep-space);
+            color: var(--text-lumen);
             line-height: 1.6;
             position: relative;
             overflow-x: hidden;
             overflow-y: auto;
-            transform-style: preserve-3d;
-            will-change: transform;
+            -webkit-overflow-scrolling: touch;
         }
 
-        /* Cyber Pulse (Mouse Trail) */
-        .cyber-pulse {
+        /* Cyber Ripple (Mouse Trail) */
+        .cyber-ripple {
             position: fixed;
-            width: 10px;
-            height: 10px;
-            background: var(--neon-cyan);
+            width: 12px;
+            height: 12px;
+            background: var(--cyber-blue);
             border-radius: 50%;
             pointer-events: none;
             z-index: 10006;
             opacity: 0.9;
-            box-shadow: 0 0 25px var(--neon-cyan), 0 0 35px var(--neon-violet);
-            animation: pulseBurst 0.8s ease-out forwards;
+            box-shadow: 0 0 30px var(--cyber-blue), 0 0 40px var(--cyber-magenta);
+            animation: rippleFade 0.9s ease-out forwards;
             will-change: transform, opacity;
         }
 
-        @keyframes pulseBurst {
+        @keyframes rippleFade {
             0% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(3.5); opacity: 0.7; }
+            50% { transform: scale(4); opacity: 0.7; }
             100% { transform: scale(0); opacity: 0; }
         }
 
-        /* Flux Drag (Scroll Effect) */
-        .flux-drag {
+        /* Flux Sweep (Scroll Effect) */
+        .flux-sweep {
             position: fixed;
             width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--neon-violet), transparent);
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--cyber-magenta), transparent);
             pointer-events: none;
             z-index: 10005;
             opacity: 0;
-            box-shadow: 0 0 30px var(--neon-violet);
-            animation: dragSwoosh 0.6s ease-out forwards;
+            box-shadow: 0 0 35px var(--cyber-magenta);
+            animation: sweepDrag 0.7s ease-out forwards;
             will-change: transform, opacity;
         }
 
-        @keyframes dragSwoosh {
-            0% { transform: translateY(-100vh) skewX(25deg); opacity: 0.8; }
-            50% { transform: translateY(0) skewX(0deg); opacity: 0.5; }
-            100% { transform: translateY(100vh) skewX(-25deg); opacity: 0; }
+        @keyframes sweepDrag {
+            0% { transform: translateY(-100vh) skewX(30deg); opacity: 0.9; }
+            50% { transform: translateY(0) skewX(0deg); opacity: 0.6; }
+            100% { transform: translateY(100vh) skewX(-30deg); opacity: 0; }
         }
 
-        /* Nano Trails */
-        .nano-trail {
+        /* Nano Streams */
+        .nano-stream {
             position: fixed;
-            width: 5px;
-            height: 60px;
-            background: linear-gradient(180deg, var(--neon-cyan), transparent);
+            width: 6px;
+            height: 70px;
+            background: linear-gradient(180deg, var(--cyber-blue), transparent);
             pointer-events: none;
             z-index: 10004;
             opacity: 0.8;
-            box-shadow: 0 0 25px var(--neon-cyan);
-            animation: trailFall 2s linear forwards;
+            box-shadow: 0 0 30px var(--cyber-blue);
+            animation: streamDrop 2.2s linear forwards;
             will-change: transform, opacity;
         }
 
-        @keyframes trailFall {
-            0% { transform: translateY(-70vh) rotate(15deg); opacity: 0.8; }
-            75% { opacity: 0.5; }
-            100% { transform: translateY(100vh) rotate(15deg); opacity: 0; }
+        @keyframes streamDrop {
+            0% { transform: translateY(-80vh) rotate(18deg); opacity: 0.8; }
+            70% { opacity: 0.6; }
+            100% { transform: translateY(100vh) rotate(18deg); opacity: 0; }
         }
 
-        /* Quantum Matrix (3D Background) */
-        #quantum-matrix {
+        /* Quantum Grid (3D Background) */
+        #quantum-grid {
             position: fixed;
             inset: 0;
             z-index: -2;
+            pointer-events: none;
         }
 
-        .matrix-overlay {
+        .grid-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(0, 230, 230, 0.08) 0%, transparent 50%);
-            opacity: 0.6;
-            animation: matrixDrift 35s linear infinite;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, transparent 50%);
+            opacity: 0.7;
+            animation: gridFlow 40s linear infinite;
         }
 
-        @keyframes matrixDrift {
+        @keyframes gridFlow {
             0% { transform: translate(0, 0); }
-            100% { transform: translate(-70px, 70px); }
+            100% { transform: translate(-80px, 80px); }
         }
 
-        /* Cyber Orbs */
-        .cyber-orb {
+        /* Cyber Nodes */
+        .cyber-node {
             position: absolute;
-            width: 12px;
-            height: 12px;
-            background: var(--neon-violet);
+            width: 14px;
+            height: 14px;
+            background: var(--cyber-magenta);
             border-radius: 50%;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.7;
-            box-shadow: 0 0 25px var(--neon-violet);
-            animation: orbFloat 7s ease-in-out infinite;
+            opacity: 0.8;
+            box-shadow: 0 0 30px var(--cyber-magenta);
+            animation: nodeDrift 8s ease-in-out infinite;
             will-change: transform, opacity;
         }
 
-        @keyframes orbFloat {
-            0%, 100% { transform: translate(0, 0); opacity: 0.7; }
-            50% { transform: translate(30px, -30px); opacity: 0.9; }
+        @keyframes nodeDrift {
+            0%, 100% { transform: translate(0, 0); opacity: 0.8; }
+            50% { transform: translate(35px, -35px); opacity: 1; }
         }
 
-        /* Cyber Gateway */
-        .cyber-gateway {
+        /* Nexus Portal */
+        .nexus-portal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(0, 230, 230, 0.15), var(--void-dark) 70%);
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.18), var(--deep-space) 70%);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 10000;
-            transition: opacity 1.5s ease, transform 1.5s ease;
+            transition: opacity 1.6s ease, transform 1.6s ease;
         }
 
-        .cyber-gateway.hidden {
+        .nexus-portal.hidden {
             opacity: 0;
-            transform: scale(1.3);
+            transform: scale(1.35);
             pointer-events: none;
         }
 
-        .cyber-gateway button {
-            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet));
-            color: var(--text-glow);
-            padding: 3rem 7rem;
+        .nexus-portal button {
+            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-magenta));
+            color: var(--text-lumen);
+            padding: 3.5rem 8rem;
             border: none;
-            border-radius: 70px;
+            border-radius: 80px;
             font-family: 'Exo 2', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 800;
+            font-size: 2.8rem;
+            font-weight: 900;
             text-transform: uppercase;
             cursor: pointer;
-            box-shadow: 0 0 var(--glow-max) var(--neon-cyan);
+            box-shadow: 0 0 var(--glow-max) var(--cyber-blue);
             position: relative;
             overflow: hidden;
-            transition: transform 0.6s, box-shadow 0.6s;
+            transition: transform 0.7s, box-shadow 0.7s;
         }
 
-        .cyber-gateway button::before {
+        .nexus-portal button::before {
             content: '';
             position: absolute;
             top: -50%;
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            animation: cyberSwipe 2s infinite;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+            animation: portalPulse 2.2s infinite;
         }
 
-        @keyframes cyberSwipe {
+        @keyframes portalPulse {
             0% { transform: translateX(-100%) rotate(45deg); }
             100% { transform: translateX(100%) rotate(45deg); }
         }
 
-        .cyber-gateway button:hover {
-            transform: scale(1.15);
-            box-shadow: 0 0 calc(var(--glow-max) * 2) var(--neon-violet);
+        .nexus-portal button:hover {
+            transform: scale(1.18);
+            box-shadow: 0 0 calc(var(--glow-max) * 2) var(--cyber-magenta);
         }
 
-        /* Future Loader */
-        .future-loader {
+        /* Quantum Loader */
+        .quantum-loader {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--void-dark);
+            background: var(--deep-space);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 1s ease;
+            transition: opacity 1.2s ease;
         }
 
-        .future-loader::before {
+        .quantum-loader::before {
             content: '';
-            width: 60px;
-            height: 60px;
-            border: 5px solid var(--neon-cyan);
-            border-top: 5px solid var(--neon-violet);
+            width: 70px;
+            height: 70px;
+            border: 6px solid var(--cyber-blue);
+            border-top: 6px solid var(--cyber-magenta);
             border-radius: 50%;
-            animation: futureSpin 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
-            box-shadow: 0 0 30px var(--neon-cyan);
+            animation: quantumSpin 1.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+            box-shadow: 0 0 35px var(--cyber-blue);
         }
 
-        @keyframes futureSpin {
+        @keyframes quantumSpin {
             0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.3); }
+            50% { transform: rotate(180deg) scale(1.35); }
             100% { transform: rotate(360deg) scale(1); }
         }
 
-        .future-loader.hidden {
+        .quantum-loader.hidden {
             opacity: 0;
             pointer-events: none;
         }
 
-        /* Neuro Header */
+        /* Omni Header */
         header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(8, 8, 34, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 1.5rem 2rem;
+            background: rgba(6, 6, 30, 0.96);
+            backdrop-filter: blur(25px);
+            padding: 1.8rem 2.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            border-bottom: 1px solid rgba(0, 230, 230, 0.15);
-            transition: transform 0.6s ease;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.18);
+            transition: transform 0.7s ease;
         }
 
         header.hidden {
@@ -273,13 +272,13 @@
         }
 
         .logo img {
-            height: 60px;
-            filter: drop-shadow(0 0 10px var(--neon-cyan));
-            transition: transform 0.6s;
+            height: 65px;
+            filter: drop-shadow(0 0 12px var(--cyber-blue));
+            transition: transform 0.7s;
         }
 
         .logo img:hover {
-            transform: scale(1.25) rotate(25deg);
+            transform: scale(1.3) rotate(30deg);
         }
 
         nav {
@@ -287,30 +286,30 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
         }
 
         nav a {
-            color: var(--text-glow);
+            color: var(--text-lumen);
             text-decoration: none;
-            margin: 0 2.5rem;
+            margin: 0 3rem;
             font-family: 'Exo 2', sans-serif;
-            font-size: 1.4rem;
-            font-weight: 800;
+            font-size: 1.5rem;
+            font-weight: 900;
             text-transform: uppercase;
             position: relative;
-            transition: all 0.5s;
+            transition: all 0.6s;
         }
 
         nav a::after {
             content: '';
             position: absolute;
             width: 0;
-            height: 3px;
-            bottom: -10px;
+            height: 4px;
+            bottom: -12px;
             left: 0;
-            background: var(--neon-cyan);
-            transition: width 0.5s ease;
+            background: var(--cyber-blue);
+            transition: width 0.6s ease;
         }
 
         nav a:hover::after {
@@ -318,43 +317,43 @@
         }
 
         nav a:hover {
-            color: var(--neon-cyan);
-            text-shadow: 0 0 15px var(--neon-cyan);
+            color: var(--cyber-blue);
+            text-shadow: 0 0 18px var(--cyber-blue);
         }
 
         .hamburger {
             display: none;
             cursor: pointer;
-            font-size: 2.8rem;
-            color: var(--text-glow);
-            transition: transform 0.5s;
+            font-size: 3rem;
+            color: var(--text-lumen);
+            transition: transform 0.6s;
         }
 
         .hamburger:hover {
-            transform: scale(1.25);
+            transform: scale(1.3);
         }
 
-        /* Cyber Controls */
+        /* Cyber Utilities */
         .back-to-top, .audio-toggle {
             position: fixed;
-            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet));
-            color: var(--text-glow);
-            width: 70px;
-            height: 70px;
+            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-magenta));
+            color: var(--text-lumen);
+            width: 75px;
+            height: 75px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 2.2rem;
+            font-size: 2.4rem;
             text-decoration: none;
-            box-shadow: 0 0 var(--glow-max) var(--neon-cyan);
-            transition: transform 0.5s, box-shadow 0.5s;
+            box-shadow: 0 0 var(--glow-max) var(--cyber-blue);
+            transition: transform 0.6s, box-shadow 0.6s;
             z-index: 1000;
         }
 
         .back-to-top {
-            bottom: 3.5rem;
-            right: 3.5rem;
+            bottom: 4rem;
+            right: 4rem;
             opacity: 0;
         }
 
@@ -363,16 +362,16 @@
         }
 
         .audio-toggle {
-            bottom: 3.5rem;
-            left: 3.5rem;
+            bottom: 4rem;
+            left: 4rem;
         }
 
         .back-to-top:hover, .audio-toggle:hover {
-            transform: scale(1.2);
-            box-shadow: 0 0 calc(var(--glow-max) * 2) var(--neon-violet);
+            transform: scale(1.25);
+            box-shadow: 0 0 calc(var(--glow-max) * 2) var(--cyber-magenta);
         }
 
-        /* Future Core (Hero) */
+        /* Core Nexus (Hero) */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -380,53 +379,52 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 3rem;
+            padding: 3.5rem;
             position: relative;
             overflow: hidden;
             z-index: 1;
-            scroll-snap-align: start;
         }
 
         .hero::before {
             content: '';
             position: absolute;
-            width: 250%;
-            height: 250%;
-            background: radial-gradient(circle, rgba(0, 230, 230, 0.12), transparent 70%);
-            animation: coreFlux 10s infinite ease-in-out;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.15), transparent 70%);
+            animation: nexusWave 12s infinite ease-in-out;
             z-index: -1;
         }
 
-        @keyframes coreFlux {
-            0% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.12; }
-            50% { transform: scale(1.08) translateX(-50%) translateY(-50%); opacity: 0.25; }
-            100% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.12; }
+        @keyframes nexusWave {
+            0% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.15; }
+            50% { transform: scale(1.1) translateX(-50%) translateY(-50%); opacity: 0.3; }
+            100% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.15; }
         }
 
         .hero img {
-            width: 300px;
-            height: 300px;
+            width: 320px;
+            height: 320px;
             border-radius: 50%;
-            border: 4px solid var(--neon-cyan);
-            box-shadow: 0 0 30px var(--neon-cyan);
-            margin-bottom: 2.5rem;
-            transition: transform 0.7s ease;
+            border: 5px solid var(--cyber-blue);
+            box-shadow: 0 0 35px var(--cyber-blue);
+            margin-bottom: 3rem;
+            transition: transform 0.8s ease;
             z-index: 99999;
         }
 
         .hero img:hover {
-            transform: scale(1.1);
+            transform: scale(1.12);
         }
 
         .hero h1 {
             font-family: 'Exo 2', sans-serif;
-            font-size: clamp(4rem, 10vw, 7rem);
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet));
+            font-size: clamp(4.5rem, 11vw, 8rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-magenta));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 1.5rem;
-            text-shadow: 0 0 10px var(--neon-cyan);
+            margin-bottom: 2rem;
+            text-shadow: 0 0 12px var(--cyber-blue);
             position: relative;
             z-index: 2;
         }
@@ -434,40 +432,40 @@
         .hero h1::after {
             content: '';
             position: absolute;
-            width: 70%;
-            height: 3px;
-            bottom: -15px;
-            left: 15%;
-            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
-            animation: coreWave 3s infinite ease-in-out;
+            width: 80%;
+            height: 4px;
+            bottom: -18px;
+            left: 10%;
+            background: linear-gradient(90deg, transparent, var(--cyber-blue), transparent);
+            animation: corePulse 3.5s infinite ease-in-out;
         }
 
-        @keyframes coreWave {
-            0% { width: 70%; opacity: 0.9; }
-            50% { width: 90%; opacity: 0.6; }
-            100% { width: 70%; opacity: 0.9; }
+        @keyframes corePulse {
+            0% { width: 80%; opacity: 1; }
+            50% { width: 100%; opacity: 0.7; }
+            100% { width: 80%; opacity: 1; }
         }
 
         .hero p {
-            font-size: clamp(1.6rem, 4vw, 2.2rem);
-            color: var(--text-faint);
-            margin-bottom: 2.5rem;
-            max-width: 1000px;
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            color: var(--text-shadow);
+            margin-bottom: 3rem;
+            max-width: 1100px;
             z-index: 2;
         }
 
         .hero .cta-button {
-            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet));
-            color: var(--text-glow);
-            padding: 2rem 5rem;
+            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-magenta));
+            color: var(--text-lumen);
+            padding: 2.2rem 5.5rem;
             text-decoration: none;
-            border-radius: 60px;
+            border-radius: 70px;
             font-family: 'Exo 2', sans-serif;
-            font-weight: 800;
-            font-size: 1.8rem;
+            font-weight: 900;
+            font-size: 2rem;
             text-transform: uppercase;
-            box-shadow: 0 0 var(--glow-max) var(--neon-cyan);
-            transition: all 0.6s;
+            box-shadow: 0 0 var(--glow-max) var(--cyber-blue);
+            transition: all 0.7s;
             position: relative;
             overflow: hidden;
             z-index: 2;
@@ -480,8 +478,8 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.6s;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+            transition: left 0.7s;
         }
 
         .hero .cta-button:hover::before {
@@ -489,22 +487,21 @@
         }
 
         .hero .cta-button:hover {
-            box-shadow: 0 0 calc(var(--glow-max) * 2) var(--neon-violet);
-            transform: scale(1.12);
+            box-shadow: 0 0 calc(var(--glow-max) * 2) var(--cyber-magenta);
+            transform: scale(1.15);
         }
 
-        /* Cyber Sections */
+        /* Sections */
         section {
-            padding: 8rem 2rem;
-            max-width: 2000px;
+            padding: 9rem 2.5rem;
+            max-width: 2200px;
             margin: 0 auto;
-            scroll-margin-top: 120px;
+            scroll-margin-top: 140px;
             position: relative;
             z-index: 1;
             opacity: 0;
-            transform: translateY(80px);
-            transition: opacity 1s ease, transform 1s ease;
-            scroll-snap-align: start;
+            transform: translateY(100px);
+            transition: opacity 1.2s ease, transform 1.2s ease;
         }
 
         section.visible {
@@ -526,15 +523,15 @@
 
         section h2 {
             font-family: 'Exo 2', sans-serif;
-            font-size: clamp(3.5rem, 9vw, 5rem);
-            font-weight: 800;
+            font-size: clamp(4rem, 10vw, 6rem);
+            font-weight: 900;
             text-align: center;
-            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-violet));
+            background: linear-gradient(135deg, var(--cyber-blue), var(--cyber-magenta));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 4rem;
+            margin-bottom: 5rem;
             text-transform: uppercase;
-            text-shadow: 0 0 10px var(--neon-cyan);
+            text-shadow: 0 0 12px var(--cyber-blue);
             position: relative;
             z-index: 2;
         }
@@ -542,89 +539,89 @@
         section h2::after {
             content: '';
             position: absolute;
-            width: 50%;
-            height: 3px;
-            bottom: -18px;
-            left: 25%;
-            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
-            animation: sectionFlux 2.5s infinite ease-in-out;
+            width: 60%;
+            height: 4px;
+            bottom: -20px;
+            left: 20%;
+            background: linear-gradient(90deg, transparent, var(--cyber-blue), transparent);
+            animation: sectionWave 3s infinite ease-in-out;
             z-index: 2;
         }
 
-        @keyframes sectionFlux {
-            0% { width: 50%; opacity: 0.8; }
-            50% { width: 70%; opacity: 0.5; }
-            100% { width: 50%; opacity: 0.8; }
+        @keyframes sectionWave {
+            0% { width: 60%; opacity: 0.9; }
+            50% { width: 80%; opacity: 0.6; }
+            100% { width: 60%; opacity: 0.9; }
         }
 
         .about {
-            background: var(--glass-cyber);
-            backdrop-filter: blur(20px);
-            border-radius: 30px;
-            padding: 6rem;
-            border: 1px solid rgba(0, 230, 230, 0.18);
-            box-shadow: 0 0 var(--glow-max) rgba(0, 230, 230, 0.25);
-            max-width: 1600px;
+            background: var(--glass-fusion);
+            backdrop-filter: blur(25px);
+            border-radius: 35px;
+            padding: 7rem;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            box-shadow: 0 0 var(--glow-max) rgba(0, 212, 255, 0.3);
+            max-width: 1800px;
             width: 100%;
         }
 
         .about-content {
             display: flex;
             flex-wrap: wrap;
-            gap: 5rem;
+            gap: 6rem;
             align-items: center;
             justify-content: center;
         }
 
         .about img {
-            max-width: 450px;
+            max-width: 500px;
             width: 100%;
             height: auto;
-            border-radius: 25px;
-            border: 4px solid var(--neon-cyan);
-            box-shadow: 0 0 var(--glow-max) var(--neon-cyan);
-            transition: transform 0.7s ease;
+            border-radius: 30px;
+            border: 5px solid var(--cyber-blue);
+            box-shadow: 0 0 var(--glow-max) var(--cyber-blue);
+            transition: transform 0.8s ease;
             loading: lazy;
         }
 
         .about img:hover {
-            transform: scale(1.08);
+            transform: scale(1.1);
         }
 
         .about-text {
             flex: 1;
-            min-width: 360px;
+            min-width: 400px;
             text-align: center;
         }
 
         .about-text p {
-            line-height: 2.2;
-            color: var(--text-faint);
-            font-size: 1.4rem;
+            line-height: 2.3;
+            color: var(--text-shadow);
+            font-size: 1.5rem;
         }
 
         .skills-grid, .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 4rem;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: 5rem;
             width: 100%;
-            max-width: 1800px;
+            max-width: 2000px;
             justify-items: center;
         }
 
         .skill-card, .project-card {
-            background: var(--glass-cyber);
-            backdrop-filter: blur(20px);
-            border-radius: 30px;
-            padding: 4rem;
-            border: 1px solid rgba(0, 230, 230, 0.18);
-            box-shadow: 0 0 var(--glow-max) rgba(0, 230, 230, 0.25);
-            transition: all 0.7s;
+            background: var(--glass-fusion);
+            backdrop-filter: blur(25px);
+            border-radius: 35px;
+            padding: 5rem;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            box-shadow: 0 0 var(--glow-max) rgba(0, 212, 255, 0.3);
+            transition: all 0.8s;
             position: relative;
             overflow: hidden;
             z-index: 2;
             width: 100%;
-            max-width: 450px;
+            max-width: 500px;
         }
 
         .skill-card::before, .project-card::before {
@@ -634,126 +631,126 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(0, 230, 230, 0.08), transparent);
-            animation: cyberFlux 3.5s infinite;
+            background: linear-gradient(45deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+            animation: fusionFlux 4s infinite;
         }
 
-        @keyframes cyberFlux {
+        @keyframes fusionFlux {
             0% { transform: translateX(-100%) rotate(45deg); }
             100% { transform: translateX(100%) rotate(45deg); }
         }
 
         .skill-card:hover, .project-card:hover {
-            transform: translateY(-25px) scale(1.05);
-            box-shadow: 0 0 calc(var(--glow-max) * 2) var(--neon-violet);
+            transform: translateY(-30px) scale(1.06);
+            box-shadow: 0 0 calc(var(--glow-max) * 2) var(--cyber-magenta);
         }
 
         .skill-card img, .project-card img {
-            width: 110px;
+            width: 120px;
             height: auto;
-            margin-bottom: 2rem;
-            filter: drop-shadow(0 0 15px var(--neon-cyan));
-            transition: transform 0.6s ease;
+            margin-bottom: 2.5rem;
+            filter: drop-shadow(0 0 18px var(--cyber-blue));
+            transition: transform 0.7s ease;
             loading: lazy;
         }
 
         .skill-card:hover img, .project-card:hover img {
-            transform: scale(1.2);
+            transform: scale(1.25);
         }
 
         .skill-card h3, .project-card h3 {
             font-family: 'Exo 2', sans-serif;
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--text-glow);
-            margin-bottom: 1rem;
-            text-shadow: 0 0 8px var(--neon-cyan);
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--text-lumen);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px var(--cyber-blue);
         }
 
         .skill-card p, .project-card p {
-            font-size: 1.3rem;
-            color: var(--text-faint);
-            line-height: 1.9;
+            font-size: 1.4rem;
+            color: var(--text-shadow);
+            line-height: 2;
         }
 
         .project-card a {
-            color: var(--neon-cyan);
+            color: var(--cyber-blue);
             text-decoration: none;
             font-weight: 600;
-            font-size: 1.4rem;
-            transition: all 0.5s;
+            font-size: 1.5rem;
+            transition: all 0.6s;
             position: relative;
         }
 
         .project-card a::after {
             content: '→';
             position: absolute;
-            right: -35px;
+            right: -40px;
             opacity: 0;
-            transition: all 0.5s;
+            transition: all 0.6s;
         }
 
         .project-card a:hover::after {
             opacity: 1;
-            right: -20px;
+            right: -25px;
         }
 
         .project-card a:hover {
-            color: var(--neon-violet);
-            text-shadow: 0 0 15px var(--neon-violet);
+            color: var(--cyber-magenta);
+            text-shadow: 0 0 18px var(--cyber-magenta);
         }
 
         .video-container {
             position: relative;
             width: 100%;
-            height: 320px;
-            border-radius: 25px;
-            margin-top: 2rem;
+            height: 350px;
+            border-radius: 30px;
+            margin-top: 2.5rem;
             overflow: hidden;
         }
 
         .project-card iframe {
             width: 100%;
             height: 100%;
-            border-radius: 25px;
-            border: 4px solid var(--neon-cyan);
-            box-shadow: 0 0 25px rgba(0, 230, 230, 0.4);
+            border-radius: 30px;
+            border: 5px solid var(--cyber-blue);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.45);
             loading: lazy;
         }
 
         .contact {
             text-align: center;
             position: relative;
-            max-width: 1600px;
+            max-width: 1800px;
             width: 100%;
         }
 
         .contact p {
-            color: var(--text-faint);
-            margin-bottom: 3.5rem;
-            max-width: 1000px;
+            color: var(--text-shadow);
+            margin-bottom: 4rem;
+            max-width: 1100px;
             margin-left: auto;
             margin-right: auto;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
         }
 
         .contact-links {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 4rem;
+            gap: 5rem;
         }
 
         .contact a {
-            color: var(--neon-cyan);
+            color: var(--cyber-blue);
             text-decoration: none;
             font-weight: 600;
             font-family: 'Exo 2', sans-serif;
-            font-size: 1.6rem;
-            padding: 1.2rem 3.5rem;
-            border: 2px solid var(--neon-cyan);
-            border-radius: 50px;
-            transition: all 0.6s;
+            font-size: 1.8rem;
+            padding: 1.5rem 4rem;
+            border: 3px solid var(--cyber-blue);
+            border-radius: 60px;
+            transition: all 0.7s;
             position: relative;
             overflow: hidden;
         }
@@ -765,8 +762,8 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.6s;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+            transition: left 0.7s;
         }
 
         .contact a:hover::before {
@@ -774,47 +771,47 @@
         }
 
         .contact a:hover {
-            color: var(--neon-violet);
-            box-shadow: 0 0 var(--glow-max) var(--neon-violet);
+            color: var(--cyber-magenta);
+            box-shadow: 0 0 var(--glow-max) var(--cyber-magenta);
         }
 
         footer {
-            background: rgba(8, 8, 34, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 5rem;
+            background: rgba(6, 6, 30, 0.96);
+            backdrop-filter: blur(25px);
+            padding: 6rem;
             text-align: center;
-            border-top: 1px solid rgba(0, 230, 230, 0.15);
+            border-top: 1px solid rgba(0, 212, 255, 0.18);
             position: relative;
             z-index: 1;
         }
 
         footer p {
-            color: var(--text-faint);
-            font-size: 1.3rem;
-            margin-bottom: 2.5rem;
+            color: var(--text-shadow);
+            font-size: 1.4rem;
+            margin-bottom: 3rem;
         }
 
         footer a {
-            color: var(--neon-cyan);
+            color: var(--cyber-blue);
             text-decoration: none;
-            margin: 0 2.5rem;
-            font-size: 1.4rem;
-            transition: all 0.5s;
+            margin: 0 3rem;
+            font-size: 1.5rem;
+            transition: all 0.6s;
         }
 
         footer a:hover {
-            color: var(--neon-violet);
-            text-shadow: 0 0 15px var(--neon-violet);
+            color: var(--cyber-magenta);
+            text-shadow: 0 0 18px var(--cyber-magenta);
         }
 
-        /* Responsive Alignment */
+        /* Responsive Design */
         @media (max-width: 1024px) {
             .skills-grid, .projects-grid {
-                grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
             }
 
             .about {
-                padding: 4rem;
+                padding: 5rem;
             }
         }
 
@@ -826,13 +823,13 @@
             nav {
                 display: none;
                 position: fixed;
-                top: 110px;
+                top: 120px;
                 left: 0;
                 right: 0;
-                background: rgba(8, 8, 34, 0.98);
+                background: rgba(6, 6, 30, 0.98);
                 flex-direction: column;
-                padding: 5rem 2rem;
-                box-shadow: 0 0 var(--glow-max) var(--neon-cyan);
+                padding: 6rem 2.5rem;
+                box-shadow: 0 0 var(--glow-max) var(--cyber-blue);
                 width: 100%;
             }
 
@@ -841,85 +838,85 @@
             }
 
             nav a {
-                margin: 2.5rem 0;
-                font-size: 1.6rem;
+                margin: 3rem 0;
+                font-size: 1.8rem;
             }
 
             .about-content {
                 flex-direction: column;
                 text-align: center;
-                gap: 3rem;
+                gap: 4rem;
             }
 
             .hero {
-                padding: 2rem;
+                padding: 2.5rem;
             }
 
             .hero img {
-                width: 240px;
-                height: 240px;
+                width: 260px;
+                height: 260px;
             }
 
             .back-to-top, .audio-toggle {
-                width: 60px;
-                height: 60px;
-                font-size: 2rem;
-                bottom: 2.5rem;
+                width: 65px;
+                height: 65px;
+                font-size: 2.2rem;
+                bottom: 3rem;
             }
 
             .back-to-top {
-                right: 2.5rem;
+                right: 3rem;
             }
 
             .audio-toggle {
-                left: 2.5rem;
+                left: 3rem;
             }
 
-            .cyber-orb {
+            .cyber-node {
                 display: none;
             }
         }
 
         @media (max-width: 480px) {
             section {
-                padding: 6rem 1rem;
+                padding: 7rem 1.5rem;
             }
 
             .skill-card, .project-card {
-                padding: 3rem;
+                padding: 4rem;
                 max-width: 100%;
             }
 
             .hero h1 {
-                font-size: clamp(3rem, 8vw, 4rem);
+                font-size: clamp(3.5rem, 9vw, 5rem);
             }
 
             .hero p {
-                font-size: clamp(1.3rem, 3vw, 1.6rem);
+                font-size: clamp(1.4rem, 4vw, 1.8rem);
             }
 
             .project-card iframe {
-                height: 260px;
+                height: 280px;
             }
 
-            .cyber-gateway button {
-                padding: 2rem 5rem;
-                font-size: 2rem;
+            .nexus-portal button {
+                padding: 2.5rem 6rem;
+                font-size: 2.2rem;
             }
 
             .about {
-                padding: 3rem;
+                padding: 4rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="future-loader"></div>
-    <div class="cyber-gateway">
-        <button>Unlock LabVerse</button>
+    <div class="quantum-loader"></div>
+    <div class="nexus-portal">
+        <button>Enter LabVerse</button>
     </div>
-    <div id="quantum-matrix"></div>
-    <div class="matrix-overlay"></div>
+    <div id="quantum-grid"></div>
+    <div class="grid-overlay"></div>
     <audio id="bg-audio" src="/music/lofi.mp3" loop preload="auto" style="display: none;"></audio>
     <header>
         <div class="logo">
@@ -940,68 +937,68 @@
     <section class="hero">
         <img src="/channel-pictures/my-picture.jpeg" alt="LabVerse" id="hero-image">
         <h1>LabVerse | Technical University</h1>
-        <p>South Africa’s Cyber-Future IT Training Nexus | Free Tutorials for the Next Generation</p>
-        <a href="#projects" class="cta-button">Dive Into the Future</a>
+        <p>South Africa’s Premier Free IT Training Nexus | Master the Future Today</p>
+        <a href="#projects" class="cta-button">Explore Tutorials</a>
     </section>
     <section id="about" class="about">
         <div class="about-content">
             <img src="thumbnails/thumbnail-13.webp" alt="About LabVerse" loading="lazy">
             <div class="about-text">
                 <h2>About LabVerse</h2>
-                <p>LabVerse | Technical University, based in Johannesburg, is South Africa’s ultimate free IT training nexus. We fuse hybrid cloud, cybersecurity, networking, and futuristic skills into advanced tutorials for all.</p>
-                <p>Our vision: empower a cyber-ready generation with elite, accessible education—bridging tomorrow’s tech with today’s learners.</p>
+                <p>LabVerse | Technical University, rooted in Johannesburg, is South Africa’s leading free IT training platform. We deliver elite tutorials in hybrid cloud, cybersecurity, networking, and more.</p>
+                <p>Our mission: ignite a tech revolution by equipping learners with cutting-edge skills—free, accessible, and future-ready.</p>
             </div>
         </div>
     </section>
     <section id="skills">
-        <h2>Cyber Skillset</h2>
+        <h2>Skill Nexus</h2>
         <div class="skills-grid">
             <div class="skill-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Hybrid Cloud Icon" loading="lazy">
                 <h3>Hybrid Cloud</h3>
-                <p>Architect Azure ecosystems and hybrid migrations for next-gen scalability.</p>
+                <p>Architect Azure-powered hybrid solutions for ultimate scalability.</p>
             </div>
             <div class="skill-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Cybersecurity Icon" loading="lazy">
                 <h3>Cybersecurity</h3>
-                <p>Fortify networks with Cisco, Defender XDR, and futuristic defenses.</p>
+                <p>Secure networks with Cisco, Defender XDR, and advanced protocols.</p>
             </div>
             <div class="skill-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Networking Icon" loading="lazy">
                 <h3>Networking</h3>
-                <p>Master SD-WAN, Cisco, Unifi, and advanced network diagrams.</p>
+                <p>Design SD-WAN, Cisco, Unifi, and intricate network blueprints.</p>
             </div>
             <div class="skill-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Digital Marketing Icon" loading="lazy">
                 <h3>Digital Marketing & SEO</h3>
-                <p>Elevate online impact with SEO, maintenance, and cyber-marketing.</p>
+                <p>Boost online presence with SEO and cyber-marketing mastery.</p>
             </div>
             <div class="skill-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Management Icon" loading="lazy">
                 <h3>Management & Leadership</h3>
-                <p>Cultivate a cyber-future mindset to lead teams to victory.</p>
+                <p>Lead with a future-proof mindset for IT success.</p>
             </div>
         </div>
     </section>
     <section id="projects">
-        <h2>Tutorial Nexus</h2>
+        <h2>Tutorial Vault</h2>
         <div class="projects-grid">
             <div class="project-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="SD-WAN Tutorial" loading="lazy">
-                <h3>Global SD-WAN Deployment</h3>
-                <p>Launch FortiGate SD-WAN across 50+ nodes—optimize uptime and speed.</p>
+                <h3>Global SD-WAN Mastery</h3>
+                <p>Deploy FortiGate SD-WAN across 50+ nodes—maximize efficiency.</p>
                 <a href="https://labverse.co.za/sdwan" target="_blank">Watch Now</a>
             </div>
             <div class="project-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Azure Migration Tutorial" loading="lazy">
-                <h3>Azure Hyper-Migration</h3>
-                <p>Migrate 10,000 users to Azure with cost efficiency and security.</p>
+                <h3>Azure Mega-Migration</h3>
+                <p>Migrate 10,000 users to Azure with precision and savings.</p>
                 <a href="https://labverse.co.za/azure" target="_blank">Watch Now</a>
             </div>
             <div class="project-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Lo-Fi Stream Tutorial" loading="lazy">
                 <h3>24/7 Lo-Fi Stream</h3>
-                <p>Build a Linux Azure-hosted YouTube stream for infinite beats.</p>
+                <p>Create a Linux Azure-hosted YouTube stream—always live.</p>
                 <div class="video-container">
                     <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk" frameborder="0" allowfullscreen></iframe>
                 </div>
@@ -1009,20 +1006,20 @@
             <div class="project-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Support Tool Tutorial" loading="lazy">
                 <h3>T1 Cyber Toolkit</h3>
-                <p>Develop a PowerShell tool to slash support times with AI.</p>
+                <p>Build a PowerShell diagnostic tool with AI efficiency.</p>
                 <a href="https://labverse.co.za/support-tool" target="_blank">Watch Now</a>
             </div>
             <div class="project-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Website Maintenance Tutorial" loading="lazy">
-                <h3>Website Cyber-Maintenance</h3>
-                <p>Optimize and maintain futuristic sites like LabVerse.</p>
+                <h3>Website Fusion</h3>
+                <p>Optimize and maintain next-gen sites like LabVerse.</p>
                 <a href="https://labverse.co.za" target="_blank">Watch Now</a>
             </div>
         </div>
     </section>
     <section id="contact" class="contact">
-        <h2>Link to the Future</h2>
-        <p>Access free IT training or connect with LabVerse for custom guidance.</p>
+        <h2>Connect to the Nexus</h2>
+        <p>Join the free IT training revolution or reach out for tailored support.</p>
         <div class="contact-links">
             <a href="mailto:labversemail@gmail.com">Email</a>
             <a href="https://linkedin.com/in/labverse" target="_blank">LinkedIn</a>
@@ -1041,14 +1038,14 @@
         const audio = document.getElementById('bg-audio');
         audio.volume = 0.1;
 
-        const gateway = document.querySelector('.cyber-gateway');
-        const gatewayButton = gateway.querySelector('button');
-        gatewayButton.addEventListener('click', () => {
+        const portal = document.querySelector('.nexus-portal');
+        const portalButton = portal.querySelector('button');
+        portalButton.addEventListener('click', () => {
             audio.play().then(() => {
-                gateway.classList.add('hidden');
+                portal.classList.add('hidden');
             }).catch(error => {
                 console.error("Audio Play Error:", error);
-                gateway.classList.add('hidden');
+                portal.classList.add('hidden');
             });
         });
 
@@ -1091,7 +1088,7 @@
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
 
             const backToTop = document.querySelector('.back-to-top');
-            if (scrollTop > 600) {
+            if (scrollTop > 700) {
                 backToTop.classList.add('visible');
             } else {
                 backToTop.classList.remove('visible');
@@ -1099,50 +1096,49 @@
 
             document.querySelectorAll('section').forEach(section => {
                 const rect = section.getBoundingClientRect();
-                if (rect.top <= window.innerHeight * 0.8 && rect.bottom >= 0 && !section.classList.contains('visible')) {
+                if (rect.top <= window.innerHeight * 0.85 && rect.bottom >= 0 && !section.classList.contains('visible')) {
                     section.classList.add('visible');
                 }
             });
 
-            // Swoosh Drag Effect
-            if (Math.abs(scrollVelocity) > 5) {
-                const drag = document.createElement('div');
-                drag.className = 'flux-drag';
-                drag.style.top = `${scrollTop + window.innerHeight / 2}px`;
-                document.body.appendChild(drag);
-                setTimeout(() => drag.remove(), 600);
+            if (Math.abs(scrollVelocity) > 10) {
+                const sweep = document.createElement('div');
+                sweep.className = 'flux-sweep';
+                sweep.style.top = `${scrollTop + window.innerHeight / 2}px`;
+                document.body.appendChild(sweep);
+                setTimeout(() => sweep.remove(), 700);
             }
         }, { passive: true });
 
-        let pulseCount = 0;
-        const maxPulses = 30;
+        let rippleCount = 0;
+        const maxRipples = 35;
         document.addEventListener('mousemove', throttle((e) => {
-            if (pulseCount < maxPulses) {
-                const pulse = document.createElement('div');
-                pulse.className = 'cyber-pulse';
-                pulse.style.left = `${e.clientX}px`;
-                pulse.style.top = `${e.clientY}px`;
-                document.body.appendChild(pulse);
-                pulseCount++;
+            if (rippleCount < maxRipples) {
+                const ripple = document.createElement('div');
+                ripple.className = 'cyber-ripple';
+                ripple.style.left = `${e.clientX}px`;
+                ripple.style.top = `${e.clientY}px`;
+                document.body.appendChild(ripple);
+                rippleCount++;
                 setTimeout(() => {
-                    pulse.remove();
-                    pulseCount--;
-                }, 800);
+                    ripple.remove();
+                    rippleCount--;
+                }, 900);
             }
-        }, 30));
+        }, 25));
 
-        function spawnNanoTrail() {
-            if (Math.random() < 0.15) { // 15% chance
-                const trail = document.createElement('div');
-                trail.className = 'nano-trail';
-                trail.style.left = `${Math.random() * 100}vw`;
-                trail.style.top = `${-60}px`;
-                document.body.appendChild(trail);
-                setTimeout(() => trail.remove(), 2000);
+        function spawnNanoStream() {
+            if (Math.random() < 0.18) {
+                const stream = document.createElement('div');
+                stream.className = 'nano-stream';
+                stream.style.left = `${Math.random() * 100}vw`;
+                stream.style.top = `${-70}px`;
+                document.body.appendChild(stream);
+                setTimeout(() => stream.remove(), 2200);
             }
         }
 
-        setInterval(spawnNanoTrail, 100);
+        setInterval(spawnNanoStream, 80);
 
         const audioToggle = document.querySelector('.audio-toggle');
         audioToggle.addEventListener('click', () => {
@@ -1156,25 +1152,25 @@
         });
 
         VanillaTilt.init(document.querySelectorAll('.skill-card, .project-card'), {
-            max: 20,
-            speed: 800,
+            max: 22,
+            speed: 900,
             glare: true,
-            'max-glare': 0.7
+            'max-glare': 0.8
         });
 
         window.addEventListener('load', () => {
-            document.querySelector('.future-loader').classList.add('hidden');
+            document.querySelector('.quantum-loader').classList.add('hidden');
 
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             const renderer = new THREE.WebGLRenderer({ alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
-            document.getElementById('quantum-matrix').appendChild(renderer.domElement);
+            document.getElementById('quantum-grid').appendChild(renderer.domElement);
 
-            const gridSize = 30;
-            const spacing = 3;
-            const geometry = new THREE.SphereGeometry(0.15, 32, 32);
-            const material = new THREE.MeshBasicMaterial({ color: 0x00e6e6, transparent: true, opacity: 0.5 });
+            const gridSize = 35;
+            const spacing = 3.5;
+            const geometry = new THREE.SphereGeometry(0.18, 32, 32);
+            const material = new THREE.MeshBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.6 });
 
             for (let x = -gridSize; x <= gridSize; x += spacing) {
                 for (let z = -gridSize; z <= gridSize; z += spacing) {
@@ -1184,13 +1180,13 @@
                 }
             }
 
-            camera.position.z = 40;
-            camera.position.y = 30;
+            camera.position.z = 45;
+            camera.position.y = 35;
             camera.lookAt(0, 0, 0);
 
             function animate() {
                 requestAnimationFrame(animate);
-                scene.rotation.y += 0.001;
+                scene.rotation.y += 0.0008;
                 renderer.render(scene, camera);
             }
             animate();
@@ -1201,14 +1197,14 @@
                 renderer.setSize(window.innerWidth, window.innerHeight);
             });
 
-            for (let i = 0; i < 25; i++) {
-                const orb = document.createElement('div');
-                orb.className = 'cyber-orb';
-                orb.style.left = `${Math.random() * 100}vw`;
-                orb.style.top = `${Math.random() * 100}vh`;
-                orb.style.animationDuration = `${5 + Math.random() * 5}s`;
-                orb.style.animationDelay = `${Math.random() * 2.5}s`;
-                document.body.appendChild(orb);
+            for (let i = 0; i < 30; i++) {
+                const node = document.createElement('div');
+                node.className = 'cyber-node';
+                node.style.left = `${Math.random() * 100}vw`;
+                node.style.top = `${Math.random() * 100}vh`;
+                node.style.animationDuration = `${6 + Math.random() * 6}s`;
+                node.style.animationDelay = `${Math.random() * 3}s`;
+                document.body.appendChild(node);
             }
 
             const heroImage = document.getElementById('hero-image');
