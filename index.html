@@ -17,7 +17,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/howler@2.2.3/dist/howler.min.js" defer></script>
     <style>
         :root {
             --cyber-blue: #00d4ff;
@@ -94,7 +94,7 @@
 
         .enter-button {
             font-family: 'Exo 2', sans-serif;
-            font-size: 3rem;
+            font-size: clamp(2rem, 5vw, 3rem);
             color: var(--cyber-pink);
             background: var(--holo-glass);
             border: 4px solid var(--cyber-pink);
@@ -209,39 +209,28 @@
             100% { transform: translate(0, 0) scale(1); opacity: 0.7; }
         }
 
-        /* Mouse Trail */
-        .mouse-trail {
+        /* Snake-Like Mouse Trail */
+        .snake-trail {
             position: fixed;
-            width: 15px;
-            height: 15px;
-            background: var(--cyber-pink);
-            border-radius: 50%;
             pointer-events: none;
             z-index: 1001;
+        }
+
+        .snake-segment {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--cyber-pink);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--cyber-pink);
             opacity: 0.9;
-            box-shadow: 0 0 20px var(--cyber-pink);
-            animation: trailFade 0.7s ease-out forwards;
+            transition: all 0.1s ease;
         }
 
-        .mouse-trail.glyph {
-            width: 25px;
-            height: 25px;
-            background: none;
-            font-size: 1.2rem;
-            color: var(--nano-green);
-            text-align: center;
-            animation: glyphFade 0.9s ease-out forwards;
-        }
-
-        @keyframes trailFade {
-            0% { opacity: 0.9; transform: scale(1); }
-            100% { opacity: 0; transform: scale(0); }
-        }
-
-        @keyframes glyphFade {
-            0% { opacity: 0.9; transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.8) rotate(60deg); }
-            100% { opacity: 0; transform: scale(0) rotate(120deg); }
+        .snake-segment.fade {
+            opacity: 0;
+            transform: scale(0);
+            transition: opacity 1s ease, transform 1s ease;
         }
 
         /* Data Streams */
@@ -322,12 +311,13 @@
         /* Holographic Dashboard */
         .holo-dashboard {
             position: fixed;
-            top: 2rem;
-            left: 2rem;
-            width: 350px;
-            height: 350px;
-            z-index: 1000;
+            top: 1rem;
+            left: 1rem;
+            width: 200px;
+            height: 200px;
+            z-index: 0;
             display: none;
+            opacity: 0.3;
         }
 
         .holo-dashboard.visible {
@@ -337,7 +327,7 @@
         #dashboard-canvas {
             width: 100%;
             height: 100%;
-            filter: drop-shadow(0 0 20px var(--cyber-blue));
+            filter: drop-shadow(0 0 10px var(--cyber-blue));
         }
 
         .dashboard-overlay {
@@ -349,14 +339,14 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 1.5rem;
+            padding: 1rem;
             pointer-events: none;
         }
 
         .dashboard-stat {
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: var(--nano-green);
-            text-shadow: 0 0 10px var(--nano-green);
+            text-shadow: 0 0 8px var(--nano-green);
             animation: statPulse 2s infinite;
         }
 
@@ -369,12 +359,13 @@
         /* Cyber Sphere Navigation */
         .cyber-sphere {
             position: fixed;
-            top: 2rem;
-            right: 2rem;
-            width: 200px;
-            height: 200px;
-            z-index: 1000;
+            top: 1rem;
+            right: 1rem;
+            width: 150px;
+            height: 150px;
+            z-index: 0;
             display: none;
+            opacity: 0.3;
         }
 
         .cyber-sphere.visible {
@@ -384,7 +375,7 @@
         #sphere-nav {
             width: 100%;
             height: 100%;
-            filter: drop-shadow(0 0 20px var(--plasma-purple));
+            filter: drop-shadow(0 0 10px var(--plasma-purple));
         }
 
         .nav-overlay {
@@ -411,16 +402,16 @@
         .nav-menu {
             display: flex;
             flex-direction: column;
-            gap: 3rem;
+            gap: 2rem;
         }
 
         .nav-menu a {
             color: var(--cyber-blue);
             text-decoration: none;
             font-family: 'Exo 2', sans-serif;
-            font-size: 2.5rem;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
             text-transform: uppercase;
-            padding: 0.8rem 3rem;
+            padding: 0.8rem 2rem;
             border: 3px solid var(--cyber-blue);
             border-radius: 15px;
             transition: all 0.4s;
@@ -487,7 +478,7 @@
             position: fixed;
             bottom: 2rem;
             left: 2rem;
-            width: 350px;
+            width: clamp(250px, 30vw, 350px);
             background: rgba(10, 10, 31, 0.95);
             border: 3px solid var(--cyber-blue);
             border-radius: 15px;
@@ -530,7 +521,7 @@
             bottom: 2rem;
             right: 2rem;
             display: none;
-            gap: 1.5rem;
+            gap: 1rem;
             z-index: 1000;
         }
 
@@ -539,15 +530,15 @@
         }
 
         .control-btn {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             background: var(--holo-glass);
             border: 3px solid var(--cyber-blue);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             color: var(--cyber-blue);
             cursor: pointer;
             transition: all 0.4s;
@@ -580,30 +571,13 @@
         }
 
         #cyber-clock {
-            top: 2rem;
-            right: 20rem;
-        }
-
-        #cyber-map {
-            bottom: 10rem;
-            right: 2rem;
-            width: 120px;
-            height: 120px;
-        }
-
-        #cyber-resource {
-            top: 10rem;
-            right: 2rem;
-        }
-
-        #cyber-energy {
-            top: 14rem;
-            right: 2rem;
+            top: 1rem;
+            right: clamp(10rem, 20vw, 15rem);
         }
 
         /* Main Content */
         main {
-            padding: 12rem 2rem 2rem;
+            padding: clamp(8rem, 15vw, 12rem) 2rem 2rem;
             max-width: 2000px;
             margin: 0 auto;
             position: relative;
@@ -616,8 +590,8 @@
         }
 
         .holo-section {
-            margin-bottom: 10rem;
-            padding: 5rem;
+            margin-bottom: 8rem;
+            padding: 4rem;
             background: var(--holo-glass);
             border: 2px solid var(--cyber-blue);
             border-radius: 20px;
@@ -634,10 +608,10 @@
 
         .holo-title {
             font-family: 'Exo 2', sans-serif;
-            font-size: clamp(3rem, 7vw, 5rem);
+            font-size: clamp(2rem, 5vw, 5rem);
             color: var(--cyber-pink);
             text-transform: uppercase;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
             text-shadow: 0 0 20px var(--cyber-pink);
             animation: titleGlow 3s infinite;
         }
@@ -651,12 +625,12 @@
         .holo-core {
             display: flex;
             flex-wrap: wrap;
-            gap: 5rem;
+            gap: 4rem;
             align-items: center;
         }
 
         .holo-core img {
-            max-width: 450px;
+            max-width: 400px;
             width: 100%;
             border-radius: 20px;
             border: 5px solid var(--cyber-blue);
@@ -672,23 +646,23 @@
 
         .core-text {
             flex: 1;
-            min-width: 400px;
+            min-width: 300px;
         }
 
         .core-text p {
             color: var(--pulse-gray);
-            font-size: 1.4rem;
+            font-size: clamp(1rem, 2vw, 1.4rem);
             text-shadow: 0 0 10px var(--pulse-gray);
         }
 
         .data-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 4rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
         }
 
         .data-node {
-            padding: 3rem;
+            padding: 2rem;
             background: var(--holo-glass);
             border: 2px solid var(--cyber-pink);
             border-radius: 20px;
@@ -727,9 +701,9 @@
         }
 
         .data-node img {
-            width: 100px;
+            width: 80px;
             height: auto;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             filter: drop-shadow(0 0 20px var(--cyber-blue));
             transition: transform 0.4s;
         }
@@ -740,7 +714,7 @@
 
         .data-node h3 {
             font-family: 'Exo 2', sans-serif;
-            font-size: 1.8rem;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
             color: var(--data-white);
             margin-bottom: 1rem;
             text-shadow: 0 0 15px var(--data-white);
@@ -748,7 +722,7 @@
 
         .data-node p {
             color: var(--pulse-gray);
-            font-size: 1.2rem;
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
             text-shadow: 0 0 10px var(--pulse-gray);
         }
 
@@ -767,7 +741,7 @@
 
         .media-pod {
             width: 100%;
-            height: 250px;
+            height: 200px;
             border-radius: 20px;
             margin-top: 2rem;
             overflow: hidden;
@@ -787,11 +761,11 @@
 
         .contact-hub p {
             color: var(--pulse-gray);
-            margin-bottom: 3rem;
-            max-width: 1000px;
+            margin-bottom: 2rem;
+            max-width: 900px;
             margin-left: auto;
             margin-right: auto;
-            font-size: 1.5rem;
+            font-size: clamp(1rem, 2vw, 1.5rem);
             text-shadow: 0 0 10px var(--pulse-gray);
         }
 
@@ -799,17 +773,18 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 2.5rem;
+            gap: 2rem;
         }
 
         .link-matrix a {
             color: var(--cyber-blue);
             text-decoration: none;
-            padding: 1.2rem 3rem;
+            padding: 1rem 2rem;
             border: 4px solid var(--cyber-blue);
             border-radius: 15px;
             transition: all 0.4s;
             text-shadow: 0 0 15px var(--cyber-blue);
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
         }
 
         .link-matrix a:hover {
@@ -820,7 +795,7 @@
         }
 
         footer {
-            padding: 4rem;
+            padding: 3rem;
             text-align: center;
             background: var(--holo-glass);
             border-top: 2px solid var(--cyber-blue);
@@ -834,7 +809,7 @@
 
         footer p {
             color: var(--pulse-gray);
-            font-size: 1.2rem;
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
             text-shadow: 0 0 10px var(--pulse-gray);
         }
 
@@ -863,8 +838,8 @@
         /* Cyber Orbs */
         .cyber-orb {
             position: fixed;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             background: radial-gradient(circle, var(--cyber-blue), transparent);
             border-radius: 50%;
             pointer-events: none;
@@ -897,15 +872,15 @@
         /* Analytics HUD */
         .analytics-hud {
             position: fixed;
-            top: 2rem;
+            top: 1rem;
             left: 50%;
             transform: translateX(-50%);
             background: var(--holo-glass);
             border: 2px solid var(--nano-green);
             border-radius: 15px;
-            padding: 1.5rem;
+            padding: 1rem;
             color: var(--nano-green);
-            font-size: 1rem;
+            font-size: 0.9rem;
             z-index: 1000;
             box-shadow: 0 0 20px var(--nano-green);
             display: none;
@@ -915,64 +890,47 @@
             display: block;
         }
 
-        /* User Profile */
-        .user-profile {
-            position: fixed;
-            top: 10rem;
-            left: 2rem;
-            background: var(--holo-glass);
-            border: 2px solid var(--cyber-blue);
-            border-radius: 15px;
-            padding: 1.5rem;
-            z-index: 1000;
-            box-shadow: 0 0 30px var(--cyber-blue);
-            display: none;
-        }
-
-        .user-profile.visible {
-            display: block;
-        }
-
-        .profile-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: 3px solid var(--cyber-pink);
-            margin-bottom: 1rem;
-            animation: avatarSpin 10s infinite linear;
-        }
-
-        @keyframes avatarSpin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .profile-name {
-            color: var(--data-white);
-            font-size: 1.2rem;
-            text-shadow: 0 0 15px var(--data-white);
-        }
-
         /* Responsive */
         @media (max-width: 1024px) {
-            .holo-dashboard, .cyber-sphere {
-                width: 250px;
-                height: 250px;
+            .holo-dashboard {
+                width: 150px;
+                height: 150px;
+            }
+
+            .cyber-sphere {
+                width: 120px;
+                height: 120px;
             }
 
             .terminal-console {
                 width: 300px;
             }
+
+            .control-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+            }
         }
 
         @media (max-width: 768px) {
-            .holo-dashboard, .cyber-sphere {
-                width: 180px;
-                height: 180px;
+            .holo-dashboard {
+                width: 120px;
+                height: 120px;
+                top: 0.5rem;
+                left: 0.5rem;
+            }
+
+            .cyber-sphere {
+                width: 100px;
+                height: 100px;
+                top: 0.5rem;
+                right: 0.5rem;
             }
 
             .nav-menu a {
-                font-size: 2rem;
+                font-size: 1.5rem;
+                padding: 0.6rem 1.5rem;
             }
 
             .holo-core {
@@ -980,14 +938,54 @@
                 text-align: center;
             }
 
-            .terminal-console {
-                width: 250px;
-                bottom: 10rem;
+            .holo-core img {
+                max-width: 300px;
             }
 
+            .terminal-console {
+                width: 90%;
+                left: 5%;
+                bottom: 8rem;
+            }
+
+            .control-panel {
+                bottom: 1rem;
+                right: 1rem;
+                gap: 0.8rem;
+            }
+
+            .control-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .analytics-hud {
+                font-size: 0.8rem;
+                padding: 0.8rem;
+            }
+
+            .holo-section {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
             .enter-button {
+                font-size: 1.5rem;
+                padding: 1rem 2rem;
+            }
+
+            .holo-title {
                 font-size: 2rem;
-                padding: 1rem 2.5rem;
+            }
+
+            .data-node {
+                padding: 1.5rem;
+            }
+
+            .data-node img {
+                width: 60px;
             }
         }
     </style>
@@ -1003,9 +1001,7 @@
         <canvas id="dashboard-canvas"></canvas>
         <div class="dashboard-overlay">
             <div class="dashboard-stat">Systems: Online</div>
-            <div class="dashboard-stat">Users: <span id="user-count">0</span></div>
             <div class="dashboard-stat">Scroll: <span id="scroll-depth">0%</span></div>
-            <div class="dashboard-stat">Energy: <span id="energy-level">100%</span></div>
         </div>
     </div>
     <div class="cyber-sphere" id="cyber-sphere">
@@ -1037,21 +1033,14 @@
         <button class="control-btn weather-toggle" title="Toggle Weather">☔</button>
     </div>
     <div class="cyber-widget" id="cyber-clock"></div>
-    <div class="cyber-widget" id="cyber-map"><canvas id="map-canvas"></canvas></div>
-    <div class="cyber-widget" id="cyber-resource">CPU: <span id="cpu-usage">0%</span></div>
-    <div class="cyber-widget" id="cyber-energy">Energy: <span id="energy-level-display">100%</span></div>
     <div class="analytics-hud" id="analytics-hud">
         Time: <span id="time-spent">0s</span> | Interactions: <span id="interactions">0</span>
-    </div>
-    <div class="user-profile" id="user-profile">
-        <img src="https://via.placeholder.com/60" alt="Avatar" class="profile-avatar" loading="lazy">
-        <div class="profile-name" id="profile-name">CyberUser</div>
     </div>
     <main id="main-content">
         <section id="core" class="holo-section">
             <h2 class="holo-title">LabVerse Core</h2>
             <div class="holo-core">
-                <img src="https://via.placeholder.com/450" alt="LabVerse Core" loading="lazy">
+                <img src="https://placehold.co/400x400" alt="LabVerse Core" loading="lazy">
                 <div class="core-text">
                     <p>Welcome to LabVerse Online Technical University, a holographic realm from Johannesburg, South Africa. Dive into free cyber-tech training and expert consultancy.</p>
                     <p>Master cutting-edge skills and join a global network of innovators in a futuristic ecosystem pulsing with digital energy.</p>
@@ -1062,22 +1051,22 @@
             <h2 class="holo-title">Training Modules</h2>
             <div class="data-grid">
                 <div class="data-node">
-                    <img src="https://via.placeholder.com/100" alt="Cybersecurity" loading="lazy">
+                    <img src="https://placehold.co/80x80" alt="Cybersecurity" loading="lazy">
                     <h3>Cybersecurity</h3>
                     <p>Secure systems with advanced protocols and defenses.</p>
                 </div>
                 <div class="data-node">
-                    <img src="https://via.placeholder.com/100" alt="Cloud Systems" loading="lazy">
+                    <img src="https://placehold.co/80x80" alt="Cloud Systems" loading="lazy">
                     <h3>Cloud Systems</h3>
                     <p>Engineer scalable Azure-based architectures.</p>
                 </div>
                 <div class="data-node">
-                    <img src="https://via.placeholder.com/100" alt="Networking" loading="lazy">
+                    <img src="https://placehold.co/80x80" alt="Networking" loading="lazy">
                     <h3>Networking</h3>
                     <p>Build high-performance SD-WAN networks.</p>
                 </div>
                 <div class="data-node">
-                    <img src="https://via.placeholder.com/100" alt="AI Automation" loading="lazy">
+                    <img src="https://placehold.co/80x80" alt="AI Automation" loading="lazy">
                     <h3>AI Automation</h3>
                     <p>Automate workflows with AI-driven tools.</p>
                 </div>
@@ -1087,19 +1076,19 @@
             <h2 class="holo-title">Data Archives</h2>
             <div class="data-grid">
                 <div class="data-node">
-                    <img src="https://via.placeholder.com/100" alt="SD-WAN" loading="lazy">
+                    <img src="https://placehold.co/80x80" alt="SD-WAN" loading="lazy">
                     <h3>SD-WAN Deployment</h3>
                     <p>Optimize networks with FortiGate SD-WAN.</p>
                     <a href="https://labverse.co.za/sdwan" target="_blank">Access</a>
                 </div>
                 <div class="data-node">
-                    <img src="https://via.placeholder.com/100" alt="Azure Migration" loading="lazy">
+                    <img src="https://placehold.co/80x80" alt="Azure Migration" loading="lazy">
                     <h3>Azure Migration</h3>
                     <p>Seamless cloud transitions for enterprises.</p>
                     <a href="https://labverse.co.za/azure" target="_blank">Access</a>
                 </div>
                 <div class="data-node">
-                    <img src="https://via.placeholder.com/100" alt="Lo-Fi Stream" loading="lazy">
+                    <img src="https://placehold.co/80x80" alt="Lo-Fi Stream" loading="lazy">
                     <h3>Lo-Fi LabVerse Stream</h3>
                     <p>Host a continuous stream on Azure.</p>
                     <div class="media-pod">
@@ -1107,7 +1096,7 @@
                     </div>
                 </div>
                 <div class="data-node">
-                    <img src="https://via.placeholder.com/100" alt="Support Tool" loading="lazy">
+                    <img src="https://placehold.co/80x80" alt="Support Tool" loading="lazy">
                     <h3>Cyber Support Tool</h3>
                     <p>AI-enhanced diagnostics for MSPs.</p>
                     <a href="https://labverse.co.za/support-tool" target="_blank">Access</a>
@@ -1134,7 +1123,7 @@
         let lofiAudio;
         try {
             lofiAudio = new Howl({
-                src: ['https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'], // Fallback audio
+                src: ['/music/lofi.mp3'],
                 loop: true,
                 volume: 0.5,
                 onloaderror: () => console.log('Lo-Fi audio failed to load'),
@@ -1142,12 +1131,23 @@
             });
         } catch (e) {
             console.log('Howler.js failed to initialize:', e);
+            // Fallback to HTML5 audio
+            const audioElement = document.createElement('audio');
+            audioElement.src = '/music/lofi.mp3';
+            audioElement.loop = true;
+            audioElement.volume = 0.5;
+            document.body.appendChild(audioElement);
+            lofiAudio = {
+                play: () => audioElement.play().catch(e => console.log('Fallback audio play failed:', e)),
+                pause: () => audioElement.pause(),
+                playing: () => !audioElement.paused
+            };
         }
 
         let nodeHover;
         try {
             nodeHover = new Howl({
-                src: ['https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'], // Fallback sound
+                src: ['/sounds/node-hover.mp3'],
                 volume: 0.6,
                 onloaderror: () => console.log('Node hover sound failed to load')
             });
@@ -1183,11 +1183,7 @@
             const terminalConsole = document.getElementById('terminal-console');
             const controlPanel = document.getElementById('control-panel');
             const cyberClock = document.getElementById('cyber-clock');
-            const cyberMap = document.getElementById('cyber-map');
-            const cyberResource = document.getElementById('cyber-resource');
-            const cyberEnergy = document.getElementById('cyber-energy');
             const analyticsHud = document.getElementById('analytics-hud');
-            const userProfile = document.getElementById('user-profile');
 
             // Verify critical elements exist
             if (!entryScreen || !enterButton) {
@@ -1197,7 +1193,7 @@
 
             // Button click handler
             enterButton.addEventListener('click', () => {
-                console.log('Enter LabVerse clicked'); // Debug log
+                console.log('Enter LabVerse clicked');
                 if (entryScreen) entryScreen.classList.add('hidden');
                 if (mainContent) mainContent.classList.add('visible');
                 if (footer) footer.classList.add('visible');
@@ -1210,11 +1206,7 @@
                 if (terminalConsole) terminalConsole.classList.add('visible');
                 if (controlPanel) controlPanel.classList.add('visible');
                 if (cyberClock) cyberClock.classList.add('visible');
-                if (cyberMap) cyberMap.classList.add('visible');
-                if (cyberResource) cyberResource.classList.add('visible');
-                if (cyberEnergy) cyberEnergy.classList.add('visible');
                 if (analyticsHud) analyticsHud.classList.add('visible');
-                if (userProfile) userProfile.classList.add('visible');
 
                 // Play audio with fallback
                 if (lofiAudio) {
@@ -1232,9 +1224,9 @@
                 const dashCanvas = document.getElementById('dashboard-canvas');
                 if (dashCanvas && typeof THREE !== 'undefined') {
                     const dashScene = new THREE.Scene();
-                    const dashCamera = new THREE.PerspectiveCamera(75, 350 / 350, 0.1, 1000);
+                    const dashCamera = new THREE.PerspectiveCamera(75, 200 / 200, 0.1, 1000);
                     const dashRenderer = new THREE.WebGLRenderer({ canvas: dashCanvas, alpha: true });
-                    dashRenderer.setSize(350, 350);
+                    dashRenderer.setSize(200, 200);
                     const dashGeometry = new THREE.TorusKnotGeometry(10, 3, 100, 16);
                     const dashMaterial = new THREE.MeshBasicMaterial({ color: 0x00d4ff, wireframe: true });
                     const dashTorus = new THREE.Mesh(dashGeometry, dashMaterial);
@@ -1243,8 +1235,8 @@
 
                     function animateDashboard() {
                         requestAnimationFrame(animateDashboard);
-                        dashTorus.rotation.x += 0.02;
-                        dashTorus.rotation.y += 0.02;
+                        dashTorus.rotation.x += 0.005;
+                        dashTorus.rotation.y += 0.005;
                         dashRenderer.render(dashScene, dashCamera);
                     }
                     animateDashboard();
@@ -1254,9 +1246,9 @@
                 const sphereCanvas = document.getElementById('sphere-nav');
                 if (sphereCanvas && typeof THREE !== 'undefined') {
                     const navScene = new THREE.Scene();
-                    const navCamera = new THREE.PerspectiveCamera(75, 200 / 200, 0.1, 1000);
+                    const navCamera = new THREE.PerspectiveCamera(75, 150 / 150, 0.1, 1000);
                     const navRenderer = new THREE.WebGLRenderer({ canvas: sphereCanvas, alpha: true });
-                    navRenderer.setSize(200, 200);
+                    navRenderer.setSize(150, 150);
                     const navGeometry = new THREE.IcosahedronGeometry(8, 1);
                     const navMaterial = new THREE.MeshBasicMaterial({ color: 0xff007a, wireframe: true });
                     const navSphere = new THREE.Mesh(navGeometry, navMaterial);
@@ -1265,8 +1257,8 @@
 
                     function animateNav() {
                         requestAnimationFrame(animateNav);
-                        navSphere.rotation.x += 0.015;
-                        navSphere.rotation.y += 0.015;
+                        navSphere.rotation.x += 0.005;
+                        navSphere.rotation.y += 0.005;
                         navRenderer.render(navScene, navCamera);
                     }
                     animateNav();
@@ -1299,27 +1291,53 @@
                     document.body.appendChild(particle);
                 }
 
-                // Mouse Trail
-                let trailCount = 0;
-                const maxTrails = 25;
-                const glyphs = ['△', '□', '○', '◇', '✦'];
+                // Snake-Like Mouse Trail
+                const snakeLength = 20;
+                const snakeSegments = [];
+                let lastMousePos = { x: 0, y: 0 };
+
                 document.addEventListener('mousemove', throttle((e) => {
-                    if (trailCount < maxTrails) {
-                        const trail = document.createElement('div');
-                        const rand = Math.random();
-                        const type = rand > 0.8 ? 'glyph' : '';
-                        trail.className = `mouse-trail ${type}`;
-                        trail.style.left = `${e.clientX}px`;
-                        trail.style.top = `${e.clientY}px`;
-                        if (type === 'glyph') trail.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
-                        document.body.appendChild(trail);
-                        trailCount++;
-                        setTimeout(() => {
-                            trail.remove();
-                            trailCount--;
-                        }, 700);
+                    const mouseX = e.clientX;
+                    const mouseY = e.clientY;
+
+                    // Create a new snake trail container if needed
+                    const snakeTrail = document.createElement('div');
+                    snakeTrail.className = 'snake-trail';
+                    document.body.appendChild(snakeTrail);
+
+                    // Add new segment at the mouse position
+                    const segment = document.createElement('div');
+                    segment.className = 'snake-segment';
+                    segment.style.left = `${mouseX}px`;
+                    segment.style.top = `${mouseY}px`;
+                    snakeTrail.appendChild(segment);
+                    snakeSegments.push({ element: segment, x: mouseX, y: mouseY });
+
+                    // Update positions of existing segments
+                    for (let i = snakeSegments.length - 1; i > 0; i--) {
+                        snakeSegments[i].x = snakeSegments[i - 1].x;
+                        snakeSegments[i].y = snakeSegments[i - 1].y;
+                        snakeSegments[i].element.style.left = `${snakeSegments[i].x}px`;
+                        snakeSegments[i].element.style.top = `${snakeSegments[i].y}px`;
                     }
-                }, 15));
+
+                    // Remove excess segments
+                    if (snakeSegments.length > snakeLength) {
+                        const oldSegment = snakeSegments.shift();
+                        oldSegment.element.classList.add('fade');
+                        setTimeout(() => oldSegment.element.remove(), 1000);
+                    }
+
+                    // Remove the entire trail after 3 seconds
+                    setTimeout(() => {
+                        snakeTrail.childNodes.forEach(segment => {
+                            segment.classList.add('fade');
+                        });
+                        setTimeout(() => snakeTrail.remove(), 1000);
+                    }, 3000);
+
+                    lastMousePos = { x: mouseX, y: mouseY };
+                }, 50));
 
                 // Data Streams
                 function spawnStream() {
@@ -1519,44 +1537,6 @@
                     updateClock();
                 }
 
-                const mapCanvas = document.getElementById('map-canvas');
-                if (mapCanvas) {
-                    const mapCtx = mapCanvas.getContext('2d');
-                    mapCanvas.width = 120;
-                    mapCanvas.height = 120;
-                    function drawMap() {
-                        mapCtx.clearRect(0, 0, 120, 120);
-                        mapCtx.strokeStyle = 'var(--nano-green)';
-                        mapCtx.lineWidth = 3;
-                        mapCtx.beginPath();
-                        mapCtx.arc(60, 60, 50, 0, Math.PI * 2);
-                        mapCtx.stroke();
-                        mapCtx.fillStyle = 'var(--cyber-pink)';
-                        mapCtx.fillRect(58, 58, 4, 4);
-                        requestAnimationFrame(drawMap);
-                    }
-                    drawMap();
-                }
-
-                if (cyberResource) {
-                    let cpuUsage = 0;
-                    function updateResource() {
-                        cpuUsage = Math.min(cpuUsage + (Math.random() - 0.5) * 15, 100);
-                        document.getElementById('cpu-usage').textContent = `${Math.round(cpuUsage)}%`;
-                    }
-                    setInterval(updateResource, 1500);
-                }
-
-                if (cyberEnergy) {
-                    let energyLevel = 100;
-                    function updateEnergy() {
-                        energyLevel = Math.max(energyLevel - Math.random() * 5, 0);
-                        document.getElementById('energy-level').textContent = `${Math.round(energyLevel)}%`;
-                        document.getElementById('energy-level-display').textContent = `${Math.round(energyLevel)}%`;
-                    }
-                    setInterval(updateEnergy, 3000);
-                }
-
                 // Analytics HUD
                 const timeSpentSpan = document.getElementById('time-spent');
                 const interactionsSpan = document.getElementById('interactions');
@@ -1571,22 +1551,6 @@
                     document.addEventListener('click', () => {
                         interactions++;
                         interactionsSpan.textContent = interactions;
-                        document.getElementById('user-count').textContent = 1;
-                    });
-                }
-
-                // User Profile
-                const profileName = document.getElementById('profile-name');
-                const profileAvatar = document.querySelector('.profile-avatar');
-                if (profileName && profileAvatar) {
-                    const storedName = localStorage.getItem('profileName') || 'CyberUser';
-                    profileName.textContent = storedName;
-                    profileAvatar.addEventListener('click', () => {
-                        const newName = prompt('Enter your cyber name:', storedName);
-                        if (newName) {
-                            localStorage.setItem('profileName', newName);
-                            profileName.textContent = newName;
-                        }
                     });
                 }
             }
