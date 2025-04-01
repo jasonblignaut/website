@@ -46,6 +46,7 @@
             line-height: 1.7;
             position: relative;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         /* Holo Grid Background */
@@ -55,13 +56,53 @@
             z-index: -1;
             opacity: 0.2;
             pointer-events: none;
+            transform: translateZ(0);
+        }
+
+        /* Cyber Particles */
+        .cyber-particle {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: var(--cyber-blue);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.7;
+            box-shadow: 0 0 20px var(--cyber-blue);
+            animation: particleOrbit 5s infinite ease-in-out;
+        }
+
+        @keyframes particleOrbit {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.7; }
+            50% { transform: translate(20px, -20px) scale(1.2); opacity: 1; }
+            100% { transform: translate(0, 0) scale(1); opacity: 0.7; }
+        }
+
+        /* Mouse Trail */
+        .mouse-trail {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--cyber-pink);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1001;
+            opacity: 0.8;
+            box-shadow: 0 0 15px var(--cyber-pink);
+            animation: trailFade 0.5s ease-out forwards;
+        }
+
+        @keyframes trailFade {
+            0% { opacity: 0.8; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0); }
         }
 
         /* Data Streams */
         .data-stream {
             position: fixed;
             width: 2px;
-            height: 100px;
+            height: 120px;
             background: linear-gradient(to bottom, var(--cyber-blue), transparent);
             pointer-events: none;
             z-index: 0;
@@ -69,8 +110,8 @@
         }
 
         @keyframes streamFlow {
-            0% { transform: translateY(-100vh); opacity: 0.8; }
-            100% { transform: translateY(100vh); opacity: 0; }
+            0% { transform: translateY(-120vh); opacity: 0.8; }
+            100% { transform: translateY(120vh); opacity: 0; }
         }
 
         /* Terminal Loader */
@@ -237,11 +278,14 @@
             border: 1px solid var(--cyber-blue);
             border-radius: 15px;
             box-shadow: 0 0 var(--glow-depth) var(--cyber-blue);
-            transition: transform 0.5s;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.5s, transform 0.5s;
         }
 
-        .holo-section:hover {
-            transform: translateY(-10px);
+        .holo-section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .holo-title {
@@ -296,11 +340,19 @@
             border: 1px solid var(--cyber-pink);
             border-radius: 10px;
             box-shadow: 0 0 var(--glow-depth) var(--cyber-pink);
-            transition: all 0.3s;
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.5s ease-out;
+        }
+
+        .data-node.visible {
+            opacity: 1;
+            transform: translateX(0) scale(1);
         }
 
         .data-node:hover {
-            transform: scale(1.05);
+            transform: scale(1.05) translateX(10px);
+            box-shadow: 0 0 calc(var(--glow-depth) * 2) var(--cyber-pink);
         }
 
         .data-node img {
@@ -308,6 +360,11 @@
             height: auto;
             margin-bottom: 1rem;
             filter: drop-shadow(0 0 10px var(--cyber-blue));
+            transition: transform 0.3s;
+        }
+
+        .data-node:hover img {
+            transform: rotate(15deg);
         }
 
         .data-node h3 {
@@ -394,6 +451,22 @@
             font-size: 0.9rem;
         }
 
+        /* Scroll Effects */
+        .scroll-swoosh {
+            position: fixed;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, transparent, var(--cyber-pink), transparent);
+            z-index: 1;
+            opacity: 0;
+            animation: swooshAcross 0.8s ease-out forwards;
+        }
+
+        @keyframes swooshAcross {
+            0% { transform: translateX(-100%); opacity: 1; }
+            100% { transform: translateX(100%); opacity: 0; }
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .cyber-sphere {
@@ -427,7 +500,7 @@
     <div class="holo-grid">
         <div id="sphere-nav"></div>
     </div>
-    <audio id="cyber-audio" src="/music/lofi.mp3" loop preload="auto" style="display: none;"></audio>
+    <audio id="cyber-audio" src="/music/cyber-pulse.mp3" loop preload="auto" style="display: none;"></audio>
     <div class="cyber-sphere">
         <canvas id="sphere-nav"></canvas>
     </div>
@@ -440,7 +513,7 @@
         </div>
     </div>
     <div class="control-panel">
-        <button class="control-btn" title="Back to Top">↑</button>
+        <button class="control-btn top-btn" title="Back to Top">↑</button>
         <button class="control-btn audio-control" title="Toggle Audio">♫</button>
     </div>
     <main>
@@ -529,11 +602,25 @@
         const audio = document.getElementById('cyber-audio');
         audio.volume = 0.3;
 
+        function throttle(func, limit) {
+            let inThrottle;
+            return function() {
+                if (!inThrottle) {
+                    func.apply(this, arguments);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            };
+        }
+
         window.addEventListener('load', () => {
             const loader = document.querySelector('.terminal-loader');
             setTimeout(() => {
                 loader.classList.add('hidden');
-                audio.play().catch(() => console.log('Audio blocked'));
+                audio.play().catch(err => {
+                    console.log('Audio blocked, waiting for interaction:', err);
+                    document.body.addEventListener('click', () => audio.play(), { once: true });
+                });
             }, 2000);
 
             const scene = new THREE.Scene();
@@ -570,6 +657,35 @@
                 link.addEventListener('click', () => navOverlay.classList.remove('active'));
             });
 
+            // Particles
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'cyber-particle';
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.top = `${Math.random() * 100}vh`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                document.body.appendChild(particle);
+            }
+
+            // Mouse Trail
+            let trailCount = 0;
+            const maxTrails = 15;
+            document.addEventListener('mousemove', throttle((e) => {
+                if (trailCount < maxTrails) {
+                    const trail = document.createElement('div');
+                    trail.className = 'mouse-trail';
+                    trail.style.left = `${e.clientX}px`;
+                    trail.style.top = `${e.clientY}px`;
+                    document.body.appendChild(trail);
+                    trailCount++;
+                    setTimeout(() => {
+                        trail.remove();
+                        trailCount--;
+                    }, 500);
+                }
+            }, 20));
+
+            // Data Streams
             function spawnStream() {
                 const stream = document.createElement('div');
                 stream.className = 'data-stream';
@@ -577,16 +693,44 @@
                 document.body.appendChild(stream);
                 setTimeout(() => stream.remove(), 2000);
             }
-
             setInterval(spawnStream, 300);
 
-            const topBtn = document.querySelector('.control-btn:first-child');
-            topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+            // Scroll Effects
+            window.addEventListener('scroll', throttle(() => {
+                const scrollY = window.scrollY;
+                document.querySelectorAll('.holo-section').forEach(section => {
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top <= window.innerHeight * 0.8 && !section.classList.contains('visible')) {
+                        section.classList.add('visible');
+                        const swoosh = document.createElement('div');
+                        swoosh.className = 'scroll-swoosh';
+                        swoosh.style.top = `${rect.top + scrollY + rect.height / 2}px`;
+                        document.body.appendChild(swoosh);
+                        setTimeout(() => swoosh.remove(), 800);
+                    }
+                });
 
+                document.querySelectorAll('.data-node').forEach(node => {
+                    const rect = node.getBoundingClientRect();
+                    if (rect.top <= window.innerHeight * 0.8 && !node.classList.contains('visible')) {
+                        node.classList.add('visible');
+                    }
+                });
+
+                document.querySelector('.holo-grid').style.transform = `translateY(${-scrollY * 0.1}px)`;
+            }, 50));
+
+            // Back to Top
+            const topBtn = document.querySelector('.top-btn');
+            topBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Audio Control
             const audioBtn = document.querySelector('.audio-control');
             audioBtn.addEventListener('click', () => {
                 if (audio.paused) {
-                    audio.play();
+                    audio.play().catch(() => console.log('Audio requires further interaction'));
                     audioBtn.textContent = '♫';
                 } else {
                     audio.pause();
