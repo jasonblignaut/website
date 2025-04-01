@@ -47,62 +47,102 @@
             position: relative;
         }
 
-        /* Particle Effects */
+        /* Enhanced Particle Effects */
         .trail {
             position: fixed;
-            width: 12px;
-            height: 12px;
+            width: 8px;
+            height: 8px;
             background: var(--primary-color);
             border-radius: 50%;
             pointer-events: none;
             z-index: 10001;
-            opacity: 0.8;
-            box-shadow: 0 0 15px var(--primary-color), 0 0 25px var(--secondary-color);
-            animation: particleBurst 0.6s ease-out forwards;
+            opacity: 0.7;
+            box-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--secondary-color);
+            animation: particleBurst 0.5s ease-out forwards;
             will-change: transform, opacity;
         }
 
         .spark {
             position: fixed;
-            width: 4px;
-            height: 16px;
-            background: linear-gradient(var(--secondary-color), transparent);
+            width: 3px;
+            height: 12px;
+            background: linear-gradient(180deg, var(--secondary-color), transparent);
             pointer-events: none;
             z-index: 10001;
-            opacity: 0.6;
-            animation: sparkFall 0.8s ease-out forwards;
+            opacity: 0.5;
+            animation: sparkFall 0.7s ease-out forwards;
             will-change: transform, opacity;
         }
 
         @keyframes particleBurst {
-            0% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(2); opacity: 0.5; }
+            0% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.5); opacity: 0.4; }
             100% { transform: scale(0); opacity: 0; }
         }
 
         @keyframes sparkFall {
-            0% { transform: translateY(0) rotate(45deg); opacity: 0.6; }
-            100% { transform: translateY(20px) rotate(45deg); opacity: 0; }
+            0% { transform: translateY(0) rotate(45deg); opacity: 0.5; }
+            100% { transform: translateY(15px) rotate(45deg); opacity: 0; }
         }
 
-        /* Floating Cyber-Orbs */
+        /* New Shooting Star Effect */
+        .shooting-star {
+            position: fixed;
+            width: 2px;
+            height: 40px;
+            background: linear-gradient(180deg, var(--primary-color), transparent);
+            pointer-events: none;
+            z-index: 10002;
+            opacity: 0.8;
+            box-shadow: 0 0 15px var(--primary-color);
+            animation: shootStar 1.5s linear forwards;
+            will-change: transform, opacity;
+        }
+
+        @keyframes shootStar {
+            0% { transform: translateX(0) translateY(0) rotate(-45deg); opacity: 0.8; }
+            70% { opacity: 0.5; }
+            100% { transform: translateX(-300px) translateY(300px) rotate(-45deg); opacity: 0; }
+        }
+
+        /* Velocity Swish Effect */
+        .velocity-swish {
+            position: fixed;
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
+            pointer-events: none;
+            z-index: 10002;
+            opacity: 0.6;
+            animation: swishMove 0.8s ease-out forwards;
+            will-change: transform, opacity;
+        }
+
+        @keyframes swishMove {
+            0% { transform: translateX(0) scaleX(1); opacity: 0.6; }
+            50% { transform: translateX(100px) scaleX(1.5); opacity: 0.4; }
+            100% { transform: translateX(200px) scaleX(0); opacity: 0; }
+        }
+
+        /* Floating Cyber-Orbs with Tech Glow */
         .cyber-orb {
             position: absolute;
             background: radial-gradient(circle, var(--primary-color), transparent);
             border-radius: 50%;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.3;
-            animation: floatOrb linear infinite;
-            will-change: transform;
+            opacity: 0.25;
+            box-shadow: 0 0 10px var(--primary-color);
+            animation: floatOrb 6s ease-in-out infinite;
+            will-change: transform, opacity;
         }
 
         @keyframes floatOrb {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-30px); }
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0.25; }
+            50% { transform: translateY(-20px) scale(1.1); opacity: 0.35; }
         }
 
-        /* Smooth Circuit Background */
+        /* Enhanced Circuit Background */
         .background {
             position: fixed;
             inset: 0;
@@ -118,7 +158,7 @@
             background: url('thumbnails/circuit-pattern.webp') repeat;
             background-size: 150% 150%;
             opacity: 0.15;
-            animation: moveBackground 80s ease-in-out infinite;
+            animation: moveBackground 60s ease-in-out infinite;
             filter: blur(1px);
         }
 
@@ -127,8 +167,8 @@
             position: absolute;
             inset: 0;
             background: radial-gradient(circle, rgba(0, 170, 255, 0.1), transparent 70%);
-            opacity: 0.4;
-            animation: nebulaPulse 12s infinite alternate;
+            opacity: 0.3;
+            animation: nebulaPulse 10s infinite alternate;
         }
 
         @keyframes moveBackground {
@@ -138,8 +178,8 @@
         }
 
         @keyframes nebulaPulse {
-            0% { transform: scale(1); opacity: 0.4; }
-            100% { transform: scale(1.15); opacity: 0.6; }
+            0% { transform: scale(1); opacity: 0.3; }
+            100% { transform: scale(1.1); opacity: 0.5; }
         }
 
         /* Audio Overlay */
@@ -199,7 +239,7 @@
             box-shadow: 0 0 calc(var(--glow-intensity) * 1.5) var(--primary-color);
         }
 
-        /* Preloader */
+        /* Preloader with Futuristic Spin */
         .preloader {
             position: fixed;
             top: 0;
@@ -221,13 +261,14 @@
             border: 6px solid var(--primary-color);
             border-top: 6px solid var(--secondary-color);
             border-radius: 50%;
-            animation: cyberSpin 1.2s linear infinite;
-            box-shadow: 0 0 15px var(--primary-color);
+            animation: cyberSpin 1s linear infinite;
+            box-shadow: 0 0 15px var(--primary-color), 0 0 25px var(--secondary-color);
         }
 
         @keyframes cyberSpin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
         }
 
         .preloader.hidden {
@@ -351,7 +392,7 @@
             box-shadow: 0 0 calc(var(--glow-intensity) * 1.5) var(--primary-color);
         }
 
-        /* Hero Section with Glowing Circle */
+        /* Hero Section with Enhanced Effects */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -364,7 +405,7 @@
             overflow: hidden;
             opacity: 0;
             animation: fadeIn 2s forwards 1s;
-            z-index: 1; /* Base layer for hero */
+            z-index: 1;
         }
 
         .hero::before {
@@ -372,15 +413,15 @@
             position: absolute;
             width: 300%;
             height: 300%;
-            background: radial-gradient(circle, rgba(0, 170, 255, 0.2), transparent 70%);
+            background: radial-gradient(circle, rgba(0, 170, 255, 0.15), transparent 70%);
             animation: heroPulse 8s infinite;
             z-index: -1;
         }
 
         @keyframes heroPulse {
-            0% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.2; }
-            50% { transform: scale(1.1) translateX(-50%) translateY(-50%); opacity: 0.4; }
-            100% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.2; }
+            0% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.15; }
+            50% { transform: scale(1.05) translateX(-50%) translateY(-50%); opacity: 0.3; }
+            100% { transform: scale(1) translateX(-50%) translateY(-50%); opacity: 0.15; }
         }
 
         .hero img {
@@ -388,10 +429,10 @@
             height: 200px;
             border-radius: 50%;
             border: 3px solid var(--primary-color);
-            box-shadow: 0 0 20px rgba(0, 170, 255, 0.5), 0 0 30px rgba(0, 170, 255, 0.8); /* Double glow */
+            box-shadow: 0 0 20px rgba(0, 170, 255, 0.5), 0 0 30px rgba(0, 170, 255, 0.8);
             margin-bottom: 2rem;
             animation: glow 2s infinite alternate, float 4s ease-in-out infinite;
-            z-index: 99999; /* ABOVE EVERYTHING */
+            z-index: 99999;
             position: relative;
         }
 
@@ -896,7 +937,7 @@
             <img src="thumbnails/thumbnail-13.webp" alt="About Me" loading="lazy">
             <div class="about-text">
                 <h2>About Me</h2>
-                <p>I’m a Hybrid Engineer from Johannesburg, South Africa, with 8+ years of experience securing and designing networks. From Azure cloud architecture to FortiGate SD-WAN deployments, I turn turn difficult challenges into perfect solutions.</p>
+                <p>I’m a Hybrid Engineer from Johannesburg, South Africa, with 8+ years of experience securing and designing networks. From Azure cloud architecture to FortiGate SD-WAN deployments, I turn difficult challenges into perfect solutions.</p>
                 <p>My obsession with creating, troubleshooting, technology and cybersecurity drives me to innovate relentlessly, delivering value to MSPs and enterprises. I thrive in high pressure environments.</p>
             </div>
         </div>
@@ -917,7 +958,7 @@
             <div class="skill-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Cloud Icon" loading="lazy">
                 <h3>Cloud Command</h3>
-                <p>Spinning up Azure VMs and hybrid cloud infrastructure. reducing costs and increasing uptime for MSPs with exact precision.</p>
+                <p>Spinning up Azure VMs and hybrid cloud infrastructure, reducing costs and increasing uptime for MSPs with exact precision.</p>
             </div>
             <div class="skill-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="AI Icon" loading="lazy">
@@ -948,8 +989,8 @@
             </div>
             <div class="project-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="Lo-Fi Livestream" loading="lazy">
-                <h3>24/7 lofi Stream</h3>
-                <p>Created a Linux Azure hosted YouTube livestream with nonstop lofi beats.</p>
+                <h3>24/7 Lo-Fi Stream</h3>
+                <p>Created a Linux Azure-hosted YouTube livestream with nonstop lo-fi beats.</p>
                 <div class="video-container">
                     <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk" frameborder="0" allowfullscreen></iframe>
                 </div>
@@ -957,13 +998,13 @@
             <div class="project-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="T1 Support Tool" loading="lazy">
                 <h3>T1 Network Toolkit</h3>
-                <p>Built a PowerShell diagnostic tool for MSPs, reducing Tier 1 resolution times by 40% with realtime AI responses on network troubleshooting.</p>
+                <p>Built a PowerShell diagnostic tool for MSPs, reducing Tier 1 resolution times by 40% with real-time AI responses on network troubleshooting.</p>
                 <a href="https://labverse.co.za/support-tool" target="_blank">Explore</a>
             </div>
             <div class="project-card">
                 <img src="thumbnails/thumbnail-13.webp" alt="LabVerse Website" loading="lazy">
                 <h3>LabVerse Portal</h3>
-                <p>Created this portfolio with some free time and bit of creativity, showcasing my creativity and web development skills.</p>
+                <p>Created this portfolio with some free time and a bit of creativity, showcasing my creativity and web development skills.</p>
                 <a href="https://labverse.co.za" target="_blank">Explore</a>
             </div>
         </div>
@@ -987,7 +1028,7 @@
 
     <script>
         const audio = document.getElementById('bg-audio');
-        audio.volume = 0.3;
+        audio.volume = 0.1; // Reduced to 10% volume
 
         const overlay = document.querySelector('.audio-overlay');
         const overlayButton = overlay.querySelector('button');
@@ -1045,22 +1086,43 @@
             }
         }, 100));
 
-        let trailCount = 0;
-        const maxTrails = 30;
+        let effectCount = 0;
+        const maxEffects = 20;
         document.addEventListener('mousemove', throttle((e) => {
-            if (trailCount < maxTrails) {
-                const trail = document.createElement('div');
-                trail.className = Math.random() > 0.5 ? 'trail' : 'spark';
-                trail.style.left = `${e.clientX}px`;
-                trail.style.top = `${e.clientY}px`;
-                document.body.appendChild(trail);
-                trailCount++;
+            if (effectCount < maxEffects) {
+                const type = Math.random();
+                const effect = document.createElement('div');
+                if (type < 0.4) {
+                    effect.className = 'trail';
+                } else if (type < 0.7) {
+                    effect.className = 'spark';
+                } else {
+                    effect.className = 'velocity-swish';
+                }
+                effect.style.left = `${e.clientX}px`;
+                effect.style.top = `${e.clientY}px`;
+                document.body.appendChild(effect);
+                effectCount++;
                 setTimeout(() => {
-                    trail.remove();
-                    trailCount--;
-                }, trail.className === 'trail' ? 600 : 800);
+                    effect.remove();
+                    effectCount--;
+                }, effect.className === 'velocity-swish' ? 800 : 700);
             }
-        }, 20));
+        }, 50));
+
+        // Random Shooting Stars
+        function createShootingStar() {
+            if (Math.random() < 0.05) { // 5% chance per frame
+                const star = document.createElement('div');
+                star.className = 'shooting-star';
+                star.style.left = `${Math.random() * 100}vw`;
+                star.style.top = `${Math.random() * 20}vh`; // Start near top
+                document.body.appendChild(star);
+                setTimeout(() => star.remove(), 1500);
+            }
+        }
+
+        setInterval(createShootingStar, 100);
 
         const audioToggle = document.querySelector('.audio-toggle');
         audioToggle.addEventListener('click', () => {
@@ -1082,24 +1144,24 @@
 
         window.addEventListener('load', () => {
             document.querySelector('.preloader').classList.add('hidden');
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 8; i++) {
                 const orb = document.createElement('div');
                 orb.className = 'cyber-orb';
-                orb.style.width = `${20 + Math.random() * 30}px`;
+                orb.style.width = `${15 + Math.random() * 20}px`;
                 orb.style.height = orb.style.width;
                 orb.style.left = `${Math.random() * 100}vw`;
                 orb.style.top = `${Math.random() * 100}vh`;
-                orb.style.animationDuration = `${5 + Math.random() * 5}s`;
+                orb.style.animationDuration = `${4 + Math.random() * 4}s`;
                 document.body.appendChild(orb);
             }
 
             // Ensure hero image loads and shows
             const heroImage = document.getElementById('hero-image');
             const pathsToTry = [
-                '/channel-pictures/my-picture.jpeg',  // Absolute from root
-                './channel-pictures/my-picture.jpeg', // Relative to HTML
-                'channel-pictures/my-picture.jpeg',   // Relative without leading slash
-                'thumbnails/thumbnail-13.webp'        // Final fallback
+                '/channel-pictures/my-picture.jpeg',
+                './channel-pictures/my-picture.jpeg',
+                'channel-pictures/my-picture.jpeg',
+                'thumbnails/thumbnail-13.webp'
             ];
             let currentPathIndex = 0;
 
@@ -1115,7 +1177,7 @@
 
             heroImage.addEventListener('load', () => {
                 console.log(`Image loaded successfully at ${heroImage.src}`);
-                heroImage.style.opacity = 1; // Ensure visibility
+                heroImage.style.opacity = 1;
             });
 
             heroImage.addEventListener('error', () => {
@@ -1123,8 +1185,8 @@
                 tryNextPath();
             });
 
-            heroImage.style.opacity = 0; // Start hidden, show on load
-            tryNextPath(); // Kick off the loading process
+            heroImage.style.opacity = 0;
+            tryNextPath();
         });
     </script>
 </body>
