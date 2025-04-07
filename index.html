@@ -47,42 +47,42 @@
             position: relative;
         }
 
-        /* Laser-Cutting Style Mouse Trail Effects */
-        .laser-trail {
+        /* Laser Engraving Sparks for Mouse Trail */
+        .engraving-spark {
             position: fixed;
-            width: 15px;
-            height: 2px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            width: 5px;
+            height: 5px;
+            background: linear-gradient(45deg, var(--primary-color), #ffffff, var(--secondary-color));
             pointer-events: none;
             z-index: 10001;
-            opacity: 0.9;
-            box-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--secondary-color);
-            animation: laserBurst 0.5s ease-out forwards;
+            opacity: 0.8;
+            box-shadow: 0 0 10px var(--primary-color), 0 0 15px var(--secondary-color);
+            animation: engravingFlicker 0.4s ease-out forwards;
             will-change: transform, opacity;
         }
 
-        .laser-spark {
+        .engraving-flare {
             position: fixed;
             width: 3px;
-            height: 10px;
-            background: linear-gradient(var(--secondary-color), transparent);
+            height: 8px;
+            background: linear-gradient(var(--primary-color), transparent);
             pointer-events: none;
             z-index: 10001;
-            opacity: 0.7;
-            box-shadow: 0 0 5px var(--secondary-color);
-            animation: laserSpark 0.7s ease-out forwards;
+            opacity: 0.6;
+            box-shadow: 0 0 5px var(--primary-color);
+            animation: flareBurst 0.5s ease-out forwards;
             will-change: transform, opacity;
         }
 
-        @keyframes laserBurst {
-            0% { transform: scaleX(1); opacity: 0.9; }
-            50% { transform: scaleX(1.5); opacity: 0.6; }
-            100% { transform: scaleX(0); opacity: 0; }
+        @keyframes engravingFlicker {
+            0% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+            50% { transform: scale(1.3) rotate(45deg); opacity: 0.5; }
+            100% { transform: scale(0) rotate(90deg); opacity: 0; }
         }
 
-        @keyframes laserSpark {
-            0% { transform: translateY(0) rotate(45deg); opacity: 0.7; }
-            100% { transform: translateY(15px) rotate(45deg); opacity: 0; }
+        @keyframes flareBurst {
+            0% { transform: translateY(0) rotate(30deg); opacity: 0.6; }
+            100% { transform: translateY(10px) rotate(30deg); opacity: 0; }
         }
 
         /* Laser-Cutting Style Orbs */
@@ -158,6 +158,7 @@
             position: relative;
             overflow: hidden;
             transition: transform 0.3s, box-shadow 0.3s;
+            white-space: nowrap;
         }
 
         .audio-overlay button::before {
@@ -650,6 +651,7 @@
             gap: 2rem;
             max-width: 1200px;
             margin: 0 auto;
+            position: relative;
         }
 
         .video-item {
@@ -658,6 +660,7 @@
             overflow: hidden;
             box-shadow: 0 0 var(--glow-intensity) rgba(0, 170, 255, 0.3);
             transition: transform 0.3s;
+            z-index: 1;
         }
 
         .video-item:hover {
@@ -668,6 +671,50 @@
             width: 100%;
             height: auto;
             border: 2px solid var(--primary-color);
+            border-radius: 15px;
+        }
+
+        /* Creative Mobile Video Layout */
+        @media (max-width: 768px) {
+            .video-gallery {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 3rem;
+            }
+
+            .video-item {
+                width: 90%;
+                max-width: 350px;
+                transform: rotate(2deg);
+                margin: 1rem 0;
+                position: relative;
+            }
+
+            .video-item:nth-child(even) {
+                transform: rotate(-2deg);
+                margin-left: 2rem;
+            }
+
+            .video-item::before {
+                content: '';
+                position: absolute;
+                top: -10px;
+                left: -10px;
+                right: -10px;
+                bottom: -10px;
+                border: 2px dashed var(--primary-color);
+                border-radius: 20px;
+                z-index: -1;
+                opacity: 0.7;
+                animation: laserFramePulse 3s infinite;
+            }
+
+            @keyframes laserFramePulse {
+                0% { opacity: 0.7; transform: scale(1); }
+                50% { opacity: 0.4; transform: scale(1.02); }
+                100% { opacity: 0.7; transform: scale(1); }
+            }
         }
 
         .contact {
@@ -754,7 +801,22 @@
             text-shadow: 0 0 10px var(--secondary-color);
         }
 
-        /* Responsive Design */
+        /* Responsive Design for Audio Overlay Button */
+        @media (max-width: 768px) {
+            .audio-overlay button {
+                font-size: 1.2rem;
+                padding: 1rem 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .audio-overlay button {
+                font-size: 0.9rem;
+                padding: 0.8rem 1.5rem;
+            }
+        }
+
+        /* Additional Responsive Adjustments */
         @media (max-width: 1024px) {
             .video-gallery {
                 grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -842,18 +904,13 @@
             .hero p {
                 font-size: clamp(1rem, 2.5vw, 1.2rem);
             }
-
-            .audio-overlay button {
-                padding: 1rem 2rem;
-                font-size: 1.2rem;
-            }
         }
     </style>
 </head>
 <body>
     <div class="preloader"></div>
     <div class="audio-overlay">
-        <button>Enter Pretty Stitched Engraving</button>
+        <button>ENTER PRETTY STITCHED ENGRAVING</button>
     </div>
     <div class="background"></div>
     <audio id="bg-audio" src="/music/lofi.mp3" loop preload="auto" style="display: none;"></audio>
@@ -1017,21 +1074,21 @@
         }, 100));
 
         let trailCount = 0;
-        const maxTrails = 40; // Increased for more intense effect
+        const maxTrails = 50; // Increased for a busy engraving effect
         document.addEventListener('mousemove', throttle((e) => {
             if (trailCount < maxTrails) {
-                const trail = document.createElement('div');
-                trail.className = Math.random() > 0.5 ? 'laser-trail' : 'laser-spark';
-                trail.style.left = `${e.clientX}px`;
-                trail.style.top = `${e.clientY}px`;
-                document.body.appendChild(trail);
+                const spark = document.createElement('div');
+                spark.className = Math.random() > 0.3 ? 'engraving-spark' : 'engraving-flare';
+                spark.style.left = `${e.clientX}px`;
+                spark.style.top = `${e.clientY}px`;
+                document.body.appendChild(spark);
                 trailCount++;
                 setTimeout(() => {
-                    trail.remove();
+                    spark.remove();
                     trailCount--;
-                }, trail.className === 'laser-trail' ? 500 : 700);
+                }, spark.className === 'engraving-spark' ? 400 : 500);
             }
-        }, 15)); // Reduced throttle time for more frequent trails
+        }, 10)); // Reduced throttle time for a busier effect
 
         const audioToggle = document.querySelector('.audio-toggle');
         audioToggle.addEventListener('click', () => {
@@ -1042,6 +1099,20 @@
                 audio.pause();
                 audioToggle.textContent = '♪';
             }
+        });
+
+        // Pause background music when a video plays
+        const videos = document.querySelectorAll('.video-item video');
+        videos.forEach(video => {
+            video.addEventListener('play', () => {
+                audio.pause();
+            });
+            video.addEventListener('pause', () => {
+                audio.play();
+            });
+            video.addEventListener('ended', () => {
+                audio.play();
+            });
         });
 
         VanillaTilt.init(document.querySelectorAll('.video-item'), {
@@ -1082,7 +1153,7 @@
 
         window.addEventListener('load', () => {
             document.querySelector('.preloader').classList.add('hidden');
-            for (let i = 0; i < 15; i++) { // Increased number of orbs for next-level effect
+            for (let i = 0; i < 15; i++) {
                 const orb = document.createElement('div');
                 orb.className = 'laser-orb';
                 orb.style.width = `${15 + Math.random() * 25}px`;
