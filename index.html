@@ -85,24 +85,49 @@
             100% { transform: translateY(10px) rotate(30deg); opacity: 0; }
         }
 
-        /* Laser-Cutting Style Orbs */
-        .laser-orb {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        /* Random Laser Beams */
+        .laser-beam {
+            position: fixed;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
             pointer-events: none;
             z-index: 0;
-            opacity: 0.4;
-            animation: laserFloat linear infinite;
-            box-shadow: 0 0 15px var(--primary-color);
-            will-change: transform;
+            opacity: 0;
+            box-shadow: 0 0 10px var(--primary-color);
+            animation: laserBeamFade 3s ease-in-out forwards;
+            will-change: transform, opacity;
         }
 
-        @keyframes laserFloat {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-40px) rotate(180deg); }
+        .laser-beam.vertical {
+            width: 2px;
+            height: 100vh;
+            animation: laserBeamFadeVertical 3s ease-in-out forwards;
+        }
+
+        .laser-beam.horizontal {
+            width: 100vw;
+            height: 2px;
+            animation: laserBeamFadeHorizontal 3s ease-in-out forwards;
+        }
+
+        @keyframes laserBeamFade {
+            0% { opacity: 0; }
+            20% { opacity: 0.6; }
+            80% { opacity: 0.6; }
+            100% { opacity: 0; }
+        }
+
+        @keyframes laserBeamFadeHorizontal {
+            0% { opacity: 0; transform: translateX(-100%); }
+            20% { opacity: 0.6; transform: translateX(-50%); }
+            80% { opacity: 0.6; transform: translateX(50%); }
+            100% { opacity: 0; transform: translateX(100%); }
+        }
+
+        @keyframes laserBeamFadeVertical {
+            0% { opacity: 0; transform: translateY(-100%); }
+            20% { opacity: 0.6; transform: translateY(-50%); }
+            80% { opacity: 0.6; transform: translateY(50%); }
+            100% { opacity: 0; transform: translateY(100%); }
         }
 
         /* Custom Background */
@@ -226,7 +251,7 @@
             backdrop-filter: blur(15px);
             padding: 1rem 2rem;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             z-index: 1000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -236,16 +261,6 @@
         header.hidden {
             opacity: 0;
             transform: translateY(-100%);
-        }
-
-        .logo img {
-            height: 50px;
-            filter: drop-shadow(0 0 5px var(--primary-color));
-            transition: transform 0.3s;
-        }
-
-        .logo img:hover {
-            transform: rotate(360deg);
         }
 
         nav {
@@ -566,7 +581,7 @@
             max-width: 300px;
             width: 100%;
             height: auto;
-            border-radius: 15px;
+            border-radius: 50%;
             border: 3px solid var(--primary-color);
             box-shadow: 0 0 var(--glow-intensity) var(--primary-color);
             animation: float 5s ease-in-out infinite;
@@ -807,23 +822,11 @@
                 font-size: 1.2rem;
                 padding: 1rem 2rem;
             }
-        }
 
-        @media (max-width: 480px) {
-            .audio-overlay button {
-                font-size: 0.9rem;
-                padding: 0.8rem 1.5rem;
+            header {
+                justify-content: space-between;
             }
-        }
 
-        /* Additional Responsive Adjustments */
-        @media (max-width: 1024px) {
-            .video-gallery {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            }
-        }
-
-        @media (max-width: 768px) {
             .hamburger {
                 display: block;
             }
@@ -848,7 +851,23 @@
                 margin: 1.5rem 0;
                 font-size: 1.3rem;
             }
+        }
 
+        @media (max-width: 480px) {
+            .audio-overlay button {
+                font-size: 0.9rem;
+                padding: 0.8rem 1.5rem;
+            }
+        }
+
+        /* Additional Responsive Adjustments */
+        @media (max-width: 1024px) {
+            .video-gallery {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
             .about-content {
                 flex-direction: column;
                 text-align: center;
@@ -915,11 +934,6 @@
     <div class="background"></div>
     <audio id="bg-audio" src="/music/lofi.mp3" loop preload="auto" style="display: none;"></audio>
     <header>
-        <div class="logo">
-            <a href="https://prettystitchedengraving.co.za">
-                <img src="/PSE/pseLogoO.jpg" alt="Pretty Stitched Engraving Logo" loading="lazy">
-            </a>
-        </div>
         <div class="hamburger">☰</div>
         <nav>
             <a href="#about">About</a>
@@ -941,7 +955,7 @@
     </section>
     <section id="about" class="about">
         <div class="about-content">
-            <img src="/PSE/gallery1.jpg" alt="Our Workshop" loading="lazy">
+            <img src="/PSE/pseLogoO.jpg" alt="Pretty Stitched Engraving Logo" loading="lazy">
             <div class="about-text">
                 <h2>About Us</h2>
                 <p>Welcome to Pretty Stitched Engraving, your premier laser cutting service based in Centurion, South Africa. We specialize in creating personalized, high-quality engraved products that make perfect gifts or keepsakes.</p>
@@ -1074,7 +1088,7 @@
         }, 100));
 
         let trailCount = 0;
-        const maxTrails = 50; // Increased for a busy engraving effect
+        const maxTrails = 50;
         document.addEventListener('mousemove', throttle((e) => {
             if (trailCount < maxTrails) {
                 const spark = document.createElement('div');
@@ -1088,7 +1102,7 @@
                     trailCount--;
                 }, spark.className === 'engraving-spark' ? 400 : 500);
             }
-        }, 10)); // Reduced throttle time for a busier effect
+        }, 10));
 
         const audioToggle = document.querySelector('.audio-toggle');
         audioToggle.addEventListener('click', () => {
@@ -1151,18 +1165,34 @@
 
         window.addEventListener('resize', updateCarousel);
 
+        // Random Laser Beams
+        function createLaserBeam() {
+            const beam = document.createElement('div');
+            beam.className = 'laser-beam';
+            const isVertical = Math.random() > 0.5;
+            if (isVertical) {
+                beam.classList.add('vertical');
+                beam.style.left = `${Math.random() * 100}vw`;
+                beam.style.top = '0';
+            } else {
+                beam.classList.add('horizontal');
+                beam.style.top = `${Math.random() * 100}vh`;
+                beam.style.left = '0';
+            }
+            document.body.appendChild(beam);
+            setTimeout(() => {
+                beam.remove();
+            }, 3000); // Matches animation duration
+        }
+
         window.addEventListener('load', () => {
             document.querySelector('.preloader').classList.add('hidden');
-            for (let i = 0; i < 15; i++) {
-                const orb = document.createElement('div');
-                orb.className = 'laser-orb';
-                orb.style.width = `${15 + Math.random() * 25}px`;
-                orb.style.height = orb.style.width;
-                orb.style.left = `${Math.random() * 100}vw`;
-                orb.style.top = `${Math.random() * 100}vh`;
-                orb.style.animationDuration = `${4 + Math.random() * 4}s`;
-                document.body.appendChild(orb);
-            }
+            // Create laser beams at random intervals
+            setInterval(() => {
+                if (Math.random() > 0.3) { // 70% chance to create a beam
+                    createLaserBeam();
+                }
+            }, 1000); // Check every second
 
             const heroImage = document.getElementById('hero-image');
             heroImage.addEventListener('load', () => {
