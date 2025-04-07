@@ -58,7 +58,6 @@
             opacity: 0.8;
             box-shadow: 0 0 10px var(--primary-color), 0 0 15px var(--secondary-color);
             animation: engravingFlicker 0.4s ease-out forwards;
-            will-change: transform, opacity;
         }
 
         .engraving-flare {
@@ -71,7 +70,6 @@
             opacity: 0.6;
             box-shadow: 0 0 5px var(--primary-color);
             animation: flareBurst 0.5s ease-out forwards;
-            will-change: transform, opacity;
         }
 
         @keyframes engravingFlicker {
@@ -94,7 +92,6 @@
             opacity: 0;
             box-shadow: 0 0 10px var(--primary-color);
             animation: laserBeamFade 3s ease-in-out forwards;
-            will-change: transform, opacity;
         }
 
         .laser-beam.vertical {
@@ -134,8 +131,9 @@
         .background {
             position: fixed;
             inset: 0;
-            background: url('/PSE/background.jpg') no-repeat center center fixed;
+            background: url('/PSE/background.jpg') no-repeat center center;
             background-size: cover;
+            background-attachment: fixed;
             z-index: -2;
             overflow: hidden;
         }
@@ -147,6 +145,15 @@
             background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8));
             opacity: 0.5;
             z-index: -1;
+        }
+
+        /* Fix Background Image on Mobile */
+        @media (max-width: 768px) {
+            .background {
+                background-attachment: scroll; /* Prevents fixed background issues on mobile */
+                background-size: contain; /* Ensures the image fits without excessive zooming */
+                background-position: center top; /* Aligns the image properly */
+            }
         }
 
         /* Audio Overlay */
@@ -383,6 +390,36 @@
             box-shadow: 0 0 calc(var(--glow-intensity) * 1.5) var(--primary-color);
         }
 
+        /* Fullscreen Image Viewer */
+        .fullscreen-viewer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10002;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .fullscreen-viewer.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .fullscreen-viewer img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 20px var(--primary-color);
+        }
+
         /* Hero Section with Glowing Circle */
         .hero {
             min-height: 100vh;
@@ -617,6 +654,7 @@
         .carousel-item {
             min-width: 33.33%;
             padding: 1rem;
+            cursor: pointer;
         }
 
         .carousel-item img {
@@ -800,7 +838,7 @@
         footer p {
             color: var(--text-muted);
             font-size: 1rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 15rem;
         }
 
         footer a {
@@ -932,6 +970,9 @@
         <button>ENTER PRETTY STITCHED ENGRAVING</button>
     </div>
     <div class="background"></div>
+    <div class="fullscreen-viewer">
+        <img src="" alt="Fullscreen Image">
+    </div>
     <audio id="bg-audio" src="/music/lofi.mp3" loop preload="auto" style="display: none;"></audio>
     <header>
         <div class="hamburger">☰</div>
@@ -983,31 +1024,31 @@
     <section id="gallery">
         <h2>Video Gallery</h2>
         <div class="video-gallery">
-            <div class="video-item"><video src="/PSE/Indigo Pet drive 2025.mp4" controls muted></video></div>
-            <div class="video-item"><video src="/PSE/Personalized pool cue.mp4" controls muted></video></div>
-            <div class="video-item"><video src="/PSE/Christmas present.mp4" controls muted></video></div>
-            <div class="video-item"><video src="/PSE/Cheese lovers.mp4" controls muted></video></div>
-            <div class="video-item"><video src="/PSE/Gym Water bottle with rope handle.mp4" controls muted></video></div>
-            <div class="video-item"><video src="/PSE/Memes.mp4" controls muted></video></div>
-            <div class="video-item"><video src="/PSE/Rosegold wine tumbler.mp4" controls muted></video></div>
-            <div class="video-item"><video src="/PSE/This rose will last forever.mp4" controls muted></video></div>
-            <div class="video-item"><video src="/PSE/Stitch wrap around.mp4" controls muted></video></div>
-            <div class="video-item"><video src="/PSE/Moon Fairie.mp4" controls muted></video></div>
-            <div class="video-item"><video src="/PSE/Diaries.mp4" controls muted></video></div>
-            <div class="video-item"><video src="/PSE/Monster Jam.mp4" controls muted></video></div>
-            <div class="video-item"><video src="/PSE/Double Dragon.mp4" controls muted></video></div>
-            <div class="video-item"><video src="/PSE/Spooky.mp4" controls muted></video></div>
-            <div class="video-item"><video src="/PSE/Box cutting and engraving.mp4" controls muted></video></div>
-            <div class="video-item"><video src="/PSE/Merry Christmas.mp4" controls muted></video></div>
-            <div class="video-item"><video src="/PSE/Fairytale.mp4" controls muted></video></div>
-            <div class="video-item"><video src="/PSE/Rosegold Paisley wrap around.mp4" controls muted></video></div>
-            <div class="video-item"><video src="/PSE/Custom 20oz Tumbler Birthday Gift.mp4" controls muted></video></div>
-            <div class="video-item"><video src="/PSE/Pretty Stitched Engraving video.mp4" controls muted></video></div>
-            <div class="video-item"><video src="/PSE/Corporate gifts 3.8l water bottle.mp4" controls muted></video></div>
-            <div class="video-item"><video src="/PSE/KTM birthday present.mp4" controls muted></video></div>
-            <div class="video-item"><video src="/PSE/Fitness Freaks.mp4" controls muted></video></div>
-            <div class="video-item"><video src="/PSE/Orange Dragon.mp4" controls muted></video></div>
-            <div class="video-item"><video src="/PSE/Wine tumbler.mp4" controls muted></video></div>
+            <div class="video-item"><video src="/PSE/Indigo Pet drive 2025.mp4" controls muted poster="/PSE/thumbnails/indigo-pet-drive-2025.jpg"></video></div>
+            <div class="video-item"><video src="/PSE/Personalized pool cue.mp4" controls muted poster="/PSE/thumbnails/personalized-pool-cue.jpg"></video></div>
+            <div class="video-item"><video src="/PSE/Christmas present.mp4" controls muted poster="/PSE/thumbnails/christmas-present.jpg"></video></div>
+            <div class="video-item"><video src="/PSE/Cheese lovers.mp4" controls muted poster="/PSE/thumbnails/cheese-lovers.jpg"></video></div>
+            <div class="video-item"><video src="/PSE/Gym Water bottle with rope handle.mp4" controls muted poster="/PSE/thumbnails/gym-water-bottle.jpg"></video></div>
+            <div class="video-item"><video src="/PSE/Memes.mp4" controls muted poster="/PSE/thumbnails/memes.jpg"></video></div>
+            <div class="video-item"><video src="/PSE/Rosegold wine tumbler.mp4" controls muted poster="/PSE/thumbnails/rosegold-wine-tumbler.jpg"></video></div>
+            <div class="video-item"><video src="/PSE/This rose will last forever.mp4" controls muted poster="/PSE/thumbnails/this-rose-will-last-forever.jpg"></video></div>
+            <div class="video-item"><video src="/PSE/Stitch wrap around.mp4" controls muted poster="/PSE/thumbnails/stitch-wrap-around.jpg"></video></div>
+            <div class="video-item"><video src="/PSE/Moon Fairie.mp4" controls muted poster="/PSE/thumbnails/moon-fairie.jpg"></video></div>
+            <div class="video-item"><video src="/PSE/Diaries.mp4" controls muted poster="/PSE/thumbnails/diaries.jpg"></video></div>
+            <div class="video-item"><video src="/PSE/Monster Jam.mp4" controls muted poster="/PSE/thumbnails/monster-jam.jpg"></video></div>
+            <div class="video-item"><video src="/PSE/Double Dragon.mp4" controls muted poster="/PSE/thumbnails/double-dragon.jpg"></video></div>
+            <div class="video-item"><video src="/PSE/Spooky.mp4" controls muted poster="/PSE/thumbnails/spooky.jpg"></video></div>
+            <div class="video-item"><video src="/PSE/Box cutting and engraving.mp4" controls muted poster="/PSE/thumbnails/box-cutting-and-engraving.jpg"></video></div>
+            <div class="video-item"><video src="/PSE/Merry Christmas.mp4" controls muted poster="/PSE/thumbnails/merry-christmas.jpg"></video></div>
+            <div class="video-item"><video src="/PSE/Fairytale.mp4" controls muted poster="/PSE/thumbnails/fairytale.jpg"></video></div>
+            <div class="video-item"><video src="/PSE/Rosegold Paisley wrap around.mp4" controls muted poster="/PSE/thumbnails/rosegold-paisley-wrap-around.jpg"></video></div>
+            <div class="video-item"><video src="/PSE/Custom 20oz Tumbler Birthday Gift.mp4" controls muted poster="/PSE/thumbnails/custom-20oz-tumbler.jpg"></video></div>
+            <div class="video-item"><video src="/PSE/Pretty Stitched Engraving video.mp4" controls muted poster="/PSE/thumbnails/pretty-stitched-engraving-video.jpg"></video></div>
+            <div class="video-item"><video src="/PSE/Corporate gifts 3.8l water bottle.mp4" controls muted poster="/PSE/thumbnails/corporate-gifts-3-8l-water-bottle.jpg"></video></div>
+            <div class="video-item"><video src="/PSE/KTM birthday present.mp4" controls muted poster="/PSE/thumbnails/ktm-birthday-present.jpg"></video></div>
+            <div class="video-item"><video src="/PSE/Fitness Freaks.mp4" controls muted poster="/PSE/thumbnails/fitness-freaks.jpg"></video></div>
+            <div class="video-item"><video src="/PSE/Orange Dragon.mp4" controls muted poster="/PSE/thumbnails/orange-dragon.jpg"></video></div>
+            <div class="video-item"><video src="/PSE/Wine tumbler.mp4" controls muted poster="/PSE/thumbnails/wine-tumbler.jpg"></video></div>
         </div>
     </section>
     <section id="contact" class="contact">
@@ -1088,7 +1129,7 @@
         }, 100));
 
         let trailCount = 0;
-        const maxTrails = 50;
+        const maxTrails = 30; // Reduced for better performance
         document.addEventListener('mousemove', throttle((e) => {
             if (trailCount < maxTrails) {
                 const spark = document.createElement('div');
@@ -1102,7 +1143,7 @@
                     trailCount--;
                 }, spark.className === 'engraving-spark' ? 400 : 500);
             }
-        }, 10));
+        }, 20)); // Increased throttle time for better performance
 
         const audioToggle = document.querySelector('.audio-toggle');
         audioToggle.addEventListener('click', () => {
@@ -1130,10 +1171,36 @@
         });
 
         VanillaTilt.init(document.querySelectorAll('.video-item'), {
-            max: 15,
+            max: 10, // Reduced for better performance
             speed: 400,
             glare: true,
             'max-glare': 0.4
+        });
+
+        // Fullscreen Image Viewer Logic
+        const fullscreenViewer = document.querySelector('.fullscreen-viewer');
+        const fullscreenImage = fullscreenViewer.querySelector('img');
+        const carouselItems = document.querySelectorAll('.carousel-item');
+
+        carouselItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const imgSrc = item.querySelector('img').src;
+                fullscreenImage.src = imgSrc;
+                fullscreenViewer.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling
+            });
+        });
+
+        fullscreenViewer.addEventListener('click', () => {
+            fullscreenViewer.classList.remove('active');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && fullscreenViewer.classList.contains('active')) {
+                fullscreenViewer.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
         });
 
         // Carousel Logic
@@ -1182,17 +1249,17 @@
             document.body.appendChild(beam);
             setTimeout(() => {
                 beam.remove();
-            }, 3000); // Matches animation duration
+            }, 3000);
         }
 
         window.addEventListener('load', () => {
             document.querySelector('.preloader').classList.add('hidden');
             // Create laser beams at random intervals
             setInterval(() => {
-                if (Math.random() > 0.3) { // 70% chance to create a beam
+                if (Math.random() > 0.5) { // Reduced frequency for better performance
                     createLaserBeam();
                 }
-            }, 1000); // Check every second
+            }, 1500); // Increased interval for better performance
 
             const heroImage = document.getElementById('hero-image');
             heroImage.addEventListener('load', () => {
