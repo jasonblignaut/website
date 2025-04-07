@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="LabVerse, a Hybrid Engineer focused on cybersecurity and solving problems through innovation. Check out my portfolio.">
-    <meta name="keywords" content="Hybrid Engineer, Cybersecurity, Azure, SD-WAN, AI, MSP, Network Security, Technolgoy">
-    <meta name="author" content="LabVerse">
-    <meta property="og:title" content="LabVerse">
-    <meta property="og:description" content="LabVerse: South Africa IT homelabs and projects portfolio">
-    <meta property="og:image" content="thumbnails/thumbnail-13.webp">
-    <meta property="og:url" content="https://labverse.co.za">
+    <meta name="description" content="Pretty Stitched Engraving - Custom laser cutting and engraving services in Centurion, South Africa. Explore our products and craftsmanship.">
+    <meta name="keywords" content="Laser Cutting, Engraving, Custom Gifts, Personalized Products, Pretty Stitched Engraving, Centurion">
+    <meta name="author" content="Pretty Stitched Engraving">
+    <meta property="og:title" content="Pretty Stitched Engraving">
+    <meta property="og:description" content="Custom laser cutting and engraving services in Centurion, South Africa">
+    <meta property="og:image" content="/PSE/pseLogoO.jpg">
+    <meta property="og:url" content="https://prettystitchedengraving.co.za">
     <meta property="og:type" content="website">
-    <link rel="icon" type="image/png" href="icons/favicon.ico">
-    <title>LabVerse</title>
+    <link rel="icon" type="image/x-icon" href="/PSE/pseLogoO.ico">
+    <title>Pretty Stitched Engraving</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -364,7 +364,7 @@
             overflow: hidden;
             opacity: 0;
             animation: fadeIn 2s forwards 1s;
-            z-index: 1; /* Base layer for hero */
+            z-index: 1;
         }
 
         .hero::before {
@@ -388,10 +388,10 @@
             height: 200px;
             border-radius: 50%;
             border: 3px solid var(--primary-color);
-            box-shadow: 0 0 20px rgba(0, 170, 255, 0.5), 0 0 30px rgba(0, 170, 255, 0.8); /* Double glow */
+            box-shadow: 0 0 20px rgba(0, 170, 255, 0.5), 0 0 30px rgba(0, 170, 255, 0.8);
             margin-bottom: 2rem;
             animation: glow 2s infinite alternate, float 4s ease-in-out infinite;
-            z-index: 99999; /* ABOVE EVERYTHING */
+            z-index: 99999;
             position: relative;
         }
 
@@ -479,7 +479,7 @@
             min-height: auto;
         }
 
-        #skills, #projects, #contact {
+        #products, #gallery, #contact {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -567,120 +567,91 @@
             font-size: 1.1rem;
         }
 
-        .skills-grid, .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2.5rem;
-        }
-
-        .skill-card, .project-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(15px);
+        /* Carousel Styles */
+        .carousel-container {
+            max-width: 1200px;
+            margin: 0 auto 5rem auto;
+            overflow: hidden;
+            position: relative;
             border-radius: 20px;
-            padding: 2.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 0 var(--glow-intensity) rgba(0, 170, 255, 0.3);
-            transition: all 0.4s;
-            position: relative;
-            overflow: hidden;
-            z-index: 2;
         }
 
-        .skill-card::before, .project-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(0, 170, 255, 0.1), transparent);
-            animation: cardShine 4s infinite;
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease;
         }
 
-        @keyframes cardShine {
-            0% { transform: translateX(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) rotate(45deg); }
+        .carousel-item {
+            min-width: 33.33%;
+            padding: 1rem;
         }
 
-        .skill-card:hover, .project-card:hover {
-            transform: translateY(-15px);
-            box-shadow: 0 0 calc(var(--glow-intensity) * 2) var(--primary-color);
-        }
-
-        .skill-card img, .project-card img {
-            width: 70px;
+        .carousel-item img {
+            width: 100%;
             height: auto;
-            margin-bottom: 1.5rem;
-            filter: drop-shadow(0 0 10px var(--primary-color));
-            animation: spinHover 3s infinite paused;
-            loading: lazy;
-        }
-
-        .skill-card:hover img, .project-card:hover img {
-            animation-play-state: running;
-        }
-
-        @keyframes spinHover {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .skill-card h3, .project-card h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.4rem;
-            color: var(--text-light);
-            margin-bottom: 0.75rem;
-            text-shadow: 0 0 2px var(--primary-color);
-        }
-
-        .skill-card p, .project-card p {
-            font-size: 1rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-        }
-
-        .project-card a {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .project-card a::after {
-            content: '→';
-            position: absolute;
-            right: -20px;
-            opacity: 0;
-            transition: all 0.3s;
-        }
-
-        .project-card a:hover::after {
-            opacity: 1;
-            right: -15px;
-        }
-
-        .project-card a:hover {
-            color: var(--secondary-color);
-            text-shadow: 0 0 10px var(--secondary-color);
-        }
-
-        .video-container {
-            position: relative;
-            width: 100%;
-            height: 250px;
-            border-radius: 15px;
-            margin-top: 1.5rem;
-            overflow: hidden;
-        }
-
-        .project-card iframe {
-            width: 100%;
-            height: 100%;
             border-radius: 15px;
             border: 2px solid var(--primary-color);
             box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
-            loading: lazy;
+            transition: transform 0.3s;
+        }
+
+        .carousel-item img:hover {
+            transform: scale(1.05);
+        }
+
+        .carousel-controls {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+
+        .carousel-controls button {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            box-shadow: 0 0 var(--glow-intensity) var(--primary-color);
+            transition: all 0.3s;
+        }
+
+        .carousel-controls button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 calc(var(--glow-intensity) * 1.5) var(--primary-color);
+        }
+
+        /* Video Gallery Styles */
+        .video-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .video-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 var(--glow-intensity) rgba(0, 170, 255, 0.3);
+            transition: transform 0.3s;
+        }
+
+        .video-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .video-item video {
+            width: 100%;
+            height: auto;
+            border: 2px solid var(--primary-color);
         }
 
         .contact {
@@ -769,7 +740,7 @@
 
         /* Responsive Design */
         @media (max-width: 1024px) {
-            .skills-grid, .projects-grid {
+            .video-gallery {
                 grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             }
         }
@@ -839,20 +810,12 @@
                 padding: 3rem 1rem;
             }
 
-            .skill-card, .project-card {
-                padding: 2rem;
-            }
-
             .hero h1 {
                 font-size: clamp(1.8rem, 4vw, 2.5rem);
             }
 
             .hero p {
                 font-size: clamp(1rem, 2.5vw, 1.2rem);
-            }
-
-            .project-card iframe {
-                height: 180px;
             }
 
             .audio-overlay button {
@@ -865,123 +828,103 @@
 <body>
     <div class="preloader"></div>
     <div class="audio-overlay">
-        <button>Enter the LabVerse</button>
+        <button>Enter Pretty Stitched Engraving</button>
     </div>
     <div class="background"></div>
     <audio id="bg-audio" src="/music/lofi.mp3" loop preload="auto" style="display: none;"></audio>
     <header>
         <div class="logo">
-            <a href="https://labverse.co.za">
-                <img src="icons/siteicon.svg" alt="LabVerse Logo" loading="lazy">
+            <a href="https://prettystitchedengraving.co.za">
+                <img src="/PSE/pseLogoO.jpg" alt="Pretty Stitched Engraving Logo" loading="lazy">
             </a>
         </div>
         <div class="hamburger">☰</div>
         <nav>
             <a href="#about">About</a>
-            <a href="#skills">Skills</a>
-            <a href="#projects">Projects</a>
+            <a href="#products">Products</a>
+            <a href="#gallery">Gallery</a>
             <a href="#contact">Contact</a>
         </nav>
     </header>
     <a href="#" class="back-to-top" title="Back to Top">↑</a>
     <button class="audio-toggle" title="Toggle Music">♫</button>
     <section class="hero">
-        <img src="/channel-pictures/my-picture.jpeg" alt="LabVerse" id="hero-image">
-        <h1>LabVerse | Homelabs & Projects</h1>
-        <p>Hybrid Engineer | Cybersecurity Enthusiast | Relentless Troubleshooter | Solution Bounty Hunter</p>
-        <a href="#projects" class="cta-button">Check Out My Work</a>
+        <img src="/PSE/pseLogoO.jpg" alt="Pretty Stitched Engraving" id="hero-image">
+        <h1>Pretty Stitched Engraving</h1>
+        <p>Custom Laser Cutting & Engraving | Centurion, South Africa</p>
+        <a href="#products" class="cta-button">Explore Our Creations</a>
     </section>
     <section id="about" class="about">
         <div class="about-content">
-            <img src="thumbnails/thumbnail-13.webp" alt="About Me" loading="lazy">
+            <img src="/PSE/gallery1.jpg" alt="Our Workshop" loading="lazy">
             <div class="about-text">
-                <h2>About Me</h2>
-                <p>I’m a Hybrid Engineer from Johannesburg, South Africa, with 8+ years of experience securing and designing networks. From Azure cloud architecture to FortiGate SD-WAN deployments, I turn turn difficult challenges into perfect solutions.</p>
-                <p>My obsession with creating, troubleshooting, technology and cybersecurity drives me to innovate relentlessly, delivering value to MSPs and enterprises. I thrive in high pressure environments.</p>
+                <h2>About Us</h2>
+                <p>Welcome to Pretty Stitched Engraving, your premier laser cutting service based in Centurion, South Africa. We specialize in creating personalized, high-quality engraved products that make perfect gifts or keepsakes.</p>
+                <p>Located at 5 Hilton Street, Centurion, we bring precision and creativity to every project, from custom tumblers to intricate designs. Contact us at 083 222 7144 or prettystitchedengraving@gmail.com to bring your ideas to life!</p>
             </div>
         </div>
     </section>
-    <section id="skills">
-        <h2>Skills</h2>
-        <div class="skills-grid">
-            <div class="skill-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="Hybrid Engineer Icon" loading="lazy">
-                <h3>Hybrid Engineering</h3>
-                <p>Architecting Azure environments, Exchange migrations, and FortiGate SD-WAN deployments, delivering hybrid solutions for global clients.</p>
+    <section id="products">
+        <h2>Our Products</h2>
+        <div class="carousel-container">
+            <div class="carousel">
+                <div class="carousel-item"><img src="/PSE/gallery1.jpg" alt="Product 1" loading="lazy"></div>
+                <div class="carousel-item"><img src="/PSE/gallery2.jpg" alt="Product 2" loading="lazy"></div>
+                <div class="carousel-item"><img src="/PSE/gallery3.jpg" alt="Product 3" loading="lazy"></div>
+                <div class="carousel-item"><img src="/PSE/gallery4.jpg" alt="Product 4" loading="lazy"></div>
+                <div class="carousel-item"><img src="/PSE/gallery5.jpg" alt="Product 5" loading="lazy"></div>
+                <div class="carousel-item"><img src="/PSE/gallery6.jpg" alt="Product 6" loading="lazy"></div>
             </div>
-            <div class="skill-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="Cybersecurity Icon" loading="lazy">
-                <h3>Cybersecurity</h3>
-                <p>Securing networks with Cisco switching, Defender XDR, and advanced firewall configs, neutralizing threats before they strike.</p>
-            </div>
-            <div class="skill-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="Cloud Icon" loading="lazy">
-                <h3>Cloud</h3>
-                <p>Spinning up VMs in the cloud and hybrid cloud infrastructure, reducing costs and increasing uptime for clients.</p>
-            </div>
-            <div class="skill-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="AI Icon" loading="lazy">
-                <h3>AI & Automation</h3>
-                <p>Using LLMs and PowerShell to automate workflows, cut downtime and improve operational efficiency.</p>
-            </div>
-            <div class="skill-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="Strategy Icon" loading="lazy">
-                <h3>Business Strategies</h3>
-                <p>OKRs and RICE frameworks to prioritize and deliver high ROI outcomes in critical scenarios.</p>
+            <div class="carousel-controls">
+                <button class="prev">←</button>
+                <button class="next">→</button>
             </div>
         </div>
     </section>
-    <section id="projects">
-        <h2>Projects</h2>
-        <div class="projects-grid">
-            <div class="project-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="SD-WAN Deployment" loading="lazy">
-                <h3>SD-WAN Rollout</h3>
-                <p>Deployed FortiGate SD-WAN across 50+ sites, increasing network uptime.</p>
-                <a href="https://labverse.co.za/sdwan" target="_blank">Explore</a>
-            </div>
-            <div class="project-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="Azure Migration" loading="lazy">
-                <h3>Exchange Migration</h3>
-                <p>Migrated 10,000 users to Exchange Online, cutting costs and locking down security with Defender XDR.</p>
-                <a href="https://labverse.co.za/azure" target="_blank">Explore</a>
-            </div>
-            <div class="project-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="Lo-Fi Livestream" loading="lazy">
-                <h3>24/7 lofi Stream</h3>
-                <p>Created a Linux Azure hosted YouTube livestream with nonstop lofi beats.</p>
-                <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk" frameborder="0" allowfullscreen></iframe>
-                </div>
-            </div>
-            <div class="project-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="T1 Support Tool" loading="lazy">
-                <h3>T1 Network Toolkit</h3>
-                <p>Built a complete PowerShell diagnostic tool for MSPs, reducing Tier 1 resolution times with realtime AI responses on network troubleshooting.</p>
-                <a href="https://labverse.co.za/support-tool" target="_blank">Explore</a>
-            </div>
-            <div class="project-card">
-                <img src="thumbnails/thumbnail-13.webp" alt="LabVerse Website" loading="lazy">
-                <h3>LabVerse Portal</h3>
-                <p>Created this portfolio with some free time and bit of creativity, displaying my creativity and web development skills.</p>
-                <a href="https://labverse.co.za" target="_blank">Explore</a>
-            </div>
+    <section id="gallery">
+        <h2>Video Gallery</h2>
+        <div class="video-gallery">
+            <div class="video-item"><video src="/PSE/Indigo Pet drive 2025.mp4" controls muted></video></div>
+            <div class="video-item"><video src="/PSE/Personalized pool cue.mp4" controls muted></video></div>
+            <div class="video-item"><video src="/PSE/Christmas present.mp4" controls muted></video></div>
+            <div class="video-item"><video src="/PSE/Cheese lovers.mp4" controls muted></video></div>
+            <div class="video-item"><video src="/PSE/Gym Water bottle with rope handle.mp4" controls muted></video></div>
+            <div class="video-item"><video src="/PSE/Memes.mp4" controls muted></video></div>
+            <div class="video-item"><video src="/PSE/Rosegold wine tumbler.mp4" controls muted></video></div>
+            <div class="video-item"><video src="/PSE/This rose will last forever.mp4" controls muted></video></div>
+            <div class="video-item"><video src="/PSE/Stitch wrap around.mp4" controls muted></video></div>
+            <div class="video-item"><video src="/PSE/Moon Fairie.mp4" controls muted></video></div>
+            <div class="video-item"><video src="/PSE/Diaries.mp4" controls muted></video></div>
+            <div class="video-item"><video src="/PSE/Monster Jam.mp4" controls muted></video></div>
+            <div class="video-item"><video src="/PSE/Double Dragon.mp4" controls muted></video></div>
+            <div class="video-item"><video src="/PSE/Spooky.mp4" controls muted></video></div>
+            <div class="video-item"><video src="/PSE/Box cutting and engraving.mp4" controls muted></video></div>
+            <div class="video-item"><video src="/PSE/Merry Christmas.mp4" controls muted></video></div>
+            <div class="video-item"><video src="/PSE/Fairytale.mp4" controls muted></video></div>
+            <div class="video-item"><video src="/PSE/Rosegold Paisley wrap around.mp4" controls muted></video></div>
+            <div class="video-item"><video src="/PSE/Custom 20oz Tumbler Birthday Gift.mp4" controls muted></video></div>
+            <div class="video-item"><video src="/PSE/Pretty Stitched Engraving video.mp4" controls muted></video></div>
+            <div class="video-item"><video src="/PSE/Corporate gifts 3.8l water bottle.mp4" controls muted></video></div>
+            <div class="video-item"><video src="/PSE/KTM birthday present.mp4" controls muted></video></div>
+            <div class="video-item"><video src="/PSE/Fitness Freaks.mp4" controls muted></video></div>
+            <div class="video-item"><video src="/PSE/Orange Dragon.mp4" controls muted></video></div>
+            <div class="video-item"><video src="/PSE/Wine tumbler.mp4" controls muted></video></div>
         </div>
     </section>
     <section id="contact" class="contact">
-        <h2>Connect to the LabVerse</h2>
-        <p>Let’s collaborate, reach out!</p>
+        <h2>Get in Touch</h2>
+        <p>Reach out for custom orders or inquiries!</p>
         <div class="contact-links">
-            <a href="mailto:labversemail@gmail.com">Email</a>
-            <a href="https://linkedin.com/in/labverse" target="_blank">LinkedIn</a>
-            <a href="https://www.youtube.com/@labversity" target="_blank">YouTube</a>
+            <a href="mailto:prettystitchedengraving@gmail.com">Email</a>
+            <a href="tel:+27832227144">Call Us</a>
+            <a href="https://www.tiktok.com/@diedrake" target="_blank">TikTok</a>
         </div>
     </section>
     <footer>
-        <p>© 2025 LabVerse | Homelabs & Projects</p>
+        <p>© 2025 Pretty Stitched Engraving | 5 Hilton Street, Centurion, South Africa, 0157</p>
         <div class="footer-links">
-            <a href="mailto:labversemail@gmail.com">Contact Me</a>
-            <a href="https://linkedin.com/in/labverse" target="_blank">LinkedIn</a>
+            <a href="mailto:prettystitchedengraving@gmail.com">Contact Us</a>
+            <a href="https://www.tiktok.com/@diedrake" target="_blank">TikTok</a>
         </div>
     </footer>
 
@@ -1073,12 +1016,41 @@
             }
         });
 
-        VanillaTilt.init(document.querySelectorAll('.skill-card, .project-card'), {
-            max: 20,
-            speed: 300,
+        VanillaTilt.init(document.querySelectorAll('.video-item'), {
+            max: 15,
+            speed: 400,
             glare: true,
-            'max-glare': 0.6
+            'max-glare': 0.4
         });
+
+        // Carousel Logic
+        const carousel = document.querySelector('.carousel');
+        const items = document.querySelectorAll('.carousel-item');
+        const prevBtn = document.querySelector('.prev');
+        const nextBtn = document.querySelector('.next');
+        let index = 0;
+        const visibleItems = 3;
+
+        function updateCarousel() {
+            const itemWidth = items[0].offsetWidth;
+            carousel.style.transform = `translateX(-${index * itemWidth}px)`;
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (index < items.length - visibleItems) {
+                index++;
+                updateCarousel();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (index > 0) {
+                index--;
+                updateCarousel();
+            }
+        });
+
+        window.addEventListener('resize', updateCarousel);
 
         window.addEventListener('load', () => {
             document.querySelector('.preloader').classList.add('hidden');
@@ -1093,38 +1065,12 @@
                 document.body.appendChild(orb);
             }
 
-            // Ensure hero image loads and shows
             const heroImage = document.getElementById('hero-image');
-            const pathsToTry = [
-                '/channel-pictures/my-picture.jpeg',  // Absolute from root
-                './channel-pictures/my-picture.jpeg', // Relative to HTML
-                'channel-pictures/my-picture.jpeg',   // Relative without leading slash
-                'thumbnails/thumbnail-13.webp'        // Final fallback
-            ];
-            let currentPathIndex = 0;
-
-            function tryNextPath() {
-                if (currentPathIndex >= pathsToTry.length) {
-                    console.error('All paths failed. Check file existence and server config.');
-                    return;
-                }
-                heroImage.src = pathsToTry[currentPathIndex];
-                console.log(`Trying path: ${pathsToTry[currentPathIndex]}`);
-                currentPathIndex++;
-            }
-
             heroImage.addEventListener('load', () => {
-                console.log(`Image loaded successfully at ${heroImage.src}`);
-                heroImage.style.opacity = 1; // Ensure visibility
+                heroImage.style.opacity = 1;
             });
-
-            heroImage.addEventListener('error', () => {
-                console.error(`Failed to load ${heroImage.src}`);
-                tryNextPath();
-            });
-
-            heroImage.style.opacity = 0; // Start hidden, show on load
-            tryNextPath(); // Kick off the loading process
+            heroImage.style.opacity = 0;
+            heroImage.src = '/PSE/pseLogoO.jpg';
         });
     </script>
 </body>
