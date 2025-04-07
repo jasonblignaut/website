@@ -127,32 +127,32 @@
             100% { opacity: 0; transform: translateY(100%); }
         }
 
-        /* Custom Background with Smooth Pan and Zoom */
+        /* Custom Background with Very Slow Pan and Zoom */
         .background {
             position: fixed;
             inset: 0;
             background: url('/PSE/background.jpg') no-repeat center center;
-            background-size: cover;
+            background-size: 150%; /* Increased to ensure edges are never visible */
             z-index: -2;
             overflow: hidden;
-            animation: panAndZoom 20s ease-in-out infinite;
+            animation: panAndZoom 60s ease-in-out infinite; /* Slower animation: 60s */
         }
 
         @keyframes panAndZoom {
             0% {
-                transform: scale(1) translate(0, 0);
+                transform: scale(1.2) translate(0, 0); /* Start slightly zoomed in */
             }
             25% {
-                transform: scale(1.1) translate(-5%, 5%);
+                transform: scale(1.25) translate(-2%, 2%); /* Smaller movement */
             }
             50% {
-                transform: scale(1.05) translate(5%, -5%);
+                transform: scale(1.2) translate(2%, -2%);
             }
             75% {
-                transform: scale(1.1) translate(-3%, 3%);
+                transform: scale(1.25) translate(-1%, 1%);
             }
             100% {
-                transform: scale(1) translate(0, 0);
+                transform: scale(1.2) translate(0, 0);
             }
         }
 
@@ -735,6 +735,10 @@
             z-index: 1;
         }
 
+        .video-item.hidden {
+            display: none; /* Hide videos beyond the first 6 initially */
+        }
+
         .video-item:hover {
             transform: translateY(-10px);
         }
@@ -744,6 +748,48 @@
             height: auto;
             border: 2px solid var(--primary-color);
             border-radius: 15px;
+        }
+
+        /* See More Button */
+        .see-more-container {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .see-more-btn {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 0 var(--glow-intensity) var(--primary-color);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .see-more-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.3s;
+        }
+
+        .see-more-btn:hover::before {
+            left: 100%;
+        }
+
+        .see-more-btn:hover {
+            box-shadow: 0 0 calc(var(--glow-intensity) * 2) var(--primary-color);
+            transform: scale(1.1);
         }
 
         /* Creative Mobile Video Layout */
@@ -786,6 +832,10 @@
                 0% { opacity: 0.7; transform: scale(1); }
                 50% { opacity: 0.4; transform: scale(1.02); }
                 100% { opacity: 0.7; transform: scale(1); }
+            }
+
+            .video-item.hidden {
+                display: none; /* Ensure hidden videos stay hidden on mobile */
             }
         }
 
@@ -1049,25 +1099,28 @@
             <div class="video-item"><video src="/PSE/Cheese lovers.mp4" controls muted poster="/PSE/Cheese lovers.png"></video></div>
             <div class="video-item"><video src="/PSE/Gym Water bottle with rope handle.mp4" controls muted poster="/PSE/Gym Water bottle with rope handle.png"></video></div>
             <div class="video-item"><video src="/PSE/Memes.mp4" controls muted poster="/PSE/Memes.png"></video></div>
-            <div class="video-item"><video src="/PSE/Rosegold wine tumbler.mp4" controls muted poster="/PSE/Rosegold wine tumbler.png"></video></div>
-            <div class="video-item"><video src="/PSE/This rose will last forever.mp4" controls muted poster="/PSE/This rose will last forever.png"></video></div>
-            <div class="video-item"><video src="/PSE/Stitch wrap around.mp4" controls muted poster="/PSE/Stitch wrap around.png"></video></div>
-            <div class="video-item"><video src="/PSE/Moon Fairie.mp4" controls muted poster="/PSE/Moon Fairie.png"></video></div>
-            <div class="video-item"><video src="/PSE/Diaries.mp4" controls muted poster="/PSE/Diaries.png"></video></div>
-            <div class="video-item"><video src="/PSE/Monster Jam.mp4" controls muted poster="/PSE/Monster Jam.png"></video></div>
-            <div class="video-item"><video src="/PSE/Double Dragon.mp4" controls muted poster="/PSE/Double Dragon.png"></video></div>
-            <div class="video-item"><video src="/PSE/Spooky.mp4" controls muted poster="/PSE/Spooky.png"></video></div>
-            <div class="video-item"><video src="/PSE/Box cutting and engraving.mp4" controls muted poster="/PSE/Box cutting and engraving.png"></video></div>
-            <div class="video-item"><video src="/PSE/Merry Christmas.mp4" controls muted poster="/PSE/Merry Christmas.png"></video></div>
-            <div class="video-item"><video src="/PSE/Fairytale.mp4" controls muted poster="/PSE/Fairytale.png"></video></div>
-            <div class="video-item"><video src="/PSE/Rosegold Paisley wrap around.mp4" controls muted poster="/PSE/Rosegold Paisley wrap around.png"></video></div>
-            <div class="video-item"><video src="/PSE/Custom 20oz Tumbler Birthday Gift.mp4" controls muted poster="/PSE/Custom 20oz Tumbler Birthday Gift.png"></video></div>
-            <div class="video-item"><video src="/PSE/Pretty Stitched Engraving video.mp4" controls muted poster="/PSE/Pretty Stitched Engraving video.png"></video></div>
-            <div class="video-item"><video src="/PSE/Corporate gifts 3.8l water bottle.mp4" controls muted poster="/PSE/Corporate gifts 3.8l water bottle.png"></video></div>
-            <div class="video-item"><video src="/PSE/KTM birthday present.mp4" controls muted poster="/PSE/KTM birthday present.png"></video></div>
-            <div class="video-item"><video src="/PSE/Fitness Freaks.mp4" controls muted poster="/PSE/Fitness Freaks.png"></video></div>
-            <div class="video-item"><video src="/PSE/Orange Dragon.mp4" controls muted poster="/PSE/Orange Dragon.png"></video></div>
-            <div class="video-item"><video src="/PSE/Wine tumbler.mp4" controls muted poster="/PSE/Wine tumbler.png"></video></div>
+            <div class="video-item hidden"><video src="/PSE/Rosegold wine tumbler.mp4" controls muted poster="/PSE/Rosegold wine tumbler.png"></video></div>
+            <div class="video-item hidden"><video src="/PSE/This rose will last forever.mp4" controls muted poster="/PSE/This rose will last forever.png"></video></div>
+            <div class="video-item hidden"><video src="/PSE/Stitch wrap around.mp4" controls muted poster="/PSE/Stitch wrap around.png"></video></div>
+            <div class="video-item hidden"><video src="/PSE/Moon Fairie.mp4" controls muted poster="/PSE/Moon Fairie.png"></video></div>
+            <div class="video-item hidden"><video src="/PSE/Diaries.mp4" controls muted poster="/PSE/Diaries.png"></video></div>
+            <div class="video-item hidden"><video src="/PSE/Monster Jam.mp4" controls muted poster="/PSE/Monster Jam.png"></video></div>
+            <div class="video-item hidden"><video src="/PSE/Double Dragon.mp4" controls muted poster="/PSE/Double Dragon.png"></video></div>
+            <div class="video-item hidden"><video src="/PSE/Spooky.mp4" controls muted poster="/PSE/Spooky.png"></video></div>
+            <div class="video-item hidden"><video src="/PSE/Box cutting and engraving.mp4" controls muted poster="/PSE/Box cutting and engraving.png"></video></div>
+            <div class="video-item hidden"><video src="/PSE/Merry Christmas.mp4" controls muted poster="/PSE/Merry Christmas.png"></video></div>
+            <div class="video-item hidden"><video src="/PSE/Fairytale.mp4" controls muted poster="/PSE/Fairytale.png"></video></div>
+            <div class="video-item hidden"><video src="/PSE/Rosegold Paisley wrap around.mp4" controls muted poster="/PSE/Rosegold Paisley wrap around.png"></video></div>
+            <div class="video-item hidden"><video src="/PSE/Custom 20oz Tumbler Birthday Gift.mp4" controls muted poster="/PSE/Custom 20oz Tumbler Birthday Gift.png"></video></div>
+            <div class="video-item hidden"><video src="/PSE/Pretty Stitched Engraving video.mp4" controls muted poster="/PSE/Pretty Stitched Engraving video.png"></video></div>
+            <div class="video-item hidden"><video src="/PSE/Corporate gifts 3.8l water bottle.mp4" controls muted poster="/PSE/Corporate gifts 3.8l water bottle.png"></video></div>
+            <div class="video-item hidden"><video src="/PSE/KTM birthday present.mp4" controls muted poster="/PSE/KTM birthday present.png"></video></div>
+            <div class="video-item hidden"><video src="/PSE/Fitness Freaks.mp4" controls muted poster="/PSE/Fitness Freaks.png"></video></div>
+            <div class="video-item hidden"><video src="/PSE/Orange Dragon.mp4" controls muted poster="/PSE/Orange Dragon.png"></video></div>
+            <div class="video-item hidden"><video src="/PSE/Wine tumbler.mp4" controls muted poster="/PSE/Wine tumbler.png"></video></div>
+        </div>
+        <div class="see-more-container">
+            <button class="see-more-btn">See More</button>
         </div>
     </section>
     <section id="contact" class="contact">
@@ -1085,6 +1138,7 @@
         <div class="footer-links">
             <a href="mailto:prettystitchedengraving@gmail.com">Contact Us</a>
             <a href="https://www.tiktok.com/@diedrake" target="_blank">TikTok</a>
+            <a href="https://www.facebook.com/share/1AGJEC1RfQ/?mibextid=wwXIfr" target="_blank">Facebook</a>
         </div>
     </footer>
 
@@ -1188,6 +1242,16 @@
             video.addEventListener('ended', () => {
                 audio.play();
             });
+        });
+
+        // See More Button Logic for Video Gallery
+        const seeMoreBtn = document.querySelector('.see-more-btn');
+        const hiddenVideos = document.querySelectorAll('.video-item.hidden');
+        seeMoreBtn.addEventListener('click', () => {
+            hiddenVideos.forEach(video => {
+                video.classList.remove('hidden');
+            });
+            seeMoreBtn.style.display = 'none'; // Hide the button after expanding
         });
 
         VanillaTilt.init(document.querySelectorAll('.video-item'), {
