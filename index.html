@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Pretty Stitched Engraving - Custom laser cutting and engraving services in Centurion, South Africa. Explore our products and craftsmanship.">
-    <meta name="keywords" content="Laser Cutting, Engraving, Custom Gifts, Personalized Products, Pretty Stitched Engraving, Centurion">
-    <meta name="author" content="Pretty Stitched Engraving">
-    <meta property="og:title" content="Pretty Stitched Engraving">
-    <meta property="og:description" content="Custom laser cutting and engraving services in Centurion, South Africa">
-    <meta property="og:image" content="/PSE/pseLogoO.jpg">
-    <meta property="og:url" content="https://prettystitchedengraving.co.za">
+    <meta name="description" content="LabVerse, a Hybrid Engineer focused on cybersecurity and solving problems through innovation. Check out my portfolio.">
+    <meta name="keywords" content="Hybrid Engineer, Cybersecurity, Azure, SD-WAN, AI, MSP, Network Security, Technolgoy">
+    <meta name="author" content="LabVerse">
+    <meta property="og:title" content="LabVerse">
+    <meta property="og:description" content="LabVerse: South Africa IT homelabs and projects portfolio">
+    <meta property="og:image" content="thumbnails/thumbnail-13.webp">
+    <meta property="og:url" content="https://labverse.co.za">
     <meta property="og:type" content="website">
-    <link rel="icon" type="image/x-icon" href="/PSE/pseLogoO.ico">
-    <title>Pretty Stitched Engraving</title>
+    <link rel="icon" type="image/png" href="icons/favicon.ico">
+    <title>LabVerse</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -47,132 +47,99 @@
             position: relative;
         }
 
-        /* Laser Engraving Sparks for Mouse Trail */
-        .engraving-spark {
+        /* Particle Effects */
+        .trail {
             position: fixed;
-            width: 5px;
-            height: 5px;
-            background: linear-gradient(45deg, var(--primary-color), #ffffff, var(--secondary-color));
+            width: 12px;
+            height: 12px;
+            background: var(--primary-color);
+            border-radius: 50%;
             pointer-events: none;
             z-index: 10001;
             opacity: 0.8;
-            box-shadow: 0 0 10px var(--primary-color), 0 0 15px var(--secondary-color);
-            animation: engravingFlicker 0.4s ease-out forwards;
+            box-shadow: 0 0 15px var(--primary-color), 0 0 25px var(--secondary-color);
+            animation: particleBurst 0.6s ease-out forwards;
+            will-change: transform, opacity;
         }
 
-        .engraving-flare {
+        .spark {
             position: fixed;
-            width: 3px;
-            height: 8px;
-            background: linear-gradient(var(--primary-color), transparent);
+            width: 4px;
+            height: 16px;
+            background: linear-gradient(var(--secondary-color), transparent);
             pointer-events: none;
             z-index: 10001;
             opacity: 0.6;
-            box-shadow: 0 0 5px var(--primary-color);
-            animation: flareBurst 0.5s ease-out forwards;
+            animation: sparkFall 0.8s ease-out forwards;
+            will-change: transform, opacity;
         }
 
-        @keyframes engravingFlicker {
-            0% { transform: scale(1) rotate(0deg); opacity: 0.8; }
-            50% { transform: scale(1.3) rotate(45deg); opacity: 0.5; }
-            100% { transform: scale(0) rotate(90deg); opacity: 0; }
+        @keyframes particleBurst {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(2); opacity: 0.5; }
+            100% { transform: scale(0); opacity: 0; }
         }
 
-        @keyframes flareBurst {
-            0% { transform: translateY(0) rotate(30deg); opacity: 0.6; }
-            100% { transform: translateY(10px) rotate(30deg); opacity: 0; }
+        @keyframes sparkFall {
+            0% { transform: translateY(0) rotate(45deg); opacity: 0.6; }
+            100% { transform: translateY(20px) rotate(45deg); opacity: 0; }
         }
 
-        /* Random Laser Beams */
-        .laser-beam {
-            position: fixed;
-            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+        /* Floating Cyber-Orbs */
+        .cyber-orb {
+            position: absolute;
+            background: radial-gradient(circle, var(--primary-color), transparent);
+            border-radius: 50%;
             pointer-events: none;
             z-index: 0;
-            opacity: 0;
-            box-shadow: 0 0 10px var(--primary-color);
-            animation: laserBeamFade 3s ease-in-out forwards;
+            opacity: 0.3;
+            animation: floatOrb linear infinite;
+            will-change: transform;
         }
 
-        .laser-beam.vertical {
-            width: 2px;
-            height: 100vh;
-            animation: laserBeamFadeVertical 3s ease-in-out forwards;
+        @keyframes floatOrb {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
         }
 
-        .laser-beam.horizontal {
-            width: 100vw;
-            height: 2px;
-            animation: laserBeamFadeHorizontal 3s ease-in-out forwards;
-        }
-
-        @keyframes laserBeamFade {
-            0% { opacity: 0; }
-            20% { opacity: 0.6; }
-            80% { opacity: 0.6; }
-            100% { opacity: 0; }
-        }
-
-        @keyframes laserBeamFadeHorizontal {
-            0% { opacity: 0; transform: translateX(-100%); }
-            20% { opacity: 0.6; transform: translateX(-50%); }
-            80% { opacity: 0.6; transform: translateX(50%); }
-            100% { opacity: 0; transform: translateX(100%); }
-        }
-
-        @keyframes laserBeamFadeVertical {
-            0% { opacity: 0; transform: translateY(-100%); }
-            20% { opacity: 0.6; transform: translateY(-50%); }
-            80% { opacity: 0.6; transform: translateY(50%); }
-            100% { opacity: 0; transform: translateY(100%); }
-        }
-
-        /* Custom Background with Very Slow Pan and Zoom */
+        /* Smooth Circuit Background */
         .background {
             position: fixed;
             inset: 0;
-            background: url('/PSE/background.jpg') no-repeat center center;
-            background-size: 150%; /* Increased to ensure edges are never visible */
+            background: linear-gradient(135deg, #1a1a2e 0%, var(--bg-dark) 100%);
             z-index: -2;
             overflow: hidden;
-            animation: panAndZoom 60s ease-in-out infinite; /* Slower animation: 60s */
-        }
-
-        @keyframes panAndZoom {
-            0% {
-                transform: scale(1.2) translate(0, 0); /* Start slightly zoomed in */
-            }
-            25% {
-                transform: scale(1.25) translate(-2%, 2%); /* Smaller movement */
-            }
-            50% {
-                transform: scale(1.2) translate(2%, -2%);
-            }
-            75% {
-                transform: scale(1.25) translate(-1%, 1%);
-            }
-            100% {
-                transform: scale(1.2) translate(0, 0);
-            }
         }
 
         .background::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8));
-            opacity: 0.5;
-            z-index: -1;
+            background: url('thumbnails/circuit-pattern.webp') repeat;
+            background-size: 150% 150%;
+            opacity: 0.15;
+            animation: moveBackground 80s ease-in-out infinite;
+            filter: blur(1px);
         }
 
-        /* Fix Background Image on Mobile */
-        @media (max-width: 768px) {
-            .background {
-                background-attachment: scroll;
-                background-size: contain;
-                background-position: center top;
-                animation: none; /* Disable animation on mobile for performance */
-            }
+        .background::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(0, 170, 255, 0.1), transparent 70%);
+            opacity: 0.4;
+            animation: nebulaPulse 12s infinite alternate;
+        }
+
+        @keyframes moveBackground {
+            0% { background-position: 0 0; }
+            50% { background-position: 50% 50%; }
+            100% { background-position: 0 0; }
+        }
+
+        @keyframes nebulaPulse {
+            0% { transform: scale(1); opacity: 0.4; }
+            100% { transform: scale(1.15); opacity: 0.6; }
         }
 
         /* Audio Overlay */
@@ -209,7 +176,6 @@
             position: relative;
             overflow: hidden;
             transition: transform 0.3s, box-shadow 0.3s;
-            white-space: nowrap;
         }
 
         .audio-overlay button::before {
@@ -277,7 +243,7 @@
             backdrop-filter: blur(15px);
             padding: 1rem 2rem;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
             z-index: 1000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -287,6 +253,16 @@
         header.hidden {
             opacity: 0;
             transform: translateY(-100%);
+        }
+
+        .logo img {
+            height: 50px;
+            filter: drop-shadow(0 0 5px var(--primary-color));
+            transition: transform 0.3s;
+        }
+
+        .logo img:hover {
+            transform: rotate(360deg);
         }
 
         nav {
@@ -337,53 +313,9 @@
             transform: scale(1.2);
         }
 
-        /* Floating Buttons (WhatsApp and Audio Toggle) */
-        .whatsapp-button, .audio-toggle {
+        /* Back to Top and Audio Toggle */
+        .back-to-top, .audio-toggle {
             position: fixed;
-            z-index: 1000;
-            transition: transform 0.3s;
-        }
-
-        .whatsapp-button {
-            bottom: 6rem;
-            left: 2rem;
-        }
-
-        .whatsapp-button img {
-            width: 60px;
-            height: 60px;
-            transition: transform 0.3s;
-        }
-
-        .whatsapp-button:hover img {
-            transform: scale(1.15);
-        }
-
-        .audio-toggle {
-            bottom: 2rem;
-            left: 2rem;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.8rem;
-            box-shadow: 0 0 var(--glow-intensity) var(--primary-color);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .audio-toggle:hover {
-            transform: scale(1.15);
-            box-shadow: 0 0 calc(var(--glow-intensity) * 1.5) var(--primary-color);
-        }
-
-        .back-to-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
             background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
             color: white;
             width: 60px;
@@ -397,6 +329,11 @@
             box-shadow: 0 0 var(--glow-intensity) var(--primary-color);
             transition: transform 0.3s, box-shadow 0.3s;
             z-index: 1000;
+        }
+
+        .back-to-top {
+            bottom: 2rem;
+            right: 2rem;
             opacity: 0;
         }
 
@@ -404,39 +341,14 @@
             opacity: 1;
         }
 
-        .back-to-top:hover {
+        .audio-toggle {
+            bottom: 2rem;
+            left: 2rem;
+        }
+
+        .back-to-top:hover, .audio-toggle:hover {
             transform: scale(1.15);
             box-shadow: 0 0 calc(var(--glow-intensity) * 1.5) var(--primary-color);
-        }
-
-        /* Fullscreen Image Viewer */
-        .fullscreen-viewer {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10002;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .fullscreen-viewer.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .fullscreen-viewer img {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-            border: 2px solid var(--primary-color);
-            box-shadow: 0 0 20px var(--primary-color);
         }
 
         /* Hero Section with Glowing Circle */
@@ -452,7 +364,7 @@
             overflow: hidden;
             opacity: 0;
             animation: fadeIn 2s forwards 1s;
-            z-index: 1;
+            z-index: 1; /* Base layer for hero */
         }
 
         .hero::before {
@@ -476,10 +388,10 @@
             height: 200px;
             border-radius: 50%;
             border: 3px solid var(--primary-color);
-            box-shadow: 0 0 20px rgba(0, 170, 255, 0.5), 0 0 30px rgba(0, 170, 255, 0.8);
+            box-shadow: 0 0 20px rgba(0, 170, 255, 0.5), 0 0 30px rgba(0, 170, 255, 0.8); /* Double glow */
             margin-bottom: 2rem;
             animation: glow 2s infinite alternate, float 4s ease-in-out infinite;
-            z-index: 99999;
+            z-index: 99999; /* ABOVE EVERYTHING */
             position: relative;
         }
 
@@ -567,7 +479,7 @@
             min-height: auto;
         }
 
-        #products, #gallery, #contact {
+        #skills, #projects, #contact {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -637,7 +549,7 @@
             max-width: 300px;
             width: 100%;
             height: auto;
-            border-radius: 50%;
+            border-radius: 15px;
             border: 3px solid var(--primary-color);
             box-shadow: 0 0 var(--glow-intensity) var(--primary-color);
             animation: float 5s ease-in-out infinite;
@@ -655,188 +567,120 @@
             font-size: 1.1rem;
         }
 
-        /* Carousel Styles */
-        .carousel-container {
-            max-width: 1200px;
-            margin: 0 auto 5rem auto;
-            overflow: hidden;
-            position: relative;
+        .skills-grid, .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .skill-card, .project-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
             border-radius: 20px;
+            padding: 2.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 0 var(--glow-intensity) rgba(0, 170, 255, 0.3);
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+            z-index: 2;
         }
 
-        .carousel {
-            display: flex;
-            transition: transform 0.5s ease;
+        .skill-card::before, .project-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 170, 255, 0.1), transparent);
+            animation: cardShine 4s infinite;
         }
 
-        .carousel-item {
-            min-width: 33.33%;
-            padding: 1rem;
-            cursor: pointer;
+        @keyframes cardShine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
         }
 
-        .carousel-item img {
-            width: 100%;
+        .skill-card:hover, .project-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 0 calc(var(--glow-intensity) * 2) var(--primary-color);
+        }
+
+        .skill-card img, .project-card img {
+            width: 70px;
             height: auto;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 0 10px var(--primary-color));
+            animation: spinHover 3s infinite paused;
+            loading: lazy;
+        }
+
+        .skill-card:hover img, .project-card:hover img {
+            animation-play-state: running;
+        }
+
+        @keyframes spinHover {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .skill-card h3, .project-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            color: var(--text-light);
+            margin-bottom: 0.75rem;
+            text-shadow: 0 0 2px var(--primary-color);
+        }
+
+        .skill-card p, .project-card p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .project-card a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .project-card a::after {
+            content: '→';
+            position: absolute;
+            right: -20px;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .project-card a:hover::after {
+            opacity: 1;
+            right: -15px;
+        }
+
+        .project-card a:hover {
+            color: var(--secondary-color);
+            text-shadow: 0 0 10px var(--secondary-color);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            border-radius: 15px;
+            margin-top: 1.5rem;
+            overflow: hidden;
+        }
+
+        .project-card iframe {
+            width: 100%;
+            height: 100%;
             border-radius: 15px;
             border: 2px solid var(--primary-color);
             box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
-            transition: transform 0.3s;
-        }
-
-        .carousel-item img:hover {
-            transform: scale(1.05);
-        }
-
-        .carousel-controls {
-            position: absolute;
-            top: 50%;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            transform: translateY(-50%);
-        }
-
-        .carousel-controls button {
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            border: none;
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.5rem;
-            box-shadow: 0 0 var(--glow-intensity) var(--primary-color);
-            transition: all 0.3s;
-        }
-
-        .carousel-controls button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 calc(var(--glow-intensity) * 1.5) var(--primary-color);
-        }
-
-        /* Video Gallery Styles */
-        .video-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .video-item {
-            position: relative;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 0 var(--glow-intensity) rgba(0, 170, 255, 0.3);
-            transition: transform 0.3s;
-            z-index: 1;
-        }
-
-        .video-item.hidden {
-            display: none; /* Hide videos beyond the first 6 initially */
-        }
-
-        .video-item:hover {
-            transform: translateY(-10px);
-        }
-
-        .video-item video {
-            width: 100%;
-            height: auto;
-            border: 2px solid var(--primary-color);
-            border-radius: 15px;
-        }
-
-        /* See More Button */
-        .see-more-container {
-            text-align: center;
-            margin-top: 2rem;
-        }
-
-        .see-more-btn {
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 30px;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            text-transform: uppercase;
-            cursor: pointer;
-            box-shadow: 0 0 var(--glow-intensity) var(--primary-color);
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .see-more-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.2);
-            transition: left 0.3s;
-        }
-
-        .see-more-btn:hover::before {
-            left: 100%;
-        }
-
-        .see-more-btn:hover {
-            box-shadow: 0 0 calc(var(--glow-intensity) * 2) var(--primary-color);
-            transform: scale(1.1);
-        }
-
-        /* Creative Mobile Video Layout */
-        @media (max-width: 768px) {
-            .video-gallery {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 3rem;
-            }
-
-            .video-item {
-                width: 90%;
-                max-width: 350px;
-                transform: rotate(2deg);
-                margin: 1rem 0;
-                position: relative;
-            }
-
-            .video-item:nth-child(even) {
-                transform: rotate(-2deg);
-                margin-left: 2rem;
-            }
-
-            .video-item::before {
-                content: '';
-                position: absolute;
-                top: -10px;
-                left: -10px;
-                right: -10px;
-                bottom: -10px;
-                border: 2px dashed var(--primary-color);
-                border-radius: 20px;
-                z-index: -1;
-                opacity: 0.7;
-                animation: laserFramePulse 3s infinite;
-            }
-
-            @keyframes laserFramePulse {
-                0% { opacity: 0.7; transform: scale(1); }
-                50% { opacity: 0.4; transform: scale(1.02); }
-                100% { opacity: 0.7; transform: scale(1); }
-            }
-
-            .video-item.hidden {
-                display: none; /* Ensure hidden videos stay hidden on mobile */
-            }
+            loading: lazy;
         }
 
         .contact {
@@ -923,17 +767,14 @@
             text-shadow: 0 0 10px var(--secondary-color);
         }
 
-        /* Responsive Design for Audio Overlay Button */
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .skills-grid, .projects-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+
         @media (max-width: 768px) {
-            .audio-overlay button {
-                font-size: 1.2rem;
-                padding: 1rem 2rem;
-            }
-
-            header {
-                justify-content: space-between;
-            }
-
             .hamburger {
                 display: block;
             }
@@ -958,23 +799,7 @@
                 margin: 1.5rem 0;
                 font-size: 1.3rem;
             }
-        }
 
-        @media (max-width: 480px) {
-            .audio-overlay button {
-                font-size: 0.9rem;
-                padding: 0.8rem 1.5rem;
-            }
-        }
-
-        /* Additional Responsive Adjustments */
-        @media (max-width: 1024px) {
-            .video-gallery {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            }
-        }
-
-        @media (max-width: 768px) {
             .about-content {
                 flex-direction: column;
                 text-align: center;
@@ -989,38 +814,33 @@
                 height: 180px;
             }
 
-            .whatsapp-button, .audio-toggle {
+            .back-to-top, .audio-toggle {
                 width: 50px;
                 height: 50px;
-                bottom: 1.5rem;
-            }
-
-            .whatsapp-button {
-                bottom: 5rem;
-                left: 1.5rem;
-            }
-
-            .whatsapp-button img {
-                width: 50px;
-                height: 50px;
-            }
-
-            .audio-toggle {
-                left: 1.5rem;
                 font-size: 1.5rem;
+                bottom: 1.5rem;
             }
 
             .back-to-top {
                 right: 1.5rem;
-                width: 50px;
-                height: 50px;
-                font-size: 1.5rem;
+            }
+
+            .audio-toggle {
+                left: 1.5rem;
+            }
+
+            .cyber-orb {
+                display: none;
             }
         }
 
         @media (max-width: 480px) {
             section {
                 padding: 3rem 1rem;
+            }
+
+            .skill-card, .project-card {
+                padding: 2rem;
             }
 
             .hero h1 {
@@ -1030,115 +850,138 @@
             .hero p {
                 font-size: clamp(1rem, 2.5vw, 1.2rem);
             }
+
+            .project-card iframe {
+                height: 180px;
+            }
+
+            .audio-overlay button {
+                padding: 1rem 2rem;
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="preloader"></div>
     <div class="audio-overlay">
-        <button>ENTER PRETTY STITCHED ENGRAVING</button>
+        <button>Enter the LabVerse</button>
     </div>
     <div class="background"></div>
-    <div class="fullscreen-viewer">
-        <img src="" alt="Fullscreen Image">
-    </div>
     <audio id="bg-audio" src="/music/lofi.mp3" loop preload="auto" style="display: none;"></audio>
     <header>
+        <div class="logo">
+            <a href="https://labverse.co.za">
+                <img src="icons/siteicon.svg" alt="LabVerse Logo" loading="lazy">
+            </a>
+        </div>
         <div class="hamburger">☰</div>
         <nav>
             <a href="#about">About</a>
-            <a href="#products">Products</a>
-            <a href="#gallery">Gallery</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
             <a href="#contact">Contact</a>
         </nav>
     </header>
     <a href="#" class="back-to-top" title="Back to Top">↑</a>
-    <a href="https://wa.me/27832227144" class="whatsapp-button" title="Chat on WhatsApp">
-        <img src="/PSE/whatsapp.jpg" alt="WhatsApp">
-    </a>
     <button class="audio-toggle" title="Toggle Music">♫</button>
     <section class="hero">
-        <img src="/PSE/pseLogoO.jpg" alt="Pretty Stitched Engraving" id="hero-image">
-        <h1>Pretty Stitched Engraving</h1>
-        <p>Custom Laser Cutting & Engraving | Centurion, South Africa</p>
-        <a href="#products" class="cta-button">Explore Our Creations</a>
+        <img src="/channel-pictures/my-picture.jpeg" alt="LabVerse" id="hero-image">
+        <h1>LabVerse | Homelabs & Projects</h1>
+        <p>Hybrid Engineer | Cybersecurity Enthusiast | Relentless Troubleshooter | Solution Bounty Hunter</p>
+        <a href="#projects" class="cta-button">Check Out My Work</a>
     </section>
     <section id="about" class="about">
         <div class="about-content">
-            <img src="/PSE/pseLogoO.jpg" alt="Pretty Stitched Engraving Logo" loading="lazy">
+            <img src="thumbnails/thumbnail-13.webp" alt="About Me" loading="lazy">
             <div class="about-text">
-                <h2>About Us</h2>
-                <p>Welcome to Pretty Stitched Engraving, your premier laser cutting service based in Centurion, South Africa. We specialize in creating personalized, high-quality engraved products that make perfect gifts or keepsakes.</p>
-                <p>Located at 5 Hilton Street, Centurion, we bring precision and creativity to every project, from custom tumblers to intricate designs. Contact us at 083 222 7144 or prettystitchedengraving@gmail.com to bring your ideas to life!</p>
+                <h2>About Me</h2>
+                <p>I’m a Hybrid Engineer from Johannesburg, South Africa, with 8+ years of experience securing and designing networks. From Azure cloud architecture to FortiGate SD-WAN deployments, I turn turn difficult challenges into perfect solutions.</p>
+                <p>My obsession with creating, troubleshooting, technology and cybersecurity drives me to innovate relentlessly, delivering value to MSPs and enterprises. I thrive in high pressure environments.</p>
             </div>
         </div>
     </section>
-    <section id="products">
-        <h2>Our Products</h2>
-        <div class="carousel-container">
-            <div class="carousel">
-                <div class="carousel-item"><img src="/PSE/gallery1.jpg" alt="Product 1" loading="lazy"></div>
-                <div class="carousel-item"><img src="/PSE/gallery2.jpg" alt="Product 2" loading="lazy"></div>
-                <div class="carousel-item"><img src="/PSE/gallery3.jpg" alt="Product 3" loading="lazy"></div>
-                <div class="carousel-item"><img src="/PSE/gallery4.jpg" alt="Product 4" loading="lazy"></div>
-                <div class="carousel-item"><img src="/PSE/gallery5.jpg" alt="Product 5" loading="lazy"></div>
-                <div class="carousel-item"><img src="/PSE/gallery6.jpg" alt="Product 6" loading="lazy"></div>
+    <section id="skills">
+        <h2>Skills</h2>
+        <div class="skills-grid">
+            <div class="skill-card">
+                <img src="thumbnails/thumbnail-13.webp" alt="Hybrid Engineer Icon" loading="lazy">
+                <h3>Hybrid Engineering</h3>
+                <p>Architecting Azure environments, Exchange migrations, and FortiGate SD-WAN deployments, delivering hybrid solutions for global clients.</p>
             </div>
-            <div class="carousel-controls">
-                <button class="prev">←</button>
-                <button class="next">→</button>
+            <div class="skill-card">
+                <img src="thumbnails/thumbnail-13.webp" alt="Cybersecurity Icon" loading="lazy">
+                <h3>Cybersecurity</h3>
+                <p>Securing networks with Cisco switching, Defender XDR, and advanced firewall configs, neutralizing threats before they strike.</p>
+            </div>
+            <div class="skill-card">
+                <img src="thumbnails/thumbnail-13.webp" alt="Cloud Icon" loading="lazy">
+                <h3>Cloud</h3>
+                <p>Spinning up VMs in the cloud and hybrid cloud infrastructure, reducing costs and increasing uptime for clients.</p>
+            </div>
+            <div class="skill-card">
+                <img src="thumbnails/thumbnail-13.webp" alt="AI Icon" loading="lazy">
+                <h3>AI & Automation</h3>
+                <p>Using LLMs and PowerShell to automate workflows, cut downtime and improve operational efficiency.</p>
+            </div>
+            <div class="skill-card">
+                <img src="thumbnails/thumbnail-13.webp" alt="Strategy Icon" loading="lazy">
+                <h3>Business Strategies</h3>
+                <p>OKRs and RICE frameworks to prioritize and deliver high ROI outcomes in critical scenarios.</p>
             </div>
         </div>
     </section>
-    <section id="gallery">
-        <h2>Video Gallery</h2>
-        <div class="video-gallery">
-            <div class="video-item"><video src="/PSE/Indigo Pet drive 2025.mp4" controls muted poster="/PSE/Indigo Pet drive 2025.png"></video></div>
-            <div class="video-item"><video src="/PSE/Personalized pool cue.mp4" controls muted poster="/PSE/Personalized pool cue.png"></video></div>
-            <div class="video-item"><video src="/PSE/Christmas present.mp4" controls muted poster="/PSE/Christmas present.png"></video></div>
-            <div class="video-item"><video src="/PSE/Cheese lovers.mp4" controls muted poster="/PSE/Cheese lovers.png"></video></div>
-            <div class="video-item"><video src="/PSE/Gym Water bottle with rope handle.mp4" controls muted poster="/PSE/Gym Water bottle with rope handle.png"></video></div>
-            <div class="video-item"><video src="/PSE/Memes.mp4" controls muted poster="/PSE/Memes.png"></video></div>
-            <div class="video-item hidden"><video src="/PSE/Rosegold wine tumbler.mp4" controls muted poster="/PSE/Rosegold wine tumbler.png"></video></div>
-            <div class="video-item hidden"><video src="/PSE/This rose will last forever.mp4" controls muted poster="/PSE/This rose will last forever.png"></video></div>
-            <div class="video-item hidden"><video src="/PSE/Stitch wrap around.mp4" controls muted poster="/PSE/Stitch wrap around.png"></video></div>
-            <div class="video-item hidden"><video src="/PSE/Moon Fairie.mp4" controls muted poster="/PSE/Moon Fairie.png"></video></div>
-            <div class="video-item hidden"><video src="/PSE/Diaries.mp4" controls muted poster="/PSE/Diaries.png"></video></div>
-            <div class="video-item hidden"><video src="/PSE/Monster Jam.mp4" controls muted poster="/PSE/Monster Jam.png"></video></div>
-            <div class="video-item hidden"><video src="/PSE/Double Dragon.mp4" controls muted poster="/PSE/Double Dragon.png"></video></div>
-            <div class="video-item hidden"><video src="/PSE/Spooky.mp4" controls muted poster="/PSE/Spooky.png"></video></div>
-            <div class="video-item hidden"><video src="/PSE/Box cutting and engraving.mp4" controls muted poster="/PSE/Box cutting and engraving.png"></video></div>
-            <div class="video-item hidden"><video src="/PSE/Merry Christmas.mp4" controls muted poster="/PSE/Merry Christmas.png"></video></div>
-            <div class="video-item hidden"><video src="/PSE/Fairytale.mp4" controls muted poster="/PSE/Fairytale.png"></video></div>
-            <div class="video-item hidden"><video src="/PSE/Rosegold Paisley wrap around.mp4" controls muted poster="/PSE/Rosegold Paisley wrap around.png"></video></div>
-            <div class="video-item hidden"><video src="/PSE/Custom 20oz Tumbler Birthday Gift.mp4" controls muted poster="/PSE/Custom 20oz Tumbler Birthday Gift.png"></video></div>
-            <div class="video-item hidden"><video src="/PSE/Pretty Stitched Engraving video.mp4" controls muted poster="/PSE/Pretty Stitched Engraving video.png"></video></div>
-            <div class="video-item hidden"><video src="/PSE/Corporate gifts 3.8l water bottle.mp4" controls muted poster="/PSE/Corporate gifts 3.8l water bottle.png"></video></div>
-            <div class="video-item hidden"><video src="/PSE/KTM birthday present.mp4" controls muted poster="/PSE/KTM birthday present.png"></video></div>
-            <div class="video-item hidden"><video src="/PSE/Fitness Freaks.mp4" controls muted poster="/PSE/Fitness Freaks.png"></video></div>
-            <div class="video-item hidden"><video src="/PSE/Orange Dragon.mp4" controls muted poster="/PSE/Orange Dragon.png"></video></div>
-            <div class="video-item hidden"><video src="/PSE/Wine tumbler.mp4" controls muted poster="/PSE/Wine tumbler.png"></video></div>
-        </div>
-        <div class="see-more-container">
-            <button class="see-more-btn">See More</button>
+    <section id="projects">
+        <h2>Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <img src="thumbnails/thumbnail-13.webp" alt="SD-WAN Deployment" loading="lazy">
+                <h3>SD-WAN Rollout</h3>
+                <p>Deployed FortiGate SD-WAN across 50+ sites, increasing network uptime.</p>
+                <a href="https://labverse.co.za/sdwan" target="_blank">Explore</a>
+            </div>
+            <div class="project-card">
+                <img src="thumbnails/thumbnail-13.webp" alt="Azure Migration" loading="lazy">
+                <h3>Exchange Migration</h3>
+                <p>Migrated 10,000 users to Exchange Online, cutting costs and locking down security with Defender XDR.</p>
+                <a href="https://labverse.co.za/azure" target="_blank">Explore</a>
+            </div>
+            <div class="project-card">
+                <img src="thumbnails/thumbnail-13.webp" alt="Lo-Fi Livestream" loading="lazy">
+                <h3>24/7 lofi Stream</h3>
+                <p>Created a Linux Azure hosted YouTube livestream with nonstop lofi beats.</p>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/jfKfPfyJRdk" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="thumbnails/thumbnail-13.webp" alt="T1 Support Tool" loading="lazy">
+                <h3>T1 Network Toolkit</h3>
+                <p>Built a complete PowerShell diagnostic tool for MSPs, reducing Tier 1 resolution times with realtime AI responses on network troubleshooting.</p>
+                <a href="https://labverse.co.za/support-tool" target="_blank">Explore</a>
+            </div>
+            <div class="project-card">
+                <img src="thumbnails/thumbnail-13.webp" alt="LabVerse Website" loading="lazy">
+                <h3>LabVerse Portal</h3>
+                <p>Created this portfolio with some free time and bit of creativity, displaying my creativity and web development skills.</p>
+                <a href="https://labverse.co.za" target="_blank">Explore</a>
+            </div>
         </div>
     </section>
     <section id="contact" class="contact">
-        <h2>Get in Touch</h2>
-        <p>Reach out for custom orders or inquiries!</p>
+        <h2>Connect to the LabVerse</h2>
+        <p>Let’s collaborate, reach out!</p>
         <div class="contact-links">
-            <a href="mailto:prettystitchedengraving@gmail.com">Email</a>
-            <a href="tel:+27832227144">Call Us</a>
-            <a href="https://www.tiktok.com/@diedrake" target="_blank">TikTok</a>
-            <a href="https://www.facebook.com/share/1AGJEC1RfQ/?mibextid=wwXIfr" target="_blank">Facebook</a>
+            <a href="mailto:labversemail@gmail.com">Email</a>
+            <a href="https://linkedin.com/in/labverse" target="_blank">LinkedIn</a>
+            <a href="https://www.youtube.com/@labversity" target="_blank">YouTube</a>
         </div>
     </section>
     <footer>
-        <p>© 2025 Pretty Stitched Engraving | 5 Hilton Street, Centurion, South Africa, 0157</p>
+        <p>© 2025 LabVerse | Homelabs & Projects</p>
         <div class="footer-links">
-            <a href="mailto:prettystitchedengraving@gmail.com">Contact Us</a>
-            <a href="https://www.tiktok.com/@diedrake" target="_blank">TikTok</a>
-            <a href="https://www.facebook.com/share/1AGJEC1RfQ/?mibextid=wwXIfr" target="_blank">Facebook</a>
+            <a href="mailto:labversemail@gmail.com">Contact Me</a>
+            <a href="https://linkedin.com/in/labverse" target="_blank">LinkedIn</a>
         </div>
     </footer>
 
@@ -1206,16 +1049,16 @@
         const maxTrails = 30;
         document.addEventListener('mousemove', throttle((e) => {
             if (trailCount < maxTrails) {
-                const spark = document.createElement('div');
-                spark.className = Math.random() > 0.3 ? 'engraving-spark' : 'engraving-flare';
-                spark.style.left = `${e.clientX}px`;
-                spark.style.top = `${e.clientY}px`;
-                document.body.appendChild(spark);
+                const trail = document.createElement('div');
+                trail.className = Math.random() > 0.5 ? 'trail' : 'spark';
+                trail.style.left = `${e.clientX}px`;
+                trail.style.top = `${e.clientY}px`;
+                document.body.appendChild(trail);
                 trailCount++;
                 setTimeout(() => {
-                    spark.remove();
+                    trail.remove();
                     trailCount--;
-                }, spark.className === 'engraving-spark' ? 400 : 500);
+                }, trail.className === 'trail' ? 600 : 800);
             }
         }, 20));
 
@@ -1230,126 +1073,58 @@
             }
         });
 
-        // Pause background music when a video plays
-        const videos = document.querySelectorAll('.video-item video');
-        videos.forEach(video => {
-            video.addEventListener('play', () => {
-                audio.pause();
-            });
-            video.addEventListener('pause', () => {
-                audio.play();
-            });
-            video.addEventListener('ended', () => {
-                audio.play();
-            });
-        });
-
-        // See More Button Logic for Video Gallery
-        const seeMoreBtn = document.querySelector('.see-more-btn');
-        const hiddenVideos = document.querySelectorAll('.video-item.hidden');
-        seeMoreBtn.addEventListener('click', () => {
-            hiddenVideos.forEach(video => {
-                video.classList.remove('hidden');
-            });
-            seeMoreBtn.style.display = 'none'; // Hide the button after expanding
-        });
-
-        VanillaTilt.init(document.querySelectorAll('.video-item'), {
-            max: 10,
-            speed: 400,
+        VanillaTilt.init(document.querySelectorAll('.skill-card, .project-card'), {
+            max: 20,
+            speed: 300,
             glare: true,
-            'max-glare': 0.4
+            'max-glare': 0.6
         });
-
-        // Fullscreen Image Viewer Logic
-        const fullscreenViewer = document.querySelector('.fullscreen-viewer');
-        const fullscreenImage = fullscreenViewer.querySelector('img');
-        const carouselItems = document.querySelectorAll('.carousel-item');
-
-        carouselItems.forEach(item => {
-            item.addEventListener('click', () => {
-                const imgSrc = item.querySelector('img').src;
-                fullscreenImage.src = imgSrc;
-                fullscreenViewer.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            });
-        });
-
-        fullscreenViewer.addEventListener('click', () => {
-            fullscreenViewer.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && fullscreenViewer.classList.contains('active')) {
-                fullscreenViewer.classList.remove('active');
-                document.body.style.overflow = 'auto';
-            }
-        });
-
-        // Carousel Logic
-        const carousel = document.querySelector('.carousel');
-        const items = document.querySelectorAll('.carousel-item');
-        const prevBtn = document.querySelector('.prev');
-        const nextBtn = document.querySelector('.next');
-        let index = 0;
-        const visibleItems = 3;
-
-        function updateCarousel() {
-            const itemWidth = items[0].offsetWidth;
-            carousel.style.transform = `translateX(-${index * itemWidth}px)`;
-        }
-
-        nextBtn.addEventListener('click', () => {
-            if (index < items.length - visibleItems) {
-                index++;
-                updateCarousel();
-            }
-        });
-
-        prevBtn.addEventListener('click', () => {
-            if (index > 0) {
-                index--;
-                updateCarousel();
-            }
-        });
-
-        window.addEventListener('resize', updateCarousel);
-
-        // Random Laser Beams
-        function createLaserBeam() {
-            const beam = document.createElement('div');
-            beam.className = 'laser-beam';
-            const isVertical = Math.random() > 0.5;
-            if (isVertical) {
-                beam.classList.add('vertical');
-                beam.style.left = `${Math.random() * 100}vw`;
-                beam.style.top = '0';
-            } else {
-                beam.classList.add('horizontal');
-                beam.style.top = `${Math.random() * 100}vh`;
-                beam.style.left = '0';
-            }
-            document.body.appendChild(beam);
-            setTimeout(() => {
-                beam.remove();
-            }, 3000);
-        }
 
         window.addEventListener('load', () => {
             document.querySelector('.preloader').classList.add('hidden');
-            setInterval(() => {
-                if (Math.random() > 0.5) {
-                    createLaserBeam();
-                }
-            }, 1500);
+            for (let i = 0; i < 10; i++) {
+                const orb = document.createElement('div');
+                orb.className = 'cyber-orb';
+                orb.style.width = `${20 + Math.random() * 30}px`;
+                orb.style.height = orb.style.width;
+                orb.style.left = `${Math.random() * 100}vw`;
+                orb.style.top = `${Math.random() * 100}vh`;
+                orb.style.animationDuration = `${5 + Math.random() * 5}s`;
+                document.body.appendChild(orb);
+            }
 
+            // Ensure hero image loads and shows
             const heroImage = document.getElementById('hero-image');
+            const pathsToTry = [
+                '/channel-pictures/my-picture.jpeg',  // Absolute from root
+                './channel-pictures/my-picture.jpeg', // Relative to HTML
+                'channel-pictures/my-picture.jpeg',   // Relative without leading slash
+                'thumbnails/thumbnail-13.webp'        // Final fallback
+            ];
+            let currentPathIndex = 0;
+
+            function tryNextPath() {
+                if (currentPathIndex >= pathsToTry.length) {
+                    console.error('All paths failed. Check file existence and server config.');
+                    return;
+                }
+                heroImage.src = pathsToTry[currentPathIndex];
+                console.log(`Trying path: ${pathsToTry[currentPathIndex]}`);
+                currentPathIndex++;
+            }
+
             heroImage.addEventListener('load', () => {
-                heroImage.style.opacity = 1;
+                console.log(`Image loaded successfully at ${heroImage.src}`);
+                heroImage.style.opacity = 1; // Ensure visibility
             });
-            heroImage.style.opacity = 0;
-            heroImage.src = '/PSE/pseLogoO.jpg';
+
+            heroImage.addEventListener('error', () => {
+                console.error(`Failed to load ${heroImage.src}`);
+                tryNextPath();
+            });
+
+            heroImage.style.opacity = 0; // Start hidden, show on load
+            tryNextPath(); // Kick off the loading process
         });
     </script>
 </body>
