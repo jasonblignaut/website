@@ -3,336 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Futuristic Golden Spiral & Flower of Life</title>
+    <title>Quantum Focus: Double-Slit Manifestation</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            background: radial-gradient(circle, #0a0a2a, #000);
+            background: linear-gradient(180deg, #1a1a3a, #000);
             overflow: hidden;
             height: 100vh;
-            cursor: none;
-            font-family: 'Arial', sans-serif;
+            cursor: crosshair;
+            font-family: 'Courier New', monospace;
         }
         canvas {
             width: 100%;
             height: 100%;
-            background: radial-gradient(rgba(0, 0, 51, 0.3), rgba(0, 0, 0, 0.7));
+            background: radial-gradient(rgba(0, 0, 51, 0.4), rgba(0, 0, 0, 0.8));
         }
-        #info {
+        #energy-meter {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            color: #fff;
-            font-size: 14px;
-            opacity: 0.7;
+            top: 20px;
+            left: 20px;
+            color: #0ff;
+            font-size: 16px;
+            opacity: 0.8;
             pointer-events: none;
+            text-shadow: 0 0 5px #0ff;
         }
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.7; filter: brightness(1); }
-            50% { transform: scale(1.2); opacity: 1; filter: brightness(1.5); }
-            100% { transform: scale(1); opacity: 0.7; filter: brightness(1); }
+        @keyframes quantum-pulse {
+            0% { transform: scale(1); opacity: 0.6; filter: brightness(1); }
+            50% { transform: scale(1.3); opacity: 1; filter: brightness(1.8); }
+            100% { transform: scale(1); opacity: 0.6; filter: brightness(1); }
         }
-        @keyframes interference {
-            0% { opacity: 0.5; filter: hue-rotate(0deg); }
-            50% { opacity: 1; filter: hue-rotate(180deg); }
-            100% { opacity: 0.5; filter: hue-rotate(360deg); }
-        }
-        @keyframes moire {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        @keyframes wave-interference {
+            0% { opacity: 0.4; filter: hue-rotate(0deg); }
+            50% { opacity: 0.9; filter: hue-rotate(120deg); }
+            100% { opacity: 0.4; filter: hue-rotate(240deg); }
         }
     </style>
 </head>
 <body>
     <canvas id="canvas"></canvas>
-    <div id="info">Focus Energy: 0 | Coherence: 0</div>
+    <div id="energy-meter">Quantum Energy: 0 | Focus: 0%</div>
 
     <script>
-        // WebGL Setup for Enhanced Rendering
+        // WebGL Setup
         const canvas = document.getElementById('canvas');
-        const gl = canvas.getContext('webgl2', { alpha: true, premultipliedAlpha: true });
+        const gl = canvas.getContext('webgl2', { alpha: true });
+        const energyMeter = document.getElementById('energy-meter');
         if (!gl) {
-            alert('WebGL2 not supported. Falling back to 2D canvas.');
-            // Fallback to 2D canvas if WebGL2 is unavailable
-            const ctx = canvas.getContext('2d');
-            ctx.globalCompositeOperation = 'lighter';
+            console.warn('WebGL2 unavailable. Using 2D canvas.');
         }
-        const infoDiv = document.getElementById('info');
+        const ctx = canvas.getContext('2d'); // Fallback for rendering
 
         // State Variables
-        let manifestationEnergy = 0; // User's focus intensity
-        let coherence = 0; // Alignment of energy
-        let focusStrength = 0; // Interaction strength
-        let angle = 0; // Global animation angle
-        let zoomLevel = 1; // Dynamic zoom for immersion
-        let mouse = { x: canvas.width / 2, y: canvas.height / 2, clicked: false, clickStrength: 0, lastClick: 0, focusTime: 0 };
-        let touch = { x: 0, y: 0, active: false }; // Touch support
-        let audioContext, oscillator, gainNode, analyser;
+        let quantumEnergy = 0; // Tracks user-driven energy
+        let focusLevel = 0; // Percentage of user focus
+        let wavePhase = 0; // Drives quantum wave animations
+        let mouse = { x: canvas.width / 2, y: canvas.height / 2, clicked: false, lastClick: 0, focusDuration: 0 };
+        let touch = { x: 0, y: 0, active: false };
         let particles = [];
-        let geometries = [];
-        let slitPattern = [];
-        let moirePattern = [];
-        let sceneProgress = 0;
-        const sceneDuration = 3000; // ~50 seconds at 60 FPS
-        const maxParticles = 1000;
-        const maxGeometries = 2000;
-        const goldenRatio = (1 + Math.sqrt(5)) / 2;
+        let interferencePatterns = [];
+        let quantumField = [];
+        let audioContext, oscillator, gainNode, analyser;
+        const maxParticles = 1500;
+        const maxPatterns = 1000;
+        const slitWidth = 100; // Virtual slit width for double-slit simulation
+        const slitSeparation = 200; // Distance between slits
 
         // Canvas Initialization
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            if (gl) {
-                gl.viewport(0, 0, canvas.width, canvas.height);
-            }
+            if (gl) gl.viewport(0, 0, canvas.width, canvas.height);
             mouse.x = canvas.width / 2;
             mouse.y = canvas.height / 2;
-            initPools();
-            initScene();
-            initMoirePattern();
+            initQuantumField();
         }
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
 
-        // Object Pooling
-        function initPools() {
-            particles.length = 0;
+        // Particle System (Quantum Particles)
+        function initParticles() {
+            particles = [];
             for (let i = 0; i < maxParticles; i++) {
                 particles.push({
                     x: canvas.width / 2,
                     y: canvas.height / 2,
-                    vx: (Math.random() - 0.5) * 2,
+                    vx: (Math.random() - 0.5) * 3,
                     vy: -(Math.random() * 2 + 1),
-                    size: Math.random() * 2 + 1,
+                    size: Math.random() * 1.5 + 0.5,
                     hue: Math.random() * 360,
-                    opacity: 1,
-                    wave: Math.random() * 2 * Math.PI,
-                    state: Math.floor(Math.random() * 2), // 0 = particle, 1 = wave
-                    focusAttraction: 0,
-                    active: i === 0
-                });
-            }
-            particles = particles.filter(p => p.active);
-
-            geometries.length = 0;
-            for (let i = 0; i < maxGeometries; i++) {
-                geometries.push({
-                    type: 'circle',
-                    x: 0,
-                    y: 0,
-                    r: 0,
-                    hue: 0,
-                    opacity: 1,
-                    pulsing: false,
-                    points: [],
-                    vx: 0,
-                    vy: 0,
-                    depth: 0,
-                    manifestationShift: Math.random() * 2 * Math.PI,
+                    opacity: 0.5,
+                    phase: Math.random() * 2 * Math.PI,
+                    state: 0, // 0 = particle, 1 = wave
+                    energy: 0,
                     active: false
                 });
             }
         }
+        initParticles();
 
-        // Golden Spiral and Flower of Life
-        function generateGoldenSpiral(cx, cy, maxRadius, depth = 0) {
-            if (depth > 5 + Math.floor(manifestationEnergy / 1000) || geometries.filter(g => g.active).length >= maxGeometries) return;
-            const r = maxRadius * Math.pow(goldenRatio, -depth);
-            let g = geometries.find(g => !g.active);
-            if (!g) return;
-            g.type = 'spiral';
-            g.x = cx;
-            g.y = cy;
-            g.r = r;
-            g.hue = 180 + depth * 30;
-            g.opacity = 0.7;
-            g.pulsing = true;
-            g.active = true;
-            for (let i = 0; i < 4; i++) {
-                const theta = (i * Math.PI / 2) + angle;
-                const nx = cx + r * Math.cos(theta) * goldenRatio;
-                const ny = cy + r * Math.sin(theta) * goldenRatio;
-                generateGoldenSpiral(nx, ny, r / goldenRatio, depth + 1);
+        // Quantum Field for Interference
+        function initQuantumField() {
+            quantumField = [];
+            const gridSize = 20;
+            for (let x = 0; x < canvas.width; x += gridSize) {
+                for (let y = 0; y < canvas.height; y += gridSize) {
+                    quantumField.push({ x, y, amplitude: 0, phase: 0 });
+                }
             }
         }
 
-        function generateFlowerOfLife(cx, cy, radius, depth = 0) {
-            if (depth > 3 + Math.floor(manifestationEnergy / 1000) || geometries.filter(g => g.active).length >= maxGeometries) return;
-            let g = geometries.find(g => !g.active);
-            if (!g) return;
-            g.type = 'circle';
-            g.x = cx;
-            g.y = cy;
-            g.r = radius * (1 + Math.sin(angle + cx / 50) * 0.1);
-            g.hue = 180 + depth * 30;
-            g.opacity = 0.7;
-            g.pulsing = true;
-            g.active = true;
-            for (let i = 0; i < 6; i++) {
-                const a = (2 * Math.PI / 6) * i + angle;
-                const nx = cx + radius * Math.cos(a);
-                const ny = cy + radius * Math.sin(a);
-                generateFlowerOfLife(nx, ny, radius, depth + 1);
-            }
+        // Double-Slit Simulation
+        function simulateDoubleSlit() {
+            interferencePatterns = [];
+            const slitY = canvas.height * 0.3; // Slit plane
+            const screenY = canvas.height * 0.7; // Observation screen
+            const slit1X = canvas.width / 2 - slitSeparation / 2;
+            const slit2X = canvas.width / 2 + slitSeparation / 2;
+
+            particles.forEach(p => {
+                if (!p.active || p.y < slitY || p.y > screenY) return;
+                const dx1 = p.x - slit1X;
+                const dx2 = p.x - slit2X;
+                const dy = p.y - slitY;
+                const dist1 = Math.sqrt(dx1 * dx1 + dy * dy);
+                const dist2 = Math.sqrt(dx2 * dx2 + dy * dy);
+                const waveLength = 50 * (1 + focusLevel / 100); // Focus modulates wavelength
+                const phaseDiff = (2 * Math.PI * (dist2 - dist1)) / waveLength;
+                const amplitude = Math.cos(phaseDiff / 2) * p.energy * focusLevel;
+                p.opacity = Math.abs(amplitude);
+                p.hue = (p.hue + phaseDiff * 10) % 360;
+                p.state = 1; // Wave state in interference zone
+
+                if (p.y > screenY - 10 && Math.abs(amplitude) > 0.2) {
+                    interferencePatterns.push({
+                        x: p.x,
+                        y: p.y,
+                        intensity: Math.abs(amplitude),
+                        hue: p.hue
+                    });
+                }
+            });
         }
 
-        // Particle System
+        // Particle Spawning (Law of Attraction)
         function spawnParticles() {
             const activeCount = particles.filter(p => p.active).length;
-            const spawnCount = Math.min(Math.floor(manifestationEnergy / 50), maxParticles - activeCount);
-            let spawned = 0;
-            for (let i = 0; i < particles.length && spawned < spawnCount; i++) {
+            const spawnCount = Math.min(Math.floor(quantumEnergy / 20), maxParticles - activeCount);
+            for (let i = 0; i < particles.length && spawnCount > 0; i++) {
                 if (!particles[i].active) {
                     particles[i].x = mouse.x;
                     particles[i].y = mouse.y;
-                    particles[i].vx = (Math.random() - 0.5) * 2;
+                    particles[i].vx = (Math.random() - 0.5) * 3;
                     particles[i].vy = -(Math.random() * 2 + 1);
-                    particles[i].size = Math.random() * 2 + 1;
+                    particles[i].size = Math.random() * 1.5 + 0.5;
                     particles[i].hue = Math.random() * 360;
-                    particles[i].opacity = 1;
-                    particles[i].wave = Math.random() * 2 * Math.PI;
-                    particles[i].state = Math.floor(Math.random() * 2);
-                    particles[i].focusAttraction = 0;
+                    particles[i].opacity = 0.5;
+                    particles[i].phase = Math.random() * 2 * Math.PI;
+                    particles[i].state = 0;
+                    particles[i].energy = quantumEnergy / 100;
                     particles[i].active = true;
-                    spawned++;
+                    break;
                 }
             }
-            particles = particles.filter(p => p.active);
         }
 
-        // WebGL Rendering (Simplified for Brevity)
-        function renderWebGL() {
-            if (!gl) return;
-            gl.clearColor(0, 0, 0, 0);
-            gl.clear(gl.COLOR_BUFFER_BIT);
-            // Implement WebGL shaders and rendering logic here
-            // For brevity, assume particles and geometries are rendered as points and lines
-        }
-
-        // 2D Canvas Fallback
-        function render2D(ctx) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // Update Particles
+        function updateParticles() {
             particles.forEach(p => {
                 if (!p.active) return;
                 const dx = mouse.x - p.x;
                 const dy = mouse.y - p.y;
                 const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < 300) {
-                    p.focusAttraction += focusStrength * 0.01;
-                    p.vx += (dx / dist) * p.focusAttraction;
-                    p.vy += (dy / dist) * p.focusAttraction;
-                    p.opacity = Math.min(p.opacity + 0.02, 1);
+                if (dist < 200 && focusLevel > 0) {
+                    p.energy += focusLevel * 0.02;
+                    p.vx += (dx / dist) * p.energy * 0.05;
+                    p.vy += (dy / dist) * p.energy * 0.05;
+                    p.opacity = Math.min(p.opacity + 0.03, 1);
                     p.state = 1;
                 } else {
-                    p.focusAttraction = Math.max(p.focusAttraction - 0.01, 0);
-                    p.opacity = Math.max(p.opacity - 0.01, 0.4);
+                    p.energy = Math.max(p.energy - 0.01, 0);
+                    p.opacity = Math.max(p.opacity - 0.02, 0.3);
                     p.state = 0;
                 }
-                const waveFunction = Math.sin(p.wave + angle) * Math.cos(p.wave + angle);
-                p.x += p.vx * (1 + manifestationEnergy / 10000) + waveFunction * 0.5;
-                p.y += p.vy * (1 + manifestationEnergy / 10000) + waveFunction * 0.5;
-                p.wave += 0.03 * (1 + coherence / 1000);
-                p.vy += 0.01;
-                if (p.x < 0 || p.x > canvas.width) p.vx *= -0.9;
-                if (p.y > canvas.height || p.y < 0) {
-                    p.x = mouse.x;
-                    p.y = mouse.y;
-                    p.vx = (Math.random() - 0.5) * 2;
-                    p.vy = -(Math.random() * 2 + 1);
-                }
-                ctx.beginPath();
-                if (p.state === 0) {
-                    ctx.arc(p.x / zoomLevel, p.y / zoomLevel, p.size, 0, 2 * Math.PI);
-                } else {
-                    ctx.moveTo(p.x / zoomLevel - p.size, p.y / zoomLevel);
-                    ctx.bezierCurveTo(
-                        p.x / zoomLevel, (p.y - p.size * 2) / zoomLevel,
-                        p.x / zoomLevel, (p.y + p.size * 2) / zoomLevel,
-                        (p.x + p.size) / zoomLevel, p.y / zoomLevel
-                    );
-                }
-                const gradient = ctx.createRadialGradient(p.x / zoomLevel, p.y / zoomLevel, 0, p.x / zoomLevel, p.y / zoomLevel, p.size);
-                gradient.addColorStop(0, `hsla(${p.hue}, 70%, 50%, ${p.opacity})`);
-                gradient.addColorStop(1, `hsla(${p.hue}, 70%, 50%, 0)`);
-                ctx.fillStyle = gradient;
-                ctx.fill();
-            });
-
-            geometries.forEach(g => {
-                if (!g.active) return;
-                ctx.beginPath();
-                if (g.type === 'circle') {
-                    ctx.arc(g.x / zoomLevel, g.y / zoomLevel, g.r, 0, 2 * Math.PI);
-                } else if (g.type === 'spiral') {
-                    for (let t = 0; t < 4 * Math.PI; t += 0.1) {
-                        const r = g.r * Math.pow(Math.E, t / goldenRatio);
-                        const x = g.x + r * Math.cos(t);
-                        const y = g.y + r * Math.sin(t);
-                        ctx.lineTo(x / zoomLevel, y / zoomLevel);
-                    }
-                }
-                ctx.strokeStyle = `hsla(${g.hue}, 70%, 50%, ${g.opacity})`;
-                ctx.stroke();
-            });
-        }
-
-        // Moiré and Slit Patterns
-        function initMoirePattern() {
-            moirePattern = [];
-            const spacing = 10;
-            for (let x = 0; x < canvas.width; x += spacing) {
-                for (let y = 0; y < canvas.height; y += spacing) {
-                    moirePattern.push({ x, y, angle: Math.random() * 2 * Math.PI });
-                }
-            }
-        }
-
-        function drawMoirePattern(ctx) {
-            moirePattern.forEach(m => {
-                const dx = mouse.x - m.x;
-                const dy = mouse.y - m.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < 300) {
-                    ctx.save();
-                    ctx.translate(m.x / zoomLevel, m.y / zoomLevel);
-                    ctx.rotate(m.angle + angle);
-                    ctx.beginPath();
-                    ctx.moveTo(-5, 0);
-                    ctx.lineTo(5, 0);
-                    ctx.strokeStyle = `hsla(${dist % 360}, 70%, 50%, ${1 - dist / 300})`;
-                    ctx.lineWidth = 1;
-                    ctx.stroke();
-                    ctx.restore();
+                const wave = Math.sin(p.phase + wavePhase) * p.energy;
+                p.x += p.vx + wave * 0.3;
+                p.y += p.vy + wave * 0.3;
+                p.phase += 0.05 * (1 + focusLevel / 100);
+                p.vy += 0.02; // Simulated gravity
+                if (p.x < 0 || p.x > canvas.width || p.y > canvas.height) {
+                    p.active = false;
                 }
             });
+            particles = particles.filter(p => p.active);
         }
 
-        function updateSlitPattern() {
-            slitPattern = [];
-            for (let x = canvas.width * 0.4; x < canvas.width * 0.6; x += 5) {
-                for (let y = canvas.height * 0.5; y < canvas.height * 0.7; y += 5) {
-                    const slitX = (x - canvas.width * 0.4) / (canvas.width * 0.2);
-                    const focusSide = mouse.x < canvas.width / 2 ? -1 : 1;
-                    const interference = Math.sin(slitX * 10 * Math.PI + angle) * 0.5 + 0.5;
-                    const focusBias = focusSide * (slitX - 0.5) * focusStrength;
-                    if (interference + focusBias > 0.3) {
-                        slitPattern.push({ x, y, intensity: interference + focusBias });
-                    }
-                }
-            }
-        }
-
-        function drawSlitPattern(ctx) {
-            slitPattern.forEach(s => {
-                ctx.beginPath();
-                ctx.arc(s.x / zoomLevel, s.y / zoomLevel, 2 * s.intensity, 0, 2 * Math.PI);
-                ctx.fillStyle = `hsla(240, 70%, 50%, ${s.intensity * 0.5})`;
-                ctx.fill();
-            });
-        }
-
-        // Audio System
+        // Audio Feedback
         function initAudio(baseFreq = 432) {
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
             oscillator = audioContext.createOscillator();
@@ -343,60 +210,93 @@
             oscillator.connect(gainNode);
             gainNode.connect(analyser);
             analyser.connect(audioContext.destination);
-            analyser.fftSize = 256;
-            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            analyser.fftSize = 512;
+            gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
             oscillator.start();
         }
 
         function updateAudio() {
             if (!audioContext) return 0;
-            const baseFrequencies = [432, 528, 639, 741, 963];
-            const freq = baseFrequencies[Math.floor(sceneProgress / sceneDuration) % 5] + (manifestationEnergy / 200);
+            const freq = 432 + (quantumEnergy / 50);
             oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
-            gainNode.gain.setValueAtTime(0.1 + (coherence / 2000), audioContext.currentTime);
+            gainNode.gain.setValueAtTime(0.05 + (focusLevel / 2000), audioContext.currentTime);
             const bufferLength = analyser.frequencyBinCount;
             const dataArray = new Uint8Array(bufferLength);
             analyser.getByteFrequencyData(dataArray);
             return dataArray.reduce((a, b) => a + b) / bufferLength / 255;
         }
 
-        // Scene Management
-        function initScene() {
-            geometries.forEach(g => g.active = false);
-            const cx = canvas.width / 2;
-            const cy = canvas.height / 2;
-            const phase = Math.floor(sceneProgress / sceneDuration) % 5;
-            if (phase === 0) {
-                generateFlowerOfLife(cx, cy, Math.min(canvas.width, canvas.height) / 20);
-            } else if (phase === 1) {
-                generateGoldenSpiral(cx, cy, Math.min(canvas.width, canvas.height) / 20);
-            } else {
-                // Add more phases (e.g., fractals, torus knots) as needed
-                generateFlowerOfLife(cx, cy, Math.min(canvas.width, canvas.height) / 20);
-            }
+        // 2D Canvas Rendering (Fallback)
+        function render2D() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.globalCompositeOperation = 'lighter';
+
+            // Draw Quantum Field
+            quantumField.forEach(f => {
+                if (f.amplitude > 0.1) {
+                    ctx.beginPath();
+                    ctx.arc(f.x, f.y, f.amplitude * 5, 0, 2 * Math.PI);
+                    ctx.fillStyle = `hsla(${f.phase % 360}, 80%, 50%, ${f.amplitude * 0.3})`;
+                    ctx.fill();
+                }
+            });
+
+            // Draw Particles
+            particles.forEach(p => {
+                if (!p.active) return;
+                ctx.beginPath();
+                if (p.state === 0) {
+                    ctx.arc(p.x, p.y, p.size, 0, 2 * Math.PI);
+                } else {
+                    ctx.moveTo(p.x - p.size, p.y);
+                    ctx.bezierCurveTo(
+                        p.x, p.y - p.size * 2,
+                        p.x, p.y + p.size * 2,
+                        p.x + p.size, p.y
+                    );
+                }
+                const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
+                gradient.addColorStop(0, `hsla(${p.hue}, 80%, 50%, ${p.opacity})`);
+                gradient.addColorStop(1, `hsla(${p.hue}, 80%, 50%, 0)`);
+                ctx.fillStyle = gradient;
+                ctx.fill();
+            });
+
+            // Draw Interference Patterns
+            interferencePatterns.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.intensity * 3, 0, 2 * Math.PI);
+                ctx.fillStyle = `hsla(${p.hue}, 80%, 50%, ${p.intensity * 0.5})`;
+                ctx.fill();
+            });
+
+            // Draw Slits
+            const slitY = canvas.height * 0.3;
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.fillRect(canvas.width / 2 - slitSeparation / 2 - slitWidth / 2, slitY - 10, slitWidth, 20);
+            ctx.fillRect(canvas.width / 2 + slitSeparation / 2 - slitWidth / 2, slitY - 10, slitWidth, 20);
         }
 
         // Input Handling
         canvas.addEventListener('mousemove', e => {
             mouse.x = e.clientX;
             mouse.y = e.clientY;
-            focusStrength = Math.min(focusStrength + 0.05, 1);
-            manifestationEnergy += 0.1;
-            coherence = Math.min(coherence + 0.02, 1000);
+            focusLevel = Math.min(focusLevel + 0.1, 100);
+            quantumEnergy += 0.2;
+            mouse.focusDuration += 16; // Approx. ms per frame
         });
 
         canvas.addEventListener('mousedown', () => {
             mouse.clicked = true;
-            mouse.clickStrength = 1;
             mouse.lastClick = Date.now();
-            manifestationEnergy += 50;
+            quantumEnergy += 100;
+            focusLevel = Math.min(focusLevel + 20, 100);
             spawnParticles();
             if (!audioContext) initAudio();
         });
 
         canvas.addEventListener('mouseup', () => {
             mouse.clicked = false;
-            mouse.clickStrength = 0;
         });
 
         // Touch Support
@@ -407,7 +307,8 @@
             touch.active = true;
             mouse.x = touch.x;
             mouse.y = touch.y;
-            manifestationEnergy += 50;
+            quantumEnergy += 100;
+            focusLevel = Math.min(focusLevel + 20, 100);
             spawnParticles();
             if (!audioContext) initAudio();
         });
@@ -418,9 +319,8 @@
             touch.y = e.touches[0].clientY;
             mouse.x = touch.x;
             mouse.y = touch.y;
-            focusStrength = Math.min(focusStrength + 0.05, 1);
-            manifestationEnergy += 0.1;
-            coherence = Math.min(coherence + 0.02, 1000);
+            focusLevel = Math.min(focusLevel + 0.1, 100);
+            quantumEnergy += 0.2;
         });
 
         canvas.addEventListener('touchend', () => {
@@ -429,28 +329,33 @@
 
         // Animation Loop
         function animate() {
-            angle += 0.01;
-            sceneProgress++;
-            if (sceneProgress % sceneDuration === 0) initScene();
-            manifestationEnergy = Math.max(manifestationEnergy - 0.05, 0);
-            coherence = Math.max(coherence - 0.01, 0);
-            focusStrength = Math.max(focusStrength - 0.02, 0);
-            zoomLevel = 1 + Math.sin(angle) * 0.1;
-            spawnParticles();
-            updateSlitPattern();
+            wavePhase += 0.02;
+            quantumEnergy = Math.max(quantumEnergy - 0.1, 0);
+            focusLevel = Math.max(focusLevel - 0.05, 0);
+            updateParticles();
+            simulateDoubleSlit();
             const audioFeedback = updateAudio();
-            manifestationEnergy += audioFeedback * 10;
+            quantumEnergy += audioFeedback * 20;
+
+            // Update Quantum Field
+            quantumField.forEach(f => {
+                const dx = mouse.x - f.x;
+                const dy = mouse.y - f.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                f.amplitude = dist < 300 ? (300 - dist) / 300 * focusLevel / 100 : 0;
+                f.phase = wavePhase + dist / 50;
+            });
 
             if (gl) {
-                renderWebGL();
+                // WebGL rendering placeholder
+                gl.clearColor(0, 0, 0, 0);
+                gl.clear(gl.COLOR_BUFFER_BIT);
+                render2D(); // Temporary fallback
             } else {
-                const ctx = canvas.getContext('2d');
-                render2D(ctx);
-                drawMoirePattern(ctx);
-                drawSlitPattern(ctx);
+                render2D();
             }
 
-            infoDiv.textContent = `Focus Energy: ${Math.floor(manifestationEnergy)} | Coherence: ${Math.floor(coherence)}`;
+            energyMeter.textContent = `Quantum Energy: ${Math.floor(quantumEnergy)} | Focus: ${Math.floor(focusLevel)}%`;
             requestAnimationFrame(animate);
         }
         animate();
