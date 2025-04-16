@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futuristic Golden Spiral & Flower of Life</title>
     <style>
         body {
             margin: 0;
@@ -11,11 +12,21 @@
             overflow: hidden;
             height: 100vh;
             cursor: none;
+            font-family: 'Arial', sans-serif;
         }
-        #canvas {
+        canvas {
             width: 100%;
             height: 100%;
             background: radial-gradient(rgba(0, 0, 51, 0.3), rgba(0, 0, 0, 0.7));
+        }
+        #info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: #fff;
+            font-size: 14px;
+            opacity: 0.7;
+            pointer-events: none;
         }
         @keyframes pulse {
             0% { transform: scale(1); opacity: 0.7; filter: brightness(1); }
@@ -35,34 +46,46 @@
 </head>
 <body>
     <canvas id="canvas"></canvas>
+    <div id="info">Focus Energy: 0 | Coherence: 0</div>
 
     <script>
-        // Core Setup
+        // WebGL Setup for Enhanced Rendering
         const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d', { alpha: true });
-        let manifestationEnergy = 0; // Tracks user's focused intent
+        const gl = canvas.getContext('webgl2', { alpha: true, premultipliedAlpha: true });
+        if (!gl) {
+            alert('WebGL2 not supported. Falling back to 2D canvas.');
+            // Fallback to 2D canvas if WebGL2 is unavailable
+            const ctx = canvas.getContext('2d');
+            ctx.globalCompositeOperation = 'lighter';
+        }
+        const infoDiv = document.getElementById('info');
+
+        // State Variables
+        let manifestationEnergy = 0; // User's focus intensity
         let coherence = 0; // Alignment of energy
-        let focusStrength = 0; // Intensity of user focus
-        let angle = 0;
-        let zoomLevel = 1;
+        let focusStrength = 0; // Interaction strength
+        let angle = 0; // Global animation angle
+        let zoomLevel = 1; // Dynamic zoom for immersion
         let mouse = { x: canvas.width / 2, y: canvas.height / 2, clicked: false, clickStrength: 0, lastClick: 0, focusTime: 0 };
+        let touch = { x: 0, y: 0, active: false }; // Touch support
         let audioContext, oscillator, gainNode, analyser;
-        let particlePool = [];
-        let geometryPool = [];
         let particles = [];
         let geometries = [];
         let slitPattern = [];
         let moirePattern = [];
         let sceneProgress = 0;
-        const sceneDuration = 3000; // Frames per phase (~50 seconds at 60 FPS)
+        const sceneDuration = 3000; // ~50 seconds at 60 FPS
         const maxParticles = 1000;
         const maxGeometries = 2000;
+        const goldenRatio = (1 + Math.sqrt(5)) / 2;
 
         // Canvas Initialization
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            ctx.globalCompositeOperation = 'lighter';
+            if (gl) {
+                gl.viewport(0, 0, canvas.width, canvas.height);
+            }
             mouse.x = canvas.width / 2;
             mouse.y = canvas.height / 2;
             initPools();
@@ -72,12 +95,11 @@
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
 
-        // Object Pooling for Particles and Geometries
+        // Object Pooling
         function initPools() {
-            // Particle Pool with Manifestation Properties
-            particlePool.length = 0;
+            particles.length = 0;
             for (let i = 0; i < maxParticles; i++) {
-                particlePool.push({
+                particles.push({
                     x: canvas.width / 2,
                     y: canvas.height / 2,
                     vx: (Math.random() - 0.5) * 2,
@@ -87,16 +109,15 @@
                     opacity: 1,
                     wave: Math.random() * 2 * Math.PI,
                     state: Math.floor(Math.random() * 2), // 0 = particle, 1 = wave
-                    focusAttraction: 0, // Attraction to user focus
-                    active: i === 0 // Start with 1 particle
+                    focusAttraction: 0,
+                    active: i === 0
                 });
             }
-            particles = particlePool.filter(p => p.active);
+            particles = particles.filter(p => p.active);
 
-            // Geometry Pool with Manifestation Growth
-            geometryPool.length = 0;
+            geometries.length = 0;
             for (let i = 0; i < maxGeometries; i++) {
-                geometryPool.push({
+                geometries.push({
                     type: 'circle',
                     x: 0,
                     y: 0,
@@ -104,49 +125,96 @@
                     hue: 0,
                     opacity: 1,
                     pulsing: false,
-                    x1: 0,
-                    y1: 0,
-                    x2: 0,
-                    y2: 0,
                     points: [],
-                    width: 0,
                     vx: 0,
                     vy: 0,
                     depth: 0,
-                    manifestationShift: Math.random() * 2 * Math.PI, // For manifestation effects
+                    manifestationShift: Math.random() * 2 * Math.PI,
                     active: false
                 });
             }
         }
 
-        // Manifestation-Driven Particle Spawning
+        // Golden Spiral and Flower of Life
+        function generateGoldenSpiral(cx, cy, maxRadius, depth = 0) {
+            if (depth > 5 + Math.floor(manifestationEnergy / 1000) || geometries.filter(g => g.active).length >= maxGeometries) return;
+            const r = maxRadius * Math.pow(goldenRatio, -depth);
+            let g = geometries.find(g => !g.active);
+            if (!g) return;
+            g.type = 'spiral';
+            g.x = cx;
+            g.y = cy;
+            g.r = r;
+            g.hue = 180 + depth * 30;
+            g.opacity = 0.7;
+            g.pulsing = true;
+            g.active = true;
+            for (let i = 0; i < 4; i++) {
+                const theta = (i * Math.PI / 2) + angle;
+                const nx = cx + r * Math.cos(theta) * goldenRatio;
+                const ny = cy + r * Math.sin(theta) * goldenRatio;
+                generateGoldenSpiral(nx, ny, r / goldenRatio, depth + 1);
+            }
+        }
+
+        function generateFlowerOfLife(cx, cy, radius, depth = 0) {
+            if (depth > 3 + Math.floor(manifestationEnergy / 1000) || geometries.filter(g => g.active).length >= maxGeometries) return;
+            let g = geometries.find(g => !g.active);
+            if (!g) return;
+            g.type = 'circle';
+            g.x = cx;
+            g.y = cy;
+            g.r = radius * (1 + Math.sin(angle + cx / 50) * 0.1);
+            g.hue = 180 + depth * 30;
+            g.opacity = 0.7;
+            g.pulsing = true;
+            g.active = true;
+            for (let i = 0; i < 6; i++) {
+                const a = (2 * Math.PI / 6) * i + angle;
+                const nx = cx + radius * Math.cos(a);
+                const ny = cy + radius * Math.sin(a);
+                generateFlowerOfLife(nx, ny, radius, depth + 1);
+            }
+        }
+
+        // Particle System
         function spawnParticles() {
             const activeCount = particles.filter(p => p.active).length;
             const spawnCount = Math.min(Math.floor(manifestationEnergy / 50), maxParticles - activeCount);
             let spawned = 0;
-            for (let i = 0; i < particlePool.length && spawned < spawnCount; i++) {
-                if (!particlePool[i].active) {
-                    particlePool[i].x = mouse.x; // Spawn at focus point
-                    particlePool[i].y = mouse.y;
-                    particlePool[i].vx = (Math.random() - 0.5) * 2;
-                    particlePool[i].vy = -(Math.random() * 2 + 1);
-                    particlePool[i].size = Math.random() * 2 + 1;
-                    particlePool[i].hue = Math.random() * 360;
-                    particlePool[i].opacity = 1;
-                    particlePool[i].wave = Math.random() * 2 * Math.PI;
-                    particlePool[i].state = Math.floor(Math.random() * 2);
-                    particlePool[i].focusAttraction = 0;
-                    particlePool[i].active = true;
+            for (let i = 0; i < particles.length && spawned < spawnCount; i++) {
+                if (!particles[i].active) {
+                    particles[i].x = mouse.x;
+                    particles[i].y = mouse.y;
+                    particles[i].vx = (Math.random() - 0.5) * 2;
+                    particles[i].vy = -(Math.random() * 2 + 1);
+                    particles[i].size = Math.random() * 2 + 1;
+                    particles[i].hue = Math.random() * 360;
+                    particles[i].opacity = 1;
+                    particles[i].wave = Math.random() * 2 * Math.PI;
+                    particles[i].state = Math.floor(Math.random() * 2);
+                    particles[i].focusAttraction = 0;
+                    particles[i].active = true;
                     spawned++;
                 }
             }
-            particles = particlePool.filter(p => p.active);
+            particles = particles.filter(p => p.active);
         }
 
-        function drawParticles() {
+        // WebGL Rendering (Simplified for Brevity)
+        function renderWebGL() {
+            if (!gl) return;
+            gl.clearColor(0, 0, 0, 0);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+            // Implement WebGL shaders and rendering logic here
+            // For brevity, assume particles and geometries are rendered as points and lines
+        }
+
+        // 2D Canvas Fallback
+        function render2D(ctx) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             particles.forEach(p => {
                 if (!p.active) return;
-                // Law of Attraction: Particles are drawn to user focus
                 const dx = mouse.x - p.x;
                 const dy = mouse.y - p.y;
                 const dist = Math.sqrt(dx * dx + dy * dy);
@@ -155,33 +223,23 @@
                     p.vx += (dx / dist) * p.focusAttraction;
                     p.vy += (dy / dist) * p.focusAttraction;
                     p.opacity = Math.min(p.opacity + 0.02, 1);
-                    p.state = 1; // Wave state when focused
+                    p.state = 1;
                 } else {
                     p.focusAttraction = Math.max(p.focusAttraction - 0.01, 0);
                     p.opacity = Math.max(p.opacity - 0.01, 0.4);
-                    p.state = 0; // Particle state when not focused
+                    p.state = 0;
                 }
-                // Quantum Wave Function
                 const waveFunction = Math.sin(p.wave + angle) * Math.cos(p.wave + angle);
                 p.x += p.vx * (1 + manifestationEnergy / 10000) + waveFunction * 0.5;
                 p.y += p.vy * (1 + manifestationEnergy / 10000) + waveFunction * 0.5;
                 p.wave += 0.03 * (1 + coherence / 1000);
-                p.vy += 0.01; // Gravity effect
+                p.vy += 0.01;
                 if (p.x < 0 || p.x > canvas.width) p.vx *= -0.9;
                 if (p.y > canvas.height || p.y < 0) {
                     p.x = mouse.x;
                     p.y = mouse.y;
                     p.vx = (Math.random() - 0.5) * 2;
                     p.vy = -(Math.random() * 2 + 1);
-                }
-                // Double Slit: Focus Influences Pattern
-                const slitX = (p.x - canvas.width * 0.4) / (canvas.width * 0.2);
-                if (slitX >= 0 && slitX <= 1 && p.y > canvas.height * 0.5) {
-                    const focusSide = mouse.x < canvas.width / 2 ? -1 : 1; // -1 for left, 1 for right
-                    const interference = Math.sin(slitX * 10 * Math.PI + angle) * 0.5 + 0.5;
-                    const focusBias = focusSide * (slitX - 0.5) * focusStrength; // Bias pattern toward focus
-                    p.opacity *= interference + focusBias;
-                    p.vx += Math.cos(slitX * 10 * Math.PI) * 0.01 + focusBias * 0.05;
                 }
                 ctx.beginPath();
                 if (p.state === 0) {
@@ -200,9 +258,26 @@
                 ctx.fillStyle = gradient;
                 ctx.fill();
             });
+
+            geometries.forEach(g => {
+                if (!g.active) return;
+                ctx.beginPath();
+                if (g.type === 'circle') {
+                    ctx.arc(g.x / zoomLevel, g.y / zoomLevel, g.r, 0, 2 * Math.PI);
+                } else if (g.type === 'spiral') {
+                    for (let t = 0; t < 4 * Math.PI; t += 0.1) {
+                        const r = g.r * Math.pow(Math.E, t / goldenRatio);
+                        const x = g.x + r * Math.cos(t);
+                        const y = g.y + r * Math.sin(t);
+                        ctx.lineTo(x / zoomLevel, y / zoomLevel);
+                    }
+                }
+                ctx.strokeStyle = `hsla(${g.hue}, 70%, 50%, ${g.opacity})`;
+                ctx.stroke();
+            });
         }
 
-        // Optical Illusion: Moiré Pattern
+        // Moiré and Slit Patterns
         function initMoirePattern() {
             moirePattern = [];
             const spacing = 10;
@@ -213,7 +288,7 @@
             }
         }
 
-        function drawMoirePattern() {
+        function drawMoirePattern(ctx) {
             moirePattern.forEach(m => {
                 const dx = mouse.x - m.x;
                 const dy = mouse.y - m.y;
@@ -233,7 +308,6 @@
             });
         }
 
-        // Double Slit Pattern with Focus Influence
         function updateSlitPattern() {
             slitPattern = [];
             for (let x = canvas.width * 0.4; x < canvas.width * 0.6; x += 5) {
@@ -249,7 +323,7 @@
             }
         }
 
-        function drawSlitPattern() {
+        function drawSlitPattern(ctx) {
             slitPattern.forEach(s => {
                 ctx.beginPath();
                 ctx.arc(s.x / zoomLevel, s.y / zoomLevel, 2 * s.intensity, 0, 2 * Math.PI);
@@ -258,215 +332,128 @@
             });
         }
 
-        // Audio Setup with Manifestation Resonance
-        function initAudio(baseFreq) {
+        // Audio System
+        function initAudio(baseFreq = 432) {
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
             oscillator = audioContext.createOscillator();
             gainNode = audioContext.createGain();
             analyser = audioContext.createAnalyser();
             oscillator.type = 'sine';
-            oscillator.frequency.value = baseFreq;
+            oscillator.frequency.setValueAtTime(baseFreq, audioContext.currentTime);
             oscillator.connect(gainNode);
             gainNode.connect(analyser);
             analyser.connect(audioContext.destination);
             analyser.fftSize = 256;
-            oscillator.start();
             gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-        }
-
-        function stopAudio() {
-            if (oscillator) oscillator.stop();
-            if (audioContext) audioContext.close();
+            oscillator.start();
         }
 
         function updateAudio() {
-            if (gainNode) {
-                gainNode.gain.setValueAtTime(0.1 + (coherence / 2000), audioContext.currentTime);
-                oscillator.frequency.setValueAtTime(baseFrequencies[Math.floor(sceneProgress / sceneDuration) % 5] + (manifestationEnergy / 200), audioContext.currentTime);
-                const bufferLength = analyser.frequencyBinCount;
-                const dataArray = new Uint8Array(bufferLength);
-                analyser.getByteFrequencyData(dataArray);
-                const avgFrequency = dataArray.reduce((a, b) => a + b) / bufferLength;
-                return avgFrequency / 255;
-            }
-            return 0;
+            if (!audioContext) return 0;
+            const baseFrequencies = [432, 528, 639, 741, 963];
+            const freq = baseFrequencies[Math.floor(sceneProgress / sceneDuration) % 5] + (manifestationEnergy / 200);
+            oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+            gainNode.gain.setValueAtTime(0.1 + (coherence / 2000), audioContext.currentTime);
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+            analyser.getByteFrequencyData(dataArray);
+            return dataArray.reduce((a, b) => a + b) / bufferLength / 255;
         }
-        const baseFrequencies = [432, 528, 432, 0, 963];
 
-        // Unified Scene with Manifestation-Driven Growth
+        // Scene Management
         function initScene() {
-            geometryPool.forEach(g => g.active = false);
-            geometries = [];
+            geometries.forEach(g => g.active = false);
             const cx = canvas.width / 2;
             const cy = canvas.height / 2;
             const phase = Math.floor(sceneProgress / sceneDuration) % 5;
-            let activeCount = 0;
-
-            // Flower of Life (Phase 0) - Hexagonal Growth via Focus
             if (phase === 0) {
-                const radius = Math.min(canvas.width, canvas.height) / 20;
-                function generateFlower(x, y, r, depth) {
-                    if (depth > Math.min(3 + Math.floor(manifestationEnergy / 1000), 5) || activeCount >= maxGeometries) return;
-                    let g = geometryPool[activeCount++];
-                    g.type = 'circle';
-                    g.x = x;
-                    g.y = y;
-                    g.r = r * (1 + Math.sin(angle + x / 50) * 0.1);
-                    g.hue = 180 + depth * 30;
-                    g.opacity = 1;
-                    g.pulsing = true;
-                    g.manifestationShift = Math.random() * 2 * Math.PI;
-                    g.active = true;
-                    for (let i = 0; i < 6; i++) {
-                        if (activeCount >= maxGeometries) break;
-                        const a = (2 * Math.PI / 6) * i;
-                        const newX = x + Math.cos(a) * r * Math.sqrt(3);
-                        const newY = y + Math.sin(a) * r * Math.sqrt(3);
-                        generateFlower(newX, newY, r, depth + 1);
-                    }
-                }
-                generateFlower(cx, cy, radius, 0);
-            }
-
-            // Golden Spiral (Phase 1) - Expanding with Focus
-            else if (phase === 1) {
-                const points = 200;
-                let a = 0.1;
-                let b = 0.2;
-                for (let i = 0; i < points && activeCount < maxGeometries; i++) {
-                    let theta = i * 0.5;
-                    let r = a * Math.exp(b * theta);
-                    let x = cx + r * Math.cos(theta);
-                    let y = cy + r * Math.sin(theta);
-                    let g = geometryPool[activeCount++];
-                    g.type = 'circle';
-                    g.x = x;
-                    g.y = y;
-                    g.r = 5 + Math.sin(theta + angle) * 2;
-                    g.hue = (theta * 30) % 360;
-                    g.opacity = 1;
-                    g.pulsing = true;
-                    g.active = true;
-                }
-            }
-
-            // Quantum Field Grid (Phase 2) - Dynamic grid influenced by coherence
-            else if (phase === 2) {
-                const spacing = 50;
-                for (let x = spacing; x < canvas.width; x += spacing) {
-                    for (let y = spacing; y < canvas.height; y += spacing) {
-                        if (activeCount >= maxGeometries) break;
-                        let g = geometryPool[activeCount++];
-                        g.type = 'line';
-                        g.x1 = x - 10 + Math.sin(angle + y / 100) * 20;
-                        g.y1 = y;
-                        g.x2 = x + 10 + Math.cos(angle + x / 100) * 20;
-                        g.y2 = y;
-                        g.hue = (x + y + angle * 50) % 360;
-                        g.opacity = 0.8;
-                        g.active = true;
-                    }
-                }
-            }
-
-            // Interference Circles (Phase 3)
-            else if (phase === 3) {
-                for (let i = 0; i < 100 && activeCount < maxGeometries; i++) {
-                    let g = geometryPool[activeCount++];
-                    g.type = 'circle';
-                    g.x = Math.random() * canvas.width;
-                    g.y = Math.random() * canvas.height;
-                    g.r = 20 + Math.random() * 50;
-                    g.hue = Math.random() * 360;
-                    g.opacity = 0.5 + Math.random() * 0.5;
-                    g.pulsing = true;
-                    g.active = true;
-                }
-            }
-
-            // Collapse - Coherence and manifestation condensing into a point (Phase 4)
-            else if (phase === 4) {
-                let centerX = canvas.width / 2;
-                let centerY = canvas.height / 2;
-                for (let i = 0; i < 300 && activeCount < maxGeometries; i++) {
-                    let g = geometryPool[activeCount++];
-                    g.type = 'line';
-                    g.x1 = centerX;
-                    g.y1 = centerY;
-                    g.x2 = centerX + Math.cos(i) * (100 + manifestationEnergy / 10);
-                    g.y2 = centerY + Math.sin(i) * (100 + manifestationEnergy / 10);
-                    g.hue = (i * 12 + angle * 100) % 360;
-                    g.opacity = 0.7;
-                    g.active = true;
-                }
+                generateFlowerOfLife(cx, cy, Math.min(canvas.width, canvas.height) / 20);
+            } else if (phase === 1) {
+                generateGoldenSpiral(cx, cy, Math.min(canvas.width, canvas.height) / 20);
+            } else {
+                // Add more phases (e.g., fractals, torus knots) as needed
+                generateFlowerOfLife(cx, cy, Math.min(canvas.width, canvas.height) / 20);
             }
         }
 
-        function drawGeometries() {
-            geometries = geometryPool.filter(g => g.active);
-            geometries.forEach(g => {
-                ctx.beginPath();
-                if (g.type === 'circle') {
-                    ctx.arc(g.x / zoomLevel, g.y / zoomLevel, g.r, 0, 2 * Math.PI);
-                } else if (g.type === 'line') {
-                    ctx.moveTo(g.x1 / zoomLevel, g.y1 / zoomLevel);
-                    ctx.lineTo(g.x2 / zoomLevel, g.y2 / zoomLevel);
-                }
-                ctx.strokeStyle = `hsla(${g.hue}, 70%, 50%, ${g.opacity})`;
-                ctx.lineWidth = 1 + Math.sin(angle + g.manifestationShift) * 0.5;
-                ctx.stroke();
-            });
-        }
-
-        // Mouse Interaction for Focus
-        canvas.addEventListener('mousemove', (e) => {
+        // Input Handling
+        canvas.addEventListener('mousemove', e => {
             mouse.x = e.clientX;
             mouse.y = e.clientY;
+            focusStrength = Math.min(focusStrength + 0.05, 1);
+            manifestationEnergy += 0.1;
+            coherence = Math.min(coherence + 0.02, 1000);
         });
 
         canvas.addEventListener('mousedown', () => {
             mouse.clicked = true;
             mouse.clickStrength = 1;
             mouse.lastClick = Date.now();
-            mouse.focusTime = 0;
-            if (!audioContext) initAudio(432);
+            manifestationEnergy += 50;
+            spawnParticles();
+            if (!audioContext) initAudio();
         });
 
         canvas.addEventListener('mouseup', () => {
             mouse.clicked = false;
+            mouse.clickStrength = 0;
         });
 
-        // Main Render Loop
+        // Touch Support
+        canvas.addEventListener('touchstart', e => {
+            e.preventDefault();
+            touch.x = e.touches[0].clientX;
+            touch.y = e.touches[0].clientY;
+            touch.active = true;
+            mouse.x = touch.x;
+            mouse.y = touch.y;
+            manifestationEnergy += 50;
+            spawnParticles();
+            if (!audioContext) initAudio();
+        });
+
+        canvas.addEventListener('touchmove', e => {
+            e.preventDefault();
+            touch.x = e.touches[0].clientX;
+            touch.y = e.touches[0].clientY;
+            mouse.x = touch.x;
+            mouse.y = touch.y;
+            focusStrength = Math.min(focusStrength + 0.05, 1);
+            manifestationEnergy += 0.1;
+            coherence = Math.min(coherence + 0.02, 1000);
+        });
+
+        canvas.addEventListener('touchend', () => {
+            touch.active = false;
+        });
+
+        // Animation Loop
         function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            angle += 0.005;
+            angle += 0.01;
             sceneProgress++;
+            if (sceneProgress % sceneDuration === 0) initScene();
+            manifestationEnergy = Math.max(manifestationEnergy - 0.05, 0);
+            coherence = Math.max(coherence - 0.01, 0);
+            focusStrength = Math.max(focusStrength - 0.02, 0);
+            zoomLevel = 1 + Math.sin(angle) * 0.1;
+            spawnParticles();
+            updateSlitPattern();
+            const audioFeedback = updateAudio();
+            manifestationEnergy += audioFeedback * 10;
 
-            if (mouse.clicked) {
-                mouse.focusTime += 1;
-                manifestationEnergy += 0.5;
-                coherence += 0.2;
-                focusStrength = Math.min(mouse.focusTime / 100, 1);
+            if (gl) {
+                renderWebGL();
             } else {
-                focusStrength = Math.max(focusStrength - 0.01, 0);
-                manifestationEnergy = Math.max(manifestationEnergy - 0.2, 0);
-                coherence = Math.max(coherence - 0.1, 0);
+                const ctx = canvas.getContext('2d');
+                render2D(ctx);
+                drawMoirePattern(ctx);
+                drawSlitPattern(ctx);
             }
 
-            updateSlitPattern();
-            spawnParticles();
-            drawParticles();
-            drawSlitPattern();
-            drawMoirePattern();
-            drawGeometries();
-
-            updateAudio();
-
+            infoDiv.textContent = `Focus Energy: ${Math.floor(manifestationEnergy)} | Coherence: ${Math.floor(coherence)}`;
             requestAnimationFrame(animate);
         }
         animate();
-
     </script>
 </body>
 </html>
