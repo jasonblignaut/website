@@ -40,12 +40,12 @@
         // Core Setup
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d', { alpha: true });
-        let energy = 0;
-        let coherence = 0;
-        let insight = 0; // Tracks user learning progress
+        let manifestationEnergy = 0; // Tracks user's focused intent
+        let coherence = 0; // Alignment of energy
+        let focusStrength = 0; // Intensity of user focus
         let angle = 0;
         let zoomLevel = 1;
-        let mouse = { x: canvas.width / 2, y: canvas.height / 2, clicked: false, clickStrength: 0, lastClick: 0, hovering: false };
+        let mouse = { x: canvas.width / 2, y: canvas.height / 2, clicked: false, clickStrength: 0, lastClick: 0, focusTime: 0 };
         let audioContext, oscillator, gainNode, analyser;
         let particlePool = [];
         let geometryPool = [];
@@ -74,7 +74,7 @@
 
         // Object Pooling for Particles and Geometries
         function initPools() {
-            // Particle Pool with Quantum Properties
+            // Particle Pool with Manifestation Properties
             particlePool.length = 0;
             for (let i = 0; i < maxParticles; i++) {
                 particlePool.push({
@@ -87,14 +87,13 @@
                     opacity: 1,
                     wave: Math.random() * 2 * Math.PI,
                     state: Math.floor(Math.random() * 2), // 0 = particle, 1 = wave
-                    spin: Math.random() * 0.1 - 0.05, // Quantum spin
-                    entanglement: i % 2 === 0 ? (i + 1) % maxParticles : (i - 1 + maxParticles) % maxParticles, // Entangled pair
+                    focusAttraction: 0, // Attraction to user focus
                     active: i === 0 // Start with 1 particle
                 });
             }
             particles = particlePool.filter(p => p.active);
 
-            // Geometry Pool with Holographic Properties
+            // Geometry Pool with Manifestation Growth
             geometryPool.length = 0;
             for (let i = 0; i < maxGeometries; i++) {
                 geometryPool.push({
@@ -114,21 +113,21 @@
                     vx: 0,
                     vy: 0,
                     depth: 0,
-                    hologramShift: Math.random() * 2 * Math.PI, // For holographic effects
+                    manifestationShift: Math.random() * 2 * Math.PI, // For manifestation effects
                     active: false
                 });
             }
         }
 
-        // Energy-Driven Particle Spawning with Quantum Entanglement
+        // Manifestation-Driven Particle Spawning
         function spawnParticles() {
             const activeCount = particles.filter(p => p.active).length;
-            const spawnCount = Math.min(Math.floor(energy / 50), maxParticles - activeCount);
+            const spawnCount = Math.min(Math.floor(manifestationEnergy / 50), maxParticles - activeCount);
             let spawned = 0;
             for (let i = 0; i < particlePool.length && spawned < spawnCount; i++) {
                 if (!particlePool[i].active) {
-                    particlePool[i].x = canvas.width / 2;
-                    particlePool[i].y = canvas.height / 2;
+                    particlePool[i].x = mouse.x; // Spawn at focus point
+                    particlePool[i].y = mouse.y;
                     particlePool[i].vx = (Math.random() - 0.5) * 2;
                     particlePool[i].vy = -(Math.random() * 2 + 1);
                     particlePool[i].size = Math.random() * 2 + 1;
@@ -136,12 +135,8 @@
                     particlePool[i].opacity = 1;
                     particlePool[i].wave = Math.random() * 2 * Math.PI;
                     particlePool[i].state = Math.floor(Math.random() * 2);
-                    particlePool[i].spin = Math.random() * 0.1 - 0.05;
+                    particlePool[i].focusAttraction = 0;
                     particlePool[i].active = true;
-                    // Entangle with another particle
-                    if (particlePool[particlePool[i].entanglement]) {
-                        particlePool[particlePool[i].entanglement].spin = -particlePool[i].spin;
-                    }
                     spawned++;
                 }
             }
@@ -151,45 +146,42 @@
         function drawParticles() {
             particles.forEach(p => {
                 if (!p.active) return;
-                // Quantum Wave Function (Schrödinger-inspired)
+                // Law of Attraction: Particles are drawn to user focus
+                const dx = mouse.x - p.x;
+                const dy = mouse.y - p.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 300) {
+                    p.focusAttraction += focusStrength * 0.01;
+                    p.vx += (dx / dist) * p.focusAttraction;
+                    p.vy += (dy / dist) * p.focusAttraction;
+                    p.opacity = Math.min(p.opacity + 0.02, 1);
+                    p.state = 1; // Wave state when focused
+                } else {
+                    p.focusAttraction = Math.max(p.focusAttraction - 0.01, 0);
+                    p.opacity = Math.max(p.opacity - 0.01, 0.4);
+                    p.state = 0; // Particle state when not focused
+                }
+                // Quantum Wave Function
                 const waveFunction = Math.sin(p.wave + angle) * Math.cos(p.wave + angle);
-                p.x += p.vx * (1 + energy / 10000) + waveFunction * 0.5;
-                p.y += p.vy * (1 + energy / 10000) + waveFunction * 0.5;
+                p.x += p.vx * (1 + manifestationEnergy / 10000) + waveFunction * 0.5;
+                p.y += p.vy * (1 + manifestationEnergy / 10000) + waveFunction * 0.5;
                 p.wave += 0.03 * (1 + coherence / 1000);
                 p.vy += 0.01; // Gravity effect
                 if (p.x < 0 || p.x > canvas.width) p.vx *= -0.9;
                 if (p.y > canvas.height || p.y < 0) {
-                    p.x = canvas.width / 2;
-                    p.y = canvas.height / 2;
+                    p.x = mouse.x;
+                    p.y = mouse.y;
                     p.vx = (Math.random() - 0.5) * 2;
                     p.vy = -(Math.random() * 2 + 1);
                 }
-                const dx = mouse.x - p.x;
-                const dy = mouse.y - p.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < 250 && mouse.clicked) {
-                    p.vx += dx * 0.01 * mouse.clickStrength;
-                    p.vy += dy * 0.01 * mouse.clickStrength;
-                    p.opacity = Math.min(p.opacity + 0.02, 1);
-                    p.state = 1;
-                    insight += 0.1; // Learn about quantum interaction
-                    // Entanglement effect
-                    const entangled = particlePool[p.entanglement];
-                    if (entangled && entangled.active) {
-                        entangled.state = p.state;
-                        entangled.hue = p.hue;
-                    }
-                } else if (dist > 300) {
-                    p.opacity = Math.max(p.opacity - 0.01, 0.4);
-                    p.state = 0;
-                }
-                // Double Slit Interference
+                // Double Slit: Focus Influences Pattern
                 const slitX = (p.x - canvas.width * 0.4) / (canvas.width * 0.2);
                 if (slitX >= 0 && slitX <= 1 && p.y > canvas.height * 0.5) {
+                    const focusSide = mouse.x < canvas.width / 2 ? -1 : 1; // -1 for left, 1 for right
                     const interference = Math.sin(slitX * 10 * Math.PI + angle) * 0.5 + 0.5;
-                    p.opacity *= interference;
-                    p.vx += Math.cos(slitX * 10 * Math.PI) * 0.01;
-                    insight += 0.05; // Learn about wave-particle duality
+                    const focusBias = focusSide * (slitX - 0.5) * focusStrength; // Bias pattern toward focus
+                    p.opacity *= interference + focusBias;
+                    p.vx += Math.cos(slitX * 10 * Math.PI) * 0.01 + focusBias * 0.05;
                 }
                 ctx.beginPath();
                 if (p.state === 0) {
@@ -222,7 +214,6 @@
         }
 
         function drawMoirePattern() {
-            if (!mouse.hovering) return;
             moirePattern.forEach(m => {
                 const dx = mouse.x - m.x;
                 const dy = mouse.y - m.y;
@@ -238,20 +229,21 @@
                     ctx.lineWidth = 1;
                     ctx.stroke();
                     ctx.restore();
-                    insight += 0.01; // Learn about optical illusions
                 }
             });
         }
 
-        // Double Slit Pattern
+        // Double Slit Pattern with Focus Influence
         function updateSlitPattern() {
             slitPattern = [];
             for (let x = canvas.width * 0.4; x < canvas.width * 0.6; x += 5) {
                 for (let y = canvas.height * 0.5; y < canvas.height * 0.7; y += 5) {
                     const slitX = (x - canvas.width * 0.4) / (canvas.width * 0.2);
+                    const focusSide = mouse.x < canvas.width / 2 ? -1 : 1;
                     const interference = Math.sin(slitX * 10 * Math.PI + angle) * 0.5 + 0.5;
-                    if (interference > 0.3) {
-                        slitPattern.push({ x, y, intensity: interference });
+                    const focusBias = focusSide * (slitX - 0.5) * focusStrength;
+                    if (interference + focusBias > 0.3) {
+                        slitPattern.push({ x, y, intensity: interference + focusBias });
                     }
                 }
             }
@@ -266,7 +258,7 @@
             });
         }
 
-        // Audio Setup with Visual Feedback
+        // Audio Setup with Manifestation Resonance
         function initAudio(baseFreq) {
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
             oscillator = audioContext.createOscillator();
@@ -290,19 +282,18 @@
         function updateAudio() {
             if (gainNode) {
                 gainNode.gain.setValueAtTime(0.1 + (coherence / 2000), audioContext.currentTime);
-                oscillator.frequency.setValueAtTime(baseFrequencies[Math.floor(sceneProgress / sceneDuration) % 5] + (energy / 200), audioContext.currentTime);
-                // Visual feedback from audio
+                oscillator.frequency.setValueAtTime(baseFrequencies[Math.floor(sceneProgress / sceneDuration) % 5] + (manifestationEnergy / 200), audioContext.currentTime);
                 const bufferLength = analyser.frequencyBinCount;
                 const dataArray = new Uint8Array(bufferLength);
                 analyser.getByteFrequencyData(dataArray);
                 const avgFrequency = dataArray.reduce((a, b) => a + b) / bufferLength;
-                return avgFrequency / 255; // Normalized for visual effects
+                return avgFrequency / 255;
             }
             return 0;
         }
         const baseFrequencies = [432, 528, 432, 0, 963];
 
-        // Unified Cosmic Scene with Mathematical Growth
+        // Unified Scene with Manifestation-Driven Growth
         function initScene() {
             geometryPool.forEach(g => g.active = false);
             geometries = [];
@@ -311,11 +302,11 @@
             const phase = Math.floor(sceneProgress / sceneDuration) % 5;
             let activeCount = 0;
 
-            // Flower of Life (Phase 0) - Hexagonal Growth
+            // Flower of Life (Phase 0) - Hexagonal Growth via Focus
             if (phase === 0) {
                 const radius = Math.min(canvas.width, canvas.height) / 20;
                 function generateFlower(x, y, r, depth) {
-                    if (depth > Math.min(3 + Math.floor(energy / 1000), 5) || activeCount >= maxGeometries) return;
+                    if (depth > Math.min(3 + Math.floor(manifestationEnergy / 1000), 5) || activeCount >= maxGeometries) return;
                     let g = geometryPool[activeCount++];
                     g.type = 'circle';
                     g.x = x;
@@ -324,422 +315,158 @@
                     g.hue = 180 + depth * 30;
                     g.opacity = 1;
                     g.pulsing = true;
-                    g.hologramShift = Math.random() * 2 * Math.PI;
+                    g.manifestationShift = Math.random() * 2 * Math.PI;
                     g.active = true;
                     for (let i = 0; i < 6; i++) {
                         if (activeCount >= maxGeometries) break;
-                        const a = (2 * Math.PI / 6) * i + angle;
-                        const newX = x + r * Math.cos(a);
-                        const newY = y + r * Math.sin(a);
-                        let line = geometryPool[activeCount++];
-                        line.type = 'line';
-                        line.x1 = x;
-                        line.y1 = y;
-                        line.x2 = newX;
-                        line.y2 = newY;
-                        line.hue = 180 + depth * 30;
-                        line.opacity = 1;
-                        line.active = true;
-                        generateFlower(newX, newY, r * 0.7, depth + 1);
+                        const a = (2 * Math.PI / 6) * i;
+                        const newX = x + Math.cos(a) * r * Math.sqrt(3);
+                        const newY = y + Math.sin(a) * r * Math.sqrt(3);
+                        generateFlower(newX, newY, r, depth + 1);
                     }
                 }
                 generateFlower(cx, cy, radius, 0);
-                insight += 0.5; // Learn about sacred geometry
             }
 
-            // Golden Spiral (Phase 1) - Fibonacci Growth
-            if (phase === 1) {
-                let phi = (1 + Math.sqrt(5)) / 2;
-                let r = 5, a = 0;
-                const points = [];
-                const steps = Math.min(500 + Math.floor(energy / 20), 800);
-                for (let i = 0; i < steps; i++) {
-                    a += 0.1;
-                    r = 5 * Math.pow(phi, a / (Math.PI / 2)) * (1 + energy / 10000);
-                    const x = cx + r * Math.cos(a + angle);
-                    const y = cy + r * Math.sin(a + angle);
-                    points.push({ x, y });
-                    if (i % 10 === 0 && activeCount < maxGeometries) {
+            // Golden Spiral (Phase 1) - Expanding with Focus
+            else if (phase === 1) {
+                const points = 200;
+                let a = 0.1;
+                let b = 0.2;
+                for (let i = 0; i < points && activeCount < maxGeometries; i++) {
+                    let theta = i * 0.5;
+                    let r = a * Math.exp(b * theta);
+                    let x = cx + r * Math.cos(theta);
+                    let y = cy + r * Math.sin(theta);
+                    let g = geometryPool[activeCount++];
+                    g.type = 'circle';
+                    g.x = x;
+                    g.y = y;
+                    g.r = 5 + Math.sin(theta + angle) * 2;
+                    g.hue = (theta * 30) % 360;
+                    g.opacity = 1;
+                    g.pulsing = true;
+                    g.active = true;
+                }
+            }
+
+            // Quantum Field Grid (Phase 2) - Dynamic grid influenced by coherence
+            else if (phase === 2) {
+                const spacing = 50;
+                for (let x = spacing; x < canvas.width; x += spacing) {
+                    for (let y = spacing; y < canvas.height; y += spacing) {
+                        if (activeCount >= maxGeometries) break;
                         let g = geometryPool[activeCount++];
-                        g.type = 'circle';
-                        g.x = x;
-                        g.y = y;
-                        g.r = 10 * (coherence / 100 + 1);
-                        g.hue = 60 + i * 0.2;
-                        g.opacity = 1;
-                        g.pulsing = true;
-                        g.hologramShift = Math.random() * 2 * Math.PI;
+                        g.type = 'line';
+                        g.x1 = x - 10 + Math.sin(angle + y / 100) * 20;
+                        g.y1 = y;
+                        g.x2 = x + 10 + Math.cos(angle + x / 100) * 20;
+                        g.y2 = y;
+                        g.hue = (x + y + angle * 50) % 360;
+                        g.opacity = 0.8;
                         g.active = true;
                     }
                 }
-                if (activeCount < maxGeometries) {
-                    let spiral = geometryPool[activeCount++];
-                    spiral.type = 'spiral';
-                    spiral.points = points;
-                    spiral.hue = 60;
-                    spiral.opacity = 1;
-                    spiral.active = true;
-                }
-                if (activeCount < maxGeometries) {
-                    let center = geometryPool[activeCount++];
-                    center.type = 'circle';
-                    center.x = cx;
-                    center.y = cy;
-                    center.r = 20 + energy / 50;
-                    center.hue = 60;
-                    center.opacity = 1;
-                    center.pulsing = true;
-                    center.active = true;
-                }
-                insight += 0.5; // Learn about Fibonacci sequences
             }
 
-            // Seed of Life (Phase 2) - Foundational Matrix
-            if (phase === 2) {
-                const radius = Math.min(canvas.width, canvas.height) / 15;
-                if (activeCount < maxGeometries) {
-                    let center = geometryPool[activeCount++];
-                    center.type = 'circle';
-                    center.x = cx;
-                    center.y = cy;
-                    center.r = radius;
-                    center.hue = 180;
-                    center.opacity = 1;
-                    center.pulsing = true;
-                    center.hologramShift = Math.random() * 2 * Math.PI;
-                    center.active = true;
-                }
-                for (let i = 0; i < 6; i++) {
-                    if (activeCount >= maxGeometries) break;
-                    const a = (2 * Math.PI / 6) * i + angle;
-                    const x = cx + radius * Math.cos(a);
-                    const y = cy + radius * Math.sin(a);
+            // Interference Circles (Phase 3)
+            else if (phase === 3) {
+                for (let i = 0; i < 100 && activeCount < maxGeometries; i++) {
                     let g = geometryPool[activeCount++];
                     g.type = 'circle';
-                    g.x = x;
-                    g.y = y;
-                    g.r = radius;
-                    g.hue = 180 + i * 30;
-                    g.opacity = 1;
+                    g.x = Math.random() * canvas.width;
+                    g.y = Math.random() * canvas.height;
+                    g.r = 20 + Math.random() * 50;
+                    g.hue = Math.random() * 360;
+                    g.opacity = 0.5 + Math.random() * 0.5;
                     g.pulsing = true;
-                    g.hologramShift = Math.random() * 2 * Math.PI;
                     g.active = true;
-                    let line = geometryPool[activeCount++];
-                    line.type = 'line';
-                    line.x1 = cx;
-                    line.y1 = cy;
-                    line.x2 = x;
-                    line.y2 = y;
-                    line.hue = 180 + i * 30;
-                    line.opacity = 1;
-                    line.active = true;
                 }
-                insight += 0.5; // Learn about geometric harmony
             }
 
-            // Quantum Field with Double Slit (Phase 3) - Wave Interference
-            if (phase === 3) {
-                const count = Math.min(100 + Math.floor(energy / 50), 200);
-                for (let i = 0; i < count; i++) {
-                    if (activeCount >= maxGeometries) break;
-                    const x = cx + (Math.random() - 0.5) * canvas.width * 0.8;
-                    const y = cy - canvas.height * 0.4;
+            // Collapse - Coherence and manifestation condensing into a point (Phase 4)
+            else if (phase === 4) {
+                let centerX = canvas.width / 2;
+                let centerY = canvas.height / 2;
+                for (let i = 0; i < 300 && activeCount < maxGeometries; i++) {
                     let g = geometryPool[activeCount++];
-                    g.type = 'circle';
-                    g.x = x;
-                    g.y = y;
-                    g.r = 5 * (1 + coherence / 1000);
-                    g.hue = 240 + Math.random() * 60;
+                    g.type = 'line';
+                    g.x1 = centerX;
+                    g.y1 = centerY;
+                    g.x2 = centerX + Math.cos(i) * (100 + manifestationEnergy / 10);
+                    g.y2 = centerY + Math.sin(i) * (100 + manifestationEnergy / 10);
+                    g.hue = (i * 12 + angle * 100) % 360;
                     g.opacity = 0.7;
-                    g.pulsing = true;
-                    g.vx = (Math.random() - 0.5) * 2;
-                    g.vy = Math.random() * 2 + 1;
-                    g.hologramShift = Math.random() * 2 * Math.PI;
                     g.active = true;
                 }
-                if (activeCount < maxGeometries) {
-                    let slit1 = geometryPool[activeCount++];
-                    slit1.type = 'rect';
-                    slit1.x = canvas.width * 0.45;
-                    slit1.y = canvas.height * 0.5;
-                    slit1.w = 10;
-                    slit1.h = canvas.height * 0.3;
-                    slit1.hue = 240;
-                    slit1.opacity = 0.8;
-                    slit1.active = true;
-                }
-                if (activeCount < maxGeometries) {
-                    let slit2 = geometryPool[activeCount++];
-                    slit2.type = 'rect';
-                    slit2.x = canvas.width * 0.55;
-                    slit2.y = canvas.height * 0.5;
-                    slit2.w = 10;
-                    slit2.h = canvas.height * 0.3;
-                    slit2.hue = 240;
-                    slit2.opacity = 0.8;
-                    slit2.active = true;
-                }
-                insight += 0.5; // Learn about quantum mechanics
             }
-
-            // Torus Flow with Penrose Triangle (Phase 4) - Gravitational Vortex + Optical Illusion
-            if (phase === 4) {
-                const innerR = 50 + energy / 20;
-                const outerR = 150 + energy / 100;
-                for (let i = 0; i < 360; i += 3) {
-                    if (activeCount >= maxGeometries) break;
-                    const a = (i * Math.PI / 180) + angle;
-                    const x = cx + (outerR + innerR * Math.cos(a)) * Math.cos(a);
-                    const y = cy + (outerR + innerR * Math.cos(a)) * Math.sin(a);
-                    let g = geometryPool[activeCount++];
-                    g.type = 'circle';
-                    g.x = x;
-                    g.y = y;
-                    g.r = 5 * (1 + Math.sin(a + angle) * 0.3);
-                    g.hue = i + energy * 0.01;
-                    g.opacity = 1;
-                    g.pulsing = true;
-                    g.hologramShift = Math.random() * 2 * Math.PI;
-                    g.active = true;
-                }
-                for (let i = 0; i < 360; i += 15) {
-                    if (activeCount >= maxGeometries) break;
-                    const a1 = (i * Math.PI / 180) + angle;
-                    const a2 = ((i + 15) * Math.PI / 180) + angle;
-                    const x1 = cx + outerR * Math.cos(a1);
-                    const y1 = cy + outerR * Math.sin(a1);
-                    const x2 = cx + outerR * Math.cos(a2);
-                    const y2 = cy + outerR * Math.sin(a2);
-                    let line = geometryPool[activeCount++];
-                    line.type = 'line';
-                    line.x1 = x1;
-                    line.y1 = y1;
-                    line.x2 = x2;
-                    line.y2 = y2;
-                    line.hue = i + energy * 0.01;
-                    line.opacity = 1;
-                    line.width = 2 + energy / 100;
-                    line.active = true;
-                }
-                // Penrose Triangle (Optical Illusion)
-                if (activeCount + 3 < maxGeometries) {
-                    const size = 50 + energy / 100;
-                    const sqrt3 = Math.sqrt(3);
-                    const x1 = cx, y1 = cy - size;
-                    const x2 = cx + size * sqrt3 / 2, y2 = cy + size / 2;
-                    const x3 = cx - size * sqrt3 / 2, y3 = cy + size / 2;
-                    let side1 = geometryPool[activeCount++];
-                    side1.type = 'line';
-                    side1.x1 = x1;
-                    side1.y1 = y1;
-                    side1.x2 = x2;
-                    side1.y2 = y2;
-                    side1.hue = 0;
-                    side1.opacity = 1;
-                    side1.width = 5;
-                    side1.active = true;
-                    let side2 = geometryPool[activeCount++];
-                    side2.type = 'line';
-                    side2.x1 = x2;
-                    side2.y1 = y2;
-                    side2.x2 = x3;
-                    side2.y2 = y3;
-                    side2.hue = 120;
-                    side2.opacity = 1;
-                    side2.width = 5;
-                    side2.active = true;
-                    let side3 = geometryPool[activeCount++];
-                    side3.type = 'line';
-                    side3.x1 = x3;
-                    side3.y1 = y3;
-                    side3.x2 = x1;
-                    side3.y2 = y1;
-                    side3.hue = 240;
-                    side3.opacity = 1;
-                    side3.width = 5;
-                    side3.active = true;
-                }
-                insight += 0.5; // Learn about gravitational dynamics and optical illusions
-            }
-
-            geometries = geometryPool.filter(g => g.active);
         }
 
-        // Draw Geometries with Holographic Effects
         function drawGeometries() {
-            const audioIntensity = updateAudio();
+            geometries = geometryPool.filter(g => g.active);
             geometries.forEach(g => {
-                if (!g.active) return;
-                ctx.globalAlpha = g.opacity;
-                // Holographic effect
-                const hologramOffset = Math.sin(g.hologramShift + angle) * 5 * audioIntensity;
+                ctx.beginPath();
                 if (g.type === 'circle') {
-                    ctx.beginPath();
-                    const pulseScale = g.pulsing ? (1 + Math.sin(Date.now() / 500 + g.x / 50 + g.y / 50) * 0.2 * (1 + energy / 5000)) : 1;
-                    ctx.arc((g.x + hologramOffset) / zoomLevel, (g.y + hologramOffset) / zoomLevel, g.r * pulseScale, 0, 2 * Math.PI);
-                    const gradient = ctx.createRadialGradient((g.x + hologramOffset) / zoomLevel, (g.y + hologramOffset) / zoomLevel, 0, (g.x + hologramOffset) / zoomLevel, (g.y + hologramOffset) / zoomLevel, g.r * pulseScale);
-                    gradient.addColorStop(0, `hsla(${g.hue + hologramOffset * 10}, 70%, 50%, ${0.8 * (1 + coherence / 1000)})`);
-                    gradient.addColorStop(1, `hsla(${g.hue + hologramOffset * 10}, 70%, 50%, 0)`);
-                    ctx.fillStyle = gradient;
-                    ctx.strokeStyle = `hsla(${g.hue + hologramOffset * 10}, 70%, 50%, ${g.opacity})`;
-                    ctx.lineWidth = 2;
-                    ctx.fill();
-                    ctx.stroke();
-                    if (g.vx) {
-                        g.x += g.vx * (1 + energy / 10000);
-                        g.y += g.vy * (1 + energy / 10000);
-                        g.vy += 0.005;
-                        if (g.x < 0 || g.x > canvas.width) g.vx *= -0.9;
-                        if (g.y > canvas.height) {
-                            g.y = canvas.height;
-                            g.vy *= -0.7;
-                        }
-                        const dx = mouse.x - g.x;
-                        const dy = mouse.y - g.y;
-                        const dist = Math.sqrt(dx * dx + dy * dy);
-                        if (dist < 200 && mouse.clicked) {
-                            g.vx += dx * 0.01 * mouse.clickStrength;
-                            g.vy += dy * 0.01 * mouse.clickStrength;
-                        }
-                    }
+                    ctx.arc(g.x / zoomLevel, g.y / zoomLevel, g.r, 0, 2 * Math.PI);
                 } else if (g.type === 'line') {
-                    ctx.beginPath();
-                    ctx.moveTo((g.x1 + hologramOffset) / zoomLevel, (g.y1 + hologramOffset) / zoomLevel);
-                    ctx.lineTo((g.x2 + hologramOffset) / zoomLevel, (g.y2 + hologramOffset) / zoomLevel);
-                    ctx.strokeStyle = `hsla(${g.hue + hologramOffset * 10}, 70%, 50%, ${g.opacity * 0.3 * (1 + energy / 5000)})`;
-                    ctx.lineWidth = (g.width || 1);
-                    ctx.stroke();
-                } else if (g.type === 'spiral') {
-                    ctx.beginPath();
-                    ctx.moveTo(g.points[0].x / zoomLevel, g.points[0].y / zoomLevel);
-                    for (let i = 1; i < g.points.length; i++) {
-                        ctx.lineTo((g.points[i].x + hologramOffset) / zoomLevel, (g.points[i].y + hologramOffset) / zoomLevel);
-                    }
-                    ctx.strokeStyle = `hsla(${g.hue + hologramOffset * 10}, 70%, 50%, ${g.opacity})`;
-                    ctx.lineWidth = 2;
-                    ctx.stroke();
-                } else if (g.type === 'rect') {
-                    ctx.fillStyle = `hsla(${g.hue + hologramOffset * 10}, 70%, 50%, ${g.opacity})`;
-                    ctx.fillRect((g.x + hologramOffset) / zoomLevel, (g.y + hologramOffset) / zoomLevel, g.w, g.h);
+                    ctx.moveTo(g.x1 / zoomLevel, g.y1 / zoomLevel);
+                    ctx.lineTo(g.x2 / zoomLevel, g.y2 / zoomLevel);
                 }
+                ctx.strokeStyle = `hsla(${g.hue}, 70%, 50%, ${g.opacity})`;
+                ctx.lineWidth = 1 + Math.sin(angle + g.manifestationShift) * 0.5;
+                ctx.stroke();
             });
         }
 
-        // Animation Loop
+        // Mouse Interaction for Focus
+        canvas.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        canvas.addEventListener('mousedown', () => {
+            mouse.clicked = true;
+            mouse.clickStrength = 1;
+            mouse.lastClick = Date.now();
+            mouse.focusTime = 0;
+            if (!audioContext) initAudio(432);
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            mouse.clicked = false;
+        });
+
+        // Main Render Loop
         function animate() {
-            requestAnimationFrame(animate);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            angle += 0.01 * (1 + energy / 10000);
-            sceneProgress += 1;
-            if (sceneProgress % sceneDuration === 0) {
-                stopAudio();
-                initScene();
-                initAudio(baseFrequencies[Math.floor(sceneProgress / sceneDuration) % 5]);
+
+            angle += 0.005;
+            sceneProgress++;
+
+            if (mouse.clicked) {
+                mouse.focusTime += 1;
+                manifestationEnergy += 0.5;
+                coherence += 0.2;
+                focusStrength = Math.min(mouse.focusTime / 100, 1);
+            } else {
+                focusStrength = Math.max(focusStrength - 0.01, 0);
+                manifestationEnergy = Math.max(manifestationEnergy - 0.2, 0);
+                coherence = Math.max(coherence - 0.1, 0);
             }
+
             updateSlitPattern();
             spawnParticles();
             drawParticles();
             drawSlitPattern();
             drawMoirePattern();
             drawGeometries();
-            updateEnergy();
-            // Cosmic Insight Milestone
-            if (insight > 50) {
-                energy += 1000;
-                insight = 0;
-                particles.forEach(p => p.hue = (p.hue + 180) % 360);
-                geometries.forEach(g => g.hue = (g.hue + 90) % 360);
-            }
+
+            updateAudio();
+
+            requestAnimationFrame(animate);
         }
-
-        // Interactivity
-        function handleInput(e, isTouch = false) {
-            const rect = canvas.getBoundingClientRect();
-            const x = isTouch ? e.touches[0].clientX : e.clientX;
-            const y = isTouch ? e.touches[0].clientY : e.clientY;
-            mouse.x = x - rect.left;
-            mouse.y = y - rect.top;
-            mouse.hovering = true;
-            energy += Math.sin(distToCenter(mouse.x, mouse.y) / 100) * 0.5 * (1 + coherence / 1000);
-            angle += (mouse.x - canvas.width / 2) / 10000 * (1 + energy / 5000);
-            insight += 0.02; // Learn through exploration
-        }
-
-        canvas.addEventListener('mousemove', handleInput, { passive: true });
-        canvas.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            handleInput(e, true);
-        }, { passive: false });
-
-        canvas.addEventListener('mousedown', () => {
-            mouse.clicked = true;
-            const now = Date.now();
-            mouse.clickStrength = Math.min((now - mouse.lastClick) / 1000, 5);
-            mouse.lastClick = now;
-            energy += 100 * mouse.clickStrength * (1 + energy / 10000);
-            coherence += mouse.clickStrength * 10 * (1 + energy / 1000);
-            spawnParticles();
-            insight += 1; // Learn through interaction
-        });
-
-        canvas.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            handleInput(e, true);
-            mouse.clicked = true;
-            const now = Date.now();
-            mouse.clickStrength = Math.min((now - mouse.lastClick) / 1000, 5);
-            mouse.lastClick = now;
-            energy += 100 * mouse.clickStrength * (1 + energy / 10000);
-            coherence += mouse.clickStrength * 10 * (1 + energy / 1000);
-            spawnParticles();
-            insight += 1;
-        }, { passive: false });
-
-        canvas.addEventListener('mouseup', () => {
-            mouse.clicked = false;
-            mouse.hovering = false;
-        });
-
-        canvas.addEventListener('touchend', () => {
-            mouse.clicked = false;
-            mouse.hovering = false;
-        });
-
-        canvas.addEventListener('wheel', (e) => {
-            e.preventDefault();
-            zoomLevel *= e.deltaY > 0 ? 0.95 : 1.05;
-            zoomLevel = Math.max(0.5, Math.min(zoomLevel, 2));
-            insight += 0.5; // Learn through zooming
-        }, { passive: false });
-
-        function distToCenter(x, y) {
-            const cx = canvas.width / 2;
-            const cy = canvas.height / 2;
-            return Math.sqrt((x - cx) * (x - cx) + (y - cy) * (y - cy));
-        }
-
-        function updateEnergy() {
-            const phase = Math.floor(sceneProgress / sceneDuration) % 5;
-            const energyGain = {
-                0: Math.PI * Math.pow(10, 2) * (coherence / 100 + 1) * 0.001,
-                1: 0.1 * Math.pow((1 + Math.sqrt(5)) / 2, 0.01) * (coherence / 100 + 1),
-                2: (4 / 3 * Math.PI * Math.pow(10, 3)) * (mouse.clickStrength + 1) * 0.0001,
-                3: 6.626e-34 * (coherence / 100 + 1) * (1 + energy / 10000),
-                4: Math.pow(1, 2) * 1 * (energy / 10000 + 1) * (1 + coherence / 500)
-            }[phase] || 0;
-            energy += energyGain * (1 + Math.random() * 0.1);
-            if (energy > 10000) {
-                energy = 5000;
-                particles.forEach(p => p.hue = (p.hue + 180) % 360);
-                geometries.forEach(g => g.hue = (g.hue + 90) % 360);
-            }
-        }
-
-        // Start
-        initPools();
-        initScene();
-        initAudio(432);
         animate();
+
     </script>
 </body>
 </html>
