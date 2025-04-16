@@ -3,130 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Cosmos: Sacred Realms</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Orbitron', sans-serif;
             background: radial-gradient(circle, #0a0a2a, #000);
-            color: #00ffcc;
             overflow: hidden;
             height: 100vh;
-            cursor: crosshair;
-        }
-        #container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            cursor: none;
         }
         #canvas {
             width: 100%;
             height: 100%;
             background: radial-gradient(rgba(0, 0, 51, 0.3), rgba(0, 0, 0, 0.7));
-        }
-        #hud {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(0, 0, 0, 0.9);
-            padding: 15px;
-            border-radius: 15px;
-            border: 3px solid #00ffcc;
-            font-size: 16px;
-            z-index: 20;
-            box-shadow: 0 0 50px #00ffcc, 0 0 15px #ff00cc inset;
-            transition: box-shadow 0.5s, transform 0.5s;
-            text-shadow: 0 0 8px #00ffcc;
-        }
-        #hud.glow {
-            box-shadow: 0 0 150px #ff00cc, 0 0 25px #00ffcc inset;
-            transform: scale(1.1);
-        }
-        #hud.singularity {
-            box-shadow: 0 0 300px #ff00cc, 0 0 50px #00ffcc inset;
-            background: radial-gradient(#ff00cc, #00ffcc);
-            color: #000;
-        }
-        #controls {
-            position: absolute;
-            bottom: 20px;
-            display: flex;
-            gap: 15px;
-            z-index: 20;
-            flex-wrap: wrap;
-        }
-        button {
-            padding: 15px 30px;
-            background: linear-gradient(45deg, #00ffcc, #ff00cc, #00ccff, #ffcc00);
-            border: none;
-            border-radius: 10px;
-            color: #0a0a2a;
-            cursor: pointer;
-            font-weight: bold;
-            transition: transform 0.3s, box-shadow 0.3s, background 0.5s;
-            text-shadow: 0 0 5px #fff;
-        }
-        button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 60px #ff00cc, 0 0 20px #00ffcc inset;
-            background: linear-gradient(45deg, #ffcc00, #00ffcc, #ff00cc);
-        }
-        #log {
-            position: absolute;
-            right: -420px;
-            top: 10px;
-            width: 400px;
-            height: 600px;
-            background: rgba(0, 0, 0, 0.9);
-            padding: 20px;
-            border-radius: 15px;
-            border: 3px solid #ff00cc;
-            overflow-y: auto;
-            font-size: 14px;
-            box-shadow: 0 0 50px #ff00cc, 0 0 15px #00ffcc inset;
-            transition: right 0.5s, box-shadow 0.5s;
-            text-shadow: 0 0 5px #fff;
-        }
-        #log.visible {
-            right: 10px;
-            box-shadow: 0 0 70px #ff00cc, 0 0 25px #00ffcc inset;
-        }
-        #logToggle {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 30;
-            padding: 10px;
-            background: linear-gradient(#ff00cc, #00ffcc);
-            color: #0a0a2a;
-            border-radius: 5px;
-            cursor: pointer;
-            box-shadow: 0 0 20px #ff00cc;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        #logToggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 40px #ff00cc;
-        }
-        #sceneSelector {
-            position: absolute;
-            top: 50%;
-            right: 20px;
-            transform: translateY(-50%);
-            z-index: 20;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 0 30px #00ffcc;
-        }
-        #sceneSelector button {
-            display: block;
-            margin: 10px 0;
-            width: 150px;
         }
         @keyframes pulse {
             0% { transform: scale(1); opacity: 0.7; filter: brightness(1); }
@@ -138,57 +27,26 @@
             50% { opacity: 1; filter: hue-rotate(180deg); }
             100% { opacity: 0.5; filter: hue-rotate(360deg); }
         }
-        .pulsing {
-            animation: pulse 3s infinite;
-        }
-        .interference {
-            animation: interference 5s infinite;
-        }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="container">
-        <div id="logToggle">Cosmic Log</div>
-        <div id="hud">
-            Realm: <span id="sceneName">Flower of Life</span> | Energy: <span id="energy">0</span> | Coherence: <span id="coherence">0</span> | Progress: <span id="progress">0%</span>
-        </div>
-        <canvas id="canvas"></canvas>
-        <div id="controls">
-            <button onclick="interact()">Focus Quantum Intent</button>
-            <button onclick="nextScene()">Evolve Realm</button>
-            <button onclick="resetJourney()">Reset Cosmos</button>
-        </div>
-        <div id="log">
-            <h3>Cosmic Log</h3>
-            <div id="logContent"></div>
-        </div>
-        <div id="sceneSelector">
-            <button onclick="setScene(1)">Flower of Life</button>
-            <button onclick="setScene(2)">Golden Spiral</button>
-            <button onclick="setScene(3)">Seed of Life</button>
-            <button onclick="setScene(4)">Quantum Field</button>
-            <button onclick="setScene(5)">Torus Flow</button>
-        </div>
-    </div>
+    <canvas id="canvas"></canvas>
 
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d', { alpha: true });
-        let sceneNum = 1;
         let energy = 0;
         let coherence = 0;
-        let progress = 0;
         let angle = 0;
         let mouse = { x: 0, y: 0, clicked: false, clickStrength: 0, lastClick: 0 };
         let audioContext, oscillator, gainNode;
         let particles = [];
         let geometries = [];
-        let transitionOpacity = 1;
-        let transitioning = false;
         let slitPattern = [];
+        let sceneProgress = 0;
+        const sceneDuration = 3000; // Frames per scene phase (auto-evolution)
 
-        // Canvas Setup with Reality Mimicry
+        // Canvas Setup
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -199,39 +57,42 @@
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
 
-        // Persistent Particle System with Wave-Particle Duality
+        // Particle Pooling for Memory Optimization
+        const particlePool = [];
+        const maxParticles = 500;
         function initParticles() {
-            particles = [];
-            for (let i = 0; i < 2000; i++) {
-                particles.push({
+            particlePool.length = 0;
+            for (let i = 0; i < maxParticles; i++) {
+                particlePool.push({
                     x: Math.random() * canvas.width,
                     y: canvas.height * 0.9,
                     vx: (Math.random() - 0.5) * 2,
-                    vy: -(Math.random() * 2 + 1), // Downward gravity-like motion
+                    vy: -(Math.random() * 2 + 1),
                     size: Math.random() * 2 + 1,
                     hue: Math.random() * 360,
                     opacity: Math.random() * 0.6 + 0.4,
                     wave: Math.random() * 2 * Math.PI,
                     state: Math.floor(Math.random() * 2), // 0 = particle, 1 = wave
-                    life: 100 + Math.random() * 200 // Persistent life cycle
+                    active: true
                 });
             }
+            particles = particlePool;
         }
 
         function drawParticles() {
             particles.forEach(p => {
-                p.life -= 0.5;
-                if (p.life <= 0) {
-                    p.x = Math.random() * canvas.width;
-                    p.y = canvas.height * 0.9;
-                    p.vx = (Math.random() - 0.5) * 2;
-                    p.vy = -(Math.random() * 2 + 1);
-                    p.life = 100 + Math.random() * 200;
-                }
+                if (!p.active) return;
                 p.x += p.vx * (1 + energy / 10000);
                 p.y += p.vy * (1 + energy / 10000);
                 p.wave += 0.03 * (1 + coherence / 1000);
                 p.vy += 0.01; // Gravity effect
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -0.9;
+                if (p.y > canvas.height || p.y < 0) {
+                    p.x = Math.random() * canvas.width;
+                    p.y = canvas.height * 0.9;
+                    p.vx = (Math.random() - 0.5) * 2;
+                    p.vy = -(Math.random() * 2 + 1);
+                }
                 const dx = mouse.x - p.x;
                 const dy = mouse.y - p.y;
                 const dist = Math.sqrt(dx * dx + dy * dy);
@@ -239,12 +100,11 @@
                     p.vx += dx * 0.01 * mouse.clickStrength;
                     p.vy += dy * 0.01 * mouse.clickStrength;
                     p.opacity = Math.min(p.opacity + 0.02, 1);
-                    p.state = 1; // Force wave state on interaction
+                    p.state = 1;
                 } else if (dist > 300) {
                     p.opacity = Math.max(p.opacity - 0.01, 0.4);
-                    p.state = 0; // Revert to particle state
+                    p.state = 0;
                 }
-                // Double Slit Interference
                 const slitX = (p.x - canvas.width * 0.4) / (canvas.width * 0.2);
                 if (slitX >= 0 && slitX <= 1 && p.y > canvas.height * 0.5) {
                     const interference = Math.sin(slitX * 10 * Math.PI + angle) * 0.5 + 0.5;
@@ -259,7 +119,7 @@
                     ctx.bezierCurveTo(p.x, p.y - p.size * 2, p.x, p.y + p.size * 2, p.x + p.size, p.y);
                 }
                 const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
-                gradient.addColorStop(0, `hsla(${p.hue}, 70%, 50%, ${p.opacity * transitionOpacity})`);
+                gradient.addColorStop(0, `hsla(${p.hue}, 70%, 50%, ${p.opacity})`);
                 gradient.addColorStop(1, `hsla(${p.hue}, 70%, 50%, 0)`);
                 ctx.fillStyle = gradient;
                 ctx.fill();
@@ -284,12 +144,12 @@
             slitPattern.forEach(s => {
                 ctx.beginPath();
                 ctx.arc(s.x, s.y, 2 * s.intensity, 0, 2 * Math.PI);
-                ctx.fillStyle = `hsla(240, 70%, 50%, ${s.intensity * 0.5 * transitionOpacity})`;
+                ctx.fillStyle = `hsla(240, 70%, 50%, ${s.intensity * 0.5})`;
                 ctx.fill();
             });
         }
 
-        // Audio Setup with Realistic Resonance
+        // Audio Setup
         function initAudio(baseFreq) {
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
             oscillator = audioContext.createOscillator();
@@ -310,210 +170,171 @@
         function updateAudio() {
             if (gainNode) {
                 gainNode.gain.setValueAtTime(0.1 + (coherence / 2000), audioContext.currentTime);
-                oscillator.frequency.setValueAtTime(baseFrequencies[sceneNum - 1] + (energy / 200), audioContext.currentTime);
+                oscillator.frequency.setValueAtTime(baseFrequencies[Math.floor(sceneProgress / sceneDuration) % 5] + (energy / 200), audioContext.currentTime);
             }
         }
-        const baseFrequencies = [432, 528, 432, 0, 963]; // Hz for each scene
+        const baseFrequencies = [432, 528, 432, 0, 963]; // Hz for each phase
 
-        // Scene Management with Smooth Transitions
-        function setScene(newScene) {
-            if (transitioning) return;
-            transitioning = true;
-            transitionOpacity = 1;
-            stopAudio();
-            sceneNum = newScene;
+        // Unified Cosmic Scene with Auto-Evolution
+        function initScene() {
             geometries = [];
-            initSlitPattern();
-            const transition = setInterval(() => {
-                transitionOpacity -= 0.05;
-                if (transitionOpacity <= 0) {
-                    clearInterval(transition);
-                    initScene();
-                    const fadeIn = setInterval(() => {
-                        transitionOpacity += 0.05;
-                        if (transitionOpacity >= 1) {
-                            clearInterval(fadeIn);
-                            transitioning = false;
-                        }
-                    }, 50);
-                }
-            }, 50);
-            updateHUD();
-        }
-
-        function nextScene() {
-            setScene((sceneNum % 5) + 1);
-        }
-
-        // Scene 1: Flower of Life - Cosmic Harmony
-        function initScene1() {
-            initAudio(432);
             const cx = canvas.width / 2;
             const cy = canvas.height / 2;
-            const radius = Math.min(canvas.width, canvas.height) / 20;
-            function generateFlower(x, y, r, depth) {
-                if (depth > 3 + Math.floor(energy / 1000)) return;
-                geometries.push({
-                    type: 'circle',
-                    x,
-                    y,
-                    r: r * (1 + Math.sin(angle + x / 50) * 0.1),
-                    hue: 180 + depth * 30,
-                    opacity: 0,
-                    pulsing: true
-                });
-                for (let i = 0; i < 6; i++) {
-                    const a = (2 * Math.PI / 6) * i + angle;
-                    const newX = x + r * Math.cos(a);
-                    const newY = y + r * Math.sin(a);
-                    geometries.push({
-                        type: 'line',
-                        x1: x,
-                        y1: y,
-                        x2: newX,
-                        y2: newY,
-                        hue: 180 + depth * 30,
-                        opacity: 0
-                    });
-                    generateFlower(newX, newY, r * 0.7, depth + 1);
-                }
-            }
-            generateFlower(cx, cy, radius, 0);
-        }
+            const phase = Math.floor(sceneProgress / sceneDuration) % 5;
 
-        // Scene 2: Golden Spiral - Gravitational Genesis
-        function initScene2() {
-            initAudio(528);
-            const cx = canvas.width / 2;
-            const cy = canvas.height / 2;
-            let phi = (1 + Math.sqrt(5)) / 2;
-            let r = 5, a = 0;
-            const points = [];
-            for (let i = 0; i < 1000 + Math.floor(energy / 10); i++) {
-                a += 0.1;
-                r = 5 * Math.pow(phi, a / (Math.PI / 2)) * (1 + energy / 10000); // Gravity-like expansion
-                const x = cx + r * Math.cos(a + angle);
-                const y = cy + r * Math.sin(a + angle);
-                points.push({ x, y });
-                if (i % 10 === 0) {
+            // Flower of Life (Phase 0)
+            if (phase === 0) {
+                const radius = Math.min(canvas.width, canvas.height) / 20;
+                function generateFlower(x, y, r, depth) {
+                    if (depth > 3 + Math.floor(energy / 1000)) return;
                     geometries.push({
                         type: 'circle',
                         x,
                         y,
-                        r: 10 * (coherence / 100 + 1) * (1 + Math.random()),
-                        hue: 60 + i * 0.2,
-                        opacity: 0,
+                        r: r * (1 + Math.sin(angle + x / 50) * 0.1),
+                        hue: 180 + depth * 30,
+                        opacity: 1,
                         pulsing: true
                     });
+                    for (let i = 0; i < 6; i++) {
+                        const a = (2 * Math.PI / 6) * i + angle;
+                        const newX = x + r * Math.cos(a);
+                        const newY = y + r * Math.sin(a);
+                        geometries.push({
+                            type: 'line',
+                            x1: x,
+                            y1: y,
+                            x2: newX,
+                            y2: newY,
+                            hue: 180 + depth * 30,
+                            opacity: 1
+                        });
+                        generateFlower(newX, newY, r * 0.7, depth + 1);
+                    }
                 }
+                generateFlower(cx, cy, radius, 0);
             }
-            geometries.push({ type: 'spiral', points, hue: 60, opacity: 0 });
-            geometries.push({
-                type: 'circle',
-                x: cx,
-                y: cy,
-                r: 20 + energy / 50,
-                hue: 60,
-                opacity: 0,
-                pulsing: true
-            });
-        }
 
-        // Scene 3: Seed of Life - Formation Matrix
-        function initScene3() {
-            initAudio(432);
-            const cx = canvas.width / 2;
-            const cy = canvas.height / 2;
-            const radius = Math.min(canvas.width, canvas.height) / 15;
-            geometries.push({ type: 'circle', x: cx, y: cy, r: radius, hue: 180, opacity: 0, pulsing: true });
-            for (let i = 0; i < 6; i++) {
-                const a = (2 * Math.PI / 6) * i + angle;
-                const x = cx + radius * Math.cos(a);
-                const y = cy + radius * Math.sin(a);
-                geometries.push({ type: 'circle', x, y, r: radius, hue: 180 + i * 30, opacity: 0, pulsing: true });
-                geometries.push({
-                    type: 'line',
-                    x1: cx,
-                    y1: cy,
-                    x2: x,
-                    y2: y,
-                    hue: 180 + i * 30,
-                    opacity: 0
-                });
-            }
-        }
-
-        // Scene 4: Quantum Field - Double Slit Reality
-        function initScene4() {
-            initAudio(0);
-            const cx = canvas.width / 2;
-            const cy = canvas.height / 2;
-            for (let i = 0; i < 300 + Math.floor(energy / 20); i++) {
-                const x = cx + (Math.random() - 0.5) * canvas.width * 0.8;
-                const y = cy - canvas.height * 0.4;
+            // Golden Spiral (Phase 1)
+            if (phase === 1) {
+                let phi = (1 + Math.sqrt(5)) / 2;
+                let r = 5, a = 0;
+                const points = [];
+                for (let i = 0; i < 500 + Math.floor(energy / 20); i++) {
+                    a += 0.1;
+                    r = 5 * Math.pow(phi, a / (Math.PI / 2)) * (1 + energy / 10000);
+                    const x = cx + r * Math.cos(a + angle);
+                    const y = cy + r * Math.sin(a + angle);
+                    points.push({ x, y });
+                    if (i % 10 === 0) {
+                        geometries.push({
+                            type: 'circle',
+                            x,
+                            y,
+                            r: 10 * (coherence / 100 + 1),
+                            hue: 60 + i * 0.2,
+                            opacity: 1,
+                            pulsing: true
+                        });
+                    }
+                }
+                geometries.push({ type: 'spiral', points, hue: 60, opacity: 1 });
                 geometries.push({
                     type: 'circle',
-                    x,
-                    y,
-                    r: 5 * (1 + coherence / 1000),
-                    hue: 240 + Math.random() * 60,
-                    opacity: 0.7,
-                    pulsing: true,
-                    vx: (Math.random() - 0.5) * 2,
-                    vy: Math.random() * 2 + 1
-                });
-            }
-            // Slit Barriers
-            geometries.push({ type: 'rect', x: canvas.width * 0.45, y: canvas.height * 0.5, w: 10, h: canvas.height * 0.3, hue: 240, opacity: 0.8 });
-            geometries.push({ type: 'rect', x: canvas.width * 0.55, y: canvas.height * 0.5, w: 10, h: canvas.height * 0.3, hue: 240, opacity: 0.8 });
-        }
-
-        // Scene 5: Torus Flow - Gravitational Vortex
-        function initScene5() {
-            initAudio(963);
-            const cx = canvas.width / 2;
-            const cy = canvas.height / 2;
-            const innerR = 50 + energy / 20;
-            const outerR = 150 + progress * 5;
-            for (let i = 0; i < 360; i += 2) {
-                const a = (i * Math.PI / 180) + angle;
-                const x = cx + (outerR + innerR * Math.cos(a)) * Math.cos(a);
-                const y = cy + (outerR + innerR * Math.cos(a)) * Math.sin(a);
-                geometries.push({
-                    type: 'circle',
-                    x,
-                    y,
-                    r: 5 * (1 + Math.sin(a + angle) * 0.3),
-                    hue: i + progress * 0.5,
-                    opacity: 0,
+                    x: cx,
+                    y: cy,
+                    r: 20 + energy / 50,
+                    hue: 60,
+                    opacity: 1,
                     pulsing: true
                 });
             }
-            for (let i = 0; i < 360; i += 10) {
-                const a1 = (i * Math.PI / 180) + angle;
-                const a2 = ((i + 10) * Math.PI / 180) + angle;
-                const x1 = cx + outerR * Math.cos(a1);
-                const y1 = cy + outerR * Math.sin(a1);
-                const x2 = cx + outerR * Math.cos(a2);
-                const y2 = cy + outerR * Math.sin(a2);
-                geometries.push({
-                    type: 'line',
-                    x1,
-                    y1,
-                    x2,
-                    y2,
-                    hue: i + progress * 0.5,
-                    opacity: 0,
-                    width: 2 + energy / 100
-                });
+
+            // Seed of Life (Phase 2)
+            if (phase === 2) {
+                const radius = Math.min(canvas.width, canvas.height) / 15;
+                geometries.push({ type: 'circle', x: cx, y: cy, r: radius, hue: 180, opacity: 1, pulsing: true });
+                for (let i = 0; i < 6; i++) {
+                    const a = (2 * Math.PI / 6) * i + angle;
+                    const x = cx + radius * Math.cos(a);
+                    const y = cy + radius * Math.sin(a);
+                    geometries.push({ type: 'circle', x, y, r: radius, hue: 180 + i * 30, opacity: 1, pulsing: true });
+                    geometries.push({
+                        type: 'line',
+                        x1: cx,
+                        y1: cy,
+                        x2: x,
+                        y2: y,
+                        hue: 180 + i * 30,
+                        opacity: 1
+                    });
+                }
+            }
+
+            // Quantum Field with Double Slit (Phase 3)
+            if (phase === 3) {
+                for (let i = 0; i < 100 + Math.floor(energy / 50); i++) {
+                    const x = cx + (Math.random() - 0.5) * canvas.width * 0.8;
+                    const y = cy - canvas.height * 0.4;
+                    geometries.push({
+                        type: 'circle',
+                        x,
+                        y,
+                        r: 5 * (1 + coherence / 1000),
+                        hue: 240 + Math.random() * 60,
+                        opacity: 0.7,
+                        pulsing: true,
+                        vx: (Math.random() - 0.5) * 2,
+                        vy: Math.random() * 2 + 1
+                    });
+                }
+                geometries.push({ type: 'rect', x: canvas.width * 0.45, y: canvas.height * 0.5, w: 10, h: canvas.height * 0.3, hue: 240, opacity: 0.8 });
+                geometries.push({ type: 'rect', x: canvas.width * 0.55, y: canvas.height * 0.5, w: 10, h: canvas.height * 0.3, hue: 240, opacity: 0.8 });
+            }
+
+            // Torus Flow (Phase 4)
+            if (phase === 4) {
+                const innerR = 50 + energy / 20;
+                const outerR = 150 + energy / 100;
+                for (let i = 0; i < 360; i += 2) {
+                    const a = (i * Math.PI / 180) + angle;
+                    const x = cx + (outerR + innerR * Math.cos(a)) * Math.cos(a);
+                    const y = cy + (outerR + innerR * Math.cos(a)) * Math.sin(a);
+                    geometries.push({
+                        type: 'circle',
+                        x,
+                        y,
+                        r: 5 * (1 + Math.sin(a + angle) * 0.3),
+                        hue: i + energy * 0.01,
+                        opacity: 1,
+                        pulsing: true
+                    });
+                }
+                for (let i = 0; i < 360; i += 10) {
+                    const a1 = (i * Math.PI / 180) + angle;
+                    const a2 = ((i + 10) * Math.PI / 180) + angle;
+                    const x1 = cx + outerR * Math.cos(a1);
+                    const y1 = cy + outerR * Math.sin(a1);
+                    const x2 = cx + outerR * Math.cos(a2);
+                    const y2 = cy + outerR * Math.sin(a2);
+                    geometries.push({
+                        type: 'line',
+                        x1,
+                        y1,
+                        x2,
+                        y2,
+                        hue: i + energy * 0.01,
+                        opacity: 1,
+                        width: 2 + energy / 100
+                    });
+                }
             }
         }
 
-        // Draw Geometries with Physical Realism
+        // Draw Geometries with Batch Optimization
         function drawGeometries() {
             geometries.forEach(g => {
-                if (g.opacity < 1) g.opacity = Math.min(g.opacity + 0.02 * (1 + energy / 1000), 1);
-                ctx.globalAlpha = g.opacity * transitionOpacity;
+                ctx.globalAlpha = g.opacity;
                 if (g.type === 'circle') {
                     ctx.beginPath();
                     const pulseScale = g.pulsing ? (1 + Math.sin(Date.now() / 500 + g.x / 50 + g.y / 50) * 0.2 * (1 + energy / 5000)) : 1;
@@ -522,14 +343,14 @@
                     gradient.addColorStop(0, `hsla(${g.hue}, 70%, 50%, ${0.8 * (1 + coherence / 1000)})`);
                     gradient.addColorStop(1, `hsla(${g.hue}, 70%, 50%, 0)`);
                     ctx.fillStyle = gradient;
-                    ctx.strokeStyle = `hsla(${g.hue}, 70%, 50%, ${g.opacity * transitionOpacity})`;
+                    ctx.strokeStyle = `hsla(${g.hue}, 70%, 50%, ${g.opacity})`;
                     ctx.lineWidth = 2;
                     ctx.fill();
                     ctx.stroke();
                     if (g.vx) {
                         g.x += g.vx * (1 + energy / 10000);
                         g.y += g.vy * (1 + energy / 10000);
-                        g.vy += 0.005; // Gravity
+                        g.vy += 0.005;
                         if (g.x < 0 || g.x > canvas.width) g.vx *= -0.9;
                         if (g.y > canvas.height) {
                             g.y = canvas.height;
@@ -547,7 +368,7 @@
                     ctx.beginPath();
                     ctx.moveTo(g.x1, g.y1);
                     ctx.lineTo(g.x2, g.y2);
-                    ctx.strokeStyle = `hsla(${g.hue}, 70%, 50%, ${g.opacity * transitionOpacity * 0.3 * (1 + energy / 5000)})`;
+                    ctx.strokeStyle = `hsla(${g.hue}, 70%, 50%, ${g.opacity * 0.3 * (1 + energy / 5000)})`;
                     ctx.lineWidth = (g.width || 1);
                     ctx.stroke();
                 } else if (g.type === 'spiral') {
@@ -556,93 +377,111 @@
                     for (let i = 1; i < g.points.length; i++) {
                         ctx.lineTo(g.points[i].x, g.points[i].y);
                     }
-                    ctx.strokeStyle = `hsla(${g.hue}, 70%, 50%, ${g.opacity * transitionOpacity})`;
+                    ctx.strokeStyle = `hsla(${g.hue}, 70%, 50%, ${g.opacity})`;
                     ctx.lineWidth = 2;
                     ctx.stroke();
                 } else if (g.type === 'rect') {
-                    ctx.fillStyle = `hsla(${g.hue}, 70%, 50%, ${g.opacity * transitionOpacity})`;
+                    ctx.fillStyle = `hsla(${g.hue}, 70%, 50%, ${g.opacity})`;
                     ctx.fillRect(g.x, g.y, g.w, g.h);
                 }
             });
         }
 
-        // Animation Loop with Reality Simulation
+        // Animation Loop with Auto-Evolution
         function animate() {
             requestAnimationFrame(animate);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             angle += 0.01 * (1 + energy / 10000);
+            sceneProgress += 1;
+            if (sceneProgress % sceneDuration === 0) {
+                stopAudio();
+                initScene();
+                initAudio(baseFrequencies[Math.floor(sceneProgress / sceneDuration) % 5]);
+            }
             drawParticles();
             drawSlitPattern();
             drawGeometries();
             updateEnergy();
             updateAudio();
-            updateHUD();
         }
 
-        // Mouse Interaction with Physical Effects
-        canvas.addEventListener('mousemove', (e) => {
+        // Mouse/Touch Interaction
+        function handleInput(e, isTouch = false) {
             const rect = canvas.getBoundingClientRect();
-            mouse.x = e.clientX - rect.left;
-            mouse.y = e.clientY - rect.top;
+            const x = isTouch ? e.touches[0].clientX : e.clientX;
+            const y = isTouch ? e.touches[0].clientY : e.clientY;
+            mouse.x = x - rect.left;
+            mouse.y = y - rect.top;
             energy += Math.sin(distToCenter(mouse.x, mouse.y) / 100) * 0.5 * (1 + coherence / 1000);
             angle += (mouse.x - canvas.width / 2) / 10000 * (1 + energy / 5000);
-        }, { passive: true });
+        }
 
-        canvas.addEventListener('mousedown', (e) => {
+        canvas.addEventListener('mousemove', handleInput, { passive: true });
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            handleInput(e, true);
+        }, { passive: false });
+
+        canvas.addEventListener('mousedown', () => {
             mouse.clicked = true;
             const now = Date.now();
             mouse.clickStrength = Math.min((now - mouse.lastClick) / 1000, 5);
             mouse.lastClick = now;
-            const log = document.getElementById('logContent');
-            log.innerHTML += `<p>Quantum Focus at (${mouse.x}, ${mouse.y}) - Strength: ${mouse.clickStrength.toFixed(2)}</p>`;
-            energy += 100 * mouse.clickStrength * (1 + progress / 100);
+            energy += 100 * mouse.clickStrength * (1 + energy / 10000);
             coherence += mouse.clickStrength * 10 * (1 + energy / 1000);
-            for (let i = 0; i < 50 * mouse.clickStrength; i++) {
-                particles.push({
-                    x: mouse.x,
-                    y: mouse.y,
-                    vx: (Math.random() - 0.5) * 10 * mouse.clickStrength,
-                    vy: -(Math.random() * 5 + 1),
-                    size: Math.random() * 5 + 2,
-                    hue: Math.random() * 360,
-                    opacity: 1,
-                    wave: Math.random() * 2 * Math.PI,
-                    state: Math.floor(Math.random() * 2),
-                    life: 150 + Math.random() * 100
-                });
-            }
-            geometries.forEach(g => {
-                const dx = mouse.x - g.x;
-                const dy = mouse.y - g.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < 100 && g.type === 'circle') {
-                    g.vx = dx * 0.01 * mouse.clickStrength;
-                    g.vy = dy * 0.01 * mouse.clickStrength;
+            // Spawn particles from pool
+            let spawned = 0;
+            for (let i = 0; i < particles.length && spawned < 10 * mouse.clickStrength; i++) {
+                if (!particles[i].active) {
+                    particles[i].x = mouse.x;
+                    particles[i].y = mouse.y;
+                    particles[i].vx = (Math.random() - 0.5) * 10 * mouse.clickStrength;
+                    particles[i].vy = -(Math.random() * 5 + 1);
+                    particles[i].size = Math.random() * 5 + 2;
+                    particles[i].hue = Math.random() * 360;
+                    particles[i].opacity = 1;
+                    particles[i].wave = Math.random() * 2 * Math.PI;
+                    particles[i].state = Math.floor(Math.random() * 2);
+                    particles[i].active = true;
+                    spawned++;
                 }
-            });
+            }
         });
+
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            handleInput(e, true);
+            mouse.clicked = true;
+            const now = Date.now();
+            mouse.clickStrength = Math.min((now - mouse.lastClick) / 1000, 5);
+            mouse.lastClick = now;
+            energy += 100 * mouse.clickStrength * (1 + energy / 10000);
+            coherence += mouse.clickStrength * 10 * (1 + energy / 1000);
+            let spawned = 0;
+            for (let i = 0; i < particles.length && spawned < 10 * mouse.clickStrength; i++) {
+                if (!particles[i].active) {
+                    particles[i].x = mouse.x;
+                    particles[i].y = mouse.y;
+                    particles[i].vx = (Math.random() - 0.5) * 10 * mouse.clickStrength;
+                    particles[i].vy = -(Math.random() * 5 + 1);
+                    particles[i].size = Math.random() * 5 + 2;
+                    particles[i].hue = Math.random() * 360;
+                    particles[i].opacity = 1;
+                    particles[i].wave = Math.random() * 2 * Math.PI;
+                    particles[i].state = Math.floor(Math.random() * 2);
+                    particles[i].active = true;
+                    spawned++;
+                }
+            }
+        }, { passive: false });
 
         canvas.addEventListener('mouseup', () => {
             mouse.clicked = false;
         });
 
-        canvas.addEventListener('wheel', (e) => {
-            e.preventDefault();
-            const scaleFactor = e.deltaY > 0 ? 0.95 : 1.05;
-            geometries.forEach(g => {
-                if (g.r) g.r *= scaleFactor;
-                if (g.points) {
-                    g.points.forEach(p => {
-                        p.x = canvas.width / 2 + (p.x - canvas.width / 2) * scaleFactor;
-                        p.y = canvas.height / 2 + (p.y - canvas.height / 2) * scaleFactor;
-                    });
-                }
-            });
-            particles.forEach(p => {
-                p.x = canvas.width / 2 + (p.x - canvas.width / 2) * scaleFactor;
-                p.y = canvas.height / 2 + (p.y - canvas.height / 2) * scaleFactor;
-            });
-        }, { passive: false });
+        canvas.addEventListener('touchend', () => {
+            mouse.clicked = false;
+        });
 
         function distToCenter(x, y) {
             const cx = canvas.width / 2;
@@ -650,59 +489,27 @@
             return Math.sqrt((x - cx) * (x - cx) + (y - cy) * (y - cy));
         }
 
-        // User Interactions
-        function interact() {
-            energy += 100 * (1 + progress / 50);
-            coherence += Math.random() * 20 * (1 + energy / 500);
-            const log = document.getElementById('logContent');
-            log.innerHTML += `<p>Enhanced Intent - Energy: +${Math.floor(100 * (1 + progress / 50))}, Coherence: +${Math.floor(Math.random() * 20 * (1 + energy / 500))}</p>`;
-            if (energy > 5000 && coherence > 200) progress += 1 * (1 + energy / 10000);
-            updateHUD();
-        }
-
-        function resetJourney() {
-            energy = 0;
-            coherence = 0;
-            progress = 0;
-            document.getElementById('logContent').innerHTML = '<h3>Cosmic Log</h3>';
-            setScene(1);
-        }
-
         function updateEnergy() {
+            const phase = Math.floor(sceneProgress / sceneDuration) % 5;
             const energyGain = {
-                1: Math.PI * Math.pow(10, 2) * (coherence / 100 + 1) * 0.001, // Flower of Life area
-                2: 0.1 * Math.pow((1 + Math.sqrt(5)) / 2, 0.01) * (coherence / 100 + 1), // Golden Spiral Fibonacci
-                3: (4 / 3 * Math.PI * Math.pow(10, 3)) * (mouse.clickStrength + 1) * 0.0001, // Seed of Life volume
-                4: 6.626e-34 * (coherence / 100 + 1) * (1 + progress / 100), // Quantum Field Planck
-                5: Math.pow(1, 2) * 1 * (progress / 100 + 1) * (1 + coherence / 500) // Torus energy
-            }[sceneNum] || 0;
-            energy += energyGain * (1 + Math.random() * 0.1); // Probabilistic variation
-            if (progress > 95 && energy > 10000) {
-                const log = document.getElementById('logContent');
-                log.innerHTML += '<p>[SINGULARITY] Cosmic Phase Transition Achieved! Reality Reconfigured!</p>';
-                document.getElementById('hud').classList.add('singularity');
-                alert('You’ve unlocked a new cosmic state! Share this discovery with the universe!');
+                0: Math.PI * Math.pow(10, 2) * (coherence / 100 + 1) * 0.001,
+                1: 0.1 * Math.pow((1 + Math.sqrt(5)) / 2, 0.01) * (coherence / 100 + 1),
+                2: (4 / 3 * Math.PI * Math.pow(10, 3)) * (mouse.clickStrength + 1) * 0.0001,
+                3: 6.626e-34 * (coherence / 100 + 1) * (1 + energy / 10000),
+                4: Math.pow(1, 2) * 1 * (energy / 10000 + 1) * (1 + coherence / 500)
+            }[phase] || 0;
+            energy += energyGain * (1 + Math.random() * 0.1);
+            if (energy > 10000) {
+                energy = 5000; // Cap to prevent overflow
                 particles.forEach(p => p.hue = (p.hue + 180) % 360);
                 geometries.forEach(g => g.hue = (g.hue + 90) % 360);
             }
         }
 
-        function updateHUD() {
-            document.getElementById('sceneName').textContent = ['Flower of Life', 'Golden Spiral', 'Seed of Life', 'Quantum Field', 'Torus Flow'][sceneNum - 1];
-            document.getElementById('energy').textContent = Math.floor(energy).toLocaleString();
-            document.getElementById('coherence').textContent = Math.floor(coherence).toLocaleString();
-            document.getElementById('progress').textContent = Math.min(progress, 100).toFixed(1) + '%';
-            document.getElementById('hud').classList.toggle('glow', energy > 5000);
-        }
-
-        // Log Toggle
-        document.getElementById('logToggle').addEventListener('click', () => {
-            document.getElementById('log').classList.toggle('visible');
-        });
-
         // Start
         initParticles();
-        setScene(1);
+        initScene();
+        initAudio(432);
         animate();
     </script>
 </body>
