@@ -27,30 +27,38 @@
             50% { opacity: 1; filter: hue-rotate(180deg); }
             100% { opacity: 0.5; filter: hue-rotate(360deg); }
         }
+        @keyframes moire {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
     <canvas id="canvas"></canvas>
 
     <script>
+        // Core Setup
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d', { alpha: true });
         let energy = 0;
         let coherence = 0;
+        let insight = 0; // Tracks user learning progress
         let angle = 0;
-        let mouse = { x: canvas.width / 2, y: canvas.height / 2, clicked: false, clickStrength: 0, lastClick: 0 };
-        let audioContext, oscillator, gainNode;
+        let zoomLevel = 1;
+        let mouse = { x: canvas.width / 2, y: canvas.height / 2, clicked: false, clickStrength: 0, lastClick: 0, hovering: false };
+        let audioContext, oscillator, gainNode, analyser;
         let particlePool = [];
         let geometryPool = [];
         let particles = [];
         let geometries = [];
         let slitPattern = [];
+        let moirePattern = [];
         let sceneProgress = 0;
         const sceneDuration = 3000; // Frames per phase (~50 seconds at 60 FPS)
-        const maxParticles = 500; // Cap for memory safety
-        const maxGeometries = 1000; // Cap for memory safety
+        const maxParticles = 1000;
+        const maxGeometries = 2000;
 
-        // Canvas Setup
+        // Canvas Initialization
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -59,13 +67,14 @@
             mouse.y = canvas.height / 2;
             initPools();
             initScene();
+            initMoirePattern();
         }
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
 
         // Object Pooling for Particles and Geometries
         function initPools() {
-            // Particle Pool
+            // Particle Pool with Quantum Properties
             particlePool.length = 0;
             for (let i = 0; i < maxParticles; i++) {
                 particlePool.push({
@@ -78,12 +87,14 @@
                     opacity: 1,
                     wave: Math.random() * 2 * Math.PI,
                     state: Math.floor(Math.random() * 2), // 0 = particle, 1 = wave
-                    active: i === 0 // Start with 1 active particle
+                    spin: Math.random() * 0.1 - 0.05, // Quantum spin
+                    entanglement: i % 2 === 0 ? (i + 1) % maxParticles : (i - 1 + maxParticles) % maxParticles, // Entangled pair
+                    active: i === 0 // Start with 1 particle
                 });
             }
             particles = particlePool.filter(p => p.active);
 
-            // Geometry Pool
+            // Geometry Pool with Holographic Properties
             geometryPool.length = 0;
             for (let i = 0; i < maxGeometries; i++) {
                 geometryPool.push({
@@ -103,15 +114,16 @@
                     vx: 0,
                     vy: 0,
                     depth: 0,
+                    hologramShift: Math.random() * 2 * Math.PI, // For holographic effects
                     active: false
                 });
             }
         }
 
-        // Energy-Driven Particle Expansion
+        // Energy-Driven Particle Spawning with Quantum Entanglement
         function spawnParticles() {
             const activeCount = particles.filter(p => p.active).length;
-            const spawnCount = Math.min(Math.floor(energy / 100), maxParticles - activeCount);
+            const spawnCount = Math.min(Math.floor(energy / 50), maxParticles - activeCount);
             let spawned = 0;
             for (let i = 0; i < particlePool.length && spawned < spawnCount; i++) {
                 if (!particlePool[i].active) {
@@ -124,7 +136,12 @@
                     particlePool[i].opacity = 1;
                     particlePool[i].wave = Math.random() * 2 * Math.PI;
                     particlePool[i].state = Math.floor(Math.random() * 2);
+                    particlePool[i].spin = Math.random() * 0.1 - 0.05;
                     particlePool[i].active = true;
+                    // Entangle with another particle
+                    if (particlePool[particlePool[i].entanglement]) {
+                        particlePool[particlePool[i].entanglement].spin = -particlePool[i].spin;
+                    }
                     spawned++;
                 }
             }
@@ -134,8 +151,10 @@
         function drawParticles() {
             particles.forEach(p => {
                 if (!p.active) return;
-                p.x += p.vx * (1 + energy / 10000);
-                p.y += p.vy * (1 + energy / 10000);
+                // Quantum Wave Function (Schrödinger-inspired)
+                const waveFunction = Math.sin(p.wave + angle) * Math.cos(p.wave + angle);
+                p.x += p.vx * (1 + energy / 10000) + waveFunction * 0.5;
+                p.y += p.vy * (1 + energy / 10000) + waveFunction * 0.5;
                 p.wave += 0.03 * (1 + coherence / 1000);
                 p.vy += 0.01; // Gravity effect
                 if (p.x < 0 || p.x > canvas.width) p.vx *= -0.9;
@@ -153,28 +172,74 @@
                     p.vy += dy * 0.01 * mouse.clickStrength;
                     p.opacity = Math.min(p.opacity + 0.02, 1);
                     p.state = 1;
+                    insight += 0.1; // Learn about quantum interaction
+                    // Entanglement effect
+                    const entangled = particlePool[p.entanglement];
+                    if (entangled && entangled.active) {
+                        entangled.state = p.state;
+                        entangled.hue = p.hue;
+                    }
                 } else if (dist > 300) {
                     p.opacity = Math.max(p.opacity - 0.01, 0.4);
                     p.state = 0;
                 }
+                // Double Slit Interference
                 const slitX = (p.x - canvas.width * 0.4) / (canvas.width * 0.2);
                 if (slitX >= 0 && slitX <= 1 && p.y > canvas.height * 0.5) {
                     const interference = Math.sin(slitX * 10 * Math.PI + angle) * 0.5 + 0.5;
                     p.opacity *= interference;
                     p.vx += Math.cos(slitX * 10 * Math.PI) * 0.01;
+                    insight += 0.05; // Learn about wave-particle duality
                 }
                 ctx.beginPath();
                 if (p.state === 0) {
-                    ctx.arc(p.x, p.y, p.size, 0, 2 * Math.PI);
+                    ctx.arc(p.x / zoomLevel, p.y / zoomLevel, p.size, 0, 2 * Math.PI);
                 } else {
-                    ctx.moveTo(p.x - p.size, p.y);
-                    ctx.bezierCurveTo(p.x, p.y - p.size * 2, p.x, p.y + p.size * 2, p.x + p.size, p.y);
+                    ctx.moveTo(p.x / zoomLevel - p.size, p.y / zoomLevel);
+                    ctx.bezierCurveTo(
+                        p.x / zoomLevel, (p.y - p.size * 2) / zoomLevel,
+                        p.x / zoomLevel, (p.y + p.size * 2) / zoomLevel,
+                        (p.x + p.size) / zoomLevel, p.y / zoomLevel
+                    );
                 }
-                const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
+                const gradient = ctx.createRadialGradient(p.x / zoomLevel, p.y / zoomLevel, 0, p.x / zoomLevel, p.y / zoomLevel, p.size);
                 gradient.addColorStop(0, `hsla(${p.hue}, 70%, 50%, ${p.opacity})`);
                 gradient.addColorStop(1, `hsla(${p.hue}, 70%, 50%, 0)`);
                 ctx.fillStyle = gradient;
                 ctx.fill();
+            });
+        }
+
+        // Optical Illusion: Moiré Pattern
+        function initMoirePattern() {
+            moirePattern = [];
+            const spacing = 10;
+            for (let x = 0; x < canvas.width; x += spacing) {
+                for (let y = 0; y < canvas.height; y += spacing) {
+                    moirePattern.push({ x, y, angle: Math.random() * 2 * Math.PI });
+                }
+            }
+        }
+
+        function drawMoirePattern() {
+            if (!mouse.hovering) return;
+            moirePattern.forEach(m => {
+                const dx = mouse.x - m.x;
+                const dy = mouse.y - m.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 300) {
+                    ctx.save();
+                    ctx.translate(m.x / zoomLevel, m.y / zoomLevel);
+                    ctx.rotate(m.angle + angle);
+                    ctx.beginPath();
+                    ctx.moveTo(-5, 0);
+                    ctx.lineTo(5, 0);
+                    ctx.strokeStyle = `hsla(${dist % 360}, 70%, 50%, ${1 - dist / 300})`;
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                    ctx.restore();
+                    insight += 0.01; // Learn about optical illusions
+                }
             });
         }
 
@@ -195,27 +260,30 @@
         function drawSlitPattern() {
             slitPattern.forEach(s => {
                 ctx.beginPath();
-                ctx.arc(s.x, s.y, 2 * s.intensity, 0, 2 * Math.PI);
+                ctx.arc(s.x / zoomLevel, s.y / zoomLevel, 2 * s.intensity, 0, 2 * Math.PI);
                 ctx.fillStyle = `hsla(240, 70%, 50%, ${s.intensity * 0.5})`;
                 ctx.fill();
             });
         }
 
-        // Audio Setup
+        // Audio Setup with Visual Feedback
         function initAudio(baseFreq) {
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
             oscillator = audioContext.createOscillator();
             gainNode = audioContext.createGain();
+            analyser = audioContext.createAnalyser();
             oscillator.type = 'sine';
             oscillator.frequency.value = baseFreq;
             oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
+            gainNode.connect(analyser);
+            analyser.connect(audioContext.destination);
+            analyser.fftSize = 256;
             oscillator.start();
             gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
         }
 
         function stopAudio() {
-            if (oscummondator) oscillator.stop();
+            if (oscillator) oscillator.stop();
             if (audioContext) audioContext.close();
         }
 
@@ -223,13 +291,19 @@
             if (gainNode) {
                 gainNode.gain.setValueAtTime(0.1 + (coherence / 2000), audioContext.currentTime);
                 oscillator.frequency.setValueAtTime(baseFrequencies[Math.floor(sceneProgress / sceneDuration) % 5] + (energy / 200), audioContext.currentTime);
+                // Visual feedback from audio
+                const bufferLength = analyser.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+                analyser.getByteFrequencyData(dataArray);
+                const avgFrequency = dataArray.reduce((a, b) => a + b) / bufferLength;
+                return avgFrequency / 255; // Normalized for visual effects
             }
+            return 0;
         }
         const baseFrequencies = [432, 528, 432, 0, 963];
 
-        // Unified Cosmic Scene with Energy-Driven Growth
+        // Unified Cosmic Scene with Mathematical Growth
         function initScene() {
-            // Reset active geometries
             geometryPool.forEach(g => g.active = false);
             geometries = [];
             const cx = canvas.width / 2;
@@ -237,7 +311,7 @@
             const phase = Math.floor(sceneProgress / sceneDuration) % 5;
             let activeCount = 0;
 
-            // Flower of Life (Phase 0)
+            // Flower of Life (Phase 0) - Hexagonal Growth
             if (phase === 0) {
                 const radius = Math.min(canvas.width, canvas.height) / 20;
                 function generateFlower(x, y, r, depth) {
@@ -250,6 +324,7 @@
                     g.hue = 180 + depth * 30;
                     g.opacity = 1;
                     g.pulsing = true;
+                    g.hologramShift = Math.random() * 2 * Math.PI;
                     g.active = true;
                     for (let i = 0; i < 6; i++) {
                         if (activeCount >= maxGeometries) break;
@@ -269,9 +344,10 @@
                     }
                 }
                 generateFlower(cx, cy, radius, 0);
+                insight += 0.5; // Learn about sacred geometry
             }
 
-            // Golden Spiral (Phase 1)
+            // Golden Spiral (Phase 1) - Fibonacci Growth
             if (phase === 1) {
                 let phi = (1 + Math.sqrt(5)) / 2;
                 let r = 5, a = 0;
@@ -292,6 +368,7 @@
                         g.hue = 60 + i * 0.2;
                         g.opacity = 1;
                         g.pulsing = true;
+                        g.hologramShift = Math.random() * 2 * Math.PI;
                         g.active = true;
                     }
                 }
@@ -314,9 +391,10 @@
                     center.pulsing = true;
                     center.active = true;
                 }
+                insight += 0.5; // Learn about Fibonacci sequences
             }
 
-            // Seed of Life (Phase 2)
+            // Seed of Life (Phase 2) - Foundational Matrix
             if (phase === 2) {
                 const radius = Math.min(canvas.width, canvas.height) / 15;
                 if (activeCount < maxGeometries) {
@@ -328,6 +406,7 @@
                     center.hue = 180;
                     center.opacity = 1;
                     center.pulsing = true;
+                    center.hologramShift = Math.random() * 2 * Math.PI;
                     center.active = true;
                 }
                 for (let i = 0; i < 6; i++) {
@@ -343,6 +422,7 @@
                     g.hue = 180 + i * 30;
                     g.opacity = 1;
                     g.pulsing = true;
+                    g.hologramShift = Math.random() * 2 * Math.PI;
                     g.active = true;
                     let line = geometryPool[activeCount++];
                     line.type = 'line';
@@ -354,9 +434,10 @@
                     line.opacity = 1;
                     line.active = true;
                 }
+                insight += 0.5; // Learn about geometric harmony
             }
 
-            // Quantum Field with Double Slit (Phase 3)
+            // Quantum Field with Double Slit (Phase 3) - Wave Interference
             if (phase === 3) {
                 const count = Math.min(100 + Math.floor(energy / 50), 200);
                 for (let i = 0; i < count; i++) {
@@ -373,6 +454,7 @@
                     g.pulsing = true;
                     g.vx = (Math.random() - 0.5) * 2;
                     g.vy = Math.random() * 2 + 1;
+                    g.hologramShift = Math.random() * 2 * Math.PI;
                     g.active = true;
                 }
                 if (activeCount < maxGeometries) {
@@ -397,9 +479,10 @@
                     slit2.opacity = 0.8;
                     slit2.active = true;
                 }
+                insight += 0.5; // Learn about quantum mechanics
             }
 
-            // Torus Flow (Phase 4)
+            // Torus Flow with Penrose Triangle (Phase 4) - Gravitational Vortex + Optical Illusion
             if (phase === 4) {
                 const innerR = 50 + energy / 20;
                 const outerR = 150 + energy / 100;
@@ -416,6 +499,7 @@
                     g.hue = i + energy * 0.01;
                     g.opacity = 1;
                     g.pulsing = true;
+                    g.hologramShift = Math.random() * 2 * Math.PI;
                     g.active = true;
                 }
                 for (let i = 0; i < 360; i += 15) {
@@ -437,25 +521,67 @@
                     line.width = 2 + energy / 100;
                     line.active = true;
                 }
+                // Penrose Triangle (Optical Illusion)
+                if (activeCount + 3 < maxGeometries) {
+                    const size = 50 + energy / 100;
+                    const sqrt3 = Math.sqrt(3);
+                    const x1 = cx, y1 = cy - size;
+                    const x2 = cx + size * sqrt3 / 2, y2 = cy + size / 2;
+                    const x3 = cx - size * sqrt3 / 2, y3 = cy + size / 2;
+                    let side1 = geometryPool[activeCount++];
+                    side1.type = 'line';
+                    side1.x1 = x1;
+                    side1.y1 = y1;
+                    side1.x2 = x2;
+                    side1.y2 = y2;
+                    side1.hue = 0;
+                    side1.opacity = 1;
+                    side1.width = 5;
+                    side1.active = true;
+                    let side2 = geometryPool[activeCount++];
+                    side2.type = 'line';
+                    side2.x1 = x2;
+                    side2.y1 = y2;
+                    side2.x2 = x3;
+                    side2.y2 = y3;
+                    side2.hue = 120;
+                    side2.opacity = 1;
+                    side2.width = 5;
+                    side2.active = true;
+                    let side3 = geometryPool[activeCount++];
+                    side3.type = 'line';
+                    side3.x1 = x3;
+                    side3.y1 = y3;
+                    side3.x2 = x1;
+                    side3.y2 = y1;
+                    side3.hue = 240;
+                    side3.opacity = 1;
+                    side3.width = 5;
+                    side3.active = true;
+                }
+                insight += 0.5; // Learn about gravitational dynamics and optical illusions
             }
 
             geometries = geometryPool.filter(g => g.active);
         }
 
-        // Draw Geometries
+        // Draw Geometries with Holographic Effects
         function drawGeometries() {
+            const audioIntensity = updateAudio();
             geometries.forEach(g => {
                 if (!g.active) return;
                 ctx.globalAlpha = g.opacity;
+                // Holographic effect
+                const hologramOffset = Math.sin(g.hologramShift + angle) * 5 * audioIntensity;
                 if (g.type === 'circle') {
                     ctx.beginPath();
                     const pulseScale = g.pulsing ? (1 + Math.sin(Date.now() / 500 + g.x / 50 + g.y / 50) * 0.2 * (1 + energy / 5000)) : 1;
-                    ctx.arc(g.x, g.y, g.r * pulseScale, 0, 2 * Math.PI);
-                    const gradient = ctx.createRadialGradient(g.x, g.y, 0, g.x, g.y, g.r * pulseScale);
-                    gradient.addColorStop(0, `hsla(${g.hue}, 70%, 50%, ${0.8 * (1 + coherence / 1000)})`);
-                    gradient.addColorStop(1, `hsla(${g.hue}, 70%, 50%, 0)`);
+                    ctx.arc((g.x + hologramOffset) / zoomLevel, (g.y + hologramOffset) / zoomLevel, g.r * pulseScale, 0, 2 * Math.PI);
+                    const gradient = ctx.createRadialGradient((g.x + hologramOffset) / zoomLevel, (g.y + hologramOffset) / zoomLevel, 0, (g.x + hologramOffset) / zoomLevel, (g.y + hologramOffset) / zoomLevel, g.r * pulseScale);
+                    gradient.addColorStop(0, `hsla(${g.hue + hologramOffset * 10}, 70%, 50%, ${0.8 * (1 + coherence / 1000)})`);
+                    gradient.addColorStop(1, `hsla(${g.hue + hologramOffset * 10}, 70%, 50%, 0)`);
                     ctx.fillStyle = gradient;
-                    ctx.strokeStyle = `hsla(${g.hue}, 70%, 50%, ${g.opacity})`;
+                    ctx.strokeStyle = `hsla(${g.hue + hologramOffset * 10}, 70%, 50%, ${g.opacity})`;
                     ctx.lineWidth = 2;
                     ctx.fill();
                     ctx.stroke();
@@ -478,23 +604,23 @@
                     }
                 } else if (g.type === 'line') {
                     ctx.beginPath();
-                    ctx.moveTo(g.x1, g.y1);
-                    ctx.lineTo(g.x2, g.y2);
-                    ctx.strokeStyle = `hsla(${g.hue}, 70%, 50%, ${g.opacity * 0.3 * (1 + energy / 5000)})`;
+                    ctx.moveTo((g.x1 + hologramOffset) / zoomLevel, (g.y1 + hologramOffset) / zoomLevel);
+                    ctx.lineTo((g.x2 + hologramOffset) / zoomLevel, (g.y2 + hologramOffset) / zoomLevel);
+                    ctx.strokeStyle = `hsla(${g.hue + hologramOffset * 10}, 70%, 50%, ${g.opacity * 0.3 * (1 + energy / 5000)})`;
                     ctx.lineWidth = (g.width || 1);
                     ctx.stroke();
                 } else if (g.type === 'spiral') {
                     ctx.beginPath();
-                    ctx.moveTo(g.points[0].x, g.points[0].y);
+                    ctx.moveTo(g.points[0].x / zoomLevel, g.points[0].y / zoomLevel);
                     for (let i = 1; i < g.points.length; i++) {
-                        ctx.lineTo(g.points[i].x, g.points[i].y);
+                        ctx.lineTo((g.points[i].x + hologramOffset) / zoomLevel, (g.points[i].y + hologramOffset) / zoomLevel);
                     }
-                    ctx.strokeStyle = `hsla(${g.hue}, 70%, 50%, ${g.opacity})`;
+                    ctx.strokeStyle = `hsla(${g.hue + hologramOffset * 10}, 70%, 50%, ${g.opacity})`;
                     ctx.lineWidth = 2;
                     ctx.stroke();
                 } else if (g.type === 'rect') {
-                    ctx.fillStyle = `hsla(${g.hue}, 70%, 50%, ${g.opacity})`;
-                    ctx.fillRect(g.x, g.y, g.w, g.h);
+                    ctx.fillStyle = `hsla(${g.hue + hologramOffset * 10}, 70%, 50%, ${g.opacity})`;
+                    ctx.fillRect((g.x + hologramOffset) / zoomLevel, (g.y + hologramOffset) / zoomLevel, g.w, g.h);
                 }
             });
         }
@@ -514,20 +640,29 @@
             spawnParticles();
             drawParticles();
             drawSlitPattern();
+            drawMoirePattern();
             drawGeometries();
             updateEnergy();
-            updateAudio();
+            // Cosmic Insight Milestone
+            if (insight > 50) {
+                energy += 1000;
+                insight = 0;
+                particles.forEach(p => p.hue = (p.hue + 180) % 360);
+                geometries.forEach(g => g.hue = (g.hue + 90) % 360);
+            }
         }
 
-        // Mouse/Touch Interaction
+        // Interactivity
         function handleInput(e, isTouch = false) {
             const rect = canvas.getBoundingClientRect();
             const x = isTouch ? e.touches[0].clientX : e.clientX;
             const y = isTouch ? e.touches[0].clientY : e.clientY;
             mouse.x = x - rect.left;
             mouse.y = y - rect.top;
+            mouse.hovering = true;
             energy += Math.sin(distToCenter(mouse.x, mouse.y) / 100) * 0.5 * (1 + coherence / 1000);
             angle += (mouse.x - canvas.width / 2) / 10000 * (1 + energy / 5000);
+            insight += 0.02; // Learn through exploration
         }
 
         canvas.addEventListener('mousemove', handleInput, { passive: true });
@@ -544,6 +679,7 @@
             energy += 100 * mouse.clickStrength * (1 + energy / 10000);
             coherence += mouse.clickStrength * 10 * (1 + energy / 1000);
             spawnParticles();
+            insight += 1; // Learn through interaction
         });
 
         canvas.addEventListener('touchstart', (e) => {
@@ -556,15 +692,25 @@
             energy += 100 * mouse.clickStrength * (1 + energy / 10000);
             coherence += mouse.clickStrength * 10 * (1 + energy / 1000);
             spawnParticles();
+            insight += 1;
         }, { passive: false });
 
         canvas.addEventListener('mouseup', () => {
             mouse.clicked = false;
+            mouse.hovering = false;
         });
 
         canvas.addEventListener('touchend', () => {
             mouse.clicked = false;
+            mouse.hovering = false;
         });
+
+        canvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            zoomLevel *= e.deltaY > 0 ? 0.95 : 1.05;
+            zoomLevel = Math.max(0.5, Math.min(zoomLevel, 2));
+            insight += 0.5; // Learn through zooming
+        }, { passive: false });
 
         function distToCenter(x, y) {
             const cx = canvas.width / 2;
