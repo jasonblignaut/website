@@ -3,207 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Futuristic Flower of Life Explorer</title>
+    <title>Cosmic Geometry Quest</title>
     <style>
         body {
             margin: 0;
-            padding: 20px;
+            padding: 0;
             font-family: 'Orbitron', sans-serif;
-            background: linear-gradient(135deg, #0a0a2a, #1a1a4a);
-            color: #e0e0ff;
-            overflow-x: hidden;
-        }
-        h1 {
-            text-align: center;
+            background: radial-gradient(circle, #0a0a2a, #000);
             color: #00ffcc;
-            text-shadow: 0 0 10px #00ffcc;
-            animation: pulse 2s infinite;
+            overflow: hidden;
+            height: 100vh;
         }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        #container {
-            max-width: 1200px;
-            margin: 0 auto;
+        #gameContainer {
+            position: relative;
+            width: 100%;
+            height: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+        }
+        #hud {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid #00ffcc;
+            font-size: 14px;
         }
         #canvas {
-            border: 2px solid #00ffcc;
-            border-radius: 10px;
-            box-shadow: 0 0 20px #00ffcc;
-            background: rgba(255, 255, 255, 0.1);
+            border: 3px solid #00ffcc;
+            border-radius: 15px;
+            box-shadow: 0 0 30px #00ffcc;
+            background: rgba(255, 255, 255, 0.05);
         }
         #controls {
-            margin: 20px 0;
+            position: absolute;
+            bottom: 20px;
             display: flex;
             gap: 10px;
+            z-index: 10;
         }
         button {
-            padding: 10px 20px;
-            background: #00ffcc;
+            padding: 12px 25px;
+            background: linear-gradient(45deg, #00ffcc, #00ccff);
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             color: #0a0a2a;
             cursor: pointer;
+            font-weight: bold;
             transition: transform 0.3s, box-shadow 0.3s;
+            text-shadow: 0 0 5px #fff;
         }
         button:hover {
             transform: scale(1.1);
-            box-shadow: 0 0 15px #00ffcc;
+            box-shadow: 0 0 20px #00ffcc;
         }
-        #info, #speculation {
-            margin: 20px;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.5);
+        #log {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            width: 300px;
+            height: 400px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
             border-radius: 10px;
-            backdrop-filter: blur(5px);
-        }
-        #canvasPanel {
-            width: 400px;
-            height: 200px;
             border: 2px solid #00ffcc;
-            margin-top: 20px;
-            background: rgba(255, 255, 255, 0.1);
+            overflow-y: auto;
+            font-size: 12px;
+        }
+        #particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="container">
-        <h1>Futuristic Flower of Life Explorer</h1>
+    <div id="gameContainer">
+        <div id="hud">
+            Level: <span id="level">1</span> | Score: <span id="score">0</span> | Discoveries: <span id="discoveries">0</span>
+        </div>
+        <canvas id="canvas" width="1000" height="800"></canvas>
+        <div id="particles"></div>
         <div id="controls">
-            <button onclick="setCircles(4)">4 Circles</button>
-            <button onclick="setCircles(8)">8 Circles</button>
-            <button onclick="setCircles(12)">12 Circles</button>
-            <button onclick="reset()">Reset</button>
-            <button onclick="runSpeculation()">Speculate</button>
+            <button onclick="nextLevel()">Next Level</button>
+            <button onclick="rotateView()">Rotate View</button>
+            <button onclick="resetGame()">Reset Mission</button>
+            <button onclick="analyze()">Analyze Cosmos</button>
         </div>
-        <canvas id="canvas" width="800" height="800"></canvas>
-        <canvas id="canvasPanel" width="400" height="200"></canvas>
-        <div id="info">
-            <h2>Theory Overview</h2>
-            <p>Terrence Howard suggests math (e.g., 1 × 1 = 1) is flawed—multiplication should increase (1 × 1 = 2). Circles (magnetic fields) overlap to form tetrahedrons, revealing 'negative space' (dark matter/protons). The Flower of Life encodes universal expansion/contraction via ether motion.</p>
-            <p><strong>Math Proof:</strong> For √2 ≈ 1.414, (√2 × 2)³ ÷ 2 = 2.828, looping consistently, challenging conventional algebra.</p>
-        </div>
-        <div id="speculation">
-            <h2>Unproven Frontiers</h2>
-            <p>This tool explores uncharted ideas: 1) Planetary 'aliveness' (no death, just motion states), 2) Light’s reproductive cycle (octaves as life stages), 3) Undiscovered elements before hydrogen. Adjust parameters to test these hypotheses.</p>
+        <div id="log">
+            <h3>Discovery Log</h3>
+            <div id="logContent"></div>
         </div>
     </div>
 
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
-        const panel = document.getElementById('canvasPanel');
-        const panelCtx = panel.getContext('2d');
+        const particlesCanvas = document.getElementById('particles');
+        const particlesCtx = particlesCanvas.getContext('2d');
         let circles = [];
+        let angle = 0;
+        let level = 1;
+        let score = 0;
+        let discoveries = 0;
         let animationId;
+        let rotationAngle = 0;
 
-        // Initialize Flower of Life
+        // Particle Animation
+        function createParticles() {
+            particlesCanvas.width = window.innerWidth;
+            particlesCanvas.height = window.innerHeight;
+            const particles = [];
+            for (let i = 0; i < 100; i++) {
+                particles.push({
+                    x: Math.random() * particlesCanvas.width,
+                    y: Math.random() * particlesCanvas.height,
+                    size: Math.random() * 3 + 1,
+                    speed: Math.random() * 0.5 + 0.1
+                });
+            }
+            function animateParticles() {
+                particlesCtx.clearRect(0, 0, particlesCanvas.width, particlesCanvas.height);
+                particlesCtx.fillStyle = 'rgba(0, 255, 204, 0.5)';
+                particles.forEach(p => {
+                    p.y += p.speed;
+                    if (p.y > particlesCanvas.height) p.y = 0;
+                    particlesCtx.beginPath();
+                    particlesCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    particlesCtx.fill();
+                });
+                requestAnimationFrame(animateParticles);
+            }
+            animateParticles();
+        }
+
+        // Initialize Game
         function init() {
-            ctx.clearRect(0, 0, 800, 800);
-            drawFlowerOfLife(7); // Base pattern
+            ctx.clearRect(0, 0, 1000, 800);
+            drawFlowerOfLife(level === 1 ? 7 : [4, 8, 12][level - 2]);
+            drawTetrahedron();
+            updateHUD();
         }
 
         // Draw Flower of Life
         function drawFlowerOfLife(count) {
             circles = [];
-            const cx = 400, cy = 400, r = 200;
-            const angle = (2 * Math.PI) / count;
+            const cx = 500, cy = 400, r = 250;
+            const angleStep = (2 * Math.PI) / count;
             ctx.beginPath();
-            ctx.arc(cx, cy, 50, 0, 2 * Math.PI);
+            ctx.arc(cx, cy, 60, 0, 2 * Math.PI);
             ctx.fillStyle = '#00ffcc';
             ctx.fill();
             for (let i = 0; i < count; i++) {
-                const x = cx + r * Math.cos(angle * i);
-                const y = cy + r * Math.sin(angle * i);
-                circles.push({ x, y, r: 50 });
+                const x = cx + r * Math.cos(angleStep * i + angle);
+                const y = cy + r * Math.sin(angleStep * i + angle);
+                circles.push({ x, y, r: 60 });
                 ctx.beginPath();
-                ctx.arc(x, y, 50, 0, 2 * Math.PI);
+                ctx.arc(x, y, 60, 0, 2 * Math.PI);
                 ctx.strokeStyle = '#00ffcc';
-                ctx.lineWidth = 2;
+                ctx.lineWidth = 3;
                 ctx.stroke();
             }
         }
 
-        // Animate Tetrahedron
-        function animateTetrahedron() {
-            ctx.clearRect(0, 0, 800, 800);
-            drawFlowerOfLife(circles.length);
-            const cx = 400, cy = 400;
+        // Draw 3D-like Tetrahedron with Rotation
+        function drawTetrahedron() {
+            const cx = 500, cy = 400;
             const scale = Math.sin(Date.now() / 500) * 0.5 + 0.5;
+            const rotX = Math.cos(rotationAngle) * 150 * scale;
+            const rotY = Math.sin(rotationAngle) * 150 * scale;
             ctx.beginPath();
-            ctx.moveTo(cx, cy - 150 * scale);
-            ctx.lineTo(cx - 130 * scale, cy + 75 * scale);
-            ctx.lineTo(cx + 130 * scale, cy + 75 * scale);
+            ctx.moveTo(cx, cy - rotY);
+            ctx.lineTo(cx - rotX, cy + rotY);
+            ctx.lineTo(cx + rotX, cy + rotY);
             ctx.closePath();
             ctx.fillStyle = 'rgba(0, 255, 255, 0.7)';
             ctx.fill();
-            if (scale < 0.9) animationId = requestAnimationFrame(animateTetrahedron);
-            else cancelAnimationFrame(animationId);
+            ctx.strokeStyle = '#00ccff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
         }
 
-        // Howard's Math Check
-        function checkHowardMath() {
+        // Howard's Math Calculation
+        function calculateHowardMath() {
             const sqrt2 = Math.sqrt(2).toFixed(15); // ≈ 1.414213562373095
             let result = sqrt2 * 2; // ≈ 2.82842712474619
             result = Math.pow(result, 3) / 2; // Cube and divide by 2
-            panelCtx.clearRect(0, 0, 400, 200);
-            panelCtx.fillStyle = '#e0e0ff';
-            panelCtx.font = '16px Orbitron';
-            panelCtx.fillText(`√2 ≈ ${sqrt2}`, 10, 20);
-            panelCtx.fillText(`(√2 × 2)³ ÷ 2 ≈ ${result.toFixed(15)}`, 10, 40);
-            panelCtx.fillText('Loop persists, challenging conventional math!', 10, 60);
+            const log = document.getElementById('logContent');
+            log.innerHTML += `<p>√2 Loop: ${sqrt2} × 2³ ÷ 2 ≈ ${result.toFixed(15)} - Challenges 1 × 1 = 1!</p>`;
+            score += 10;
+            updateHUD();
         }
 
         // Speculative Analysis
-        function speculate() {
-            panelCtx.clearRect(0, 0, 400, 200);
-            const energy = Math.random() * 100; // Hypothetical energy state
+        function analyzeCosmos() {
+            const energy = Math.random() * 100;
+            const pressure = Math.random() * 10;
             const motion = energy > 50 ? 'Expanding' : 'Contracting';
-            panelCtx.fillStyle = '#e0e0ff';
-            panelCtx.font = '16px Orbitron';
-            panelCtx.fillText(`Energy: ${energy.toFixed(2)}`, 10, 20);
-            panelCtx.fillText(`Motion: ${motion}`, 10, 40);
-            panelCtx.fillText('Possible planetary aliveness or light octave?', 10, 60);
-            if (motion === 'Expanding' && energy > 75) {
-                panelCtx.fillText('Potential new element condition detected!', 10, 80);
+            const log = document.getElementById('logContent');
+            log.innerHTML += `<p>Energy: ${energy.toFixed(2)}, Pressure: ${pressure.toFixed(2)}, Motion: ${motion}</p>`;
+            if (energy > 75 && pressure > 7) {
+                log.innerHTML += `<p>Discovery! Possible pre-hydrogen element or planetary life state detected.</p>`;
+                discoveries++;
+                score += 50;
+            } else if (energy > 60) {
+                log.innerHTML += `<p>Hypothesis: Light octave reproduction possible.</p>`;
+                score += 20;
             }
+            updateHUD();
         }
 
-        // Control Functions
-        function setCircles(count) {
+        // Game Controls
+        function nextLevel() {
             cancelAnimationFrame(animationId);
+            level = Math.min(level + 1, 3);
             init();
-            drawFlowerOfLife(count);
-            animateTetrahedron();
-            checkHowardMath();
+            animate();
+            calculateHowardMath();
+            if (level === 3) alert('Cosmic Mastery Achieved!');
         }
 
-        function reset() {
+        function rotateView() {
+            rotationAngle += Math.PI / 4;
+            init();
+        }
+
+        function resetGame() {
             cancelAnimationFrame(animationId);
-            ctx.clearRect(0, 0, 800, 800);
-            panelCtx.clearRect(0, 0, 400, 200);
-            circles = [];
+            level = 1;
+            score = 0;
+            discoveries = 0;
+            document.getElementById('logContent').innerHTML = '<h3>Discovery Log</h3>';
             init();
+            updateHUD();
         }
 
-        function runSpeculation() {
-            speculate();
-            // Simulate light octave or planetary state
-            ctx.fillStyle = 'rgba(255, 255, 0, 0.5)';
-            ctx.beginPath();
-            ctx.arc(400, 400, 50 + Math.random() * 100, 0, 2 * Math.PI);
-            ctx.fill();
+        function animate() {
+            animationId = requestAnimationFrame(animate);
+            ctx.clearRect(0, 0, 1000, 800);
+            angle += 0.01;
+            drawFlowerOfLife(level === 1 ? 7 : [4, 8, 12][level - 2]);
+            drawTetrahedron();
         }
 
-        // Start
+        function updateHUD() {
+            document.getElementById('level').textContent = level;
+            document.getElementById('score').textContent = score;
+            document.getElementById('discoveries').textContent = discoveries;
+        }
+
+        // Start Game
+        createParticles();
         init();
-        checkHowardMath();
+        animate();
     </script>
 </body>
 </html>
