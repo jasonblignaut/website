@@ -38,45 +38,97 @@
         let energy = 0;
         let coherence = 0;
         let angle = 0;
-        let mouse = { x: 0, y: 0, clicked: false, clickStrength: 0, lastClick: 0 };
+        let mouse = { x: canvas.width / 2, y: canvas.height / 2, clicked: false, clickStrength: 0, lastClick: 0 };
         let audioContext, oscillator, gainNode;
+        let particlePool = [];
+        let geometryPool = [];
         let particles = [];
         let geometries = [];
         let slitPattern = [];
         let sceneProgress = 0;
-        const sceneDuration = 3000; // Frames per scene phase (auto-evolution)
+        const sceneDuration = 3000; // Frames per phase (~50 seconds at 60 FPS)
+        const maxParticles = 500; // Cap for memory safety
+        const maxGeometries = 1000; // Cap for memory safety
 
         // Canvas Setup
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             ctx.globalCompositeOperation = 'lighter';
-            initParticles();
-            initSlitPattern();
+            mouse.x = canvas.width / 2;
+            mouse.y = canvas.height / 2;
+            initPools();
+            initScene();
         }
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
 
-        // Particle Pooling for Memory Optimization
-        const particlePool = [];
-        const maxParticles = 500;
-        function initParticles() {
+        // Object Pooling for Particles and Geometries
+        function initPools() {
+            // Particle Pool
             particlePool.length = 0;
             for (let i = 0; i < maxParticles; i++) {
                 particlePool.push({
-                    x: Math.random() * canvas.width,
-                    y: canvas.height * 0.9,
+                    x: canvas.width / 2,
+                    y: canvas.height / 2,
                     vx: (Math.random() - 0.5) * 2,
                     vy: -(Math.random() * 2 + 1),
                     size: Math.random() * 2 + 1,
                     hue: Math.random() * 360,
-                    opacity: Math.random() * 0.6 + 0.4,
+                    opacity: 1,
                     wave: Math.random() * 2 * Math.PI,
                     state: Math.floor(Math.random() * 2), // 0 = particle, 1 = wave
-                    active: true
+                    active: i === 0 // Start with 1 active particle
                 });
             }
-            particles = particlePool;
+            particles = particlePool.filter(p => p.active);
+
+            // Geometry Pool
+            geometryPool.length = 0;
+            for (let i = 0; i < maxGeometries; i++) {
+                geometryPool.push({
+                    type: 'circle',
+                    x: 0,
+                    y: 0,
+                    r: 0,
+                    hue: 0,
+                    opacity: 1,
+                    pulsing: false,
+                    x1: 0,
+                    y1: 0,
+                    x2: 0,
+                    y2: 0,
+                    points: [],
+                    width: 0,
+                    vx: 0,
+                    vy: 0,
+                    depth: 0,
+                    active: false
+                });
+            }
+        }
+
+        // Energy-Driven Particle Expansion
+        function spawnParticles() {
+            const activeCount = particles.filter(p => p.active).length;
+            const spawnCount = Math.min(Math.floor(energy / 100), maxParticles - activeCount);
+            let spawned = 0;
+            for (let i = 0; i < particlePool.length && spawned < spawnCount; i++) {
+                if (!particlePool[i].active) {
+                    particlePool[i].x = canvas.width / 2;
+                    particlePool[i].y = canvas.height / 2;
+                    particlePool[i].vx = (Math.random() - 0.5) * 2;
+                    particlePool[i].vy = -(Math.random() * 2 + 1);
+                    particlePool[i].size = Math.random() * 2 + 1;
+                    particlePool[i].hue = Math.random() * 360;
+                    particlePool[i].opacity = 1;
+                    particlePool[i].wave = Math.random() * 2 * Math.PI;
+                    particlePool[i].state = Math.floor(Math.random() * 2);
+                    particlePool[i].active = true;
+                    spawned++;
+                }
+            }
+            particles = particlePool.filter(p => p.active);
         }
 
         function drawParticles() {
@@ -88,8 +140,8 @@
                 p.vy += 0.01; // Gravity effect
                 if (p.x < 0 || p.x > canvas.width) p.vx *= -0.9;
                 if (p.y > canvas.height || p.y < 0) {
-                    p.x = Math.random() * canvas.width;
-                    p.y = canvas.height * 0.9;
+                    p.x = canvas.width / 2;
+                    p.y = canvas.height / 2;
                     p.vx = (Math.random() - 0.5) * 2;
                     p.vy = -(Math.random() * 2 + 1);
                 }
@@ -127,7 +179,7 @@
         }
 
         // Double Slit Pattern
-        function initSlitPattern() {
+        function updateSlitPattern() {
             slitPattern = [];
             for (let x = canvas.width * 0.4; x < canvas.width * 0.6; x += 5) {
                 for (let y = canvas.height * 0.5; y < canvas.height * 0.7; y += 5) {
@@ -163,7 +215,7 @@
         }
 
         function stopAudio() {
-            if (oscillator) oscillator.stop();
+            if (oscummondator) oscillator.stop();
             if (audioContext) audioContext.close();
         }
 
@@ -173,42 +225,46 @@
                 oscillator.frequency.setValueAtTime(baseFrequencies[Math.floor(sceneProgress / sceneDuration) % 5] + (energy / 200), audioContext.currentTime);
             }
         }
-        const baseFrequencies = [432, 528, 432, 0, 963]; // Hz for each phase
+        const baseFrequencies = [432, 528, 432, 0, 963];
 
-        // Unified Cosmic Scene with Auto-Evolution
+        // Unified Cosmic Scene with Energy-Driven Growth
         function initScene() {
+            // Reset active geometries
+            geometryPool.forEach(g => g.active = false);
             geometries = [];
             const cx = canvas.width / 2;
             const cy = canvas.height / 2;
             const phase = Math.floor(sceneProgress / sceneDuration) % 5;
+            let activeCount = 0;
 
             // Flower of Life (Phase 0)
             if (phase === 0) {
                 const radius = Math.min(canvas.width, canvas.height) / 20;
                 function generateFlower(x, y, r, depth) {
-                    if (depth > 3 + Math.floor(energy / 1000)) return;
-                    geometries.push({
-                        type: 'circle',
-                        x,
-                        y,
-                        r: r * (1 + Math.sin(angle + x / 50) * 0.1),
-                        hue: 180 + depth * 30,
-                        opacity: 1,
-                        pulsing: true
-                    });
+                    if (depth > Math.min(3 + Math.floor(energy / 1000), 5) || activeCount >= maxGeometries) return;
+                    let g = geometryPool[activeCount++];
+                    g.type = 'circle';
+                    g.x = x;
+                    g.y = y;
+                    g.r = r * (1 + Math.sin(angle + x / 50) * 0.1);
+                    g.hue = 180 + depth * 30;
+                    g.opacity = 1;
+                    g.pulsing = true;
+                    g.active = true;
                     for (let i = 0; i < 6; i++) {
+                        if (activeCount >= maxGeometries) break;
                         const a = (2 * Math.PI / 6) * i + angle;
                         const newX = x + r * Math.cos(a);
                         const newY = y + r * Math.sin(a);
-                        geometries.push({
-                            type: 'line',
-                            x1: x,
-                            y1: y,
-                            x2: newX,
-                            y2: newY,
-                            hue: 180 + depth * 30,
-                            opacity: 1
-                        });
+                        let line = geometryPool[activeCount++];
+                        line.type = 'line';
+                        line.x1 = x;
+                        line.y1 = y;
+                        line.x2 = newX;
+                        line.y2 = newY;
+                        line.hue = 180 + depth * 30;
+                        line.opacity = 1;
+                        line.active = true;
                         generateFlower(newX, newY, r * 0.7, depth + 1);
                     }
                 }
@@ -220,120 +276,176 @@
                 let phi = (1 + Math.sqrt(5)) / 2;
                 let r = 5, a = 0;
                 const points = [];
-                for (let i = 0; i < 500 + Math.floor(energy / 20); i++) {
+                const steps = Math.min(500 + Math.floor(energy / 20), 800);
+                for (let i = 0; i < steps; i++) {
                     a += 0.1;
                     r = 5 * Math.pow(phi, a / (Math.PI / 2)) * (1 + energy / 10000);
                     const x = cx + r * Math.cos(a + angle);
                     const y = cy + r * Math.sin(a + angle);
                     points.push({ x, y });
-                    if (i % 10 === 0) {
-                        geometries.push({
-                            type: 'circle',
-                            x,
-                            y,
-                            r: 10 * (coherence / 100 + 1),
-                            hue: 60 + i * 0.2,
-                            opacity: 1,
-                            pulsing: true
-                        });
+                    if (i % 10 === 0 && activeCount < maxGeometries) {
+                        let g = geometryPool[activeCount++];
+                        g.type = 'circle';
+                        g.x = x;
+                        g.y = y;
+                        g.r = 10 * (coherence / 100 + 1);
+                        g.hue = 60 + i * 0.2;
+                        g.opacity = 1;
+                        g.pulsing = true;
+                        g.active = true;
                     }
                 }
-                geometries.push({ type: 'spiral', points, hue: 60, opacity: 1 });
-                geometries.push({
-                    type: 'circle',
-                    x: cx,
-                    y: cy,
-                    r: 20 + energy / 50,
-                    hue: 60,
-                    opacity: 1,
-                    pulsing: true
-                });
+                if (activeCount < maxGeometries) {
+                    let spiral = geometryPool[activeCount++];
+                    spiral.type = 'spiral';
+                    spiral.points = points;
+                    spiral.hue = 60;
+                    spiral.opacity = 1;
+                    spiral.active = true;
+                }
+                if (activeCount < maxGeometries) {
+                    let center = geometryPool[activeCount++];
+                    center.type = 'circle';
+                    center.x = cx;
+                    center.y = cy;
+                    center.r = 20 + energy / 50;
+                    center.hue = 60;
+                    center.opacity = 1;
+                    center.pulsing = true;
+                    center.active = true;
+                }
             }
 
             // Seed of Life (Phase 2)
             if (phase === 2) {
                 const radius = Math.min(canvas.width, canvas.height) / 15;
-                geometries.push({ type: 'circle', x: cx, y: cy, r: radius, hue: 180, opacity: 1, pulsing: true });
+                if (activeCount < maxGeometries) {
+                    let center = geometryPool[activeCount++];
+                    center.type = 'circle';
+                    center.x = cx;
+                    center.y = cy;
+                    center.r = radius;
+                    center.hue = 180;
+                    center.opacity = 1;
+                    center.pulsing = true;
+                    center.active = true;
+                }
                 for (let i = 0; i < 6; i++) {
+                    if (activeCount >= maxGeometries) break;
                     const a = (2 * Math.PI / 6) * i + angle;
                     const x = cx + radius * Math.cos(a);
                     const y = cy + radius * Math.sin(a);
-                    geometries.push({ type: 'circle', x, y, r: radius, hue: 180 + i * 30, opacity: 1, pulsing: true });
-                    geometries.push({
-                        type: 'line',
-                        x1: cx,
-                        y1: cy,
-                        x2: x,
-                        y2: y,
-                        hue: 180 + i * 30,
-                        opacity: 1
-                    });
+                    let g = geometryPool[activeCount++];
+                    g.type = 'circle';
+                    g.x = x;
+                    g.y = y;
+                    g.r = radius;
+                    g.hue = 180 + i * 30;
+                    g.opacity = 1;
+                    g.pulsing = true;
+                    g.active = true;
+                    let line = geometryPool[activeCount++];
+                    line.type = 'line';
+                    line.x1 = cx;
+                    line.y1 = cy;
+                    line.x2 = x;
+                    line.y2 = y;
+                    line.hue = 180 + i * 30;
+                    line.opacity = 1;
+                    line.active = true;
                 }
             }
 
             // Quantum Field with Double Slit (Phase 3)
             if (phase === 3) {
-                for (let i = 0; i < 100 + Math.floor(energy / 50); i++) {
+                const count = Math.min(100 + Math.floor(energy / 50), 200);
+                for (let i = 0; i < count; i++) {
+                    if (activeCount >= maxGeometries) break;
                     const x = cx + (Math.random() - 0.5) * canvas.width * 0.8;
                     const y = cy - canvas.height * 0.4;
-                    geometries.push({
-                        type: 'circle',
-                        x,
-                        y,
-                        r: 5 * (1 + coherence / 1000),
-                        hue: 240 + Math.random() * 60,
-                        opacity: 0.7,
-                        pulsing: true,
-                        vx: (Math.random() - 0.5) * 2,
-                        vy: Math.random() * 2 + 1
-                    });
+                    let g = geometryPool[activeCount++];
+                    g.type = 'circle';
+                    g.x = x;
+                    g.y = y;
+                    g.r = 5 * (1 + coherence / 1000);
+                    g.hue = 240 + Math.random() * 60;
+                    g.opacity = 0.7;
+                    g.pulsing = true;
+                    g.vx = (Math.random() - 0.5) * 2;
+                    g.vy = Math.random() * 2 + 1;
+                    g.active = true;
                 }
-                geometries.push({ type: 'rect', x: canvas.width * 0.45, y: canvas.height * 0.5, w: 10, h: canvas.height * 0.3, hue: 240, opacity: 0.8 });
-                geometries.push({ type: 'rect', x: canvas.width * 0.55, y: canvas.height * 0.5, w: 10, h: canvas.height * 0.3, hue: 240, opacity: 0.8 });
+                if (activeCount < maxGeometries) {
+                    let slit1 = geometryPool[activeCount++];
+                    slit1.type = 'rect';
+                    slit1.x = canvas.width * 0.45;
+                    slit1.y = canvas.height * 0.5;
+                    slit1.w = 10;
+                    slit1.h = canvas.height * 0.3;
+                    slit1.hue = 240;
+                    slit1.opacity = 0.8;
+                    slit1.active = true;
+                }
+                if (activeCount < maxGeometries) {
+                    let slit2 = geometryPool[activeCount++];
+                    slit2.type = 'rect';
+                    slit2.x = canvas.width * 0.55;
+                    slit2.y = canvas.height * 0.5;
+                    slit2.w = 10;
+                    slit2.h = canvas.height * 0.3;
+                    slit2.hue = 240;
+                    slit2.opacity = 0.8;
+                    slit2.active = true;
+                }
             }
 
             // Torus Flow (Phase 4)
             if (phase === 4) {
                 const innerR = 50 + energy / 20;
                 const outerR = 150 + energy / 100;
-                for (let i = 0; i < 360; i += 2) {
+                for (let i = 0; i < 360; i += 3) {
+                    if (activeCount >= maxGeometries) break;
                     const a = (i * Math.PI / 180) + angle;
                     const x = cx + (outerR + innerR * Math.cos(a)) * Math.cos(a);
                     const y = cy + (outerR + innerR * Math.cos(a)) * Math.sin(a);
-                    geometries.push({
-                        type: 'circle',
-                        x,
-                        y,
-                        r: 5 * (1 + Math.sin(a + angle) * 0.3),
-                        hue: i + energy * 0.01,
-                        opacity: 1,
-                        pulsing: true
-                    });
+                    let g = geometryPool[activeCount++];
+                    g.type = 'circle';
+                    g.x = x;
+                    g.y = y;
+                    g.r = 5 * (1 + Math.sin(a + angle) * 0.3);
+                    g.hue = i + energy * 0.01;
+                    g.opacity = 1;
+                    g.pulsing = true;
+                    g.active = true;
                 }
-                for (let i = 0; i < 360; i += 10) {
+                for (let i = 0; i < 360; i += 15) {
+                    if (activeCount >= maxGeometries) break;
                     const a1 = (i * Math.PI / 180) + angle;
-                    const a2 = ((i + 10) * Math.PI / 180) + angle;
+                    const a2 = ((i + 15) * Math.PI / 180) + angle;
                     const x1 = cx + outerR * Math.cos(a1);
                     const y1 = cy + outerR * Math.sin(a1);
                     const x2 = cx + outerR * Math.cos(a2);
                     const y2 = cy + outerR * Math.sin(a2);
-                    geometries.push({
-                        type: 'line',
-                        x1,
-                        y1,
-                        x2,
-                        y2,
-                        hue: i + energy * 0.01,
-                        opacity: 1,
-                        width: 2 + energy / 100
-                    });
+                    let line = geometryPool[activeCount++];
+                    line.type = 'line';
+                    line.x1 = x1;
+                    line.y1 = y1;
+                    line.x2 = x2;
+                    line.y2 = y2;
+                    line.hue = i + energy * 0.01;
+                    line.opacity = 1;
+                    line.width = 2 + energy / 100;
+                    line.active = true;
                 }
             }
+
+            geometries = geometryPool.filter(g => g.active);
         }
 
-        // Draw Geometries with Batch Optimization
+        // Draw Geometries
         function drawGeometries() {
             geometries.forEach(g => {
+                if (!g.active) return;
                 ctx.globalAlpha = g.opacity;
                 if (g.type === 'circle') {
                     ctx.beginPath();
@@ -387,7 +499,7 @@
             });
         }
 
-        // Animation Loop with Auto-Evolution
+        // Animation Loop
         function animate() {
             requestAnimationFrame(animate);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -398,6 +510,8 @@
                 initScene();
                 initAudio(baseFrequencies[Math.floor(sceneProgress / sceneDuration) % 5]);
             }
+            updateSlitPattern();
+            spawnParticles();
             drawParticles();
             drawSlitPattern();
             drawGeometries();
@@ -429,23 +543,7 @@
             mouse.lastClick = now;
             energy += 100 * mouse.clickStrength * (1 + energy / 10000);
             coherence += mouse.clickStrength * 10 * (1 + energy / 1000);
-            // Spawn particles from pool
-            let spawned = 0;
-            for (let i = 0; i < particles.length && spawned < 10 * mouse.clickStrength; i++) {
-                if (!particles[i].active) {
-                    particles[i].x = mouse.x;
-                    particles[i].y = mouse.y;
-                    particles[i].vx = (Math.random() - 0.5) * 10 * mouse.clickStrength;
-                    particles[i].vy = -(Math.random() * 5 + 1);
-                    particles[i].size = Math.random() * 5 + 2;
-                    particles[i].hue = Math.random() * 360;
-                    particles[i].opacity = 1;
-                    particles[i].wave = Math.random() * 2 * Math.PI;
-                    particles[i].state = Math.floor(Math.random() * 2);
-                    particles[i].active = true;
-                    spawned++;
-                }
-            }
+            spawnParticles();
         });
 
         canvas.addEventListener('touchstart', (e) => {
@@ -457,22 +555,7 @@
             mouse.lastClick = now;
             energy += 100 * mouse.clickStrength * (1 + energy / 10000);
             coherence += mouse.clickStrength * 10 * (1 + energy / 1000);
-            let spawned = 0;
-            for (let i = 0; i < particles.length && spawned < 10 * mouse.clickStrength; i++) {
-                if (!particles[i].active) {
-                    particles[i].x = mouse.x;
-                    particles[i].y = mouse.y;
-                    particles[i].vx = (Math.random() - 0.5) * 10 * mouse.clickStrength;
-                    particles[i].vy = -(Math.random() * 5 + 1);
-                    particles[i].size = Math.random() * 5 + 2;
-                    particles[i].hue = Math.random() * 360;
-                    particles[i].opacity = 1;
-                    particles[i].wave = Math.random() * 2 * Math.PI;
-                    particles[i].state = Math.floor(Math.random() * 2);
-                    particles[i].active = true;
-                    spawned++;
-                }
-            }
+            spawnParticles();
         }, { passive: false });
 
         canvas.addEventListener('mouseup', () => {
@@ -500,14 +583,14 @@
             }[phase] || 0;
             energy += energyGain * (1 + Math.random() * 0.1);
             if (energy > 10000) {
-                energy = 5000; // Cap to prevent overflow
+                energy = 5000;
                 particles.forEach(p => p.hue = (p.hue + 180) % 360);
                 geometries.forEach(g => g.hue = (g.hue + 90) % 360);
             }
         }
 
         // Start
-        initParticles();
+        initPools();
         initScene();
         initAudio(432);
         animate();
