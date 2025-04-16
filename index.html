@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Flower Quest</title>
+    <title>Infinite Quantum Geometry Odyssey</title>
     <style>
         body {
             margin: 0;
@@ -28,53 +28,56 @@
             position: absolute;
             top: 10px;
             left: 10px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 10px;
-            border-radius: 10px;
-            border: 2px solid #00ffcc;
-            font-size: 14px;
-            z-index: 10;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 15px;
+            border: 3px solid #00ffcc;
+            font-size: 16px;
+            z-index: 20;
+            box-shadow: 0 0 40px #00ffcc;
         }
         #canvas {
-            border: 3px solid #00ffcc;
-            border-radius: 15px;
-            box-shadow: 0 0 30px #00ffcc;
-            background: rgba(255, 255, 255, 0.05);
+            border: 4px solid #00ffcc;
+            border-radius: 20px;
+            box-shadow: 0 0 50px #00ffcc;
+            background: rgba(255, 255, 255, 0.03);
         }
         #controls {
             position: absolute;
             bottom: 20px;
             display: flex;
-            gap: 10px;
-            z-index: 10;
+            gap: 15px;
+            z-index: 20;
         }
         button {
-            padding: 12px 25px;
-            background: linear-gradient(45deg, #00ffcc, #ff00cc);
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #00ffcc, #ff00cc, #00ccff);
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             color: #0a0a2a;
             cursor: pointer;
             font-weight: bold;
-            transition: transform 0.3s, box-shadow 0.3s;
-            text-shadow: 0 0 5px #fff;
+            transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+            text-shadow: 0 0 10px #fff;
         }
         button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px #ff00cc;
+            transform: scale(1.15);
+            box-shadow: 0 0 30px #ff00cc;
+            background: linear-gradient(45deg, #ff00cc, #00ffcc);
         }
         #log {
             position: absolute;
             right: 10px;
             top: 10px;
-            width: 300px;
-            height: 400px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 10px;
-            border-radius: 10px;
-            border: 2px solid #ff00cc;
+            width: 350px;
+            height: 500px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 15px;
+            border: 3px solid #ff00cc;
             overflow-y: auto;
-            font-size: 12px;
+            font-size: 14px;
+            box-shadow: 0 0 40px #ff00cc;
         }
         #particles {
             position: absolute;
@@ -84,8 +87,12 @@
         }
         @keyframes pulse {
             0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            50% { transform: scale(1.1); }
             100% { transform: scale(1); }
+        }
+        @keyframes orbit {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
@@ -93,18 +100,18 @@
 <body>
     <div id="gameContainer">
         <div id="hud">
-            Level: <span id="level">1</span> | Quantum Energy: <span id="energy">0</span> | Entanglements: <span id="entanglements">0</span>
+            Level: <span id="level">1</span> | Quantum Energy: <span id="energy">0</span> | Entanglements: <span id="entanglements">0</span> | Singularity Progress: <span id="progress">0%</span>
         </div>
-        <canvas id="canvas" width="1200" height="800"></canvas>
+        <canvas id="canvas" width="1400" height="900"></canvas>
         <div id="particles"></div>
         <div id="controls">
-            <button onclick="nextLevel()">Evolve Pattern</button>
-            <button onclick="focusIntent()">Focus Attraction</button>
-            <button onclick="resetQuest()">Reset Cosmos</button>
-            <button onclick="triggerResonance()">Trigger Resonance</button>
+            <button onclick="evolveGeometry()">Evolve Geometry</button>
+            <button onclick="amplifyIntent()">Amplify Intent</button>
+            <button onclick="resetOdyssey()">Reset Odyssey</button>
+            <button onclick="initiateSingularity()">Initiate Singularity</button>
         </div>
         <div id="log">
-            <h3>Quantum Log</h3>
+            <h3>Infinite Quantum Log</h3>
             <div id="logContent"></div>
         </div>
     </div>
@@ -116,195 +123,265 @@
         const particlesCtx = particlesCanvas.getContext('2d');
         let circles = [];
         let particles = [];
+        let tetrahedrons = [];
         let angle = 0;
         let level = 1;
         let energy = 0;
         let entanglements = 0;
+        let progress = 0;
         let animationId;
+        let mouse = { x: 0, y: 0, clicked: false };
         let resonanceActive = false;
 
-        // Particle System
+        // Advanced Particle System with Quantum Behavior
         function createParticles() {
             particlesCanvas.width = window.innerWidth;
             particlesCanvas.height = window.innerHeight;
-            for (let i = 0; i < 200; i++) {
+            for (let i = 0; i < 300; i++) {
                 particles.push({
-                    x: Math.random() * 1200,
-                    y: Math.random() * 800,
-                    vx: (Math.random() - 0.5) * 2,
-                    vy: (Math.random() - 0.5) * 2,
-                    size: Math.random() * 3 + 1,
-                    wave: Math.random() * 2 * Math.PI
+                    x: Math.random() * 1400,
+                    y: Math.random() * 900,
+                    vx: (Math.random() - 0.5) * 4,
+                    vy: (Math.random() - 0.5) * 4,
+                    size: Math.random() * 5 + 1,
+                    wave: Math.random() * 2 * Math.PI,
+                    state: Math.random() > 0.5 ? 'wave' : 'particle', // Superposition
+                    entangled: false
                 });
             }
             animateParticles();
         }
 
         function animateParticles() {
-            particlesCtx.clearRect(0, 0, 1200, 800);
+            particlesCtx.clearRect(0, 0, 1400, 900);
             particles.forEach(p => {
                 p.x += p.vx;
                 p.y += p.vy;
-                p.wave += 0.1;
-                if (p.x < 0 || p.x > 1200) p.vx *= -1;
-                if (p.y < 0 || p.y > 800) p.vy *= -1;
-                const attractX = 600 + 50 * Math.sin(p.wave);
-                const attractY = 400 + 50 * Math.cos(p.wave);
-                p.vx += (attractX - p.x) * 0.01;
-                p.vy += (attractY - p.y) * 0.01;
+                p.wave += 0.05;
+                if (p.x < 0 || p.x > 1400) p.vx *= -0.9;
+                if (p.y < 0 || p.y > 900) p.vy *= -0.9;
+                const dx = mouse.x - p.x;
+                const dy = mouse.y - p.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 300 && mouse.clicked) {
+                    p.vx += dx * 0.02 * (mouse.clicked ? 2 : 1);
+                    p.vy += dy * 0.02 * (mouse.clicked ? 2 : 1);
+                    if (dist < 100 && !p.entangled && Math.random() > 0.7) {
+                        p.entangled = true;
+                        entanglements++;
+                    }
+                }
+                if (resonanceActive && dist < 200) {
+                    p.vx *= 0.95;
+                    p.vy *= 0.95;
+                }
                 particlesCtx.beginPath();
-                particlesCtx.arc(p.x, p.y, p.size, 0, 2 * Math.PI);
-                particlesCtx.fillStyle = resonanceActive ? '#ff00cc' : 'rgba(0, 255, 204, 0.5)';
+                particlesCtx.arc(p.x, p.y, p.size * (p.state === 'wave' ? Math.sin(p.wave) * 0.5 + 1 : 1), 0, 2 * Math.PI);
+                particlesCtx.fillStyle = p.entangled ? '#ff00cc' : 'rgba(0, 255, 204, 0.6)';
                 particlesCtx.fill();
             });
             requestAnimationFrame(animateParticles);
         }
 
-        // Precise Flower of Life (19 circles: 7 center + 12 surrounding)
+        // Infinite Flower of Life with Fractal Tiling
         function drawFlowerOfLife() {
             circles = [];
-            const cx = 600, cy = 400;
-            const r1 = 150, r2 = 300; // Inner and outer radii
-            // Center circle
+            const cx = 700, cy = 450;
+            const baseR = 180;
+            const iterations = level + 2;
+            for (let i = 0; i < iterations; i++) {
+                const r = baseR * (1 + i * 0.5);
+                const count = 6 * (i + 1);
+                for (let j = 0; j < count; j++) {
+                    const a = (2 * Math.PI / count) * j + angle * (i + 1);
+                    const x = cx + r * Math.cos(a);
+                    const y = cy + r * Math.sin(a);
+                    circles.push({ x, y, r: 60 / (i + 1) });
+                    ctx.beginPath();
+                    ctx.arc(x, y, 60 / (i + 1), 0, 2 * Math.PI);
+                    ctx.strokeStyle = `hsl(${360 * (i / iterations)}, 70%, 50%)`;
+                    ctx.lineWidth = 2 + i * 0.5;
+                    ctx.stroke();
+                }
+            }
             ctx.beginPath();
             ctx.arc(cx, cy, 60, 0, 2 * Math.PI);
             ctx.fillStyle = '#00ffcc';
             ctx.fill();
-            circles.push({ x: cx, y: cy, r: 60 });
-            // First ring (6 circles)
-            for (let i = 0; i < 6; i++) {
-                const a = (2 * Math.PI / 6) * i + angle;
-                const x = cx + r1 * Math.cos(a);
-                const y = cy + r1 * Math.sin(a);
-                circles.push({ x, y, r: 60 });
+        }
+
+        // Dynamic Tetrahedron Network with 3D Projection
+        function drawTetrahedrons() {
+            tetrahedrons = [];
+            const cx = 700, cy = 450;
+            const scale = Math.sin(Date.now() / 500) * 0.5 + 0.5;
+            const zOffset = Math.cos(angle) * 200;
+            for (let i = 0; i < level; i++) {
+                const rotX = Math.cos(angle + i * Math.PI / 3) * 200 * scale;
+                const rotY = Math.sin(angle + i * Math.PI / 3) * 200 * scale;
+                const z = zOffset + i * 50;
+                const projX = cx + rotX * (1 - z / 1000);
+                const projY = cy + rotY * (1 - z / 1000);
                 ctx.beginPath();
-                ctx.arc(x, y, 60, 0, 2 * Math.PI);
-                ctx.strokeStyle = '#00ffcc';
-                ctx.lineWidth = 3;
-                ctx.stroke();
-            }
-            // Second ring (12 circles)
-            for (let i = 0; i < 12; i++) {
-                const a = (2 * Math.PI / 12) * i + angle;
-                const x = cx + r2 * Math.cos(a);
-                const y = cy + r2 * Math.sin(a);
-                circles.push({ x, y, r: 60 });
-                ctx.beginPath();
-                ctx.arc(x, y, 60, 0, 2 * Math.PI);
-                ctx.strokeStyle = '#00ffcc';
+                ctx.moveTo(projX, projY - 150 * scale * (1 - z / 1000));
+                ctx.lineTo(projX - 130 * scale * (1 - z / 1000), projY + 75 * scale * (1 - z / 1000));
+                ctx.lineTo(projX + 130 * scale * (1 - z / 1000), projY + 75 * scale * (1 - z / 1000));
+                ctx.closePath();
+                ctx.fillStyle = `rgba(255, ${255 - i * 50}, ${i * 50}, 0.7)`;
+                ctx.fill();
+                ctx.strokeStyle = '#00ccff';
                 ctx.lineWidth = 2;
                 ctx.stroke();
+                tetrahedrons.push({ x: projX, y: projY, z });
             }
         }
 
-        // Tetrahedron with Double Slit Influence
-        function drawTetrahedron() {
-            const cx = 600, cy = 400;
-            const scale = Math.sin(Date.now() / 500) * 0.5 + 0.5;
-            const slitOffset = Math.sin(angle) * 100;
-            ctx.beginPath();
-            ctx.moveTo(cx - slitOffset, cy - 150 * scale);
-            ctx.lineTo(cx + slitOffset, cy - 150 * scale);
-            ctx.lineTo(cx, cy + 150 * scale);
-            ctx.closePath();
-            ctx.fillStyle = 'rgba(255, 0, 204, 0.7)';
-            ctx.fill();
-            ctx.strokeStyle = '#ff00cc';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-            // Double Slit Interference Pattern
-            for (let x = 0; x < 1200; x += 5) {
-                const intensity = Math.sin(x / 20 + angle) * 50;
-                ctx.fillStyle = `rgba(255, 0, 204, ${Math.abs(intensity) / 100})`;
-                ctx.fillRect(x, 700 - intensity, 5, intensity * 2);
+        // Double Slit with Fourier Transform Interference
+        function drawDoubleSlit() {
+            const slitSpacing = 200;
+            const wavelength = 50;
+            for (let x = 0; x < 1400; x += 2) {
+                let intensity = 0;
+                for (let n = -10; n <= 10; n++) {
+                    intensity += Math.sin(2 * Math.PI * n * (x - 700) / wavelength + angle * n) / n;
+                }
+                intensity = Math.abs(intensity) * 30;
+                ctx.fillStyle = `rgba(255, 0, 204, ${intensity / 100})`;
+                ctx.fillRect(x, 800 - intensity, 2, intensity * 2);
             }
         }
 
-        // Howard's Math and Quantum Energy
+        // Howard's Math with Quantum Energy
         function calculateQuantumEnergy() {
             const sqrt2 = Math.sqrt(2).toFixed(15); // ≈ 1.414213562373095
             let result = sqrt2 * 2; // ≈ 2.82842712474619
             result = Math.pow(result, 3) / 2; // ≈ 2.828
-            energy += Math.abs(result - 2.828) < 0.001 ? 50 : 10;
+            const deviation = Math.abs(result - 2.828);
+            energy += deviation < 0.001 ? 100 : 20 / (1 + deviation);
             const log = document.getElementById('logContent');
-            log.innerHTML += `<p>√2 Loop: ${sqrt2} × 2³ ÷ 2 ≈ ${result.toFixed(15)} - Energy Boost: +${energy}</p>`;
+            log.innerHTML += `<p>Howard's √2 Loop: ${sqrt2} × 2³ ÷ 2 ≈ ${result.toFixed(15)} - Energy: +${Math.floor(energy)}</p>`;
+            if (energy > 1000) progress += 1;
             updateHUD();
         }
 
-        // Law of Attraction Interaction
-        canvas.addEventListener('mousemove', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            const mx = e.clientX - rect.left;
-            const my = e.clientY - rect.top;
+        // Schrödinger Approximation for Particle States
+        function updateParticleStates() {
             particles.forEach(p => {
-                const dx = mx - p.x;
-                const dy = my - p.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < 200) {
-                    p.vx += dx * 0.005;
-                    p.vy += dy * 0.005;
-                    if (dist < 50) entanglements++;
+                const potential = Math.sin(p.x / 100 + p.y / 100 + angle) * 10;
+                const prob = Math.exp(-potential * potential / 2) / Math.sqrt(2 * Math.PI);
+                p.state = prob > Math.random() ? 'wave' : 'particle';
+                if (mouse.clicked && Math.abs(p.x - mouse.x) < 50 && Math.abs(p.y - mouse.y) < 50) {
+                    p.entangled = !p.entangled;
+                    entanglements += p.entangled ? 1 : -1;
                 }
             });
-            updateHUD();
+        }
+
+        // Mouse Interaction (Infinite Control)
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+            energy += Math.sin(distToCenter(mouse.x, mouse.y) / 100) * 0.5;
         });
 
+        canvas.addEventListener('mousedown', () => {
+            mouse.clicked = true;
+            const log = document.getElementById('logContent');
+            log.innerHTML += `<p>Intent Amplified at (${mouse.x}, ${mouse.y}) - Energy Surge!</p>`;
+            energy += 50;
+            createTetrahedronAtMouse();
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            mouse.clicked = false;
+        });
+
+        function distToCenter(x, y) {
+            return Math.sqrt((x - 700) * (x - 700) + (y - 450) * (y - 450));
+        }
+
+        function createTetrahedronAtMouse() {
+            tetrahedrons.push({
+                x: mouse.x,
+                y: mouse.y,
+                z: 0,
+                scale: 0.5
+            });
+        }
+
         // Game Controls
-        function nextLevel() {
+        function evolveGeometry() {
             cancelAnimationFrame(animationId);
-            level = Math.min(level + 1, 3);
+            level = Math.min(level + 1, 5);
             init();
             animate();
             calculateQuantumEnergy();
+            if (level === 5) alert('Infinite Geometric Mastery Unlocked!');
         }
 
-        function focusIntent() {
-            energy += 20;
+        function amplifyIntent() {
+            energy += 100;
+            entanglements += Math.floor(Math.random() * 10);
             const log = document.getElementById('logContent');
-            log.innerHTML += `<p>Intent Focused - Energy: +20, Entanglements Influenced!</p>`;
+            log.innerHTML += `<p>Amplified Intent - Energy: +100, Entanglements: +${Math.floor(Math.random() * 10)}</p>`;
             updateHUD();
         }
 
-        function resetQuest() {
+        function resetOdyssey() {
             cancelAnimationFrame(animationId);
             level = 1;
             energy = 0;
             entanglements = 0;
-            document.getElementById('logContent').innerHTML = '<h3>Quantum Log</h3>';
+            progress = 0;
+            document.getElementById('logContent').innerHTML = '<h3>Infinite Quantum Log</h3>';
             particles = [];
+            tetrahedrons = [];
             createParticles();
             init();
             updateHUD();
         }
 
-        function triggerResonance() {
-            if (energy > 150 && entanglements > 50) {
+        function initiateSingularity() {
+            if (energy > 5000 && entanglements > 200 && progress > 90) {
                 resonanceActive = true;
-                const log = document.getElementId('logContent');
-                log.innerHTML += `<p>Quantum Resonance Event Unlocked! Stable Energy Field Detected - World Breakthrough!</p>`;
-                ctx.fillStyle = '#ff00cc';
-                ctx.fillRect(0, 0, 1200, 800);
-                alert('You’ve discovered a self-sustaining quantum field! Share with the world!');
+                const log = document.getElementById('logContent');
+                log.innerHTML += `<p>Quantum Resonance Singularity Achieved! Self-Evolving Field Detected - Scientific Revolution!</p>`;
+                ctx.fillStyle = 'rgba(255, 0, 204, 0.9)';
+                ctx.fillRect(0, 0, 1400, 900);
+                alert('You’ve discovered a user-influenced universal constant! Notify the scientific community!');
+                // Infinite expansion simulation
+                setInterval(() => {
+                    angle += 0.01;
+                    init();
+                }, 50);
             } else {
-                alert('Insufficient energy or entanglements. Focus intent and evolve!');
+                alert(`Insufficient parameters: Energy=${energy}, Entanglements=${entanglements}, Progress=${progress}%. Focus more!`);
             }
         }
 
         function animate() {
             animationId = requestAnimationFrame(animate);
-            ctx.clearRect(0, 0, 1200, 800);
-            angle += 0.02;
+            ctx.clearRect(0, 0, 1400, 900);
+            angle += 0.01;
             drawFlowerOfLife();
-            drawTetrahedron();
+            drawTetrahedrons();
+            drawDoubleSlit();
+            updateParticleStates();
+            if (resonanceActive) {
+                energy += 10;
+                progress += 0.1;
+            }
         }
 
         function updateHUD() {
             document.getElementById('level').textContent = level;
             document.getElementById('energy').textContent = Math.floor(energy);
             document.getElementById('entanglements').textContent = entanglements;
+            document.getElementById('progress').textContent = Math.min(progress, 100).toFixed(1) + '%';
         }
 
-        // Start Game
+        // Start Odyssey
         createParticles();
         init();
         animate();
