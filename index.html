@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cosmic Geometry Quest</title>
+    <title>Quantum Flower Quest</title>
     <style>
         body {
             margin: 0;
@@ -13,6 +13,7 @@
             color: #00ffcc;
             overflow: hidden;
             height: 100vh;
+            cursor: crosshair;
         }
         #gameContainer {
             position: relative;
@@ -32,6 +33,7 @@
             border-radius: 10px;
             border: 2px solid #00ffcc;
             font-size: 14px;
+            z-index: 10;
         }
         #canvas {
             border: 3px solid #00ffcc;
@@ -48,7 +50,7 @@
         }
         button {
             padding: 12px 25px;
-            background: linear-gradient(45deg, #00ffcc, #00ccff);
+            background: linear-gradient(45deg, #00ffcc, #ff00cc);
             border: none;
             border-radius: 8px;
             color: #0a0a2a;
@@ -59,7 +61,7 @@
         }
         button:hover {
             transform: scale(1.1);
-            box-shadow: 0 0 20px #00ffcc;
+            box-shadow: 0 0 20px #ff00cc;
         }
         #log {
             position: absolute;
@@ -70,7 +72,7 @@
             background: rgba(0, 0, 0, 0.7);
             padding: 10px;
             border-radius: 10px;
-            border: 2px solid #00ffcc;
+            border: 2px solid #ff00cc;
             overflow-y: auto;
             font-size: 12px;
         }
@@ -80,10 +82,10 @@
             height: 100%;
             pointer-events: none;
         }
-        @keyframes float {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-            100% { transform: translateY(0); }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
@@ -91,18 +93,18 @@
 <body>
     <div id="gameContainer">
         <div id="hud">
-            Level: <span id="level">1</span> | Score: <span id="score">0</span> | Discoveries: <span id="discoveries">0</span>
+            Level: <span id="level">1</span> | Quantum Energy: <span id="energy">0</span> | Entanglements: <span id="entanglements">0</span>
         </div>
-        <canvas id="canvas" width="1000" height="800"></canvas>
+        <canvas id="canvas" width="1200" height="800"></canvas>
         <div id="particles"></div>
         <div id="controls">
-            <button onclick="nextLevel()">Next Level</button>
-            <button onclick="rotateView()">Rotate View</button>
-            <button onclick="resetGame()">Reset Mission</button>
-            <button onclick="analyze()">Analyze Cosmos</button>
+            <button onclick="nextLevel()">Evolve Pattern</button>
+            <button onclick="focusIntent()">Focus Attraction</button>
+            <button onclick="resetQuest()">Reset Cosmos</button>
+            <button onclick="triggerResonance()">Trigger Resonance</button>
         </div>
         <div id="log">
-            <h3>Discovery Log</h3>
+            <h3>Quantum Log</h3>
             <div id="logContent"></div>
         </div>
     </div>
@@ -113,61 +115,67 @@
         const particlesCanvas = document.getElementById('particles');
         const particlesCtx = particlesCanvas.getContext('2d');
         let circles = [];
+        let particles = [];
         let angle = 0;
         let level = 1;
-        let score = 0;
-        let discoveries = 0;
+        let energy = 0;
+        let entanglements = 0;
         let animationId;
-        let rotationAngle = 0;
+        let resonanceActive = false;
 
-        // Particle Animation
+        // Particle System
         function createParticles() {
             particlesCanvas.width = window.innerWidth;
             particlesCanvas.height = window.innerHeight;
-            const particles = [];
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < 200; i++) {
                 particles.push({
-                    x: Math.random() * particlesCanvas.width,
-                    y: Math.random() * particlesCanvas.height,
+                    x: Math.random() * 1200,
+                    y: Math.random() * 800,
+                    vx: (Math.random() - 0.5) * 2,
+                    vy: (Math.random() - 0.5) * 2,
                     size: Math.random() * 3 + 1,
-                    speed: Math.random() * 0.5 + 0.1
+                    wave: Math.random() * 2 * Math.PI
                 });
-            }
-            function animateParticles() {
-                particlesCtx.clearRect(0, 0, particlesCanvas.width, particlesCanvas.height);
-                particlesCtx.fillStyle = 'rgba(0, 255, 204, 0.5)';
-                particles.forEach(p => {
-                    p.y += p.speed;
-                    if (p.y > particlesCanvas.height) p.y = 0;
-                    particlesCtx.beginPath();
-                    particlesCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                    particlesCtx.fill();
-                });
-                requestAnimationFrame(animateParticles);
             }
             animateParticles();
         }
 
-        // Initialize Game
-        function init() {
-            ctx.clearRect(0, 0, 1000, 800);
-            drawFlowerOfLife(level === 1 ? 7 : [4, 8, 12][level - 2]);
-            drawTetrahedron();
-            updateHUD();
+        function animateParticles() {
+            particlesCtx.clearRect(0, 0, 1200, 800);
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.wave += 0.1;
+                if (p.x < 0 || p.x > 1200) p.vx *= -1;
+                if (p.y < 0 || p.y > 800) p.vy *= -1;
+                const attractX = 600 + 50 * Math.sin(p.wave);
+                const attractY = 400 + 50 * Math.cos(p.wave);
+                p.vx += (attractX - p.x) * 0.01;
+                p.vy += (attractY - p.y) * 0.01;
+                particlesCtx.beginPath();
+                particlesCtx.arc(p.x, p.y, p.size, 0, 2 * Math.PI);
+                particlesCtx.fillStyle = resonanceActive ? '#ff00cc' : 'rgba(0, 255, 204, 0.5)';
+                particlesCtx.fill();
+            });
+            requestAnimationFrame(animateParticles);
         }
 
-        // Draw Flower of Life
-        function drawFlowerOfLife(count) {
+        // Precise Flower of Life (19 circles: 7 center + 12 surrounding)
+        function drawFlowerOfLife() {
             circles = [];
-            const cx = 500, cy = 400, r = 250;
-            const angleStep = (2 * Math.PI) / count;
+            const cx = 600, cy = 400;
+            const r1 = 150, r2 = 300; // Inner and outer radii
+            // Center circle
             ctx.beginPath();
             ctx.arc(cx, cy, 60, 0, 2 * Math.PI);
             ctx.fillStyle = '#00ffcc';
             ctx.fill();
-            for (let i = 0; i < count; i++) {
-                const x = cx + r * Math.cos(angleStep * i + angle);
-                const y = cy + r * Math.sin(angleStep * i + angle);
+            circles.push({ x: cx, y: cy, r: 60 });
+            // First ring (6 circles)
+            for (let i = 0; i < 6; i++) {
+                const a = (2 * Math.PI / 6) * i + angle;
+                const x = cx + r1 * Math.cos(a);
+                const y = cy + r1 * Math.sin(a);
                 circles.push({ x, y, r: 60 });
                 ctx.beginPath();
                 ctx.arc(x, y, 60, 0, 2 * Math.PI);
@@ -175,54 +183,71 @@
                 ctx.lineWidth = 3;
                 ctx.stroke();
             }
+            // Second ring (12 circles)
+            for (let i = 0; i < 12; i++) {
+                const a = (2 * Math.PI / 12) * i + angle;
+                const x = cx + r2 * Math.cos(a);
+                const y = cy + r2 * Math.sin(a);
+                circles.push({ x, y, r: 60 });
+                ctx.beginPath();
+                ctx.arc(x, y, 60, 0, 2 * Math.PI);
+                ctx.strokeStyle = '#00ffcc';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
         }
 
-        // Draw 3D-like Tetrahedron with Rotation
+        // Tetrahedron with Double Slit Influence
         function drawTetrahedron() {
-            const cx = 500, cy = 400;
+            const cx = 600, cy = 400;
             const scale = Math.sin(Date.now() / 500) * 0.5 + 0.5;
-            const rotX = Math.cos(rotationAngle) * 150 * scale;
-            const rotY = Math.sin(rotationAngle) * 150 * scale;
+            const slitOffset = Math.sin(angle) * 100;
             ctx.beginPath();
-            ctx.moveTo(cx, cy - rotY);
-            ctx.lineTo(cx - rotX, cy + rotY);
-            ctx.lineTo(cx + rotX, cy + rotY);
+            ctx.moveTo(cx - slitOffset, cy - 150 * scale);
+            ctx.lineTo(cx + slitOffset, cy - 150 * scale);
+            ctx.lineTo(cx, cy + 150 * scale);
             ctx.closePath();
-            ctx.fillStyle = 'rgba(0, 255, 255, 0.7)';
+            ctx.fillStyle = 'rgba(255, 0, 204, 0.7)';
             ctx.fill();
-            ctx.strokeStyle = '#00ccff';
+            ctx.strokeStyle = '#ff00cc';
             ctx.lineWidth = 2;
             ctx.stroke();
+            // Double Slit Interference Pattern
+            for (let x = 0; x < 1200; x += 5) {
+                const intensity = Math.sin(x / 20 + angle) * 50;
+                ctx.fillStyle = `rgba(255, 0, 204, ${Math.abs(intensity) / 100})`;
+                ctx.fillRect(x, 700 - intensity, 5, intensity * 2);
+            }
         }
 
-        // Howard's Math Calculation
-        function calculateHowardMath() {
+        // Howard's Math and Quantum Energy
+        function calculateQuantumEnergy() {
             const sqrt2 = Math.sqrt(2).toFixed(15); // ≈ 1.414213562373095
             let result = sqrt2 * 2; // ≈ 2.82842712474619
-            result = Math.pow(result, 3) / 2; // Cube and divide by 2
+            result = Math.pow(result, 3) / 2; // ≈ 2.828
+            energy += Math.abs(result - 2.828) < 0.001 ? 50 : 10;
             const log = document.getElementById('logContent');
-            log.innerHTML += `<p>√2 Loop: ${sqrt2} × 2³ ÷ 2 ≈ ${result.toFixed(15)} - Challenges 1 × 1 = 1!</p>`;
-            score += 10;
+            log.innerHTML += `<p>√2 Loop: ${sqrt2} × 2³ ÷ 2 ≈ ${result.toFixed(15)} - Energy Boost: +${energy}</p>`;
             updateHUD();
         }
 
-        // Speculative Analysis
-        function analyzeCosmos() {
-            const energy = Math.random() * 100;
-            const pressure = Math.random() * 10;
-            const motion = energy > 50 ? 'Expanding' : 'Contracting';
-            const log = document.getElementById('logContent');
-            log.innerHTML += `<p>Energy: ${energy.toFixed(2)}, Pressure: ${pressure.toFixed(2)}, Motion: ${motion}</p>`;
-            if (energy > 75 && pressure > 7) {
-                log.innerHTML += `<p>Discovery! Possible pre-hydrogen element or planetary life state detected.</p>`;
-                discoveries++;
-                score += 50;
-            } else if (energy > 60) {
-                log.innerHTML += `<p>Hypothesis: Light octave reproduction possible.</p>`;
-                score += 20;
-            }
+        // Law of Attraction Interaction
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const mx = e.clientX - rect.left;
+            const my = e.clientY - rect.top;
+            particles.forEach(p => {
+                const dx = mx - p.x;
+                const dy = my - p.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 200) {
+                    p.vx += dx * 0.005;
+                    p.vy += dy * 0.005;
+                    if (dist < 50) entanglements++;
+                }
+            });
             updateHUD();
-        }
+        });
 
         // Game Controls
         function nextLevel() {
@@ -230,37 +255,53 @@
             level = Math.min(level + 1, 3);
             init();
             animate();
-            calculateHowardMath();
-            if (level === 3) alert('Cosmic Mastery Achieved!');
+            calculateQuantumEnergy();
         }
 
-        function rotateView() {
-            rotationAngle += Math.PI / 4;
-            init();
+        function focusIntent() {
+            energy += 20;
+            const log = document.getElementById('logContent');
+            log.innerHTML += `<p>Intent Focused - Energy: +20, Entanglements Influenced!</p>`;
+            updateHUD();
         }
 
-        function resetGame() {
+        function resetQuest() {
             cancelAnimationFrame(animationId);
             level = 1;
-            score = 0;
-            discoveries = 0;
-            document.getElementById('logContent').innerHTML = '<h3>Discovery Log</h3>';
+            energy = 0;
+            entanglements = 0;
+            document.getElementById('logContent').innerHTML = '<h3>Quantum Log</h3>';
+            particles = [];
+            createParticles();
             init();
             updateHUD();
         }
 
+        function triggerResonance() {
+            if (energy > 150 && entanglements > 50) {
+                resonanceActive = true;
+                const log = document.getElementId('logContent');
+                log.innerHTML += `<p>Quantum Resonance Event Unlocked! Stable Energy Field Detected - World Breakthrough!</p>`;
+                ctx.fillStyle = '#ff00cc';
+                ctx.fillRect(0, 0, 1200, 800);
+                alert('You’ve discovered a self-sustaining quantum field! Share with the world!');
+            } else {
+                alert('Insufficient energy or entanglements. Focus intent and evolve!');
+            }
+        }
+
         function animate() {
             animationId = requestAnimationFrame(animate);
-            ctx.clearRect(0, 0, 1000, 800);
-            angle += 0.01;
-            drawFlowerOfLife(level === 1 ? 7 : [4, 8, 12][level - 2]);
+            ctx.clearRect(0, 0, 1200, 800);
+            angle += 0.02;
+            drawFlowerOfLife();
             drawTetrahedron();
         }
 
         function updateHUD() {
             document.getElementById('level').textContent = level;
-            document.getElementById('score').textContent = score;
-            document.getElementById('discoveries').textContent = discoveries;
+            document.getElementById('energy').textContent = Math.floor(energy);
+            document.getElementById('entanglements').textContent = entanglements;
         }
 
         // Start Game
