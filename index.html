@@ -20,7 +20,6 @@
             width: 100%;
             height: 100%;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
         }
@@ -35,12 +34,14 @@
             font-size: 16px;
             z-index: 20;
             box-shadow: 0 0 50px #00ffcc;
+            transition: box-shadow 0.5s;
         }
-        #canvas {
-            border: 4px solid #00ffcc;
-            border-radius: 20px;
-            box-shadow: 0 0 60px #00ffcc;
-            background: rgba(255, 255, 255, 0.02);
+        #hud.glow {
+            box-shadow: 0 0 100px #ff00cc;
+        }
+        #canvasContainer {
+            width: 100%;
+            height: 100%;
         }
         #controls {
             position: absolute;
@@ -65,7 +66,7 @@
         }
         #log {
             position: absolute;
-            right: 10px;
+            right: -420px;
             top: 10px;
             width: 400px;
             height: 600px;
@@ -76,6 +77,21 @@
             overflow-y: auto;
             font-size: 14px;
             box-shadow: 0 0 50px #ff00cc;
+            transition: right 0.5s;
+        }
+        #log.visible {
+            right: 10px;
+        }
+        #logToggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 30;
+            padding: 10px;
+            background: #ff00cc;
+            color: #0a0a2a;
+            border-radius: 5px;
+            cursor: pointer;
         }
         #sceneSelector {
             position: absolute;
@@ -88,12 +104,26 @@
             display: block;
             margin: 10px 0;
         }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        @keyframes bloom {
+            0% { opacity: 0; transform: scale(0); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .blooming {
+            animation: bloom 2s forwards;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/examples/js/controls/OrbitControls.js"></script>
 </head>
 <body>
     <div id="container">
+        <div id="logToggle">Toggle Log</div>
         <div id="hud">
             Scene: <span id="sceneName">Golden Spiral</span> | Energy: <span id="energy">0</span> | Coherence: <span id="coherence">0</span> | Progress: <span id="progress">0%</span>
         </div>
@@ -117,13 +147,17 @@
     </div>
 
     <script>
-        let scene = 1;
+        let sceneNum = 1;
         let energy = 0;
         let coherence = 0;
         let progress = 0;
+        let angle = 0;
         let mouse = { x: 0, y: 0, clicked: false, clickStrength: 0 };
         let audioContext, oscillator, gainNode;
         let camera, scene3D, renderer, controls;
+        let objects = [];
+        let transitionOpacity = 1;
+        let transitioning = false;
 
         // Initialize Three.js
         function initThreeJS() {
@@ -131,15 +165,15 @@
             camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             camera.position.z = 5;
             renderer = new THREE.WebGLRenderer({ alpha: true });
-            renderer.setSize(window.innerWidth - 500, window.innerHeight - 100);
+            renderer.setSize(window.innerWidth, window.innerHeight);
             document.getElementById('canvasContainer').innerHTML = '';
             document.getElementById('canvasContainer').appendChild(renderer.domElement);
             controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableZoom = true;
             controls.enableRotate = true;
             window.addEventListener('resize', () => {
-                renderer.setSize(window.innerWidth - 500, window.innerHeight - 100);
-                camera.aspect = (window.innerWidth - 500) / (window.innerHeight - 100);
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                camera.aspect = window.innerWidth / window.innerHeight;
                 camera.updateProjectionMatrix();
             });
         }
@@ -162,18 +196,41 @@
             if (audioContext) audioContext.close();
         }
 
-        // Scene Management
+        function updateAudio() {
+            if (gainNode) {
+                gainNode.gain.setValueAtTime(0.1 + (coherence / 1000), audioContext.currentTime);
+                oscillator.frequency.setValueAtTime(528 + (energy / 100), audioContext.currentTime);
+            }
+        }
+
+        // Scene Management with Transitions
         function setScene(newScene) {
+            if (transitioning) return;
+            transitioning = true;
+            transitionOpacity = 1;
             stopAudio();
-            scene = newScene;
-            initThreeJS();
-            initScene();
-            animate();
+            sceneNum = newScene;
+            scene3D.clear();
+            objects = [];
+            const transition = setInterval(() => {
+                transitionOpacity -= 0.05;
+                if (transitionOpacity <= 0) {
+                    clearInterval(transition);
+                    initScene();
+                    const fadeIn = setInterval(() => {
+                        transitionOpacity += 0.05;
+                        if (transitionOpacity >= 1) {
+                            clearInterval(fadeIn);
+                            transitioning = false;
+                        }
+                    }, 50);
+                }
+            }, 50);
             updateHUD();
         }
 
         function nextScene() {
-            setScene((scene % 5) + 1);
+            setScene((sceneNum % 5) + 1);
         }
 
         // Scene 1: Golden Spiral - Genesis
@@ -186,52 +243,65 @@
             for (let i = 0; i < 1000; i++) {
                 a += 0.1;
                 r = 0.1 * Math.pow(phi, a / (Math.PI / 2));
-                const x = r * Math.cos(a);
-                const y = r * Math.sin(a);
+                const x = r * Math.cos(a + angle);
+                const y = r * Math.sin(a + angle);
                 positions.push(x, y, 0);
                 if (i % 10 === 0) {
-                    const flower = new THREE.CircleGeometry(0.05, 32);
-                    const material = new THREE.MeshBasicMaterial({ color: 0x00ffcc });
+                    const flower = new THREE.CircleGeometry(0.05 * (coherence / 100 + 1), 32);
+                    const material = new THREE.MeshBasicMaterial({ color: 0x00ffcc, transparent: true, opacity: 0 });
                     const mesh = new THREE.Mesh(flower, material);
                     mesh.position.set(x, y, 0);
+                    mesh.userData = { opacity: 0 };
+                    mesh.className = 'blooming';
                     scene3D.add(mesh);
+                    objects.push(mesh);
                 }
             }
             geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
             const material = new THREE.LineBasicMaterial({ color: 0x00ffcc });
             const line = new THREE.Line(geometry, material);
             scene3D.add(line);
+            objects.push(line);
             // Cosmic Pulses
             const pulseGeometry = new THREE.SphereGeometry(0.1, 32, 32);
             const pulseMaterial = new THREE.MeshBasicMaterial({ color: 0xffd700, transparent: true, opacity: 0.5 });
             const pulse = new THREE.Mesh(pulseGeometry, pulseMaterial);
             pulse.position.set(0, 0, 0);
+            pulse.userData = { scale: 1 };
             scene3D.add(pulse);
+            objects.push(pulse);
         }
 
         // Scene 2: Seed of Life - Formation
         function initScene2() {
             initAudio(432); // 432Hz
             const sphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
-            const material = new THREE.MeshBasicMaterial({ color: 0x00ffcc, wireframe: true });
+            const material = new THREE.MeshBasicMaterial({ color: 0x00ffcc, wireframe: true, transparent: true, opacity: 0 });
             for (let i = 0; i < 7; i++) {
                 const sphere = new THREE.Mesh(sphereGeometry, material);
-                const a = (2 * Math.PI / 6) * i;
+                const a = (2 * Math.PI / 6) * i + angle;
                 sphere.position.set(Math.cos(a), Math.sin(a), 0).multiplyScalar(1.5);
+                sphere.userData = { opacity: 0 };
+                sphere.className = 'blooming';
                 scene3D.add(sphere);
+                objects.push(sphere);
                 // Metatron’s Cube
                 if (i > 0) {
                     const line = new THREE.Line(
                         new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), sphere.position]),
-                        new THREE.LineBasicMaterial({ color: 0xff00cc })
+                        new THREE.LineBasicMaterial({ color: 0xff00cc, transparent: true, opacity: 0 })
                     );
+                    line.userData = { opacity: 0 };
+                    line.className = 'blooming';
                     scene3D.add(line);
+                    objects.push(line);
                 }
             }
             // Light Flow
             const light = new THREE.PointLight(0xff00cc, 1, 100);
             light.position.set(0, 0, 0);
             scene3D.add(light);
+            objects.push(light);
         }
 
         // Scene 3: Flower of Life - Cosmic Blueprint
@@ -246,17 +316,23 @@
                 const x = cx + r * Math.cos(a);
                 const y = cy + r * Math.sin(a);
                 positions.push(x, y, 0);
+                const circle = new THREE.CircleGeometry(0.5, 32);
+                const material = new THREE.MeshBasicMaterial({ color: 0x00ffcc, transparent: true, opacity: 0 });
+                const mesh = new THREE.Mesh(circle, material);
+                mesh.position.set(x, y, 0);
+                mesh.userData = { opacity: 0 };
+                mesh.className = 'blooming';
+                scene3D.add(mesh);
+                objects.push(mesh);
             }
-            geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-            const material = new THREE.LineBasicMaterial({ color: 0x00ffcc });
-            const line = new THREE.Line(geometry, material);
-            scene3D.add(line);
             // Torus Field
             const torusGeometry = new THREE.TorusGeometry(2, 0.5, 16, 100);
-            const torusMaterial = new THREE.MeshBasicMaterial({ color: 0x00ccff, wireframe: true });
+            const torusMaterial = new THREE.MeshBasicMaterial({ color: 0x00ccff, wireframe: true, transparent: true, opacity: 0 });
             const torus = new THREE.Mesh(torusGeometry, torusMaterial);
-            torus.rotation.z = angle;
+            torus.userData = { opacity: 0 };
+            torus.className = 'blooming';
             scene3D.add(torus);
+            objects.push(torus);
         }
 
         // Scene 4: Quantum Field - Void of Potential
@@ -264,33 +340,41 @@
             initAudio(0); // White noise
             for (let i = 0; i < 200; i++) {
                 const geometry = new THREE.SphereGeometry(0.05, 8, 8);
-                const material = new THREE.MeshBasicMaterial({ color: 0xff00cc, transparent: true, opacity: 0.5 });
+                const material = new THREE.MeshBasicMaterial({ color: 0xff00cc, transparent: true, opacity: 0 });
                 const sphere = new THREE.Mesh(geometry, material);
                 sphere.position.set((Math.random() - 0.5) * 10, (Math.random() - 0.5) * 10, (Math.random() - 0.5) * 10);
+                sphere.userData = { opacity: 0 };
+                sphere.className = 'blooming';
                 scene3D.add(sphere);
+                objects.push(sphere);
             }
             // Fractal Patterns
             const fractalGeometry = new THREE.BufferGeometry();
             const fractalPositions = [];
             for (let i = 0; i < 1000; i++) {
-                const x = Math.sin(i) * Math.cos(i * 0.5);
-                const y = Math.cos(i) * Math.sin(i * 0.5);
+                const x = Math.sin(i + angle) * Math.cos(i * 0.5);
+                const y = Math.cos(i + angle) * Math.sin(i * 0.5);
                 fractalPositions.push(x, y, 0);
             }
             fractalGeometry.setAttribute('position', new THREE.Float32BufferAttribute(fractalPositions, 3));
-            const fractalMaterial = new THREE.LineBasicMaterial({ color: 0x00ccff });
+            const fractalMaterial = new THREE.LineBasicMaterial({ color: 0x00ccff, transparent: true, opacity: 0 });
             const fractalLine = new THREE.Line(fractalGeometry, fractalMaterial);
+            fractalLine.userData = { opacity: 0 };
+            fractalLine.className = 'blooming';
             scene3D.add(fractalLine);
+            objects.push(fractalLine);
         }
 
         // Scene 5: Torus - Infinite Flow
         function initScene5() {
             initAudio(963); // 963Hz
             const torusGeometry = new THREE.TorusGeometry(2, 0.5, 16, 100);
-            const torusMaterial = new THREE.MeshBasicMaterial({ color: 0xff00cc, wireframe: true });
+            const torusMaterial = new THREE.MeshBasicMaterial({ color: 0xff00cc, wireframe: true, transparent: true, opacity: 0 });
             const torus = new THREE.Mesh(torusGeometry, torusMaterial);
-            torus.rotation.x = angle;
+            torus.userData = { opacity: 0 };
+            torus.className = 'blooming';
             scene3D.add(torus);
+            objects.push(torus);
             // Energy Flows
             const curve = new THREE.CatmullRomCurve3([
                 new THREE.Vector3(0, 0, 0),
@@ -300,15 +384,17 @@
                 new THREE.Vector3(0, 0, 0)
             ]);
             const tubeGeometry = new THREE.TubeGeometry(curve, 64, 0.1, 8, false);
-            const tubeMaterial = new THREE.MeshBasicMaterial({ color: 0x00ffcc });
+            const tubeMaterial = new THREE.MeshBasicMaterial({ color: 0x00ffcc, transparent: true, opacity: 0 });
             const tube = new THREE.Mesh(tubeGeometry, tubeMaterial);
+            tube.userData = { opacity: 0 };
+            tube.className = 'blooming';
             scene3D.add(tube);
+            objects.push(tube);
         }
 
         // Initialize Scene
         function initScene() {
-            scene3D.clear();
-            switch (scene) {
+            switch (sceneNum) {
                 case 1: initScene1(); break;
                 case 2: initScene2(); break;
                 case 3: initScene3(); break;
@@ -321,45 +407,71 @@
         // Animation Loop
         function animate() {
             requestAnimationFrame(animate);
-            angle += 0.01;
+            angle += 0.01 + (energy / 10000);
             controls.update();
+            objects.forEach(obj => {
+                if (obj.userData.opacity !== undefined) {
+                    obj.material.opacity = transitionOpacity * (obj.userData.opacity + (coherence / 1000));
+                }
+                if (obj.userData.scale) {
+                    obj.scale.setScalar(obj.userData.scale * (1 + Math.sin(Date.now() / 500) * 0.1));
+                }
+                if (obj.rotation) {
+                    obj.rotation.x += 0.01 * (mouse.x / window.innerWidth);
+                    obj.rotation.y += 0.01 * (mouse.y / window.innerHeight);
+                }
+            });
             renderer.render(scene3D, camera);
             updateEnergy();
+            updateAudio();
             updateHUD();
         }
 
-        // Interaction
-        canvas.addEventListener('mousemove', (e) => {
+        // Mouse Interaction
+        let lastClickTime = 0;
+        renderer.domElement.addEventListener('mousemove', (e) => {
             const rect = renderer.domElement.getBoundingClientRect();
             mouse.x = e.clientX - rect.left;
             mouse.y = e.clientY - rect.top;
             energy += Math.sin(distToCenter(mouse.x, mouse.y) / 100) * 0.5;
-        });
+            angle += (mouse.x - rect.width / 2) / 10000;
+            objects.forEach(obj => {
+                if (obj.rotation) {
+                    obj.rotation.x = (mouse.y - rect.height / 2) / 1000;
+                    obj.rotation.y = (mouse.x - rect.width / 2) / 1000;
+                }
+            });
+        }, { passive: true });
 
-        canvas.addEventListener('mousedown', (e) => {
+        renderer.domElement.addEventListener('mousedown', (e) => {
             mouse.clicked = true;
+            const now = Date.now();
+            mouse.clickStrength = Math.min((now - lastClickTime) / 1000, 5);
+            lastClickTime = now;
             const log = document.getElementById('logContent');
-            log.innerHTML += `<p>Intent Focused at (${mouse.x}, ${mouse.y})</p>`;
-            energy += 50;
+            log.innerHTML += `<p>Intent Focused at (${mouse.x}, ${mouse.y}) - Strength: ${mouse.clickStrength.toFixed(2)}</p>`;
+            energy += 100 * mouse.clickStrength;
+            coherence += mouse.clickStrength * 10;
         });
 
-        canvas.addEventListener('mouseup', () => {
+        renderer.domElement.addEventListener('mouseup', () => {
             mouse.clicked = false;
         });
 
-        canvas.addEventListener('wheel', (e) => {
+        renderer.domElement.addEventListener('wheel', (e) => {
             e.preventDefault();
             camera.position.z += e.deltaY * 0.01;
             camera.updateProjectionMatrix();
-        });
+        }, { passive: false });
 
         function distToCenter(x, y) {
             const rect = renderer.domElement.getBoundingClientRect();
-            const cx = (rect.right - rect.left) / 2;
-            const cy = (rect.bottom - rect.top) / 2;
+            const cx = rect.width / 2;
+            const cy = rect.height / 2;
             return Math.sqrt((x - cx) * (x - cx) + (y - cy) * (y - cy));
         }
 
+        // User Interaction
         function interact() {
             energy += 100;
             coherence += Math.random() * 20;
@@ -378,12 +490,22 @@
         }
 
         function updateEnergy() {
-            switch (scene) {
-                case 1: energy += 0.1 * Math.pow((1 + Math.sqrt(5)) / 2, 0.01); break;
-                case 2: energy += 4 / 3 * Math.PI * Math.pow(0.5, 3); break;
-                case 3: energy += Math.PI * Math.pow(0.5, 2); break;
-                case 4: energy += 6.626e-34; break;
-                case 5: energy += Math.pow(1, 2) * 1; break;
+            switch (sceneNum) {
+                case 1:
+                    energy += 0.1 * Math.pow((1 + Math.sqrt(5)) / 2, 0.01) * (coherence / 100 + 1); // Fibonacci growth
+                    break;
+                case 2:
+                    energy += (4 / 3 * Math.PI * Math.pow(0.5, 3)) * (mouse.clickStrength + 1); // Sphere volume
+                    break;
+                case 3:
+                    energy += Math.PI * Math.pow(0.5, 2) * (energy / 1000 + 1); // Circle area
+                    break;
+                case 4:
+                    energy += 6.626e-34 * (coherence / 100 + 1); // Planck’s constant
+                    break;
+                case 5:
+                    energy += Math.pow(1, 2) * 1 * (progress / 100 + 1); // Torus energy flow
+                    break;
             }
             if (progress > 95 && energy > 10000) {
                 const log = document.getElementById('logContent');
@@ -393,15 +515,22 @@
         }
 
         function updateHUD() {
-            document.getElementById('sceneName').textContent = ['Golden Spiral', 'Seed of Life', 'Flower of Life', 'Quantum Field', 'Torus'][scene - 1];
+            document.getElementById('sceneName').textContent = ['Golden Spiral', 'Seed of Life', 'Flower of Life', 'Quantum Field', 'Torus'][sceneNum - 1];
             document.getElementById('energy').textContent = Math.floor(energy);
             document.getElementById('coherence').textContent = Math.floor(coherence);
             document.getElementById('progress').textContent = Math.min(progress, 100).toFixed(1) + '%';
+            document.getElementById('hud').classList.toggle('glow', energy > 5000);
         }
+
+        // Log Toggle
+        document.getElementById('logToggle').addEventListener('click', () => {
+            document.getElementById('log').classList.toggle('visible');
+        });
 
         // Start
         initThreeJS();
         setScene(1);
+        animate();
     </script>
 </body>
 </html>
