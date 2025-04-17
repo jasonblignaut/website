@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Labverse — Cyber Lab for AI, Hacking, Cybersecurity, and Future Tech Experiments. View your public IP with cosmic Fibonacci particle animations." />
-  <meta name="keywords" content="Labverse, Cyber Lab, AI, Hacking, Cybersecurity, Public IP, Fibonacci, Quantum Particles, South Africa, Sandton" />
+  <meta name="description" content="View your public IP with cosmic Fibonacci particle animations." />
+  <meta name="keywords" content="Public IP, Fibonacci, Quantum Particles" />
   <meta name="author" content="Labverse Team" />
   <meta property="og:title" content="Your Public IP" />
   <meta property="og:description" content="Discover your public IP address and network info with mesmerizing sacred geometry animations." />
@@ -20,8 +20,8 @@
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Source+Code+Pro&display=swap" rel="stylesheet">
 
-  <!-- Three.js for WebGL -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <!-- Three.js (Latest Stable Version) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/three.min.js"></script>
 
   <!-- Style -->
   <style>
@@ -55,7 +55,18 @@
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: -1; /* Behind all content for full-site animations */
+      z-index: -1; /* Behind all content */
+      display: block; /* Ensure canvas is visible */
+    }
+
+    #fallback-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      display: none; /* Hidden unless WebGL fails */
     }
 
     .container {
@@ -105,9 +116,10 @@
       font-size: clamp(0.7rem, 1.5vw, 1rem);
       color: var(--light-aura);
       max-width: clamp(200px, 80vw, 400px);
-      line-height: 1.4;
+      line-height: 1.6; /* Increased for separate lines */
       text-shadow: 0 0 5px var(--matrix-blue);
       margin-bottom: clamp(0.5rem, 2vw, 1rem);
+      text-align: center;
     }
 
     .btn {
@@ -135,7 +147,7 @@
       position: fixed;
       bottom: 0;
       width: 100%;
-      background: transparent; /* Transparent for cinematic theme */
+      background: transparent;
       padding: clamp(0.5rem, 2vw, 1rem);
       text-align: center;
       font-size: clamp(0.7rem, 1.5vw, 0.9rem);
@@ -191,6 +203,7 @@
 
 <body>
   <canvas id="background-canvas"></canvas>
+  <canvas id="fallback-canvas"></canvas>
 
   <div class="container">
     <h1>Your Public IP</h1>
@@ -232,7 +245,7 @@
             networkData.isp = data.isp || 'Unknown';
             networkData.city = data.city || 'Unknown';
             networkData.country = data.country || 'Unknown';
-            document.getElementById('network-info').textContent = `ISP: ${networkData.isp} | Location: ${networkData.city}, ${networkData.country}`;
+            document.getElementById('network-info').innerHTML = `ISP: ${networkData.isp}<br>Location: ${networkData.city}, ${networkData.country}`;
             return;
           }
         }
@@ -248,7 +261,7 @@
           networkData.isp = data.org?.split(' ').slice(1).join(' ') || 'Unknown';
           networkData.city = data.city || 'Unknown';
           networkData.country = data.country || 'Unknown';
-          document.getElementById('network-info').textContent = `ISP: ${networkData.isp} | Location: ${networkData.city}, ${networkData.country}`;
+          document.getElementById('network-info').innerHTML = `ISP: ${networkData.isp}<br>Location: ${networkData.city}, ${networkData.country}`;
           return;
         }
       } catch (error) {
@@ -263,7 +276,7 @@
           networkData.isp = data.organization_name || 'Unknown';
           networkData.city = data.city || 'Unknown';
           networkData.country = data.country || 'Unknown';
-          document.getElementById('network-info').textContent = `ISP: ${networkData.isp} | Location: ${networkData.city}, ${networkData.country}`;
+          document.getElementById('network-info').innerHTML = `ISP: ${networkData.isp}<br>Location: ${networkData.city}, ${networkData.country}`;
           return;
         }
       } catch (error) {
@@ -271,189 +284,311 @@
       }
 
       // Final Fallback
-      document.getElementById('network-info').textContent = `ISP: Unknown | Location: Unknown`;
+      document.getElementById('network-info').innerHTML = `ISP: Unknown<br>Location: Unknown`;
     }
 
     // Initialize Fetch
     fetchPublicIP();
     fetchNetworkInfo();
 
-    // WebGL Background Animation
+    // WebGL Animation with Fallback
     let scene, camera, renderer, particles = [], trails = [], mousePos = { x: 0, y: 0 };
+    let useWebGL = true;
 
     function initBackground() {
       const canvas = document.getElementById('background-canvas');
-      // Check WebGL support
+      const fallbackCanvas = document.getElementById('fallback-canvas');
+
+      // Try WebGL
       const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
       if (!gl) {
-        console.error('WebGL not supported');
-        document.getElementById('network-info').textContent = 'WebGL not supported';
+        console.error('WebGL not supported, switching to 2D canvas fallback');
+        useWebGL = false;
+        canvas.style.display = 'none';
+        fallbackCanvas.style.display = 'block';
+        initFallbackAnimations(fallbackCanvas);
         return;
       }
 
-      // Initialize Scene
-      scene = new THREE.Scene();
-      camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.setClearColor(0x000000, 0); // Transparent background
-      camera.position.z = 50;
+      // Initialize WebGL
+      try {
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setClearColor(0x000000, 0);
+        camera.position.z = 50;
+
+        // Mouse Interaction
+        document.addEventListener('mousemove', (e) => {
+          mousePos.x = (e.clientX / window.innerWidth) * 2 - 1;
+          mousePos.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        }, { passive: true });
+
+        // Fibonacci Particle
+        function createParticle(index, offset, life = 10, velocity = new THREE.Vector3(0, 0, 0), color = 0x00b7eb) {
+          const phi = (1 + Math.sqrt(5)) / 2;
+          const theta = index * 2 * Math.PI * phi;
+          const r = Math.sqrt(index) * 0.8;
+          const x = r * Math.cos(theta + offset);
+          const y = r * Math.sin(theta + offset);
+          const geometry = new THREE.BufferGeometry();
+          geometry.setAttribute('position', new THREE.Float32BufferAttribute([x, y, Math.random() * 0.5], 3));
+          const material = new THREE.PointsMaterial({
+            color,
+            size: 0.3,
+            transparent: true,
+            opacity: 1,
+            blending: THREE.AdditiveBlending
+          });
+          const particle = new THREE.Points(geometry, material);
+          scene.add(particle);
+          return { obj: particle, life, index, offset, velocity };
+        }
+
+        // Connecting Trail
+        function createTrail(from, to, color, life = 10) {
+          const points = [from, to];
+          const geometry = new THREE.BufferGeometry().setFromPoints(points);
+          const material = new THREE.LineBasicMaterial({
+            color,
+            transparent: true,
+            opacity: 0.7,
+            linewidth: 2,
+            blending: THREE.AdditiveBlending
+          });
+          const trail = new THREE.Line(geometry, material);
+          scene.add(trail);
+          return { obj: trail, life };
+        }
+
+        // Initialize Animations
+        function initAnimations() {
+          particles = [];
+          for (let i = 0; i < 100; i++) {
+            particles.push(createParticle(i, Math.random() * 2 * Math.PI));
+          }
+        }
+        initAnimations();
+
+        // Big Bang Explosion
+        function triggerBigBang() {
+          particles.forEach(p => { scene.remove(p.obj); p.obj.geometry.dispose(); p.obj.material.dispose(); });
+          trails.forEach(t => { scene.remove(t.obj); t.obj.geometry.dispose(); t.obj.material.dispose(); });
+          particles = [];
+          trails = [];
+
+          const colors = [0x00b7eb, 0xff00cc, 0x00ffff, 0xffd700];
+          for (let i = 0; i < 300; i++) {
+            const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2);
+            const r = Math.sqrt(i) * 1.2;
+            const velocity = new THREE.Vector3(
+              r * Math.cos(theta) * 0.15,
+              r * Math.sin(theta) * 0.15,
+              (Math.random() - 0.5) * 0.08
+            );
+            particles.push(createParticle(i, Math.random() * 2 * Math.PI, 5, velocity, colors[Math.floor(Math.random() * colors.length)]));
+          }
+          for (let i = 0; i < 400; i++) {
+            const from = new THREE.Vector3(
+              (Math.random() - 0.5) * 5,
+              (Math.random() - 0.5) * 5,
+              0
+            );
+            const to = new THREE.Vector3(
+              from.x + (Math.random() - 0.5) * 8,
+              from.y + (Math.random() - 0.5) * 8,
+              0
+            );
+            trails.push(createTrail(from, to, colors[Math.floor(Math.random() * colors.length)], 5));
+          }
+        }
+
+        function updateAnimations() {
+          particles = particles.filter(p => {
+            if (p.life <= 0) {
+              scene.remove(p.obj);
+              p.obj.geometry.dispose();
+              p.obj.material.dispose();
+              return false;
+            }
+            p.life -= 1 / 60;
+            p.obj.material.opacity = p.life / 10 * 1;
+            p.obj.position.x += p.velocity.x + mousePos.x * 0.03;
+            p.obj.position.y += p.velocity.y + mousePos.y * 0.03;
+            p.obj.position.z += p.velocity.z;
+            p.velocity.multiplyScalar(0.98);
+            return true;
+          });
+
+          trails = trails.filter(t => {
+            if (t.life <= 0) {
+              scene.remove(t.obj);
+              t.obj.geometry.dispose();
+              t.obj.material.dispose();
+              return false;
+            }
+            t.life -= 1 / 60;
+            t.obj.material.opacity = t.life / 10 * 0.7;
+            return true;
+          });
+
+          if (particles.length < 100 && Math.random() < 0.1) {
+            particles.push(createParticle(Math.floor(Math.random() * 100), Math.random() * 2 * Math.PI));
+          }
+
+          if (trails.length < 200) {
+            particles.forEach(p => {
+              const pos = p.obj.position;
+              particles.forEach(p2 => {
+                if (p !== p2) {
+                  const pos2 = p2.obj.position;
+                  const dist = pos.distanceTo(pos2);
+                  if (dist < 3 && Math.random() < 0.05) {
+                    trails.push(createTrail(pos, pos2, Math.random() > 0.5 ? 0x00b7eb : 0xff00cc));
+                  }
+                }
+              });
+            });
+          }
+        }
+
+        function animate() {
+          try {
+            requestAnimationFrame(animate);
+            updateAnimations();
+            renderer.render(scene, camera);
+          } catch (error) {
+            console.error('Render Error:', error);
+          }
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+        }, { passive: true });
+
+        // Force initial render
+        renderer.render(scene, camera);
+
+        window.triggerBigBang = triggerBigBang;
+      } catch (error) {
+        console.error('WebGL Initialization Error:', error);
+        useWebGL = false;
+        canvas.style.display = 'none';
+        fallbackCanvas.style.display = 'block';
+        initFallbackAnimations(fallbackCanvas);
+      }
+    }
+
+    // 2D Canvas Fallback Animation
+    function initFallbackAnimations(canvas) {
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      let particles = [];
+      let mousePos = { x: 0, y: 0 };
 
       // Mouse Interaction
       document.addEventListener('mousemove', (e) => {
-        mousePos.x = (e.clientX / window.innerWidth) * 2 - 1;
-        mousePos.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        mousePos.x = e.clientX;
+        mousePos.y = e.clientY;
       }, { passive: true });
 
-      // Fibonacci Particle
-      function createParticle(index, offset, life = 10, velocity = new THREE.Vector3(0, 0, 0), color = 0x00b7eb) {
+      function createParticle() {
         const phi = (1 + Math.sqrt(5)) / 2;
+        const index = particles.length;
         const theta = index * 2 * Math.PI * phi;
-        const r = Math.sqrt(index) * 0.8;
-        const x = r * Math.cos(theta + offset);
-        const y = r * Math.sin(theta + offset);
-        const geometry = new THREE.BufferGeometry();
-        geometry.setAttribute('position', new THREE.Float32BufferAttribute([x, y, Math.random() * 0.5], 3));
-        const material = new THREE.PointsMaterial({ 
-          color, 
-          size: 0.3, 
-          transparent: true, 
-          opacity: 1,
-          blending: THREE.AdditiveBlending // Enhanced visibility
-        });
-        const particle = new THREE.Points(geometry, material);
-        scene.add(particle);
-        return { obj: particle, life, index, offset, velocity };
+        const r = Math.sqrt(index) * 10;
+        return {
+          x: canvas.width / 2 + r * Math.cos(theta),
+          y: canvas.height / 2 + r * Math.sin(theta),
+          vx: (Math.random() - 0.5) * 2,
+          vy: (Math.random() - 0.5) * 2,
+          life: 600,
+          color: `hsl(${Math.random() * 360}, 70%, 70%)`
+        };
       }
 
-      // Connecting Trail
-      function createTrail(from, to, color, life = 10) {
-        const points = [from, to];
-        const geometry = new THREE.BufferGeometry().setFromPoints(points);
-        const material = new THREE.LineBasicMaterial({ 
-          color, 
-          transparent: true, 
-          opacity: 0.7, 
-          linewidth: 2,
-          blending: THREE.AdditiveBlending // Enhanced visibility
-        });
-        const trail = new THREE.Line(geometry, material);
-        scene.add(trail);
-        return { obj: trail, life };
-      }
-
-      // Initialize Animations
-      function initAnimations() {
-        particles = []; // Clear any existing particles
-        for (let i = 0; i < 100; i++) {
-          particles.push(createParticle(i, Math.random() * 2 * Math.PI));
-        }
-      }
-      initAnimations();
-
-      // Big Bang Explosion on Copy
-      function triggerBigBang() {
-        particles.forEach(p => { scene.remove(p.obj); p.obj.geometry.dispose(); p.obj.material.dispose(); });
-        trails.forEach(t => { scene.remove(t.obj); t.obj.geometry.dispose(); t.obj.material.dispose(); });
+      function initParticles() {
         particles = [];
-        trails = [];
-
-        const colors = [0x00b7eb, 0xff00cc, 0x00ffff, 0xffd700];
-        for (let i = 0; i < 300; i++) {
-          const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2);
-          const r = Math.sqrt(i) * 1.2;
-          const velocity = new THREE.Vector3(
-            r * Math.cos(theta) * 0.15,
-            r * Math.sin(theta) * 0.15,
-            (Math.random() - 0.5) * 0.08
-          );
-          particles.push(createParticle(i, Math.random() * 2 * Math.PI, 5, velocity, colors[Math.floor(Math.random() * colors.length)]));
-        }
-        for (let i = 0; i < 400; i++) {
-          const from = new THREE.Vector3(
-            (Math.random() - 0.5) * 5,
-            (Math.random() - 0.5) * 5,
-            0
-          );
-          const to = new THREE.Vector3(
-            from.x + (Math.random() - 0.5) * 8,
-            from.y + (Math.random() - 0.5) * 8,
-            0
-          );
-          trails.push(createTrail(from, to, colors[Math.floor(Math.random() * colors.length)], 5));
+        for (let i = 0; i < 50; i++) {
+          particles.push(createParticle());
         }
       }
+      initParticles();
 
-      function updateAnimations() {
-        particles = particles.filter(p => {
-          if (p.life <= 0) { 
-            scene.remove(p.obj); 
-            p.obj.geometry.dispose(); 
-            p.obj.material.dispose(); 
-            return false; 
-          }
-          p.life -= 1 / 60;
-          p.obj.material.opacity = p.life / 10 * 1;
-          p.obj.position.x += p.velocity.x + mousePos.x * 0.03;
-          p.obj.position.y += p.velocity.y + mousePos.y * 0.03;
-          p.obj.position.z += p.velocity.z;
-          p.velocity.multiplyScalar(0.98);
-          return true;
-        });
-
-        trails = trails.filter(t => {
-          if (t.life <= 0) { 
-            scene.remove(t.obj); 
-            t.obj.geometry.dispose(); 
-            t.obj.material.dispose(); 
-            return false; 
-          }
-          t.life -= 1 / 60;
-          t.obj.material.opacity = t.life / 10 * 0.7;
-          return true;
-        });
-
-        if (particles.length < 100 && Math.random() < 0.1) {
-          particles.push(createParticle(Math.floor(Math.random() * 100), Math.random() * 2 * Math.PI));
-        }
-
-        if (trails.length < 200) {
-          particles.forEach(p => {
-            const pos = p.obj.position;
-            particles.forEach(p2 => {
-              if (p !== p2) {
-                const pos2 = p2.obj.position;
-                const dist = pos.distanceTo(pos2);
-                if (dist < 3 && Math.random() < 0.05) {
-                  trails.push(createTrail(pos, pos2, Math.random() > 0.5 ? 0x00b7eb : 0xff00cc));
-                }
-              }
-            });
+      function triggerBigBang2D() {
+        particles = [];
+        for (let i = 0; i < 150; i++) {
+          const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2);
+          const r = Math.sqrt(i) * 15;
+          particles.push({
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            vx: r * Math.cos(theta) * 0.05,
+            vy: r * Math.sin(theta) * 0.05,
+            life: 300,
+            color: `hsl(${Math.random() * 360}, 70%, 70%)`
           });
         }
       }
 
-      function animate() {
-        requestAnimationFrame(animate);
-        updateAnimations();
-        renderer.render(scene, camera);
+      function animateFallback() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles = particles.filter(p => {
+          if (p.life <= 0) return false;
+          p.life--;
+          p.x += p.vx + (mousePos.x - canvas.width / 2) * 0.0001;
+          p.y += p.vy + (mousePos.y - canvas.height / 2) * 0.0001;
+          p.vx *= 0.98;
+          p.vy *= 0.98;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.globalAlpha = p.life / 600;
+          ctx.fill();
+          return true;
+        });
+
+        if (particles.length < 50 && Math.random() < 0.1) {
+          particles.push(createParticle());
+        }
+
+        // Draw trails
+        particles.forEach(p1 => {
+          particles.forEach(p2 => {
+            if (p1 !== p2) {
+              const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+              if (dist < 50 && Math.random() < 0.05) {
+                ctx.beginPath();
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.strokeStyle = p1.color;
+                ctx.globalAlpha = 0.3;
+                ctx.stroke();
+              }
+            }
+          });
+        });
+
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(animateFallback);
       }
-      animate();
+      animateFallback();
 
       window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
       }, { passive: true });
 
-      // Force initial render
-      renderer.render(scene, camera);
-
-      window.triggerBigBang = triggerBigBang;
+      window.triggerBigBang = triggerBigBang2D;
     }
 
-    // Ensure WebGL initializes after DOM is loaded
+    // Start Animations
     document.addEventListener('DOMContentLoaded', () => {
       initBackground();
     });
@@ -462,10 +597,10 @@
     function copyIP() {
       const ip = document.getElementById('ip-display').textContent;
       navigator.clipboard.writeText(ip).then(() => {
-        window.triggerBigBang(); // Explosion effect only
+        window.triggerBigBang();
       }).catch(err => {
         console.error('Copy Error:', err);
-        document.getElementById('network-info').textContent = 'Copy failed';
+        document.getElementById('network-info').innerHTML = `ISP: Unknown<br>Location: Unknown`;
       });
     }
   </script>
