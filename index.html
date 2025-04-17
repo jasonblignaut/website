@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="description" content="View your public IP with cosmic Fibonacci particle animations." />
   <meta name="keywords" content="Public IP, Fibonacci, Quantum Particles" />
   <meta name="author" content="Labverse Team" />
@@ -19,9 +19,6 @@
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Source+Code+Pro&display=swap" rel="stylesheet">
-
-  <!-- Three.js (Latest Stable Version) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/three.min.js"></script>
 
   <!-- Style -->
   <style>
@@ -44,9 +41,11 @@
 
     html, body {
       height: 100%;
+      width: 100%;
       background: radial-gradient(ellipse at center, #0a0a0a 0%, #000000 100%);
       color: var(--light-aura);
       overflow: hidden;
+      margin: 0;
     }
 
     #background-canvas {
@@ -55,7 +54,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: 0; /* Raised to ensure visibility */
+      z-index: -1; /* Behind AdSense ads */
       display: block;
       opacity: 1;
     }
@@ -66,8 +65,9 @@
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: 0;
+      z-index: -1;
       display: none;
+      opacity: 1;
     }
 
     .css-particles {
@@ -76,7 +76,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: 0;
+      z-index: -1;
       display: none;
       pointer-events: none;
     }
@@ -99,7 +99,7 @@
 
     .container {
       position: relative;
-      z-index: 10;
+      z-index: 10; /* Above animations, below AdSense */
       height: 100vh;
       display: flex;
       flex-direction: column;
@@ -184,17 +184,9 @@
       text-shadow: 0 0 5px var(--matrix-blue);
     }
 
-    #debug-overlay {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      background: rgba(0, 0, 0, 0.7);
-      color: var(--light-aura);
-      padding: 10px;
-      font-family: 'Source Code Pro', monospace;
-      font-size: 12px;
-      z-index: 100;
-      display: none;
+    /* Ensure AdSense ads are above animations */
+    ins.adsbygoogle {
+      z-index: 1000 !important;
     }
 
     @media (max-width: 768px) {
@@ -246,7 +238,6 @@
   <canvas id="background-canvas"></canvas>
   <canvas id="fallback-canvas"></canvas>
   <div class="css-particles" id="css-particles"></div>
-  <div id="debug-overlay"></div>
 
   <div class="container">
     <h1>Your Public IP</h1>
@@ -259,13 +250,22 @@
     © 2025 Labverse | Powered by AI, Math & Cosmic Precision 🌌
   </footer>
 
+  <!-- Three.js with Fallback CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/three.min.js"></script>
   <script>
-    // Debug Logging
-    const debugOverlay = document.getElementById('debug-overlay');
+    // Fallback if primary CDN fails
+    if (typeof THREE === 'undefined') {
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/three@0.150.0/build/three.min.js';
+      document.body.appendChild(script);
+      console.log('Loading Three.js from fallback CDN');
+    }
+  </script>
+
+  <script>
+    // Debug Logging (Console Only)
     function logDebug(message) {
-      console.log(message);
-      debugOverlay.style.display = 'block';
-      debugOverlay.innerHTML += `${message}<br>`;
+      console.log('[DEBUG] ' + message);
     }
 
     // Fetch Public IP
@@ -345,6 +345,11 @@
     // WebGL Animation
     function initWebGL(canvas) {
       logDebug('Attempting WebGL initialization...');
+      if (typeof THREE === 'undefined') {
+        logDebug('Three.js not loaded');
+        return false;
+      }
+
       const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
       if (!gl) {
         logDebug('WebGL not supported');
@@ -352,6 +357,8 @@
       }
 
       try {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
         let scene = new THREE.Scene();
         let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         let renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
@@ -366,6 +373,13 @@
         document.addEventListener('mousemove', (e) => {
           mousePos.x = (e.clientX / window.innerWidth) * 2 - 1;
           mousePos.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        }, { passive: true });
+
+        document.addEventListener('touchmove', (e) => {
+          if (e.touches.length > 0) {
+            mousePos.x = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
+            mousePos.y = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
+          }
         }, { passive: true });
 
         function createParticle(index, offset, life = 10, velocity = new THREE.Vector3(0, 0, 0), color = 0x00b7eb) {
@@ -405,7 +419,7 @@
 
         function initAnimations() {
           particles = [];
-          for (let i = 0; i < 50; i++) { // Reduced for performance
+          for (let i = 0; i < 30; i++) {
             particles.push(createParticle(i, Math.random() * 2 * Math.PI));
           }
           logDebug('WebGL particles initialized: ' + particles.length);
@@ -419,7 +433,7 @@
           trails = [];
 
           const colors = [0x00b7eb, 0xff00cc, 0x00ffff, 0xffd700];
-          for (let i = 0; i < 150; i++) {
+          for (let i = 0; i < 100; i++) {
             const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2);
             const r = Math.sqrt(i) * 1.2;
             const velocity = new THREE.Vector3(
@@ -429,7 +443,7 @@
             );
             particles.push(createParticle(i, Math.random() * 2 * Math.PI, 5, velocity, colors[Math.floor(Math.random() * colors.length)]));
           }
-          for (let i = 0; i < 200; i++) {
+          for (let i = 0; i < 150; i++) {
             const from = new THREE.Vector3(
               (Math.random() - 0.5) * 5,
               (Math.random() - 0.5) * 5,
@@ -464,7 +478,7 @@
           trails = trails.filter(t => {
             if (t.life <= 0) {
               scene.remove(t.obj);
-              try { t.obj.geometry.dispose(); t.obj.material.dispose(); } catch (e) {}
+              try { t.obj.geometry.dispose(); t.obj.material.dispose(); } catch (e) {} 
               return false;
             }
             t.life -= 1 / 60;
@@ -472,11 +486,11 @@
             return true;
           });
 
-          if (particles.length < 50 && Math.random() < 0.1) {
-            particles.push(createParticle(Math.floor(Math.random() * 50), Math.random() * 2 * Math.PI));
+          if (particles.length < 30 && Math.random() < 0.1) {
+            particles.push(createParticle(Math.floor(Math.random() * 30), Math.random() * 2 * Math.PI));
           }
 
-          if (trails.length < 100) {
+          if (trails.length < 75) {
             particles.forEach(p => {
               const pos = p.obj.position;
               particles.forEach(p2 => {
@@ -504,6 +518,8 @@
         animate();
 
         window.addEventListener('resize', () => {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
           camera.aspect = window.innerWidth / window.innerHeight;
           camera.updateProjectionMatrix();
           renderer.setSize(window.innerWidth, window.innerHeight);
@@ -533,11 +549,18 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         let particles = [];
-        let mousePos = { x: 0, y: 0 };
+        let mousePos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 
         document.addEventListener('mousemove', (e) => {
           mousePos.x = e.clientX;
           mousePos.y = e.clientY;
+        }, { passive: true });
+
+        document.addEventListener('touchmove', (e) => {
+          if (e.touches.length > 0) {
+            mousePos.x = e.touches[0].clientX;
+            mousePos.y = e.touches[0].clientY;
+          }
         }, { passive: true });
 
         function createParticle() {
@@ -557,16 +580,21 @@
 
         function initParticles() {
           particles = [];
-          for (let i = 0; i < 50; i++) {
+          for (let i = 0; i < 30; i++) {
             particles.push(createParticle());
           }
           logDebug('2D canvas particles initialized: ' + particles.length);
+
+          // Test render to confirm canvas visibility
+          ctx.fillStyle = 'red';
+          ctx.fillRect(10, 10, 20, 20); // Temporary red square to verify rendering
+          setTimeout(() => ctx.clearRect(10, 10, 20, 20), 1000); // Remove after 1s
         }
         initParticles();
 
         function triggerBigBang2D() {
           particles = [];
-          for (let i = 0; i < 150; i++) {
+          for (let i = 0; i < 100; i++) {
             const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2);
             const r = Math.sqrt(i) * 15;
             particles.push({
@@ -598,7 +626,7 @@
             return true;
           });
 
-          if (particles.length < 50 && Math.random() < 0.1) {
+          if (particles.length < 30 && Math.random() < 0.1) {
             particles.push(createParticle());
           }
 
@@ -626,6 +654,7 @@
         window.addEventListener('resize', () => {
           canvas.width = window.innerWidth;
           canvas.height = window.innerHeight;
+          initParticles(); // Reinitialize particles on resize
         }, { passive: true });
 
         triggerBigBang = triggerBigBang2D;
