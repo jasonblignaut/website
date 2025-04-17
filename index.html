@@ -3,84 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="MindMatrix: Scientifically accurate OCD, Autism, High IQ, and Low IQ tests with mathematical precision, delivering actionable insights for global users.">
-    <meta name="keywords" content="OCD test, Autism test, IQ test, High IQ, Low IQ, psychological assessment, math-based tests, mental health, neurodiversity">
-    <meta name="author" content="MindMatrix AI">
-    <meta property="og:title" content="MindMatrix">
-    <meta property="og:description" content="Discover your mind’s potential with precise, science-backed tests for OCD, Autism, and IQ. Trusted globally, transformative results.">
-    <meta property="og:image" content="assets/mindmatrix-og.webp">
-    <meta property="og:url" content="https://mindmatrix.ai">
+    <meta name="description" content="WhatsMyPip.co.za: Instantly discover your public IP address with a stunning, mathematically precise background of Golden Spirals and quantum particles.">
+    <meta name="keywords" content="Public IP, Golden Spiral, Fibonacci, Quantum Particles, WebGL, IP Address">
+    <meta name="author" content="WhatsMyPip">
+    <meta property="og:title" content="WhatsMyPip.co.za">
+    <meta property="og:description" content="See your public IP address instantly, surrounded by mesmerizing sacred geometry and particle animations.">
+    <meta property="og:image" content="assets/pip-og.webp">
+    <meta property="og:url" content="https://whatsmypip.co.za">
     <meta property="og:type" content="website">
     <link rel="icon" type="image/png" href="assets/favicon.ico">
-    <title>MindMatrix | Unlock Your Mind’s Potential</title>
+    <title>WhatsMyPip.co.za | Your Public IP Address</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;700&family=Space+Mono&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --neural-blue: #0078d4;
-            --synapse-purple: #6200ea;
-            --core-gray: #121212;
-            --light-neuron: #e8ecef;
-            --success-green: #00c853;
-            --alert-red: #d32f2f;
-            --glow-radius: 15px;
+            --matrix-blue: #00b7eb;
+            --cosmic-magenta: #ff00cc;
+            --void-black: #08081a;
+            --light-aura: #e6f0ff;
+            --glow-radius: 20px;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Exo 2', sans-serif;
         }
 
         body {
-            background: var(--core-gray);
-            color: var(--light-neuron);
-            overflow-x: hidden;
+            background: var(--void-black);
+            color: var(--light-aura);
+            overflow: hidden;
             position: relative;
             cursor: none;
         }
 
         /* Custom Cursor */
-        .neural-cursor {
+        .observer-cursor {
             position: fixed;
-            width: 24px;
-            height: 24px;
-            background: radial-gradient(circle, var(--neural-blue) 20%, var(--synapse-purple) 60%, transparent 80%);
+            width: 32px;
+            height: 32px;
+            background: radial-gradient(circle, var(--matrix-blue) 20%, var(--cosmic-magenta) 60%, transparent 80%);
             border-radius: 50%;
             pointer-events: none;
             z-index: 1002;
-            box-shadow: 0 0 15px var(--neural-blue);
+            box-shadow: 0 0 20px var(--matrix-blue), 0 0 30px var(--cosmic-magenta);
             transform: translate(-50%, -50%);
-            animation: synapsePulse 1.8s infinite;
+            animation: pulse 2s infinite;
         }
 
-        @keyframes synapsePulse {
+        @keyframes pulse {
             0% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.15); }
+            50% { transform: translate(-50%, -50%) scale(1.2); }
             100% { transform: translate(-50%, -50%) scale(1); }
         }
 
-        /* Neural Particles */
-        .neural-particle {
+        /* Quantum Particles */
+        .quantum-particle {
             position: absolute;
-            width: 8px;
-            height: 8px;
-            background: var(--synapse-purple);
+            width: 12px;
+            height: 12px;
+            background: var(--cosmic-magenta);
             border-radius: 50%;
             pointer-events: none;
             z-index: 1000;
-            opacity: 0.8;
-            box-shadow: 0 0 10px var(--synapse-purple);
-            animation: neuralFire 1.2s ease-out forwards;
+            opacity: 0.9;
+            box-shadow: 0 0 15px var(--cosmic-magenta);
+            animation: waveCollapse 1.5s ease-out forwards;
         }
 
-        @keyframes neuralFire {
-            0% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(2.5); opacity: 0.5; }
+        @keyframes waveCollapse {
+            0% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(3); opacity: 0.6; }
             100% { transform: scale(0); opacity: 0; }
         }
 
@@ -89,9 +86,9 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(18, 18, 18, 0.95);
-            backdrop-filter: blur(12px);
-            padding: 1rem 2rem;
+            background: rgba(8, 8, 26, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 1.2rem 2.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -99,46 +96,16 @@
         }
 
         .logo {
-            font-family: 'Roboto Mono', monospace;
-            font-size: 1.6rem;
-            background: linear-gradient(90deg, var(--neural-blue), var(--synapse-purple));
+            font-family: 'Space Mono', monospace;
+            font-size: 1.8rem;
+            background: linear-gradient(90deg, var(--matrix-blue), var(--cosmic-magenta));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 8px var(--neural-blue);
+            text-shadow: 0 0 10px var(--matrix-blue);
         }
 
-        nav a {
-            color: var(--light-neuron);
-            text-decoration: none;
-            margin: 0 1.5rem;
-            font-size: 1rem;
-            text-transform: uppercase;
-            position: relative;
-            transition: all 0.3s;
-        }
-
-        nav a:hover {
-            color: var(--neural-blue);
-            text-shadow: 0 0 8px var(--neural-blue);
-        }
-
-        nav a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background: var(--neural-blue);
-            transition: width 0.3s;
-        }
-
-        nav a:hover::after {
-            width: 100%;
-        }
-
-        /* Hero Section */
-        .hero {
+        /* Main Content */
+        .main {
             height: 100vh;
             display: flex;
             flex-direction: column;
@@ -150,428 +117,112 @@
             z-index: 1;
         }
 
-        .hero h1 {
-            font-family: 'Roboto Mono', monospace;
-            font-size: clamp(2.8rem, 6vw, 4.5rem);
-            background: linear-gradient(90deg, var(--neural-blue), var(--synapse-purple));
+        .main h1 {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            background: linear-gradient(90deg, var(--matrix-blue), var(--cosmic-magenta));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 1.2rem;
-            text-shadow: 0 0 12px var(--neural-blue);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 15px var(--matrix-blue);
         }
 
-        .hero p {
-            font-size: clamp(1rem, 2vw, 1.3rem);
-            color: var(--light-neuron);
-            max-width: 600px;
-            margin-bottom: 2rem;
-            line-height: 1.5;
-        }
-
-        .cta-button {
-            background: linear-gradient(90deg, var(--neural-blue), var(--synapse-purple));
-            color: var(--light-neuron);
-            padding: 1rem 3rem;
-            text-decoration: none;
-            border-radius: 50px;
-            font-family: 'Roboto Mono', monospace;
-            font-weight: 600;
-            text-transform: uppercase;
-            box-shadow: 0 0 var(--glow-radius) var(--neural-blue);
-            transition: all 0.3s;
-        }
-
-        .cta-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 calc(var(--glow-radius) * 2) var(--neural-blue);
-        }
-
-        /* Test Sections */
-        section {
-            padding: 6rem 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        section h2 {
-            font-family: 'Roboto Mono', monospace;
-            font-size: clamp(2.2rem, 4vw, 3rem);
-            text-align: center;
-            background: linear-gradient(90deg, var(--neural-blue), var(--synapse-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 2.5rem;
-            text-shadow: 0 0 8px var(--neural-blue);
-        }
-
-        .test-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
+        .ip-display {
+            font-family: 'Space Mono', monospace;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: var(--light-aura);
+            background: rgba(8, 8, 26, 0.9);
+            padding: 1.5rem 3rem;
             border-radius: 15px;
-            padding: 2rem;
-            margin-bottom: 2.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 var(--glow-radius) var(--neural-blue);
-            transition: all 0.3s;
+            border: 2px solid var(--matrix-blue);
+            box-shadow: 0 0 20px var(--matrix-blue);
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px var(--matrix-blue);
         }
 
-        .test-card:hover {
-            box-shadow: 0 0 calc(var(--glow-radius) * 1.5) var(--neural-blue);
+        .main p {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            color: var(--light-aura);
+            max-width: 600px;
+            line-height: 1.6;
         }
 
-        .test-card h3 {
-            font-family: 'Roboto Mono', monospace;
-            font-size: 1.6rem;
-            color: var(--light-neuron);
-            margin-bottom: 0.5rem;
-        }
-
-        .test-card p {
-            color: var(--light-neuron);
-            font-size: 1rem;
-            margin-bottom: 1rem;
-            line-height: 1.5;
-        }
-
-        .test-card .instructions {
-            color: var(--light-neuron);
-            font-size: 0.95rem;
-            font-style: italic;
-            margin-bottom: 1.2rem;
-            line-height: 1.4;
-        }
-
-        .test-questions {
-            display: none;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .test-questions.active {
-            display: flex;
-        }
-
-        .question {
-            background: rgba(255, 255, 255, 0.08);
-            padding: 1rem;
-            border-radius: 8px;
-        }
-
-        .question label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--light-neuron);
-        }
-
-        .question select {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--neural-blue);
-            color: var(--light-neuron);
-            padding: 0.8rem;
+        /* Background Canvas */
+        #background-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-
-        .test-card button {
-            background: linear-gradient(90deg, var(--neural-blue), var(--synapse-purple));
-            color: var(--light-neuron);
-            border: none;
-            padding: 0.8rem 2rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-
-        .test-card button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 var(--glow-radius) var(--neural-blue);
-        }
-
-        .result {
-            display: none;
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
-
-        .result.active {
-            display: block;
-        }
-
-        .result h4 {
-            font-family: 'Roboto Mono', monospace;
-            font-size: 1.4rem;
-            color: var(--success-green);
-            margin-bottom: 1rem;
-        }
-
-        .result p {
-            font-size: 1rem;
-            color: var(--light-neuron);
-        }
-
-        .result-canvas {
-            width: 100%;
-            height: 300px;
-            margin-top: 1rem;
+            height: 100%;
+            z-index: 0;
         }
 
         /* Accessibility Panel */
         .accessibility-panel {
             position: fixed;
-            bottom: 2rem;
-            left: 2rem;
-            background: rgba(18, 18, 18, 0.95);
-            padding: 1rem;
-            border-radius: 10px;
+            bottom: 2.5rem;
+            left: 2.5rem;
+            background: rgba(8, 8, 26, 0.95);
+            padding: 1.2rem;
+            border-radius: 12px;
             z-index: 1001;
         }
 
         .accessibility-panel button {
-            background: var(--neural-blue);
-            color: var(--light-neuron);
+            background: var(--matrix-blue);
+            color: var(--light-aura);
             border: none;
-            padding: 0.5rem 1rem;
-            margin: 0.3rem;
-            border-radius: 5px;
+            padding: 0.6rem 1.2rem;
+            margin: 0.5rem;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
 
         /* Footer */
         footer {
-            background: rgba(18, 18, 18, 0.95);
-            padding: 2rem;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: rgba(8, 8, 26, 0.95);
+            padding: 1.5rem;
             text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1001;
         }
 
         footer p {
-            color: var(--light-neuron);
+            color: var(--light-aura);
             font-size: 1rem;
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: clamp(2rem, 4vw, 3rem);
+            .main h1 {
+                font-size: clamp(2rem, 5vw, 3rem);
             }
 
-            .test-card {
-                padding: 1.5rem;
+            .ip-display {
+                font-size: clamp(1.5rem, 4vw, 2.5rem);
+                padding: 1rem 2rem;
             }
 
             .accessibility-panel {
-                bottom: 1rem;
-                left: 1rem;
+                bottom: 1.5rem;
+                left: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="neural-cursor" id="neural-cursor"></div>
+    <div class="observer-cursor" id="observer-cursor"></div>
+    <canvas id="background-canvas"></canvas>
     <header>
-        <div class="logo">MindMatrix</div>
-        <nav>
-            <a href="#ocd">OCD Test</a>
-            <a href="#autism">Autism Test</a>
-            <a href="#high-iq">High IQ Test</a>
-            <a href="#low-iq">Low IQ Test</a>
-        </nav>
+        <div class="logo">WhatsMyPip.co.za</div>
     </header>
-    <section class="hero">
-        <h1>MindMatrix</h1>
-        <p>Unlock your mind’s potential with scientifically validated, mathematically precise tests for OCD, Autism, and IQ. Trusted globally, transformative results.</p>
-        <a href="#ocd" class="cta-button">Start Your Journey</a>
-    </section>
-    <section id="ocd">
-        <h2>OCD Assessment</h2>
-        <div class="test-card">
-            <h3>Obsessive-Compulsive Disorder (OCD) Test</h3>
-            <p>Based on the OCI-R (Foa et al., 2002), this test assesses OCD symptoms across 6 domains: washing, checking, ordering, obsessing, hoarding, and neutralizing. Scores range from 0-72, with ≥21 indicating probable OCD.</p>
-            <p class="instructions">Instructions: Answer each question based on your experiences over the past month. Select the option that best reflects how much the symptom has distressed or bothered you (0 = Not at all, 4 = Extremely). Your score will be calculated and visualized, with guidance on next steps.</p>
-            <button onclick="startTest('ocd')">Start Test</button>
-            <div class="test-questions" id="ocd-questions">
-                <!-- Sample Questions (18 total in OCI-R, showing 3 for brevity) -->
-                <div class="question">
-                    <label>I wash my hands more often or longer than necessary.</label>
-                    <select>
-                        <option value="0">0 - Not at all</option>
-                        <option value="1">1 - A little</option>
-                        <option value="2">2 - Moderately</option>
-                        <option value="3">3 - A lot</option>
-                        <option value="4">4 - Extremely</option>
-                    </select>
-                </div>
-                <div class="question">
-                    <label>I repeatedly check things (e.g., doors, appliances) more than necessary.</label>
-                    <select>
-                        <option value="0">0 - Not at all</option>
-                        <option value="1">1 - A little</option>
-                        <option value="2">2 - Moderately</option>
-                        <option value="3">3 - A lot</option>
-                        <option value="4">4 - Extremely</option>
-                    </select>
-                </div>
-                <div class="question">
-                    <label>I have intrusive thoughts that I can’t stop thinking about.</label>
-                    <select>
-                        <option value="0">0 - Not at all</option>
-                        <option value="1">1 - A little</option>
-                        <option value="2">2 - Moderately</option>
-                        <option value="3">3 - A lot</option>
-                        <option value="4">4 - Extremely</option>
-                    </select>
-                </div>
-                <button onclick="calculateResult('ocd')">Submit</button>
-            </div>
-            <div class="result" id="ocd-result">
-                <h4>Your OCD Score</h4>
-                <p id="ocd-score"></p>
-                <canvas class="result-canvas" id="ocd-chart"></canvas>
-            </div>
-        </div>
-    </section>
-    <section id="autism">
-        <h2>Autism Assessment</h2>
-        <div class="test-card">
-            <h3>Autism Spectrum Quotient (AQ) Test</h3>
-            <p>Based on Baron-Cohen et al. (2001), this 50-item test measures autistic traits in adults across social skills, attention switching, attention to detail, communication, and imagination. Scores range from 0-50, with ≥32 indicating potential autism spectrum traits.</p>
-            <p class="instructions">Instructions: For each statement, select how strongly it applies to you (Definitely Agree = 1, Slightly Agree = 1, Slightly Disagree = 0, Definitely Disagree = 0 for positive traits; reverse for negative). Your score will be calculated and visualized, with guidance on next steps.</p>
-            <button onclick="startTest('autism')">Start Test</button>
-            <div class="test-questions" id="autism-questions">
-                <!-- Sample Questions (50 total in AQ, showing 3 for brevity) -->
-                <div class="question">
-                    <label>I prefer to do things alone rather than with others.</label>
-                    <select>
-                        <option value="1">Definitely Agree</option>
-                        <option value="1">Slightly Agree</option>
-                        <option value="0">Slightly Disagree</option>
-                        <option value="0">Definitely Disagree</option>
-                    </select>
-                </div>
-                <div class="question">
-                    <label>I find it hard to make small talk.</label>
-                    <select>
-                        <option value="1">Definitely Agree</option>
-                        <option value="1">Slightly Agree</option>
-                        <option value="0">Slightly Disagree</option>
-                        <option value="0">Definitely Disagree</option>
-                    </select>
-                </div>
-                <div class="question">
-                    <label>I am fascinated by patterns and numbers.</label>
-                    <select>
-                        <option value="1">Definitely Agree</option>
-                        <option value="1">Slightly Agree</option>
-                        <option value="0">Slightly Disagree</option>
-                        <option value="0">Definitely Disagree</option>
-                    </select>
-                </div>
-                <button onclick="calculateResult('autism')">Submit</button>
-            </div>
-            <div class="result" id="autism-result">
-                <h4>Your AQ Score</h4>
-                <p id="autism-score"></p>
-                <canvas class="result-canvas" id="autism-chart"></canvas>
-            </div>
-        </div>
-    </section>
-    <section id="high-iq">
-        <h2>High IQ Assessment</h2>
-        <div class="test-card">
-            <h3>High IQ Test</h3>
-            <p>Based on WAIS-IV principles, this 20-item test assesses logical reasoning, verbal comprehension, spatial skills, and working memory for high cognitive ability (IQ ≥ 130, top 2%). Scores are standardized to a mean of 100, SD of 15.</p>
-            <p class="instructions">Instructions: Answer each question to the best of your ability. No time limit, but aim to complete within 30 minutes. Use a calculator or paper if needed. Your score will be calculated and visualized, indicating your cognitive potential.</p>
-            <button onclick="startTest('high-iq')">Start Test</button>
-            <div class="test-questions" id="high-iq-questions">
-                <!-- Sample Questions (20 total, showing 3 for brevity) -->
-                <div class="question">
-                    <label>What number comes next in the sequence: 2, 6, 12, 20, 30?</label>
-                    <select>
-                        <option value="0">40</option>
-                        <option value="1">42</option>
-                        <option value="0">45</option>
-                        <option value="0">48</option>
-                    </select>
-                </div>
-                <div class="question">
-                    <label>If “CAT” is coded as “FBU,” what is “DOG” coded as?</label>
-                    <select>
-                        <option value="0">EPH</option>
-                        <option value="1">GPH</option>
-                        <option value="0">FQI</option>
-                        <option value="0">HQI</option>
-                    </select>
-                </div>
-                <div class="question">
-                    <label>Which shape completes the pattern: Square, Circle, Triangle, Square, Circle?</label>
-                    <select>
-                        <option value="0">Square</option>
-                        <option value="1">Triangle</option>
-                        <option value="0">Circle</option>
-                        <option value="0">Pentagon</option>
-                    </select>
-                </div>
-                <button onclick="calculateResult('high-iq')">Submit</button>
-            </div>
-            <div class="result" id="high-iq-result">
-                <h4>Your IQ Score</h4>
-                <p id="high-iq-score"></p>
-                <canvas class="result-canvas" id="high-iq-chart"></canvas>
-            </div>
-        </div>
-    </section>
-    <section id="low-iq">
-        <h2>Low IQ Assessment</h2>
-        <div class="test-card">
-            <h3>Low IQ Test</h3>
-            <p>Based on TONI-4 (Test of Nonverbal Intelligence), this 15-item test assesses nonverbal reasoning and problem-solving for individuals with potential cognitive challenges (IQ ≤ 70). Scores are standardized to a mean of 100, SD of 15.</p>
-            <p class="instructions">Instructions: Select the option that best completes each pattern or solves the problem. No time limit, but aim to complete within 20 minutes. Your score will be calculated and visualized, with guidance on next steps.</p>
-            <button onclick="startTest('low-iq')">Start Test</button>
-            <div class="test-questions" id="low-iq-questions">
-                <!-- Sample Questions (15 total, showing 3 for brevity) -->
-                <div class="question">
-                    <label>Which shape fits in the sequence: Circle, Square, Circle, Square?</label>
-                    <select>
-                        <option value="1">Circle</option>
-                        <option value="0">Square</option>
-                        <option value="0">Triangle</option>
-                        <option value="0">Star</option>
-                    </select>
-                </div>
-                <div class="question">
-                    <label>Which number completes: 1, 2, 3, 4, ?</label>
-                    <select>
-                        <option value="0">4</option>
-                        <option value="1">5</option>
-                        <option value="0">6</option>
-                        <option value="0">7</option>
-                    </select>
-                </div>
-                <div class="question">
-                    <label>Which object is different: Apple, Banana, Orange, Car?</label>
-                    <select>
-                        <option value="0">Apple</option>
-                        <option value="0">Banana</option>
-                        <option value="0">Orange</option>
-                        <option value="1">Car</option>
-                    </select>
-                </div>
-                <button onclick="calculateResult('low-iq')">Submit</button>
-            </div>
-            <div class="result" id="low-iq-result">
-                <h4>Your IQ Score</h4>
-                <p id="low-iq-score"></p>
-                <canvas class="result-canvas" id="low-iq-chart"></canvas>
-            </div>
-        </div>
+    <section class="main">
+        <h1>Your Public IP Address</h1>
+        <div class="ip-display" id="ip-display">Fetching IP...</div>
+        <p>Explore your digital identity amidst a mathematically precise universe of Golden Spirals and quantum particles. Move your cursor to influence the cosmic dance.</p>
     </section>
     <div class="accessibility-panel">
         <button onclick="toggleHighContrast()">High Contrast</button>
@@ -579,118 +230,118 @@
         <button onclick="toggleNarration()">Narrate</button>
     </div>
     <footer>
-        <p>© 2025 MindMatrix | Science-Backed, Globally Trusted Mental Health Assessments</p>
+        <p>© 2025 WhatsMyPip.co.za | Powered by AI, Math & Cosmic Precision</p>
     </footer>
 
     <script>
         // Custom Cursor
-        const neuralCursor = document.getElementById('neural-cursor');
+        const observerCursor = document.getElementById('observer-cursor');
         document.addEventListener('mousemove', (e) => {
-            neuralCursor.style.left = `${e.clientX}px`;
-            neuralCursor.style.top = `${e.clientY}px`;
+            observerCursor.style.left = `${e.clientX}px`;
+            observerCursor.style.top = `${e.clientY}px`;
             const particle = document.createElement('div');
-            particle.className = 'neural-particle';
+            particle.className = 'quantum-particle';
             particle.style.left = `${e.clientX}px`;
             particle.style.top = `${e.clientY}px`;
             document.body.appendChild(particle);
-            setTimeout(() => particle.remove(), 1200);
+            setTimeout(() => particle.remove(), 1500);
         });
 
-        // Test Logic
-        function startTest(testId) {
-            document.getElementById(`${testId}-questions`).classList.add('active');
-            document.getElementById(`${testId}-result`).classList.remove('active');
+        // Fetch Public IP
+        async function fetchPublicIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                document.getElementById('ip-display').textContent = data.ip;
+            } catch (error) {
+                document.getElementById('ip-display').textContent = 'Unable to fetch IP';
+                console.error('IP Fetch Error:', error);
+            }
         }
+        fetchPublicIP();
 
-        function calculateResult(testId) {
-            const questions = document.getElementById(`${testId}-questions`).querySelectorAll('select');
-            let score = 0;
-            questions.forEach(q => {
-                score += parseInt(q.value);
+        // Background Animation
+        function initBackground() {
+            const canvas = document.getElementById('background-canvas');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            camera.position.z = 10;
+
+            let particles = [], spiralPoints = [], mousePos = { x: 0, y: 0 };
+
+            // Mouse Interaction
+            document.addEventListener('mousemove', (e) => {
+                mousePos.x = (e.clientX / window.innerWidth) * 2 - 1;
+                mousePos.y = -(e.clientY / window.innerHeight) * 2 + 1;
             });
 
-            let resultText = '';
-            let chartData = [];
-            let chartLabel = '';
-
-            if (testId === 'ocd') {
-                // OCI-R: 18 questions, 0-4 each, max 72
-                score = score * (18 / 3); // Scale for full test (demo has 3 questions)
-                resultText = `Your OCI-R score is ${score}/72. `;
-                if (score >= 21) {
-                    resultText += 'A score of 21 or higher suggests probable OCD. Consult a licensed mental health professional for a formal evaluation.';
-                } else {
-                    resultText += 'Your score is below the clinical threshold for OCD, but persistent symptoms warrant professional consultation.';
+            // Golden Spiral
+            function updateSpiral() {
+                const phi = (1 + Math.sqrt(5)) / 2;
+                spiralPoints = [];
+                for (let i = 0; i < 50; i++) {
+                    const theta = i * 0.1;
+                    const r = Math.pow(phi, theta / Math.PI) * 0.1;
+                    spiralPoints.push(new THREE.Vector3(r * Math.cos(theta), r * Math.sin(theta), 0));
                 }
-                chartData = [score, 72 - score];
-                chartLabel = 'OCD Score vs Max';
-            } else if (testId === 'autism') {
-                // AQ: 50 questions, 0-1 each, max 50
-                score = score * (50 / 3); // Scale for full test
-                resultText = `Your AQ score is ${score}/50. `;
-                if (score >= 32) {
-                    resultText += 'A score of 32 or higher indicates potential autism spectrum traits. Consult a professional for a comprehensive assessment.';
-                } else {
-                    resultText += 'Your score is below the threshold for autism spectrum traits, but professional evaluation is recommended if concerns persist.';
-                }
-                chartData = [score, 50 - score];
-                chartLabel = 'AQ Score vs Max';
-            } else if (testId === 'high-iq') {
-                // High IQ: 20 questions, 0-1 each, scaled to IQ (mean 100, SD 15)
-                const rawScore = score * (20 / 3); // Scale for full test
-                const iqScore = 100 + (rawScore - 10) * 3; // Simplified scaling
-                score = Math.round(iqScore);
-                resultText = `Your estimated IQ score is ${score}. `;
-                if (score >= 130) {
-                    resultText += 'A score of 130 or higher places you in the top 2% (very superior intelligence). Consider a formal IQ test for confirmation.';
-                } else {
-                    resultText += 'Your score suggests above-average to average intelligence. For precise assessment, consult a licensed psychologist.';
-                }
-                chartData = [score, 200 - score];
-                chartLabel = 'IQ Score vs Max';
-            } else if (testId === 'low-iq') {
-                // Low IQ: 15 questions, 0-1 each, scaled to IQ (mean 100, SD 15)
-                const rawScore = score * (15 / 3); // Scale for full test
-                const iqScore = 100 - (15 - rawScore) * 3; // Simplified scaling
-                score = Math.round(iqScore);
-                resultText = `Your estimated IQ score is ${score}. `;
-                if (score <= 70) {
-                    resultText += 'A score of 70 or lower may indicate cognitive challenges. Consult a professional for a comprehensive evaluation.';
-                } else {
-                    resultText += 'Your score suggests average to low-average cognitive ability. For precise assessment, consult a licensed psychologist.';
-                }
-                chartData = [score, 200 - score];
-                chartLabel = 'IQ Score vs Max';
+                const geometry = new THREE.BufferGeometry().setFromPoints(spiralPoints);
+                const material = new THREE.LineBasicMaterial({ color: 0xff00cc });
+                const spiral = new THREE.Line(geometry, material);
+                scene.add(spiral);
+                return spiral;
             }
 
-            document.getElementById(`${testId}-score`).textContent = resultText;
-            document.getElementById(`${testId}-result`).classList.add('active');
-
-            // Chart Visualization
-            const ctx = document.getElementById(`${testId}-chart`).getContext('2d');
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: [chartLabel, 'Remaining'],
-                    datasets: [{
-                        data: chartData,
-                        backgroundColor: [testId === 'ocd' || testId === 'autism' ? '#d32f2f' : '#00c853', '#424242']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { position: 'bottom' }
-                    }
+            // Fibonacci Particles
+            function updateParticles() {
+                particles.forEach(p => scene.remove(p));
+                particles = [];
+                const fib = (n) => n <= 1 ? n : fib(n - 1) + fib(n - 2);
+                for (let i = 0; i < 20; i++) {
+                    const r = fib(i) * 0.05;
+                    const x = r * Math.cos(i) + mousePos.x * 0.5;
+                    const y = r * Math.sin(i) + mousePos.y * 0.5;
+                    const geometry = new THREE.BufferGeometry();
+                    geometry.setAttribute('position', new THREE.Float32BufferAttribute([x, y, Math.random() * 0.1], 3));
+                    const material = new THREE.PointsMaterial({ color: 0x00b7eb, size: 0.1 });
+                    const particle = new THREE.Points(geometry, material);
+                    particles.push(particle);
+                    scene.add(particle);
                 }
+            }
+
+            let spiral = updateSpiral();
+            updateParticles();
+
+            function animate() {
+                requestAnimationFrame(animate);
+                scene.remove(spiral);
+                spiral = updateSpiral();
+                updateParticles();
+                spiral.rotation.z += 0.005;
+                particles.forEach(p => {
+                    p.rotation.z += 0.01;
+                    p.position.x += mousePos.x * 0.01;
+                    p.position.y += mousePos.y * 0.01;
+                });
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
             });
         }
+        initBackground();
 
         // Accessibility Features
         let highContrast = false;
         function toggleHighContrast() {
             highContrast = !highContrast;
-            document.body.style.filter = highContrast ? 'contrast(1.5) brightness(1.2)' : 'none';
+            document.body.style.filter = highContrast ? 'contrast(1.6) brightness(1.3)' : 'none';
         }
 
         let fontSize = 16;
@@ -700,7 +351,9 @@
         }
 
         function toggleNarration() {
-            alert('Narration toggled (placeholder for text-to-speech integration).');
+            const ip = document.getElementById('ip-display').textContent;
+            const utterance = new SpeechSynthesisUtterance(`Your public IP address is ${ip}`);
+            speechSynthesis.speak(utterance);
         }
     </script>
 </body>
