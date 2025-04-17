@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Labverse.co.za: Instantly see your public IP address and precise network info with a cosmic background of Golden Spirals and quantum particles.">
-    <meta name="keywords" content="Public IP, DNS Nameservers, Golden Spiral, Fibonacci, Quantum Particles, WebGL, IP Address">
+    <meta name="description" content="Labverse.co.za: Instantly see your public IP address and network info with a cosmic background of Golden Spirals and quantum particles.">
+    <meta name="keywords" content="Public IP, Golden Spiral, Fibonacci, Quantum Particles, WebGL, IP Address">
     <meta name="author" content="Labverse">
     <meta property="og:title" content="Labverse.co.za">
     <meta property="og:description" content="Discover your public IP address and network info instantly, with mesmerizing sacred geometry animations.">
@@ -23,6 +23,8 @@
         :root {
             --matrix-blue: #00b7eb;
             --cosmic-magenta: #ff00cc;
+            --cosmic-gold: #ffd700;
+            --cosmic-cyan: #00ffff;
             --void-black: #08081a;
             --light-aura: #e6f0ff;
             --glow-radius: 15px;
@@ -274,18 +276,17 @@
 
         // Fetch Network Info with Multiple Fallbacks
         async function fetchNetworkInfo() {
-            let networkData = { hostname: 'N/A', isp: 'N/A', city: 'N/A', country: 'N/A', dns: 'N/A' };
+            let networkData = { isp: 'N/A', city: 'N/A', country: 'N/A' };
 
             // Try ipinfo.io (Primary)
             try {
                 const response = await fetch('https://ipinfo.io/json?token=your-ipinfo-token'); // Replace with your ipinfo.io token
                 if (response.ok) {
                     const data = await response.json();
-                    networkData.hostname = data.hostname || 'N/A';
                     networkData.isp = data.org || 'N/A';
                     networkData.city = data.city || 'N/A';
                     networkData.country = data.country || 'N/A';
-                    document.getElementById('network-info').textContent = `Hostname: ${networkData.hostname} | ISP: ${networkData.isp} | Location: ${networkData.city}, ${networkData.country} | DNS: ${networkData.dns}`;
+                    document.getElementById('network-info').textContent = `ISP: ${networkData.isp} | Location: ${networkData.city}, ${networkData.country}`;
                     return;
                 }
             } catch (error) {
@@ -297,11 +298,10 @@
                 const response = await fetch('http://ip-api.com/json');
                 if (response.ok) {
                     const data = await response.json();
-                    networkData.hostname = data.hostname || 'N/A';
                     networkData.isp = data.isp || 'N/A';
                     networkData.city = data.city || 'N/A';
                     networkData.country = data.country || 'N/A';
-                    document.getElementById('network-info').textContent = `Hostname: ${networkData.hostname} | ISP: ${networkData.isp} | Location: ${networkData.city}, ${networkData.country} | DNS: ${networkData.dns}`;
+                    document.getElementById('network-info').textContent = `ISP: ${networkData.isp} | Location: ${networkData.city}, ${networkData.country}`;
                     return;
                 }
             } catch (error) {
@@ -316,7 +316,7 @@
                     networkData.isp = data.organization || 'N/A';
                     networkData.city = data.city || 'N/A';
                     networkData.country = data.country || 'N/A';
-                    document.getElementById('network-info').textContent = `Hostname: ${networkData.hostname} | ISP: ${networkData.isp} | Location: ${networkData.city}, ${networkData.country} | DNS: ${networkData.dns}`;
+                    document.getElementById('network-info').textContent = `ISP: ${networkData.isp} | Location: ${networkData.city}, ${networkData.country}`;
                     return;
                 }
             } catch (error) {
@@ -324,7 +324,7 @@
             }
 
             // Final Fallback
-            document.getElementById('network-info').textContent = `Hostname: N/A | ISP: N/A | Location: N/A | DNS: N/A`;
+            document.getElementById('network-info').textContent = `ISP: N/A | Location: N/A`;
         }
 
         // Initialize Fetch
@@ -354,7 +354,7 @@
             }, { passive: true });
 
             // Golden Spiral
-            function createSpiral(offset, scale, life = 10) {
+            function createSpiral(offset, scale, life = 10, color = 0xff00cc) {
                 const phi = (1 + Math.sqrt(5)) / 2;
                 const points = [];
                 for (let i = 0; i < 40; i++) {
@@ -363,21 +363,22 @@
                     points.push(new THREE.Vector3(r * Math.cos(theta), r * Math.sin(theta), 0));
                 }
                 const geometry = new THREE.BufferGeometry().setFromPoints(points);
-                const material = new THREE.LineBasicMaterial({ color: 0xff00cc, transparent: true, opacity: 0.9, linewidth: 3 });
+                const material = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.9, linewidth: 3 });
                 const spiral = new THREE.Line(geometry, material);
                 scene.add(spiral);
                 return { obj: spiral, life, offset, scale };
             }
 
             // Fibonacci Particle
-            function createParticle(index, offset, life = 10, velocity = new THREE.Vector3(0, 0, 0)) {
-                const fib = (n) => n <= 1 ? n : fib(n - 1) + fib(n - 2);
-                const r = fib(index) * 0.3;
-                const x = r * Math.cos(index + offset);
-                const y = r * Math.sin(index + offset);
+            function createParticle(index, offset, life = 10, velocity = new THREE.Vector3(0, 0, 0), color = 0x00b7eb) {
+                const phi = (1 + Math.sqrt(5)) / 2;
+                const theta = index * 2 * Math.PI * phi; // Golden angle
+                const r = Math.sqrt(index) * 0.3; // Spiral distribution
+                const x = r * Math.cos(theta + offset);
+                const y = r * Math.sin(theta + offset);
                 const geometry = new THREE.BufferGeometry();
                 geometry.setAttribute('position', new THREE.Float32BufferAttribute([x, y, Math.random() * 0.2], 3));
-                const material = new THREE.PointsMaterial({ color: 0x00b7eb, size: 0.15, transparent: true, opacity: 1 });
+                const material = new THREE.PointsMaterial({ color, size: 0.15, transparent: true, opacity: 1 });
                 const particle = new THREE.Points(geometry, material);
                 scene.add(particle);
                 return { obj: particle, life, index, offset, velocity };
@@ -397,34 +398,35 @@
             function initAnimations() {
                 spirals.push(createSpiral(Math.random() * 2 * Math.PI, 0.3 + Math.random() * 0.2));
                 for (let i = 0; i < 20; i++) {
-                    particles.push(createParticle(i % 5, Math.random() * 2 * Math.PI));
+                    particles.push(createParticle(i, Math.random() * 2 * Math.PI));
                 }
             }
             initAnimations();
 
             // Big Bang Explosion on Copy
             function triggerBigBang() {
-                // Clear existing animations
-                spirals.forEach(s => scene.remove(s.obj));
-                particles.forEach(p => scene.remove(p.obj));
-                trails.forEach(t => scene.remove(t.obj));
+                spirals.forEach(s => { scene.remove(s.obj); s.obj.geometry.dispose(); s.obj.material.dispose(); });
+                particles.forEach(p => { scene.remove(p.obj); p.obj.geometry.dispose(); p.obj.material.dispose(); });
+                trails.forEach(t => { scene.remove(t.obj); t.obj.geometry.dispose(); t.obj.material.dispose(); });
                 spirals = [];
                 particles = [];
                 trails = [];
 
-                // Create explosion
-                for (let i = 0; i < 10; i++) {
-                    spirals.push(createSpiral(Math.random() * 2 * Math.PI, 0.5 + Math.random() * 0.3, 5)); // Shorter life
-                }
-                for (let i = 0; i < 50; i++) {
-                    const velocity = new THREE.Vector3(
-                        (Math.random() - 0.5) * 0.2,
-                        (Math.random() - 0.5) * 0.2,
-                        (Math.random() - 0.5) * 0.05
-                    );
-                    particles.push(createParticle(i % 5, Math.random() * 2 * Math.PI, 5, velocity));
+                const colors = [0x00b7eb, 0xff00cc, 0x00ffff, 0xffd700]; // Blue, magenta, cyan, gold
+                for (let i = 0; i < 12; i++) {
+                    spirals.push(createSpiral(Math.random() * 2 * Math.PI, 0.5 + Math.random() * 0.3, 5, colors[Math.floor(Math.random() * colors.length)]));
                 }
                 for (let i = 0; i < 100; i++) {
+                    const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2); // Golden angle
+                    const r = Math.sqrt(i) * 0.5;
+                    const velocity = new THREE.Vector3(
+                        r * Math.cos(theta) * 0.1,
+                        r * Math.sin(theta) * 0.1,
+                        (Math.random() - 0.5) * 0.05
+                    );
+                    particles.push(createParticle(i, Math.random() * 2 * Math.PI, 5, velocity, colors[Math.floor(Math.random() * colors.length)]));
+                }
+                for (let i = 0; i < 150; i++) {
                     const from = new THREE.Vector3(
                         (Math.random() - 0.5) * 2,
                         (Math.random() - 0.5) * 2,
@@ -435,7 +437,7 @@
                         from.y + (Math.random() - 0.5) * 4,
                         0
                     );
-                    trails.push(createTrail(from, to, Math.random() > 0.5 ? 0x00b7eb : 0xff00cc, 5));
+                    trails.push(createTrail(from, to, colors[Math.floor(Math.random() * colors.length)], 5));
                 }
             }
 
@@ -457,7 +459,7 @@
                     p.obj.position.x += p.velocity.x + mousePos.x * 0.015;
                     p.obj.position.y += p.velocity.y + mousePos.y * 0.015;
                     p.obj.position.z += p.velocity.z;
-                    p.velocity.multiplyScalar(0.98); // Slow down
+                    p.velocity.multiplyScalar(0.98);
                     return true;
                 });
 
@@ -514,7 +516,6 @@
                 renderer.setSize(window.innerWidth, window.innerHeight);
             }, { passive: true });
 
-            // Expose triggerBigBang for copyIP
             window.triggerBigBang = triggerBigBang;
         }
         initBackground();
@@ -523,7 +524,7 @@
         function copyIP() {
             const ip = document.getElementById('ip-display').textContent;
             navigator.clipboard.writeText(ip).then(() => {
-                window.triggerBigBang(); // Trigger Big Bang animation
+                window.triggerBigBang();
             }).catch(err => {
                 console.error('Copy Error:', err);
             });
