@@ -241,14 +241,13 @@
                     const r = Math.pow(phi, theta / Math.PI) * scale;
                     const x = r * Math.cos(theta);
                     const y = r * Math.sin(theta);
-                    // Map to screen coordinates for area check
                     const screenX = (x / 10 + 0.5) * window.innerWidth;
                     const screenY = (-y / 10 + 0.5) * window.innerHeight;
                     if (isOutsideIPArea(screenX / window.innerWidth, screenY / window.innerHeight)) {
                         points.push(new THREE.Vector3(x, y, 0));
                     }
                 }
-                if (points.length < 2) return null; // Skip if too few valid points
+                if (points.length < 2) return null;
                 const geometry = new THREE.BufferGeometry().setFromPoints(points);
                 const material = new THREE.LineBasicMaterial({ color: 0xff00cc, transparent: true, opacity: 0.6 });
                 const spiral = new THREE.Line(geometry, material);
@@ -262,7 +261,6 @@
                 const r = fib(index) * 0.08;
                 const x = r * Math.cos(index + offset);
                 const y = r * Math.sin(index + offset);
-                // Map to screen coordinates for area check
                 const screenX = (x / 10 + 0.5) * window.innerWidth;
                 const screenY = (-y / 10 + 0.5) * window.innerHeight;
                 if (!isOutsideIPArea(screenX / window.innerWidth, screenY / window.innerHeight)) return null;
@@ -276,7 +274,6 @@
 
             // Connecting Trails
             function createTrail(from, to, color) {
-                // Check if trail endpoints are outside IP area
                 const screenX1 = (from.x / 10 + 0.5) * window.innerWidth;
                 const screenY1 = (-from.y / 10 + 0.5) * window.innerHeight;
                 const screenX2 = (to.x / 10 + 0.5) * window.innerWidth;
@@ -303,7 +300,6 @@
             initAnimations();
 
             function updateAnimations() {
-                // Update Spirals
                 spirals = spirals.filter(s => {
                     if (s.life <= 0) { scene.remove(s.obj); return false; }
                     s.life -= 1 / 60;
@@ -314,14 +310,12 @@
                     return true;
                 });
 
-                // Update Particles
                 particles = particles.filter(p => {
                     if (p.life <= 0) { scene.remove(p.obj); return false; }
                     p.life -= 1 / 60;
                     p.obj.material.opacity = p.life / 10;
                     let newX = p.obj.position.x + (Math.random() - 0.5) * 0.01 + mousePos.x * 0.005;
                     let newY = p.obj.position.y + (Math.random() - 0.5) * 0.01 + mousePos.y * 0.005;
-                    // Ensure new position is outside IP area
                     const screenX = (newX / 10 + 0.5) * window.innerWidth;
                     const screenY = (-newY / 10 + 0.5) * window.innerHeight;
                     if (isOutsideIPArea(screenX / window.innerWidth, screenY / window.innerHeight)) {
@@ -331,7 +325,6 @@
                     return true;
                 });
 
-                // Update Trails
                 trails = trails.filter(t => {
                     if (t.life <= 0) { scene.remove(t.obj); return false; }
                     t.life -= 1 / 60;
@@ -339,7 +332,6 @@
                     return true;
                 });
 
-                // Create New Elements (Throttled)
                 if (spirals.length < 3 && Math.random() < 0.03) {
                     const spiral = createSpiral(Math.random() * 2 * Math.PI, 0.08 + Math.random() * 0.04);
                     if (spiral) spirals.push(spiral);
@@ -349,11 +341,9 @@
                     if (particle) particles.push(particle);
                 }
 
-                // Connect Particles and Spirals
                 if (trails.length < 50) {
                     particles.forEach(p => {
                         const pos = p.obj.position;
-                        // Connect to nearby particles
                         particles.forEach(p2 => {
                             if (p !== p2) {
                                 const pos2 = p2.obj.position;
@@ -364,7 +354,6 @@
                                 }
                             }
                         });
-                        // Connect to spiral points
                         spirals.forEach(s => {
                             const points = s.obj.geometry.attributes.position.array;
                             for (let i = 0; i < points.length; i += 3) {
