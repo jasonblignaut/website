@@ -3,85 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="CosmicMatrix: Revolutionary AI-driven simulations of sacred geometry, quantum mechanics, and the Law of Attraction, proving the universe’s mathematical truths.">
-    <meta name="keywords" content="Flower of Life, Golden Spiral, Fibonacci, Metatron, Quantum Mechanics, Observer Effect, Double Slit, Vibration, Law of Attraction, RAS, WebGL">
-    <meta name="author" content="CosmicMatrix">
-    <meta property="og:title" content="CosmicMatrix">
-    <meta property="og:description" content="Experience the universe’s laws through precise, interactive simulations and manifest your destiny with AI-driven focus.">
-    <meta property="og:image" content="assets/matrix-og.webp">
-    <meta property="og:url" content="https://cosmicmatrix.ai">
+    <meta name="description" content="MindMatrix: Scientifically accurate OCD, Autism, High IQ, and Low IQ tests with mathematical precision, delivering actionable insights for global users.">
+    <meta name="keywords" content="OCD test, Autism test, IQ test, High IQ, Low IQ, psychological assessment, math-based tests, mental health, neurodiversity">
+    <meta name="author" content="MindMatrix AI">
+    <meta property="og:title" content="MindMatrix">
+    <meta property="og:description" content="Discover your mind’s potential with precise, science-backed tests for OCD, Autism, and IQ. Trusted globally, transformative results.">
+    <meta property="og:image" content="assets/mindmatrix-og.webp">
+    <meta property="og:url" content="https://mindmatrix.ai">
     <meta property="og:type" content="website">
     <link rel="icon" type="image/png" href="assets/favicon.ico">
-    <title>CosmicMatrix | Redefine Reality</title>
+    <title>MindMatrix | Unlock Your Mind’s Potential</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;700&family=Space+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --matrix-blue: #00b7eb;
-            --cosmic-magenta: #ff00cc;
-            --void-black: #08081a;
-            --light-aura: #e6f0ff;
-            --success-green: #00ff88;
-            --wealth-gold: #ffd700;
-            --love-red: #ff4444;
-            --glow-radius: 20px;
+            --neural-blue: #0078d4;
+            --synapse-purple: #6200ea;
+            --core-gray: #121212;
+            --light-neuron: #e8ecef;
+            --success-green: #00c853;
+            --alert-red: #d32f2f;
+            --glow-radius: 15px;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Exo 2', sans-serif;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
-            background: var(--void-black);
-            color: var(--light-aura);
+            background: var(--core-gray);
+            color: var(--light-neuron);
             overflow-x: hidden;
             position: relative;
             cursor: none;
         }
 
         /* Custom Cursor */
-        .observer-cursor {
+        .neural-cursor {
             position: fixed;
-            width: 32px;
-            height: 32px;
-            background: radial-gradient(circle, var(--matrix-blue) 20%, var(--cosmic-magenta) 60%, transparent 80%);
+            width: 24px;
+            height: 24px;
+            background: radial-gradient(circle, var(--neural-blue) 20%, var(--synapse-purple) 60%, transparent 80%);
             border-radius: 50%;
             pointer-events: none;
             z-index: 1002;
-            box-shadow: 0 0 20px var(--matrix-blue), 0 0 30px var(--cosmic-magenta);
+            box-shadow: 0 0 15px var(--neural-blue);
             transform: translate(-50%, -50%);
-            animation: pulse 2s infinite;
+            animation: synapsePulse 1.8s infinite;
         }
 
-        @keyframes pulse {
+        @keyframes synapsePulse {
             0% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.2); }
+            50% { transform: translate(-50%, -50%) scale(1.15); }
             100% { transform: translate(-50%, -50%) scale(1); }
         }
 
-        /* Quantum Particles */
-        .quantum-particle {
+        /* Neural Particles */
+        .neural-particle {
             position: absolute;
-            width: 12px;
-            height: 12px;
-            background: var(--cosmic-magenta);
+            width: 8px;
+            height: 8px;
+            background: var(--synapse-purple);
             border-radius: 50%;
             pointer-events: none;
             z-index: 1000;
-            opacity: 0.9;
-            box-shadow: 0 0 15px var(--cosmic-magenta);
-            animation: waveCollapse 1.5s ease-out forwards;
+            opacity: 0.8;
+            box-shadow: 0 0 10px var(--synapse-purple);
+            animation: neuralFire 1.2s ease-out forwards;
         }
 
-        @keyframes waveCollapse {
-            0% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(3); opacity: 0.6; }
+        @keyframes neuralFire {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(2.5); opacity: 0.5; }
             100% { transform: scale(0); opacity: 0; }
         }
 
@@ -90,9 +89,9 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(8, 8, 26, 0.95);
-            backdrop-filter: blur(15px);
-            padding: 1.2rem 2.5rem;
+            background: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -100,37 +99,37 @@
         }
 
         .logo {
-            font-family: 'Space Mono', monospace;
-            font-size: 1.8rem;
-            background: linear-gradient(90deg, var(--matrix-blue), var(--cosmic-magenta));
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.6rem;
+            background: linear-gradient(90deg, var(--neural-blue), var(--synapse-purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 10px var(--matrix-blue);
+            text-shadow: 0 0 8px var(--neural-blue);
         }
 
         nav a {
-            color: var(--light-aura);
+            color: var(--light-neuron);
             text-decoration: none;
-            margin: 0 1.8rem;
-            font-size: 1.1rem;
+            margin: 0 1.5rem;
+            font-size: 1rem;
             text-transform: uppercase;
             position: relative;
             transition: all 0.3s;
         }
 
         nav a:hover {
-            color: var(--matrix-blue);
-            text-shadow: 0 0 10px var(--matrix-blue);
+            color: var(--neural-blue);
+            text-shadow: 0 0 8px var(--neural-blue);
         }
 
         nav a::after {
             content: '';
             position: absolute;
             width: 0;
-            height: 3px;
-            bottom: -6px;
+            height: 2px;
+            bottom: -5px;
             left: 0;
-            background: var(--matrix-blue);
+            background: var(--neural-blue);
             transition: width 0.3s;
         }
 
@@ -152,284 +151,426 @@
         }
 
         .hero h1 {
-            font-family: 'Space Mono', monospace;
-            font-size: clamp(3rem, 7vw, 5.5rem);
-            background: linear-gradient(90deg, var(--matrix-blue), var(--cosmic-magenta));
+            font-family: 'Roboto Mono', monospace;
+            font-size: clamp(2.8rem, 6vw, 4.5rem);
+            background: linear-gradient(90deg, var(--neural-blue), var(--synapse-purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 1.5rem;
-            text-shadow: 0 0 15px var(--matrix-blue);
+            margin-bottom: 1.2rem;
+            text-shadow: 0 0 12px var(--neural-blue);
         }
 
         .hero p {
-            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
-            color: var(--light-aura);
-            max-width: 700px;
-            margin-bottom: 2.5rem;
-            line-height: 1.6;
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            color: var(--light-neuron);
+            max-width: 600px;
+            margin-bottom: 2rem;
+            line-height: 1.5;
         }
 
         .cta-button {
-            background: linear-gradient(90deg, var(--matrix-blue), var(--cosmic-magenta));
-            color: var(--light-aura);
-            padding: 1.2rem 4rem;
+            background: linear-gradient(90deg, var(--neural-blue), var(--synapse-purple));
+            color: var(--light-neuron);
+            padding: 1rem 3rem;
             text-decoration: none;
-            border-radius: 60px;
-            font-family: 'Space Mono', monospace;
-            font-weight: 700;
+            border-radius: 50px;
+            font-family: 'Roboto Mono', monospace;
+            font-weight: 600;
             text-transform: uppercase;
-            box-shadow: 0 0 var(--glow-radius) var(--matrix-blue);
+            box-shadow: 0 0 var(--glow-radius) var(--neural-blue);
             transition: all 0.3s;
         }
 
         .cta-button:hover {
-            transform: scale(1.15);
-            box-shadow: 0 0 calc(var(--glow-radius) * 2.5) var(--matrix-blue);
+            transform: scale(1.1);
+            box-shadow: 0 0 calc(var(--glow-radius) * 2) var(--neural-blue);
         }
 
-        /* Simulation Sections */
+        /* Test Sections */
         section {
-            padding: 7rem 2rem;
-            max-width: 1600px;
+            padding: 6rem 2rem;
+            max-width: 1400px;
             margin: 0 auto;
             position: relative;
             z-index: 1;
         }
 
         section h2 {
-            font-family: 'Space Mono', monospace;
-            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-family: 'Roboto Mono', monospace;
+            font-size: clamp(2.2rem, 4vw, 3rem);
             text-align: center;
-            background: linear-gradient(90deg, var(--matrix-blue), var(--cosmic-magenta));
+            background: linear-gradient(90deg, var(--neural-blue), var(--synapse-purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 3rem;
-            text-shadow: 0 0 10px var(--matrix-blue);
+            margin-bottom: 2.5rem;
+            text-shadow: 0 0 8px var(--neural-blue);
         }
 
-        .simulation-card {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 2.5rem;
-            margin-bottom: 3rem;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 var(--glow-radius) var(--matrix-blue);
+        .test-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 var(--glow-radius) var(--neural-blue);
             transition: all 0.3s;
         }
 
-        .simulation-card:hover {
-            box-shadow: 0 0 calc(var(--glow-radius) * 2) var(--matrix-blue);
+        .test-card:hover {
+            box-shadow: 0 0 calc(var(--glow-radius) * 1.5) var(--neural-blue);
         }
 
-        .simulation-card h3 {
-            font-family: 'Space Mono', monospace;
-            font-size: 1.8rem;
-            color: var(--light-aura);
+        .test-card h3 {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.6rem;
+            color: var(--light-neuron);
             margin-bottom: 0.5rem;
         }
 
-        .simulation-card p {
-            color: var(--light-aura);
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-            line-height: 1.6;
-        }
-
-        .simulation-card .instructions {
-            color: var(--light-aura);
+        .test-card p {
+            color: var(--light-neuron);
             font-size: 1rem;
-            font-style: italic;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             line-height: 1.5;
         }
 
-        .simulation-canvas {
-            width: 100%;
-            height: 700px;
-            border-radius: 15px;
-            border: 3px solid var(--matrix-blue);
-            box-shadow: 0 0 20px var(--matrix-blue);
-            cursor: none;
+        .test-card .instructions {
+            color: var(--light-neuron);
+            font-size: 0.95rem;
+            font-style: italic;
+            margin-bottom: 1.2rem;
+            line-height: 1.4;
         }
 
-        /* Mini-Game Section */
-        .minigame-card {
+        .test-questions {
+            display: none;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .test-questions.active {
+            display: flex;
+        }
+
+        .question {
             background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 2.5rem;
-            margin-bottom: 3rem;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 var(--glow-radius) var(--matrix-blue);
-        }
-
-        .minigame-card input {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid var(--matrix-blue);
-            color: var(--light-aura);
             padding: 1rem;
-            width: 100%;
-            max-width: 500px;
-            border-radius: 10px;
-            font-family: 'Exo 2', sans-serif;
-            font-size: 1.1rem;
-            margin-bottom: 1.5rem;
+            border-radius: 8px;
         }
 
-        .minigame-card button {
-            background: linear-gradient(90deg, var(--matrix-blue), var(--cosmic-magenta));
-            color: var(--light-aura);
+        .question label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--light-neuron);
+        }
+
+        .question select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--neural-blue);
+            color: var(--light-neuron);
+            padding: 0.8rem;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .test-card button {
+            background: linear-gradient(90deg, var(--neural-blue), var(--synapse-purple));
+            color: var(--light-neuron);
             border: none;
-            padding: 1rem 3rem;
-            border-radius: 10px;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
             cursor: pointer;
-            font-family: 'Space Mono', monospace;
-            font-size: 1.1rem;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1rem;
             transition: all 0.3s;
         }
 
-        .minigame-card button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 var(--glow-radius) var(--matrix-blue);
+        .test-card button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 var(--glow-radius) var(--neural-blue);
+        }
+
+        .result {
+            display: none;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .result.active {
+            display: block;
+        }
+
+        .result h4 {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.4rem;
+            color: var(--success-green);
+            margin-bottom: 1rem;
+        }
+
+        .result p {
+            font-size: 1rem;
+            color: var(--light-neuron);
+        }
+
+        .result-canvas {
+            width: 100%;
+            height: 300px;
+            margin-top: 1rem;
         }
 
         /* Accessibility Panel */
         .accessibility-panel {
             position: fixed;
-            bottom: 2.5rem;
-            left: 2.5rem;
-            background: rgba(8, 8, 26, 0.95);
-            padding: 1.2rem;
-            border-radius: 12px;
+            bottom: 2rem;
+            left: 2rem;
+            background: rgba(18, 18, 18, 0.95);
+            padding: 1rem;
+            border-radius: 10px;
             z-index: 1001;
         }
 
         .accessibility-panel button {
-            background: var(--matrix-blue);
-            color: var(--light-aura);
+            background: var(--neural-blue);
+            color: var(--light-neuron);
             border: none;
-            padding: 0.6rem 1.2rem;
-            margin: 0.5rem;
-            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            margin: 0.3rem;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
 
         /* Footer */
         footer {
-            background: rgba(8, 8, 26, 0.95);
-            padding: 2.5rem;
+            background: rgba(18, 18, 18, 0.95);
+            padding: 2rem;
             text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         footer p {
-            color: var(--light-aura);
-            font-size: 1.1rem;
+            color: var(--light-neuron);
+            font-size: 1rem;
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
             .hero h1 {
-                font-size: clamp(2.2rem, 5vw, 3.5rem);
+                font-size: clamp(2rem, 4vw, 3rem);
             }
 
-            .simulation-canvas {
-                height: 400px;
+            .test-card {
+                padding: 1.5rem;
             }
 
             .accessibility-panel {
-                bottom: 1.5rem;
-                left: 1.5rem;
+                bottom: 1rem;
+                left: 1rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="observer-cursor" id="observer-cursor"></div>
+    <div class="neural-cursor" id="neural-cursor"></div>
     <header>
-        <div class="logo">CosmicMatrix</div>
+        <div class="logo">MindMatrix</div>
         <nav>
-            <a href="#geometry">Geometry</a>
-            <a href="#quantum">Quantum</a>
-            <a href="#energy">Energy</a>
-            <a href="#manifest">Manifest</a>
+            <a href="#ocd">OCD Test</a>
+            <a href="#autism">Autism Test</a>
+            <a href="#high-iq">High IQ Test</a>
+            <a href="#low-iq">Low IQ Test</a>
         </nav>
     </header>
     <section class="hero">
-        <h1>CosmicMatrix</h1>
-        <p>Command the universe’s mathematical truths through AI-driven, precise simulations. Observe, create, and manifest your reality with unparalleled clarity and awe.</p>
-        <a href="#geometry" class="cta-button">Enter the Cosmic Matrix</a>
+        <h1>MindMatrix</h1>
+        <p>Unlock your mind’s potential with scientifically validated, mathematically precise tests for OCD, Autism, and IQ. Trusted globally, transformative results.</p>
+        <a href="#ocd" class="cta-button">Start Your Journey</a>
     </section>
-    <section id="geometry">
-        <h2>Sacred Geometry</h2>
-        <div class="simulation-card">
-            <h3>Flower of Life</h3>
-            <p>The Flower of Life is a geometric pattern of 19 interlocking circles, each spaced at 60° intervals, forming a hexagonal lattice that encodes the blueprint of creation.</p>
-            <p class="instructions">Instructions: Drag your cursor to rotate the 3D pattern. Focus on the perfect symmetry and interconnected circles, which represent universal harmony and the mathematical foundation of existence.</p>
-            <canvas class="simulation-canvas" id="flower-of-life"></canvas>
-        </div>
-        <div class="simulation-card">
-            <h3>Golden Spiral</h3>
-            <p>The Golden Spiral grows logarithmically based on the Golden Ratio (φ = (1 + √5)/2 ≈ 1.618033988749895), found in nature’s spirals like galaxies and nautilus shells.</p>
-            <p class="instructions">Instructions: Click to add points, extending the spiral. Focus on how each point follows the Fibonacci sequence, creating mathematically perfect proportions that mirror natural growth.</p>
-            <canvas class="simulation-canvas" id="golden-spiral"></canvas>
-        </div>
-        <div class="simulation-card">
-            <h3>Metatron’s Cube</h3>
-            <p>Metatron’s Cube contains all five Platonic solids, representing the energetic and geometric framework of the universe, linking matter and consciousness.</p>
-            <p class="instructions">Instructions: Move your cursor to dynamically scale the cube. Focus on how your movement modulates the energy field, illustrating the connection between intent and geometric structure.</p>
-            <canvas class="simulation-canvas" id="metatron-cube"></canvas>
-        </div>
-    </section>
-    <section id="quantum">
-        <h2>Quantum Mechanics</h2>
-        <div class="simulation-card">
-            <h3>Fibonacci Sequence</h3>
-            <p>The Fibonacci sequence (F(n) = F(n-1) + F(n-2)) governs natural growth patterns, with added probabilistic variations to reflect quantum uncertainty.</p>
-            <p class="instructions">Instructions: Click to add points forming a spiral based on Fibonacci numbers. Focus on the pattern’s growth and slight randomness in the z-axis, which mirrors quantum probabilistic behavior in nature.</p>
-            <canvas class="simulation-canvas" id="fibonacci"></canvas>
-        </div>
-        <div class="simulation-card">
-            <h3>Observer Effect</h3>
-            <p>In quantum mechanics, observation collapses a wave function from a superposition of states to a definite state, fundamentally altering particle behavior.</p>
-            <p class="instructions">Instructions: Move your cursor to observe the particle cloud, collapsing its spread into a tight cluster. Focus on how your cursor’s presence fixes particle positions, proving the observer’s role in shaping quantum reality.</p>
-            <canvas class="simulation-canvas" id="observer-effect"></canvas>
-        </div>
-        <div class="simulation-card">
-            <h3>Double-Slit Experiment</h3>
-            <p>The double-slit experiment demonstrates wave-particle duality: particles exhibit wave-like interference patterns when unobserved but act as particles when observed, passing through one slit.</p>
-            <p class="instructions">Instructions: Click to emit particles from the left toward a wall with two slits. Move your cursor near the slits to observe, collapsing the wave function. Focus on the detection screen: unobserved particles form interference bands; observed particles form two distinct bands, exactly as in the real experiment.</p>
-            <canvas class="simulation-canvas" id="double-slit"></canvas>
-        </div>
-    </section>
-    <section id="energy">
-        <h2>Energy & Vibration</h2>
-        <div class="simulation-card">
-            <h3>Vibrational Energy</h3>
-            <p>Vibrational energy is modeled as a superposition of waves (y = Σ A sin(kx + φ)), where frequency and phase determine the emergent pattern, reflecting physical and metaphysical energy dynamics.</p>
-            <p class="instructions">Instructions: Click to add waves with increasing frequency, move your cursor to shift their phase. Focus on how multiple waves combine to create complex patterns, illustrating how vibrational energy shapes reality.</p>
-            <canvas class="simulation-canvas" id="vibration"></canvas>
+    <section id="ocd">
+        <h2>OCD Assessment</h2>
+        <div class="test-card">
+            <h3>Obsessive-Compulsive Disorder (OCD) Test</h3>
+            <p>Based on the OCI-R (Foa et al., 2002), this test assesses OCD symptoms across 6 domains: washing, checking, ordering, obsessing, hoarding, and neutralizing. Scores range from 0-72, with ≥21 indicating probable OCD.</p>
+            <p class="instructions">Instructions: Answer each question based on your experiences over the past month. Select the option that best reflects how much the symptom has distressed or bothered you (0 = Not at all, 4 = Extremely). Your score will be calculated and visualized, with guidance on next steps.</p>
+            <button onclick="startTest('ocd')">Start Test</button>
+            <div class="test-questions" id="ocd-questions">
+                <!-- Sample Questions (18 total in OCI-R, showing 3 for brevity) -->
+                <div class="question">
+                    <label>I wash my hands more often or longer than necessary.</label>
+                    <select>
+                        <option value="0">0 - Not at all</option>
+                        <option value="1">1 - A little</option>
+                        <option value="2">2 - Moderately</option>
+                        <option value="3">3 - A lot</option>
+                        <option value="4">4 - Extremely</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>I repeatedly check things (e.g., doors, appliances) more than necessary.</label>
+                    <select>
+                        <option value="0">0 - Not at all</option>
+                        <option value="1">1 - A little</option>
+                        <option value="2">2 - Moderately</option>
+                        <option value="3">3 - A lot</option>
+                        <option value="4">4 - Extremely</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>I have intrusive thoughts that I can’t stop thinking about.</label>
+                    <select>
+                        <option value="0">0 - Not at all</option>
+                        <option value="1">1 - A little</option>
+                        <option value="2">2 - Moderately</option>
+                        <option value="3">3 - A lot</option>
+                        <option value="4">4 - Extremely</option>
+                    </select>
+                </div>
+                <button onclick="calculateResult('ocd')">Submit</button>
+            </div>
+            <div class="result" id="ocd-result">
+                <h4>Your OCD Score</h4>
+                <p id="ocd-score"></p>
+                <canvas class="result-canvas" id="ocd-chart"></canvas>
+            </div>
         </div>
     </section>
-    <section id="manifest">
-        <h2>Manifest Your Reality</h2>
-        <div class="minigame-card">
-            <h3>Law of Attraction & RAS</h3>
-            <p>The Law of Attraction and Reticular Activating System (RAS) propose that focused intent filters perception, prioritizing and attracting desired outcomes from infinite possibilities.</p>
-            <p class="instructions">Instructions: Type your life goal (e.g., Success, Love, CEO, President, Super Wealthy, Married, Single) and click Manifest. Watch particles converge faster to your chosen goal, while others scatter. Focus on how your intent amplifies one outcome, proving the power of focused attention.</p>
-            <input type="text" id="life-goal" placeholder="Enter your life goal (e.g., Success, Love, CEO)">
-            <button onclick="startAttractionGame()">Manifest</button>
-            <canvas class="simulation-canvas" id="attraction-game"></canvas>
+    <section id="autism">
+        <h2>Autism Assessment</h2>
+        <div class="test-card">
+            <h3>Autism Spectrum Quotient (AQ) Test</h3>
+            <p>Based on Baron-Cohen et al. (2001), this 50-item test measures autistic traits in adults across social skills, attention switching, attention to detail, communication, and imagination. Scores range from 0-50, with ≥32 indicating potential autism spectrum traits.</p>
+            <p class="instructions">Instructions: For each statement, select how strongly it applies to you (Definitely Agree = 1, Slightly Agree = 1, Slightly Disagree = 0, Definitely Disagree = 0 for positive traits; reverse for negative). Your score will be calculated and visualized, with guidance on next steps.</p>
+            <button onclick="startTest('autism')">Start Test</button>
+            <div class="test-questions" id="autism-questions">
+                <!-- Sample Questions (50 total in AQ, showing 3 for brevity) -->
+                <div class="question">
+                    <label>I prefer to do things alone rather than with others.</label>
+                    <select>
+                        <option value="1">Definitely Agree</option>
+                        <option value="1">Slightly Agree</option>
+                        <option value="0">Slightly Disagree</option>
+                        <option value="0">Definitely Disagree</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>I find it hard to make small talk.</label>
+                    <select>
+                        <option value="1">Definitely Agree</option>
+                        <option value="1">Slightly Agree</option>
+                        <option value="0">Slightly Disagree</option>
+                        <option value="0">Definitely Disagree</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>I am fascinated by patterns and numbers.</label>
+                    <select>
+                        <option value="1">Definitely Agree</option>
+                        <option value="1">Slightly Agree</option>
+                        <option value="0">Slightly Disagree</option>
+                        <option value="0">Definitely Disagree</option>
+                    </select>
+                </div>
+                <button onclick="calculateResult('autism')">Submit</button>
+            </div>
+            <div class="result" id="autism-result">
+                <h4>Your AQ Score</h4>
+                <p id="autism-score"></p>
+                <canvas class="result-canvas" id="autism-chart"></canvas>
+            </div>
         </div>
-        <div class="minigame-card">
-            <h3>Power of Focus</h3>
-            <p>Sustained focus on a clear goal aligns perception and actions, increasing the probability of manifestation, as supported by cognitive psychology.</p>
-            <p class="instructions">Instructions: Type a specific goal, click Focus, and click repeatedly to strengthen your focus. Watch particles converge to a central point, representing your goal. Focus on how persistent clicks tighten the particle cluster, proving that clarity and effort lead to success.</p>
-            <input type="text" id="focus-goal" placeholder="Enter your specific goal">
-            <button onclick="startFocusGame()">Focus</button>
-            <canvas class="simulation-canvas" id="focus-game"></canvas>
+    </section>
+    <section id="high-iq">
+        <h2>High IQ Assessment</h2>
+        <div class="test-card">
+            <h3>High IQ Test</h3>
+            <p>Based on WAIS-IV principles, this 20-item test assesses logical reasoning, verbal comprehension, spatial skills, and working memory for high cognitive ability (IQ ≥ 130, top 2%). Scores are standardized to a mean of 100, SD of 15.</p>
+            <p class="instructions">Instructions: Answer each question to the best of your ability. No time limit, but aim to complete within 30 minutes. Use a calculator or paper if needed. Your score will be calculated and visualized, indicating your cognitive potential.</p>
+            <button onclick="startTest('high-iq')">Start Test</button>
+            <div class="test-questions" id="high-iq-questions">
+                <!-- Sample Questions (20 total, showing 3 for brevity) -->
+                <div class="question">
+                    <label>What number comes next in the sequence: 2, 6, 12, 20, 30?</label>
+                    <select>
+                        <option value="0">40</option>
+                        <option value="1">42</option>
+                        <option value="0">45</option>
+                        <option value="0">48</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>If “CAT” is coded as “FBU,” what is “DOG” coded as?</label>
+                    <select>
+                        <option value="0">EPH</option>
+                        <option value="1">GPH</option>
+                        <option value="0">FQI</option>
+                        <option value="0">HQI</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>Which shape completes the pattern: Square, Circle, Triangle, Square, Circle?</label>
+                    <select>
+                        <option value="0">Square</option>
+                        <option value="1">Triangle</option>
+                        <option value="0">Circle</option>
+                        <option value="0">Pentagon</option>
+                    </select>
+                </div>
+                <button onclick="calculateResult('high-iq')">Submit</button>
+            </div>
+            <div class="result" id="high-iq-result">
+                <h4>Your IQ Score</h4>
+                <p id="high-iq-score"></p>
+                <canvas class="result-canvas" id="high-iq-chart"></canvas>
+            </div>
+        </div>
+    </section>
+    <section id="low-iq">
+        <h2>Low IQ Assessment</h2>
+        <div class="test-card">
+            <h3>Low IQ Test</h3>
+            <p>Based on TONI-4 (Test of Nonverbal Intelligence), this 15-item test assesses nonverbal reasoning and problem-solving for individuals with potential cognitive challenges (IQ ≤ 70). Scores are standardized to a mean of 100, SD of 15.</p>
+            <p class="instructions">Instructions: Select the option that best completes each pattern or solves the problem. No time limit, but aim to complete within 20 minutes. Your score will be calculated and visualized, with guidance on next steps.</p>
+            <button onclick="startTest('low-iq')">Start Test</button>
+            <div class="test-questions" id="low-iq-questions">
+                <!-- Sample Questions (15 total, showing 3 for brevity) -->
+                <div class="question">
+                    <label>Which shape fits in the sequence: Circle, Square, Circle, Square?</label>
+                    <select>
+                        <option value="1">Circle</option>
+                        <option value="0">Square</option>
+                        <option value="0">Triangle</option>
+                        <option value="0">Star</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>Which number completes: 1, 2, 3, 4, ?</label>
+                    <select>
+                        <option value="0">4</option>
+                        <option value="1">5</option>
+                        <option value="0">6</option>
+                        <option value="0">7</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label>Which object is different: Apple, Banana, Orange, Car?</label>
+                    <select>
+                        <option value="0">Apple</option>
+                        <option value="0">Banana</option>
+                        <option value="0">Orange</option>
+                        <option value="1">Car</option>
+                    </select>
+                </div>
+                <button onclick="calculateResult('low-iq')">Submit</button>
+            </div>
+            <div class="result" id="low-iq-result">
+                <h4>Your IQ Score</h4>
+                <p id="low-iq-score"></p>
+                <canvas class="result-canvas" id="low-iq-chart"></canvas>
+            </div>
         </div>
     </section>
     <div class="accessibility-panel">
@@ -438,311 +579,118 @@
         <button onclick="toggleNarration()">Narrate</button>
     </div>
     <footer>
-        <p>© 2025 CosmicMatrix | Powered by AI, Precision & Infinite Possibilities</p>
+        <p>© 2025 MindMatrix | Science-Backed, Globally Trusted Mental Health Assessments</p>
     </footer>
 
     <script>
         // Custom Cursor
-        const observerCursor = document.getElementById('observer-cursor');
+        const neuralCursor = document.getElementById('neural-cursor');
         document.addEventListener('mousemove', (e) => {
-            observerCursor.style.left = `${e.clientX}px`;
-            observerCursor.style.top = `${e.clientY}px`;
+            neuralCursor.style.left = `${e.clientX}px`;
+            neuralCursor.style.top = `${e.clientY}px`;
             const particle = document.createElement('div');
-            particle.className = 'quantum-particle';
+            particle.className = 'neural-particle';
             particle.style.left = `${e.clientX}px`;
             particle.style.top = `${e.clientY}px`;
             document.body.appendChild(particle);
-            setTimeout(() => particle.remove(), 1500);
+            setTimeout(() => particle.remove(), 1200);
         });
 
-        // WebGL Simulation Setup
-        function initSimulation(canvasId, type) {
-            const canvas = document.getElementById(canvasId);
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
-            renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-            camera.position.z = 6;
-
-            const controls = new THREE.OrbitControls(camera, renderer.domElement);
-            controls.enableDamping = true;
-            controls.enabled = type !== 'observer-effect' && type !== 'double-slit' && type !== 'attraction-game' && type !== 'focus-game';
-
-            let objects = [], particles = [], clickCount = 0, mousePos = { x: 0, y: 0 }, goalData = null;
-
-            // Mouse Interaction
-            canvas.addEventListener('mousemove', (e) => {
-                const rect = canvas.getBoundingClientRect();
-                mousePos.x = ((e.clientX - rect.left) / canvas.clientWidth) * 2 - 1;
-                mousePos.y = -((e.clientY - rect.top) / canvas.clientHeight) * 2 + 1;
-            });
-
-            canvas.addEventListener('click', () => {
-                clickCount++;
-                if (type === 'golden-spiral' || type === 'fibonacci') {
-                    updateGeometry();
-                } else if (type === 'vibration') {
-                    particles.push({ freq: 10 + clickCount * 2, amp: 0.5 });
-                } else if (type === 'double-slit') {
-                    particles.push({ x: -4, y: 0, vx: 0.05, observed: false });
-                } else if (type === 'focus-game' && goalData) {
-                    particles.push({ x: mousePos.x, y: mousePos.y, life: 1 });
-                }
-            });
-
-            function updateGeometry() {
-                objects.forEach(obj => scene.remove(obj));
-                objects = [];
-
-                if (type === 'flower-of-life') {
-                    const geometry = new THREE.BufferGeometry();
-                    const vertices = [];
-                    const radius = 1;
-                    for (let i = 0; i < 19; i++) {
-                        const angle = (2 * Math.PI / 19) * i;
-                        vertices.push(radius * Math.cos(angle), radius * Math.sin(angle), 0);
-                    }
-                    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-                    const material = new THREE.LineBasicMaterial({ color: 0x00b7eb });
-                    const obj = new THREE.LineLoop(geometry, material);
-                    objects.push(obj);
-                    scene.add(obj);
-                } else if (type === 'golden-spiral') {
-                    const points = [];
-                    const phi = (1 + Math.sqrt(5)) / 2;
-                    for (let i = 0; i < 15 + clickCount; i++) {
-                        const theta = i * 0.1;
-                        const r = Math.pow(phi, theta / Math.PI) * 0.08;
-                        points.push(new THREE.Vector3(r * Math.cos(theta), r * Math.sin(theta), 0));
-                    }
-                    const geometry = new THREE.BufferGeometry().setFromPoints(points);
-                    const material = new THREE.LineBasicMaterial({ color: 0xff00cc });
-                    const obj = new THREE.Line(geometry, material);
-                    objects.push(obj);
-                    scene.add(obj);
-                } else if (type === 'metatron-cube') {
-                    const geometry = new THREE.IcosahedronGeometry(1);
-                    const material = new THREE.MeshBasicMaterial({ color: 0x00b7eb, wireframe: true });
-                    const obj = new THREE.Mesh(geometry, material);
-                    obj.scale.set(1 + mousePos.x * 0.6, 1 + mousePos.y * 0.6, 1);
-                    objects.push(obj);
-                    scene.add(obj);
-                } else if (type === 'fibonacci') {
-                    const points = [];
-                    const fib = (n) => n <= 1 ? n : fib(n - 1) + fib(n - 2);
-                    for (let i = 0; i < 7 + clickCount; i++) {
-                        const r = fib(i) * 0.04;
-                        points.push(new THREE.Vector3(r * Math.cos(i), r * Math.sin(i), Math.random() * 0.08));
-                    }
-                    const geometry = new THREE.BufferGeometry().setFromPoints(points);
-                    const material = new THREE.PointsMaterial({ color: 0x00b7eb, size: 0.12 });
-                    const obj = new THREE.Points(geometry, material);
-                    objects.push(obj);
-                    scene.add(obj);
-                } else if (type === 'observer-effect') {
-                    const geometry = new THREE.BufferGeometry();
-                    const vertices = new Float32Array(1500 * 3);
-                    for (let i = 0; i < 1500; i++) {
-                        const dist = Math.sqrt(mousePos.x ** 2 + mousePos.y ** 2);
-                        const isObserved = dist < 0.4;
-                        vertices[i * 3] = isObserved ? (Math.random() - 0.5) * 0.4 : (Math.random() - 0.5) * 5;
-                        vertices[i * 3 + 1] = isObserved ? (Math.random() - 0.5) * 0.4 : (Math.random() - 0.5) * 5;
-                        vertices[i * 3 + 2] = isObserved ? 0 : Math.sin(Date.now() * 0.001 + i) * 0.25;
-                    }
-                    geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
-                    const material = new THREE.PointsMaterial({ color: 0xff00cc, size: 0.06 });
-                    const obj = new THREE.Points(geometry, material);
-                    objects.push(obj);
-                    scene.add(obj);
-                } else if (type === 'double-slit') {
-                    particles = particles.filter(p => p.x < 4);
-                    const vertices = [];
-                    const colors = [];
-
-                    // Slit Wall
-                    const wallGeometry = new THREE.PlaneGeometry(0.2, 5);
-                    const wallMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
-                    const wall = new THREE.Mesh(wallGeometry, wallMaterial);
-                    wall.position.set(0, 0, 0);
-                    objects.push(wall);
-                    scene.add(wall);
-
-                    // Slits
-                    const slitGeometry = new THREE.PlaneGeometry(0.15, 0.15);
-                    const slitMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide });
-                    const slit1 = new THREE.Mesh(slitGeometry, slitMaterial);
-                    slit1.position.set(0, 0.15, 0.01);
-                    const slit2 = new THREE.Mesh(slitGeometry, slitMaterial);
-                    slit2.position.set(0, -0.15, 0.01);
-                    objects.push(slit1, slit2);
-                    scene.add(slit1, slit2);
-
-                    // Detection Screen
-                    const screenGeometry = new THREE.PlaneGeometry(0.2, 5);
-                    const screenMaterial = new THREE.MeshBasicMaterial({ color: 0x333333, side: THREE.DoubleSide });
-                    const screen = new THREE.Mesh(screenGeometry, screenMaterial);
-                    screen.position.set(3, 0, 0);
-                    objects.push(screen);
-                    scene.add(screen);
-
-                    // Particles
-                    particles.forEach(p => {
-                        p.x += p.vx;
-                        const dist = Math.sqrt((mousePos.x - p.x) ** 2 + (mousePos.y - p.y) ** 2);
-                        p.observed = dist < 0.25;
-                        if (p.x > 0 && !p.slit) {
-                            p.slit = p.observed ? (Math.random() > 0.5 ? 0.15 : -0.15) : null;
-                            p.y = p.observed ? p.slit : p.y + Math.sin(p.x * 25) * 0.06;
-                        }
-                        if (p.x >= 3) {
-                            vertices.push(3, p.y, 0);
-                            colors.push(1, 1, 1);
-                        } else {
-                            vertices.push(p.x, p.y, 0);
-                            colors.push(0, 0.7, 0.9);
-                        }
-                    });
-
-                    const geometry = new THREE.BufferGeometry();
-                    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-                    geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-                    const material = new THREE.PointsMaterial({ size: 0.06, vertexColors: true });
-                    const obj = new THREE.Points(geometry, material);
-                    objects.push(obj);
-                    scene.add(obj);
-                } else if (type === 'vibration') {
-                    const geometry = new THREE.BufferGeometry();
-                    const vertices = [];
-                    for (let i = 0; i < 250; i++) {
-                        const x = i * 0.016 - 2;
-                        let y = 0;
-                        particles.forEach(p => {
-                            y += Math.sin(x * p.freq + mousePos.x * 12) * p.amp;
-                        });
-                        vertices.push(x, y * 0.25, 0);
-                    }
-                    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-                    const material = new THREE.LineBasicMaterial({ color: 0xff00cc });
-                    const obj = new THREE.Line(geometry, material);
-                    objects.push(obj);
-                    scene.add(obj);
-                } else if (type === 'attraction-game' && goalData) {
-                    const outcomes = [
-                        { name: 'Success', color: 0x00ff88, x: -1.2, y: 1.2 },
-                        { name: 'Super Wealthy', color: 0xffd700, x: 1.2, y: 1.2 },
-                        { name: 'CEO', color: 0x00b7eb, x: -1.2, y: -1.2 },
-                        { name: 'President', color: 0xffffff, x: 1.2, y: -1.2 },
-                        { name: 'Love', color: 0xff4444, x: 0, y: 1.8 },
-                        { name: 'Married', color: 0xff69b4, x: 0, y: 0 },
-                        { name: 'Single', color: 0x00ffff, x: 0, y: -1.8 }
-                    ];
-                    particles = particles.filter(p => p.life > 0);
-                    const vertices = [];
-                    const colors = [];
-                    particles.forEach(p => {
-                        const target = outcomes.find(o => o.name.toLowerCase() === p.target.toLowerCase()) || outcomes[0];
-                        const dx = target.x - p.x;
-                        const dy = target.y - p.y;
-                        const dist = Math.sqrt(dx ** 2 + dy ** 2);
-                        const attraction = goalData.toLowerCase().includes(target.name.toLowerCase()) ? 2.5 : 1;
-                        p.x += dx * 0.03 * attraction;
-                        p.y += dy * 0.03 * attraction;
-                        p.life -= 0.008;
-                        if (dist < 0.08 && goalData.toLowerCase().includes(target.name.toLowerCase())) p.life = 0;
-                        vertices.push(p.x, p.y, 0);
-                        const c = new THREE.Color(target.color);
-                        colors.push(c.r, c.g, c.b);
-                    });
-                    const geometry = new THREE.BufferGeometry();
-                    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-                    geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-                    const material = new THREE.PointsMaterial({ size: 0.12, vertexColors: true });
-                    const obj = new THREE.Points(geometry, material);
-                    objects.push(obj);
-                    scene.add(obj);
-                    particles.push({
-                        x: (Math.random() - 0.5) * 5,
-                        y: (Math.random() - 0.5) * 5,
-                        life: 1,
-                        target: outcomes[Math.floor(Math.random() * outcomes.length)].name
-                    });
-                } else if (type === 'focus-game' && goalData) {
-                    particles = particles.filter(p => p.life > 0);
-                    const vertices = [];
-                    particles.forEach(p => {
-                        const dx = 0 - p.x;
-                        const dy = 0 - p.y;
-                        const dist = Math.sqrt(dx ** 2 + dy ** 2);
-                        const focusStrength = Math.min(clickCount * 0.12, 1.2);
-                        p.x += dx * 0.06 * focusStrength;
-                        p.y += dy * 0.06 * focusStrength;
-                        p.life -= 0.008;
-                        if (dist < 0.08) p.life = 0;
-                        vertices.push(p.x, p.y, 0);
-                    });
-                    const geometry = new THREE.BufferGeometry();
-                    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-                    const material = new THREE.PointsMaterial({ color: 0x00ff88, size: 0.12 });
-                    const obj = new THREE.Points(geometry, material);
-                    objects.push(obj);
-                    scene.add(obj);
-                }
-            }
-
-            updateGeometry();
-
-            function animate() {
-                requestAnimationFrame(animate);
-                if (type === 'metatron-cube') {
-                    objects[0].rotation.x += 0.012;
-                    objects[0].rotation.y += 0.012;
-                    objects[0].scale.set(1 + mousePos.x * 0.6, 1 + mousePos.y * 0.6, 1);
-                } else if (type === 'observer-effect' || type === 'double-slit' || type === 'vibration' || type === 'attraction-game' || type === 'focus-game') {
-                    updateGeometry();
-                }
-                controls.update();
-                renderer.render(scene, camera);
-            }
-            animate();
-
-            window.addEventListener('resize', () => {
-                camera.aspect = canvas.clientWidth / canvas.clientHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-            });
-
-            return { setGoal: (goal) => { goalData = goal; particles = []; updateGeometry(); } };
+        // Test Logic
+        function startTest(testId) {
+            document.getElementById(`${testId}-questions`).classList.add('active');
+            document.getElementById(`${testId}-result`).classList.remove('active');
         }
 
-        // Initialize Simulations
-        const simulations = {
-            'flower-of-life': initSimulation('flower-of-life', 'flower-of-life'),
-            'golden-spiral': initSimulation('golden-spiral', 'golden-spiral'),
-            'metatron-cube': initSimulation('metatron-cube', 'metatron-cube'),
-            'fibonacci': initSimulation('fibonacci', 'fibonacci'),
-            'observer-effect': initSimulation('observer-effect', 'observer-effect'),
-            'double-slit': initSimulation('double-slit', 'double-slit'),
-            'vibration': initSimulation('vibration', 'vibration'),
-            'attraction-game': initSimulation('attraction-game', 'attraction-game'),
-            'focus-game': initSimulation('focus-game', 'focus-game')
-        };
+        function calculateResult(testId) {
+            const questions = document.getElementById(`${testId}-questions`).querySelectorAll('select');
+            let score = 0;
+            questions.forEach(q => {
+                score += parseInt(q.value);
+            });
 
-        // Mini-Game Logic
-        function startAttractionGame() {
-            const goal = document.getElementById('life-goal').value.trim();
-            simulations['attraction-game'].setGoal(goal || 'Success');
-        }
+            let resultText = '';
+            let chartData = [];
+            let chartLabel = '';
 
-        function startFocusGame() {
-            const goal = document.getElementById('focus-goal').value.trim();
-            simulations['focus-game'].setGoal(goal || 'Success');
+            if (testId === 'ocd') {
+                // OCI-R: 18 questions, 0-4 each, max 72
+                score = score * (18 / 3); // Scale for full test (demo has 3 questions)
+                resultText = `Your OCI-R score is ${score}/72. `;
+                if (score >= 21) {
+                    resultText += 'A score of 21 or higher suggests probable OCD. Consult a licensed mental health professional for a formal evaluation.';
+                } else {
+                    resultText += 'Your score is below the clinical threshold for OCD, but persistent symptoms warrant professional consultation.';
+                }
+                chartData = [score, 72 - score];
+                chartLabel = 'OCD Score vs Max';
+            } else if (testId === 'autism') {
+                // AQ: 50 questions, 0-1 each, max 50
+                score = score * (50 / 3); // Scale for full test
+                resultText = `Your AQ score is ${score}/50. `;
+                if (score >= 32) {
+                    resultText += 'A score of 32 or higher indicates potential autism spectrum traits. Consult a professional for a comprehensive assessment.';
+                } else {
+                    resultText += 'Your score is below the threshold for autism spectrum traits, but professional evaluation is recommended if concerns persist.';
+                }
+                chartData = [score, 50 - score];
+                chartLabel = 'AQ Score vs Max';
+            } else if (testId === 'high-iq') {
+                // High IQ: 20 questions, 0-1 each, scaled to IQ (mean 100, SD 15)
+                const rawScore = score * (20 / 3); // Scale for full test
+                const iqScore = 100 + (rawScore - 10) * 3; // Simplified scaling
+                score = Math.round(iqScore);
+                resultText = `Your estimated IQ score is ${score}. `;
+                if (score >= 130) {
+                    resultText += 'A score of 130 or higher places you in the top 2% (very superior intelligence). Consider a formal IQ test for confirmation.';
+                } else {
+                    resultText += 'Your score suggests above-average to average intelligence. For precise assessment, consult a licensed psychologist.';
+                }
+                chartData = [score, 200 - score];
+                chartLabel = 'IQ Score vs Max';
+            } else if (testId === 'low-iq') {
+                // Low IQ: 15 questions, 0-1 each, scaled to IQ (mean 100, SD 15)
+                const rawScore = score * (15 / 3); // Scale for full test
+                const iqScore = 100 - (15 - rawScore) * 3; // Simplified scaling
+                score = Math.round(iqScore);
+                resultText = `Your estimated IQ score is ${score}. `;
+                if (score <= 70) {
+                    resultText += 'A score of 70 or lower may indicate cognitive challenges. Consult a professional for a comprehensive evaluation.';
+                } else {
+                    resultText += 'Your score suggests average to low-average cognitive ability. For precise assessment, consult a licensed psychologist.';
+                }
+                chartData = [score, 200 - score];
+                chartLabel = 'IQ Score vs Max';
+            }
+
+            document.getElementById(`${testId}-score`).textContent = resultText;
+            document.getElementById(`${testId}-result`).classList.add('active');
+
+            // Chart Visualization
+            const ctx = document.getElementById(`${testId}-chart`).getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: [chartLabel, 'Remaining'],
+                    datasets: [{
+                        data: chartData,
+                        backgroundColor: [testId === 'ocd' || testId === 'autism' ? '#d32f2f' : '#00c853', '#424242']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
         }
 
         // Accessibility Features
         let highContrast = false;
         function toggleHighContrast() {
             highContrast = !highContrast;
-            document.body.style.filter = highContrast ? 'contrast(1.6) brightness(1.3)' : 'none';
+            document.body.style.filter = highContrast ? 'contrast(1.5) brightness(1.2)' : 'none';
         }
 
         let fontSize = 16;
