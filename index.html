@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="CosmicMatrix: Interactive live simulations of sacred geometry, quantum mechanics, and vibrational energy, unlocking the universe's mathematical secrets.">
-    <meta name="keywords" content="Flower of Life, Golden Spiral, Fibonacci, Metatron, Quantum Mechanics, Observer Effect, Wave-Particle, Energy, Vibration, WebGL">
+    <meta name="description" content="CosmicMatrix: Fully interactive, scientifically accurate simulations of sacred geometry, quantum mechanics, and vibrational energy, driven by your cursor and clicks.">
+    <meta name="keywords" content="Flower of Life, Golden Spiral, Fibonacci, Metatron, Quantum Mechanics, Observer Effect, Double Slit, Wave-Particle, Energy, Vibration, WebGL">
     <meta name="author" content="CosmicMatrix">
     <meta property="og:title" content="CosmicMatrix">
-    <meta property="og:description" content="Experience live simulations of the universe's mathematical and physical phenomena.">
+    <meta property="og:description" content="Interact with the universe’s mathematical and physical laws through live, cursor-driven simulations.">
     <meta property="og:image" content="assets/matrix-og.webp">
     <meta property="og:url" content="https://cosmicmatrix.ai">
     <meta property="og:type" content="website">
     <link rel="icon" type="image/png" href="assets/favicon.ico">
-    <title>CosmicMatrix | Universe Unlocked</title>
+    <title>CosmicMatrix | Interact with the Universe</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;700&family=Space+Mono&display=swap" rel="stylesheet">
@@ -39,6 +39,20 @@
             color: var(--light-aura);
             overflow-x: hidden;
             position: relative;
+            cursor: none; /* Custom cursor for observer effect */
+        }
+
+        /* Custom Cursor */
+        .observer-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, var(--matrix-blue) 20%, transparent 80%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1002;
+            box-shadow: 0 0 10px var(--matrix-blue);
+            transform: translate(-50%, -50%);
         }
 
         /* Quantum Particles */
@@ -46,12 +60,12 @@
             position: absolute;
             width: 6px;
             height: 6px;
-            background: var(--matrix-blue);
+            background: var(--cosmic-magenta);
             border-radius: 50%;
             pointer-events: none;
             z-index: 1000;
             opacity: 0.6;
-            box-shadow: 0 0 8px var(--matrix-blue);
+            box-shadow: 0 0 8px var(--cosmic-magenta);
             animation: waveCollapse 0.8s ease-out forwards;
         }
 
@@ -193,7 +207,7 @@
             font-family: 'Space Mono', monospace;
             font-size: 1.3rem;
             color: var(--light-aura);
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
 
         .simulation-card p {
@@ -204,9 +218,10 @@
 
         .simulation-canvas {
             width: 100%;
-            height: 300px;
+            height: 400px;
             border-radius: 8px;
             border: 1px solid var(--matrix-blue);
+            cursor: none; /* Custom cursor for observer effect */
         }
 
         /* Accessibility Panel */
@@ -251,7 +266,7 @@
             }
 
             .simulation-canvas {
-                height: 200px;
+                height: 250px;
             }
 
             .accessibility-panel {
@@ -262,6 +277,7 @@
     </style>
 </head>
 <body>
+    <div class="observer-cursor" id="observer-cursor"></div>
     <header>
         <div class="logo">CosmicMatrix</div>
         <nav>
@@ -272,24 +288,24 @@
     </header>
     <section class="hero">
         <h1>CosmicMatrix</h1>
-        <p>Experience live simulations of sacred geometry, quantum mechanics, and vibrational energy, revealing the universe's mathematical core.</p>
-        <a href="#geometry" class="cta-button">Begin Journey</a>
+        <p>Your cursor is the observer, your clicks are energy, and your movements shape probabilities—interact with the universe’s mathematical and physical laws.</p>
+        <a href="#geometry" class="cta-button">Unleash the Matrix</a>
     </section>
     <section id="geometry">
         <h2>Sacred Geometry</h2>
         <div class="simulation-card">
             <h3>Flower of Life</h3>
-            <p>A sacred pattern of interlocking circles, symbolizing universal creation and harmony.</p>
+            <p>Drag your cursor to rotate this sacred pattern of interlocking circles, encoding universal harmony.</p>
             <canvas class="simulation-canvas" id="flower-of-life"></canvas>
         </div>
         <div class="simulation-card">
             <h3>Golden Spiral</h3>
-            <p>A logarithmic spiral derived from the Fibonacci sequence, found in nature and art.</p>
+            <p>Click to add Fibonacci points, growing the logarithmic spiral found in nature.</p>
             <canvas class="simulation-canvas" id="golden-spiral"></canvas>
         </div>
         <div class="simulation-card">
             <h3>Metatron’s Cube</h3>
-            <p>A geometric figure containing all Platonic solids, linking energy and matter.</p>
+            <p>Move your cursor to adjust the energy field of this geometric structure containing all Platonic solids.</p>
             <canvas class="simulation-canvas" id="metatron-cube"></canvas>
         </div>
     </section>
@@ -297,25 +313,25 @@
         <h2>Quantum Mechanics</h2>
         <div class="simulation-card">
             <h3>Fibonacci Sequence</h3>
-            <p>A sequence where each number is the sum of the two preceding ones, visualized dynamically.</p>
+            <p>Click to generate Fibonacci numbers, visualized as a probabilistic spiral.</p>
             <canvas class="simulation-canvas" id="fibonacci"></canvas>
         </div>
         <div class="simulation-card">
             <h3>Observer Effect</h3>
-            <p>Simulates how observation collapses a quantum wave function into a particle state.</p>
-            <canvas class="simulation-canvas" id="observers"></canvas>
+            <p>Your cursor acts as the observer, collapsing quantum waves into particles as you move.</p>
+            <canvas class="simulation-canvas" id="observer-effect"></canvas>
         </div>
         <div class="simulation-card">
-            <h3>Wave-Particle Duality</h3>
-            <p>Visualizes particles transitioning between wave and particle states.</p>
-            <canvas class="simulation-canvas" id="wave-particle"></canvas>
+            <h3>Double-Slit Experiment</h3>
+            <p>Click to emit particles, move your cursor to observe, and watch interference patterns form.</p>
+            <canvas class="simulation-canvas" id="double-slit"></canvas>
         </div>
     </section>
     <section id="energy">
         <h2>Energy & Vibration</h2>
         <div class="simulation-card">
             <h3>Vibrational Energy</h3>
-            <p>Simulates wave frequencies to explore how vibration shapes reality.</p>
+            <p>Click to inject thought energy, move your cursor to modulate wave frequencies.</p>
             <canvas class="simulation-canvas" id="vibration"></canvas>
         </div>
     </section>
@@ -325,11 +341,24 @@
         <button onclick="toggleNarration()">Narrate</button>
     </div>
     <footer>
-        <p>© 2025 CosmicMatrix | Powered by Math & Physics</p>
+        <p>© 2025 CosmicMatrix | Powered by Math, Physics & Consciousness</p>
     </footer>
 
     <script>
-        // WebGL Setup for Simulations
+        // Custom Cursor
+        const observerCursor = document.getElementById('observer-cursor');
+        document.addEventListener('mousemove', (e) => {
+            observerCursor.style.left = `${e.clientX}px`;
+            observerCursor.style.top = `${e.clientY}px`;
+            const particle = document.createElement('div');
+            particle.className = 'quantum-particle';
+            particle.style.left = `${e.clientX}px`;
+            particle.style.top = `${e.clientY}px`;
+            document.body.appendChild(particle);
+            setTimeout(() => particle.remove(), 800);
+        });
+
+        // WebGL Simulation Setup
         function initSimulation(canvasId, type) {
             const canvas = document.getElementById(canvasId);
             const scene = new THREE.Scene();
@@ -340,99 +369,138 @@
 
             const controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
+            controls.enabled = type !== 'observer-effect' && type !== 'double-slit';
 
-            let object;
-            if (type === 'flower-of-life') {
-                const geometry = new THREE.BufferGeometry();
-                const vertices = [];
-                const radius = 1;
-                for (let i = 0; i < 19; i++) {
-                    const angle = (2 * Math.PI / 19) * i;
-                    vertices.push(radius * Math.cos(angle), radius * Math.sin(angle), 0);
+            let object, particles = [], clickCount = 0, mousePos = { x: 0, y: 0 };
+
+            // Mouse Interaction
+            canvas.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                mousePos.x = ((e.clientX - rect.left) / canvas.clientWidth) * 2 - 1;
+                mousePos.y = -((e.clientY - rect.top) / canvas.clientHeight) * 2 + 1;
+            });
+
+            canvas.addEventListener('click', () => {
+                clickCount++;
+                if (type === 'golden-spiral' || type === 'fibonacci') {
+                    updateGeometry();
+                } else if (type === 'vibration') {
+                    particles.push({ freq: 10 + clickCount * 2, amp: 0.5 });
+                } else if (type === 'double-slit') {
+                    particles.push({ x: -2, y: 0, vx: 0.05, observed: false });
                 }
-                geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-                const material = new THREE.LineBasicMaterial({ color: 0x00b7eb });
-                object = new THREE.LineLoop(geometry, material);
-            } else if (type === 'golden-spiral') {
-                const points = [];
-                const phi = (1 + Math.sqrt(5)) / 2;
-                for (let i = 0; i < 50; i++) {
-                    const theta = i * 0.1;
-                    const r = Math.pow(phi, theta / Math.PI);
-                    points.push(new THREE.Vector3(r * Math.cos(theta), r * Math.sin(theta), 0));
-                }
-                const geometry = new THREE.BufferGeometry().setFromPoints(points);
-                const material = new THREE.LineBasicMaterial({ color: 0xff00cc });
-                object = new THREE.Line(geometry, material);
-            } else if (type === 'metatron-cube') {
-                const geometry = new THREE.IcosahedronGeometry(1);
-                const material = new THREE.MeshBasicMaterial({ color: 0x00b7eb, wireframe: true });
-                object = new THREE.Mesh(geometry, material);
-            } else if (type === 'fibonacci') {
-                const points = [];
-                for (let i = 0; i < 10; i++) {
+            });
+
+            function updateGeometry() {
+                if (type === 'flower-of-life') {
+                    const geometry = new THREE.BufferGeometry();
+                    const vertices = [];
+                    const radius = 1;
+                    for (let i = 0; i < 19; i++) {
+                        const angle = (2 * Math.PI / 19) * i;
+                        vertices.push(radius * Math.cos(angle), radius * Math.sin(angle), 0);
+                    }
+                    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+                    const material = new THREE.LineBasicMaterial({ color: 0x00b7eb });
+                    if (object) scene.remove(object);
+                    object = new THREE.LineLoop(geometry, material);
+                    scene.add(object);
+                } else if (type === 'golden-spiral') {
+                    const points = [];
+                    const phi = (1 + Math.sqrt(5)) / 2;
+                    for (let i = 0; i < 10 + clickCount; i++) {
+                        const theta = i * 0.1;
+                        const r = Math.pow(phi, theta / Math.PI) * 0.1;
+                        points.push(new THREE.Vector3(r * Math.cos(theta), r * Math.sin(theta), 0));
+                    }
+                    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+                    const material = new THREE.LineBasicMaterial({ color: 0xff00cc });
+                    if (object) scene.remove(object);
+                    object = new THREE.Line(geometry, material);
+                    scene.add(object);
+                } else if (type === 'metatron-cube') {
+                    const geometry = new THREE.IcosahedronGeometry(1);
+                    const material = new THREE.MeshBasicMaterial({ color: 0x00b7eb, wireframe: true });
+                    if (object) scene.remove(object);
+                    object = new THREE.Mesh(geometry, material);
+                    object.scale.set(1 + mousePos.x * 0.5, 1 + mousePos.y * 0.5, 1);
+                    scene.add(object);
+                } else if (type === 'fibonacci') {
+                    const points = [];
                     const fib = (n) => n <= 1 ? n : fib(n - 1) + fib(n - 2);
-                    const r = fib(i) * 0.1;
-                    points.push(new THREE.Vector3(r * Math.cos(i), r * Math.sin(i), 0));
+                    for (let i = 0; i < 5 + clickCount; i++) {
+                        const r = fib(i) * 0.05;
+                        points.push(new THREE.Vector3(r * Math.cos(i), r * Math.sin(i), Math.random() * 0.1));
+                    }
+                    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+                    const material = new THREE.PointsMaterial({ color: 0x00b7eb, size: 0.1 });
+                    if (object) scene.remove(object);
+                    object = new THREE.Points(geometry, material);
+                    scene.add(object);
+                } else if (type === 'observer-effect') {
+                    const geometry = new THREE.BufferGeometry();
+                    const vertices = new Float32Array(1000 * 3);
+                    for (let i = 0; i < 1000; i++) {
+                        const dist = Math.sqrt(mousePos.x ** 2 + mousePos.y ** 2);
+                        const isObserved = dist < 0.5;
+                        vertices[i * 3] = isObserved ? (Math.random() - 0.5) * 0.5 : (Math.random() - 0.5) * 4;
+                        vertices[i * 3 + 1] = isObserved ? (Math.random() - 0.5) * 0.5 : (Math.random() - 0.5) * 4;
+                        vertices[i * 3 + 2] = Math.sin(Date.now() * 0.001 + i) * (isObserved ? 0 : 0.2);
+                    }
+                    geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+                    const material = new THREE.PointsMaterial({ color: 0xff00cc, size: 0.05 });
+                    if (object) scene.remove(object);
+                    object = new THREE.Points(geometry, material);
+                    scene.add(object);
+                } else if (type === 'double-slit') {
+                    particles = particles.filter(p => p.x < 2);
+                    const geometry = new THREE.BufferGeometry();
+                    const vertices = [];
+                    const slits = [-0.1, 0.1];
+                    particles.forEach(p => {
+                        p.x += p.vx;
+                        const dist = Math.sqrt((mousePos.x - p.x) ** 2 + (mousePos.y - p.y) ** 2);
+                        p.observed = dist < 0.3;
+                        if (p.x > 0 && !p.slit) {
+                            p.slit = slits[Math.random() > 0.5 ? 0 : 1];
+                            p.y = p.observed ? p.slit : p.y + Math.sin(p.x * 10) * 0.05;
+                        }
+                        vertices.push(p.x, p.y, 0);
+                    });
+                    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+                    const material = new THREE.PointsMaterial({ color: 0x00b7eb, size: 0.05 });
+                    if (object) scene.remove(object);
+                    object = new THREE.Points(geometry, material);
+                    scene.add(object);
+                } else if (type === 'vibration') {
+                    const geometry = new THREE.BufferGeometry();
+                    const vertices = [];
+                    for (let i = 0; i < 200; i++) {
+                        const x = i * 0.02 - 2;
+                        let y = 0;
+                        particles.forEach(p => {
+                            y += Math.sin(x * p.freq + mousePos.x * 10) * p.amp;
+                        });
+                        vertices.push(x, y * 0.2, 0);
+                    }
+                    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+                    const material = new THREE.LineBasicMaterial({ color: 0xff00cc });
+                    if (object) scene.remove(object);
+                    object = new THREE.Line(geometry, material);
+                    scene.add(object);
                 }
-                const geometry = new THREE.BufferGeometry().setFromPoints(points);
-                const material = new THREE.PointsMaterial({ color: 0x00b7eb, size: 0.1 });
-                object = new THREE.Points(geometry, material);
-            } else if (type === 'observer-effect') {
-                const geometry = new THREE.BufferGeometry();
-                const vertices = new Float32Array(1000 * 3);
-                for (let i = 0; i < 1000; i++) {
-                    vertices[i * 3] = (Math.random() - 0.5) * 4;
-                    vertices[i * 3 + 1] = (Math.random() - 0.5) * 4;
-                    vertices[i * 3 + 2] = 0;
-                }
-                geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
-                const material = new THREE.PointsMaterial({ color: 0xff00cc, size: 0.05 });
-                object = new THREE.Points(geometry, material);
-            } else if (type === 'wave-particle') {
-                const geometry = new THREE.BufferGeometry();
-                const vertices = [];
-                for (let i = 0; i < 100; i++) {
-                    const x = i * 0.05 - 2.5;
-                    const y = Math.sin(x * 5 + Date.now() * 0.001) * 0.5;
-                    vertices.push(x, y, 0);
-                }
-                geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-                const material = new THREE.PointsMaterial({ color: 0x00b7eb, size: 0.05 });
-                object = new THREE.Points(geometry, material);
-            } else if (type === 'vibration') {
-                const geometry = new THREE.BufferGeometry();
-                const vertices = [];
-                for (let i = 0; i < 200; i++) {
-                    const x = i * 0.02 - 2;
-                    const y = Math.sin(x * 10 + Date.now() * 0.002) * 0.5;
-                    vertices.push(x, y, 0);
-                }
-                geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-                const material = new THREE.LineBasicMaterial({ color: 0xff00cc });
-                object = new THREE.Line(geometry, material);
             }
 
-            scene.add(object);
+            updateGeometry();
 
             function animate() {
                 requestAnimationFrame(animate);
                 if (type === 'metatron-cube') {
                     object.rotation.x += 0.01;
                     object.rotation.y += 0.01;
-                } else if (type === 'observer-effect') {
-                    const positions = object.geometry.attributes.position.array;
-                    for (let i = 0; i < positions.length / 3; i++) {
-                        positions[i * 3 + 2] = Math.sin(Date.now() * 0.001 + i) * 0.1;
-                    }
-                    object.geometry.attributes.position.needsUpdate = true;
-                } else if (type === 'wave-particle' || type === 'vibration') {
-                    const positions = object.geometry.attributes.position.array;
-                    for (let i = 0; i < positions.length / 3; i++) {
-                        const x = i * 0.05 - 2.5;
-                        positions[i * 3 + 1] = Math.sin(x * 5 + Date.now() * 0.001) * 0.5;
-                    }
-                    object.geometry.attributes.position.needsUpdate = true;
+                    object.scale.set(1 + mousePos.x * 0.5, 1 + mousePos.y * 0.5, 1);
+                } else if (type === 'observer-effect' || type === 'double-slit' || type === 'vibration') {
+                    updateGeometry();
                 }
                 controls.update();
                 renderer.render(scene, camera);
@@ -451,19 +519,9 @@
         initSimulation('golden-spiral', 'golden-spiral');
         initSimulation('metatron-cube', 'metatron-cube');
         initSimulation('fibonacci', 'fibonacci');
-        initSimulation('observers', 'observer-effect');
-        initSimulation('wave-particle', 'wave-particle');
+        initSimulation('observer-effect', 'observer-effect');
+        initSimulation('double-slit', 'double-slit');
         initSimulation('vibration', 'vibration');
-
-        // Quantum Particles on Mouse Move
-        document.addEventListener('mousemove', (e) => {
-            const particle = document.createElement('div');
-            particle.className = 'quantum-particle';
-            particle.style.left = `${e.clientX}px`;
-            particle.style.top = `${e.clientY}px`;
-            document.body.appendChild(particle);
-            setTimeout(() => particle.remove(), 800);
-        });
 
         // Accessibility Features
         let highContrast = false;
