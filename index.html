@@ -41,7 +41,7 @@
     html, body {
       height: 100%;
       width: 100%;
-      background: #000000; /* Simplified to black to rule out gradient issues */
+      background: #000000; /* Solid black for visibility */
       color: var(--light-aura);
       overflow: hidden;
       margin: 0;
@@ -53,7 +53,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: 0; /* Raised to ensure visibility, behind content */
+      z-index: 0;
       display: block;
       opacity: 1;
     }
@@ -82,7 +82,7 @@
 
     .css-particle {
       position: absolute;
-      width: 6px; /* Larger for visibility */
+      width: 6px;
       height: 6px;
       background: var(--matrix-blue);
       border-radius: 50%;
@@ -98,7 +98,7 @@
 
     .container {
       position: relative;
-      z-index: 10; /* Above animations */
+      z-index: 10;
       height: 100vh;
       display: flex;
       flex-direction: column;
@@ -192,7 +192,6 @@
       text-shadow: 0 0 5px var(--matrix-blue);
     }
 
-    /* Ensure AdSense ads are above animations */
     ins.adsbygoogle {
       z-index: 1000 !important;
     }
@@ -351,7 +350,7 @@
     let triggerBigBang = () => {};
     const errorMessage = document.getElementById('error-message');
 
-    // Minimal 2D Canvas Animation (Primary)
+    // 2D Canvas Animation (Primary)
     function init2DCanvas(canvas) {
       logDebug('Attempting 2D canvas initialization...');
       try {
@@ -364,35 +363,116 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        // Test renders to confirm canvas visibility
+        // Test renders
         ctx.fillStyle = 'red';
-        ctx.fillRect(10, 10, 50, 50); // Large red square, top-left, 2s
+        ctx.fillRect(10, 10, 100, 100); // Large red square, top-left, 5s
         setTimeout(() => {
-          ctx.clearRect(10, 10, 50, 50);
+          ctx.clearRect(10, 10, 100, 100);
           ctx.fillStyle = 'green';
-          ctx.fillRect(window.innerWidth - 60, 10, 50, 50); // Green square, top-right, 2s
-          setTimeout(() => ctx.clearRect(window.innerWidth - 60, 10, 50, 50), 2000);
-        }, 2000);
+          ctx.fillRect(window.innerWidth - 110, 10, 100, 100); // Green square, top-right, 5s
+          setTimeout(() => ctx.clearRect(window.innerWidth - 110, 10, 100, 100), 5000);
+        }, 5000);
 
-        // Simple animation: single moving dot
-        let x = canvas.width / 2;
-        let y = canvas.height / 2;
-        let vx = 2;
-        let vy = 2;
+        // Fibonacci particles
+        let particles = [];
+        let mousePos = { x: canvas.width / 2, y: canvas.height / 2 };
+
+        document.addEventListener('mousemove', (e) => {
+          mousePos.x = e.clientX;
+          mousePos.y = e.clientY;
+        }, { passive: true });
+
+        document.addEventListener('touchmove', (e) => {
+          if (e.touches.length > 0) {
+            mousePos.x = e.touches[0].clientX;
+            mousePos.y = e.touches[0].clientY;
+          }
+        }, { passive: true });
+
+        function createParticle(index) {
+          const phi = (1 + Math.sqrt(5)) / 2;
+          const theta = index * 2 * Math.PI * phi;
+          const r = Math.sqrt(index) * 10;
+          return {
+            x: canvas.width / 2 + r * Math.cos(theta),
+            y: canvas.height / 2 + r * Math.sin(theta),
+            vx: (Math.random() - 0.5) * 2,
+            vy: (Math.random() - 0.5) * 2,
+            life: 600,
+            color: `hsl(${Math.random() * 360}, 70%, 70%)`
+          };
+        }
+
+        function initParticles() {
+          particles = [];
+          for (let i = 0; i < 20; i++) {
+            particles.push(createParticle(i));
+          }
+          logDebug('2D canvas particles initialized: ' + particles.length);
+        }
+        initParticles();
+
+        function triggerBigBang2D() {
+          logDebug('Triggering 2D Big Bang...');
+          particles = [];
+          ctx.fillStyle = 'blue';
+          ctx.fillRect(canvas.width / 2 - 50, canvas.height / 2 - 50, 100, 100); // Blue square for explosion
+          setTimeout(() => ctx.clearRect(canvas.width / 2 - 50, canvas.height / 2 - 50, 100, 100), 1000);
+
+          for (let i = 0; i < 50; i++) {
+            const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2);
+            const r = Math.sqrt(i) * 15;
+            particles.push({
+              x: canvas.width / 2,
+              y: canvas.height / 2,
+              vx: r * Math.cos(theta) * 0.05,
+              vy: r * Math.sin(theta) * 0.05,
+              life: 300,
+              color: `hsl(${Math.random() * 360}, 70%, 70%)`
+            });
+          }
+        }
 
         function animate2D() {
           try {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.beginPath();
-            ctx.arc(x, y, 5, 0, Math.PI * 2);
-            ctx.fillStyle = 'white';
-            ctx.fill();
+            particles = particles.filter(p => {
+              if (p.life <= 0) return false;
+              p.life--;
+              p.x += p.vx + (mousePos.x - canvas.width / 2) * 0.0001;
+              p.y += p.vy + (mousePos.y - canvas.height / 2) * 0.0001;
+              p.vx *= 0.98;
+              p.vy *= 0.98;
+              ctx.beginPath();
+              ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+              ctx.fillStyle = p.color;
+              ctx.globalAlpha = p.life / 600;
+              ctx.fill();
+              return true;
+            });
 
-            x += vx;
-            y += vy;
-            if (x < 0 || x > canvas.width) vx = -vx;
-            if (y < 0 || y > canvas.height) vy = -vy;
+            if (particles.length < 20 && Math.random() < 0.1) {
+              particles.push(createParticle(particles.length));
+            }
 
+            // Trails
+            particles.forEach(p1 => {
+              particles.forEach(p2 => {
+                if (p1 !== p2) {
+                  const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+                  if (dist < 50 && Math.random() < 0.05) {
+                    ctx.beginPath();
+                    ctx.moveTo(p1.x, p1.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.strokeStyle = p1.color;
+                    ctx.globalAlpha = 0.3;
+                    ctx.stroke();
+                  }
+                }
+              });
+            });
+
+            ctx.globalAlpha = 1;
             requestAnimationFrame(animate2D);
           } catch (error) {
             logDebug('2D Canvas Render Error: ' + error.message);
@@ -400,28 +480,10 @@
         }
         animate2D();
 
-        function triggerBigBang2D() {
-          // Simple explosion: 50 dots
-          for (let i = 0; i < 50; i++) {
-            setTimeout(() => {
-              ctx.beginPath();
-              ctx.arc(
-                canvas.width / 2 + (Math.random() - 0.5) * 200,
-                canvas.height / 2 + (Math.random() - 0.5) * 200,
-                3,
-                0,
-                Math.PI * 2
-              );
-              ctx.fillStyle = `hsl(${Math.random() * 360}, 70%, 70%)`;
-              ctx.fill();
-            }, i * 20);
-          }
-          logDebug('2D canvas Big Bang triggered');
-        }
-
         window.addEventListener('resize', () => {
           canvas.width = window.innerWidth;
           canvas.height = window.innerHeight;
+          initParticles();
         }, { passive: true });
 
         triggerBigBang = triggerBigBang2D;
@@ -619,7 +681,7 @@
       const webglCanvas = document.getElementById('background-canvas');
       const fallbackCanvas = document.getElementById('fallback-canvas');
 
-      // Try 2D Canvas first (simplest)
+      // Try 2D Canvas first
       if (init2DCanvas(fallbackCanvas)) {
         webglCanvas.style.display = 'none';
         fallbackCanvas.style.display = 'block';
@@ -644,7 +706,6 @@
         return;
       }
 
-      // All animations failed
       errorMessage.style.display = 'block';
       logDebug('All animation methods failed');
     });
@@ -652,13 +713,26 @@
     // Copy IP to Clipboard
     function copyIP() {
       try {
+        logDebug('Copy IP button clicked');
         const ip = document.getElementById('ip-display').textContent;
         navigator.clipboard.writeText(ip).then(() => {
+          logDebug('IP copied successfully');
           triggerBigBang();
-          logDebug('IP copied, Big Bang triggered (' + animationMode + ')');
         }).catch(err => {
-          logDebug('Copy Error: ' + err.message);
-          document.getElementById('network-info').innerHTML = `ISP: Unknown<br>Location: Unknown`;
+          logDebug('Clipboard Error: ' + err.message);
+          // Fallback copy method
+          const textarea = document.createElement('textarea');
+          textarea.value = ip;
+          document.body.appendChild(textarea);
+          textarea.select();
+          try {
+            document.execCommand('copy');
+            logDebug('Fallback copy successful');
+            triggerBigBang();
+          } catch (e) {
+            logDebug('Fallback Copy Error: ' + e.message);
+          }
+          document.body.removeChild(textarea);
         });
       } catch (error) {
         logDebug('Copy IP Error: ' + error.message);
