@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="CosmicMatrix: Scientifically precise, interactive simulations of sacred geometry, quantum mechanics, and the Law of Attraction, proving the universe’s laws.">
+    <meta name="description" content="CosmicMatrix: Revolutionary AI-driven simulations of sacred geometry, quantum mechanics, and the Law of Attraction, proving the universe’s mathematical truths.">
     <meta name="keywords" content="Flower of Life, Golden Spiral, Fibonacci, Metatron, Quantum Mechanics, Observer Effect, Double Slit, Vibration, Law of Attraction, RAS, WebGL">
     <meta name="author" content="CosmicMatrix">
     <meta property="og:title" content="CosmicMatrix">
-    <meta property="og:description" content="Master the universe’s laws with cursor-driven simulations and goal-manifesting mini-games.">
+    <meta property="og:description" content="Experience the universe’s laws through precise, interactive simulations and manifest your destiny with AI-driven focus.">
     <meta property="og:image" content="assets/matrix-og.webp">
     <meta property="og:url" content="https://cosmicmatrix.ai">
     <meta property="og:type" content="website">
     <link rel="icon" type="image/png" href="assets/favicon.ico">
-    <title>CosmicMatrix | Master the Universe</title>
+    <title>CosmicMatrix | Redefine Reality</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;700&family=Space+Mono&display=swap" rel="stylesheet">
@@ -27,7 +27,7 @@
             --success-green: #00ff88;
             --wealth-gold: #ffd700;
             --love-red: #ff4444;
-            --glow-radius: 15px;
+            --glow-radius: 20px;
         }
 
         * {
@@ -48,33 +48,40 @@
         /* Custom Cursor */
         .observer-cursor {
             position: fixed;
-            width: 28px;
-            height: 28px;
-            background: radial-gradient(circle, var(--matrix-blue) 30%, transparent 70%);
+            width: 32px;
+            height: 32px;
+            background: radial-gradient(circle, var(--matrix-blue) 20%, var(--cosmic-magenta) 60%, transparent 80%);
             border-radius: 50%;
             pointer-events: none;
             z-index: 1002;
-            box-shadow: 0 0 15px var(--matrix-blue), 0 0 25px var(--cosmic-magenta);
+            box-shadow: 0 0 20px var(--matrix-blue), 0 0 30px var(--cosmic-magenta);
             transform: translate(-50%, -50%);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.2); }
+            100% { transform: translate(-50%, -50%) scale(1); }
         }
 
         /* Quantum Particles */
         .quantum-particle {
             position: absolute;
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
             background: var(--cosmic-magenta);
             border-radius: 50%;
             pointer-events: none;
             z-index: 1000;
-            opacity: 0.8;
-            box-shadow: 0 0 12px var(--cosmic-magenta);
-            animation: waveCollapse 1.2s ease-out forwards;
+            opacity: 0.9;
+            box-shadow: 0 0 15px var(--cosmic-magenta);
+            animation: waveCollapse 1.5s ease-out forwards;
         }
 
         @keyframes waveCollapse {
-            0% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(2.5); opacity: 0.5; }
+            0% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(3); opacity: 0.6; }
             100% { transform: scale(0); opacity: 0; }
         }
 
@@ -83,9 +90,9 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(8, 8, 26, 0.92);
-            backdrop-filter: blur(12px);
-            padding: 1rem 2rem;
+            background: rgba(8, 8, 26, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 1.2rem 2.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -94,17 +101,18 @@
 
         .logo {
             font-family: 'Space Mono', monospace;
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             background: linear-gradient(90deg, var(--matrix-blue), var(--cosmic-magenta));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px var(--matrix-blue);
         }
 
         nav a {
             color: var(--light-aura);
             text-decoration: none;
-            margin: 0 1.5rem;
-            font-size: 1rem;
+            margin: 0 1.8rem;
+            font-size: 1.1rem;
             text-transform: uppercase;
             position: relative;
             transition: all 0.3s;
@@ -112,15 +120,15 @@
 
         nav a:hover {
             color: var(--matrix-blue);
-            text-shadow: 0 0 8px var(--matrix-blue);
+            text-shadow: 0 0 10px var(--matrix-blue);
         }
 
         nav a::after {
             content: '';
             position: absolute;
             width: 0;
-            height: 2px;
-            bottom: -5px;
+            height: 3px;
+            bottom: -6px;
             left: 0;
             background: var(--matrix-blue);
             transition: width 0.3s;
@@ -145,27 +153,28 @@
 
         .hero h1 {
             font-family: 'Space Mono', monospace;
-            font-size: clamp(2.8rem, 6vw, 5rem);
+            font-size: clamp(3rem, 7vw, 5.5rem);
             background: linear-gradient(90deg, var(--matrix-blue), var(--cosmic-magenta));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 12px var(--matrix-blue);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 15px var(--matrix-blue);
         }
 
         .hero p {
-            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
             color: var(--light-aura);
-            max-width: 650px;
-            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
         }
 
         .cta-button {
             background: linear-gradient(90deg, var(--matrix-blue), var(--cosmic-magenta));
             color: var(--light-aura);
-            padding: 1rem 3.5rem;
+            padding: 1.2rem 4rem;
             text-decoration: none;
-            border-radius: 50px;
+            border-radius: 60px;
             font-family: 'Space Mono', monospace;
             font-weight: 700;
             text-transform: uppercase;
@@ -174,14 +183,14 @@
         }
 
         .cta-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 calc(var(--glow-radius) * 2) var(--matrix-blue);
+            transform: scale(1.15);
+            box-shadow: 0 0 calc(var(--glow-radius) * 2.5) var(--matrix-blue);
         }
 
         /* Simulation Sections */
         section {
-            padding: 6rem 2rem;
-            max-width: 1400px;
+            padding: 7rem 2rem;
+            max-width: 1600px;
             margin: 0 auto;
             position: relative;
             z-index: 1;
@@ -189,108 +198,110 @@
 
         section h2 {
             font-family: 'Space Mono', monospace;
-            font-size: clamp(2.2rem, 5vw, 3.2rem);
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
             text-align: center;
             background: linear-gradient(90deg, var(--matrix-blue), var(--cosmic-magenta));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
+            text-shadow: 0 0 10px var(--matrix-blue);
         }
 
         .simulation-card {
-            background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(15px);
-            border-radius: 15px;
-            padding: 2rem;
-            margin-bottom: 2.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
             box-shadow: 0 0 var(--glow-radius) var(--matrix-blue);
             transition: all 0.3s;
         }
 
         .simulation-card:hover {
-            box-shadow: 0 0 calc(var(--glow-radius) * 1.8) var(--matrix-blue);
+            box-shadow: 0 0 calc(var(--glow-radius) * 2) var(--matrix-blue);
         }
 
         .simulation-card h3 {
             font-family: 'Space Mono', monospace;
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             color: var(--light-aura);
             margin-bottom: 0.5rem;
         }
 
         .simulation-card p {
             color: var(--light-aura);
-            font-size: 1rem;
+            font-size: 1.1rem;
             margin-bottom: 0.5rem;
             line-height: 1.6;
         }
 
         .simulation-card .instructions {
             color: var(--light-aura);
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-style: italic;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
         }
 
         .simulation-canvas {
             width: 100%;
-            height: 600px;
-            border-radius: 12px;
-            border: 2px solid var(--matrix-blue);
-            box-shadow: 0 0 15px var(--matrix-blue);
+            height: 700px;
+            border-radius: 15px;
+            border: 3px solid var(--matrix-blue);
+            box-shadow: 0 0 20px var(--matrix-blue);
             cursor: none;
         }
 
         /* Mini-Game Section */
         .minigame-card {
-            background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(15px);
-            border-radius: 15px;
-            padding: 2rem;
-            margin-bottom: 2.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
             box-shadow: 0 0 var(--glow-radius) var(--matrix-blue);
         }
 
         .minigame-card input {
-            background: rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.15);
             border: 1px solid var(--matrix-blue);
             color: var(--light-aura);
-            padding: 0.8rem;
+            padding: 1rem;
             width: 100%;
-            max-width: 450px;
-            border-radius: 8px;
+            max-width: 500px;
+            border-radius: 10px;
             font-family: 'Exo 2', sans-serif;
-            font-size: 1rem;
-            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
         }
 
         .minigame-card button {
             background: linear-gradient(90deg, var(--matrix-blue), var(--cosmic-magenta));
             color: var(--light-aura);
             border: none;
-            padding: 0.8rem 2.5rem;
-            border-radius: 8px;
+            padding: 1rem 3rem;
+            border-radius: 10px;
             cursor: pointer;
             font-family: 'Space Mono', monospace;
-            font-size: 1rem;
+            font-size: 1.1rem;
             transition: all 0.3s;
         }
 
         .minigame-card button:hover {
-            transform: scale(1.05);
+            transform: scale(1.1);
             box-shadow: 0 0 var(--glow-radius) var(--matrix-blue);
         }
 
         /* Accessibility Panel */
         .accessibility-panel {
             position: fixed;
-            bottom: 2rem;
-            left: 2rem;
-            background: rgba(8, 8, 26, 0.9);
-            padding: 1rem;
-            border-radius: 10px;
+            bottom: 2.5rem;
+            left: 2.5rem;
+            background: rgba(8, 8, 26, 0.95);
+            padding: 1.2rem;
+            border-radius: 12px;
             z-index: 1001;
         }
 
@@ -298,39 +309,39 @@
             background: var(--matrix-blue);
             color: var(--light-aura);
             border: none;
-            padding: 0.5rem 1rem;
+            padding: 0.6rem 1.2rem;
             margin: 0.5rem;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
 
         /* Footer */
         footer {
-            background: rgba(8, 8, 26, 0.9);
-            padding: 2rem;
+            background: rgba(8, 8, 26, 0.95);
+            padding: 2.5rem;
             text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
         }
 
         footer p {
             color: var(--light-aura);
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
             .hero h1 {
-                font-size: clamp(2rem, 5vw, 3rem);
+                font-size: clamp(2.2rem, 5vw, 3.5rem);
             }
 
             .simulation-canvas {
-                height: 350px;
+                height: 400px;
             }
 
             .accessibility-panel {
-                bottom: 1rem;
-                left: 1rem;
+                bottom: 1.5rem;
+                left: 1.5rem;
             }
         }
     </style>
@@ -348,27 +359,27 @@
     </header>
     <section class="hero">
         <h1>CosmicMatrix</h1>
-        <p>Master the universe’s laws through precise, cursor-driven simulations and manifest your destiny with the power of focus.</p>
-        <a href="#geometry" class="cta-button">Unlock the Matrix</a>
+        <p>Command the universe’s mathematical truths through AI-driven, precise simulations. Observe, create, and manifest your reality with unparalleled clarity and awe.</p>
+        <a href="#geometry" class="cta-button">Enter the Cosmic Matrix</a>
     </section>
     <section id="geometry">
         <h2>Sacred Geometry</h2>
         <div class="simulation-card">
             <h3>Flower of Life</h3>
-            <p>The Flower of Life is a sacred geometric pattern of 19 interlocking circles, symbolizing the blueprint of creation.</p>
-            <p class="instructions">Instructions: Drag your cursor to rotate the pattern. Focus on the symmetry and interconnectedness of the circles, reflecting universal harmony.</p>
+            <p>The Flower of Life is a geometric pattern of 19 interlocking circles, each spaced at 60° intervals, forming a hexagonal lattice that encodes the blueprint of creation.</p>
+            <p class="instructions">Instructions: Drag your cursor to rotate the 3D pattern. Focus on the perfect symmetry and interconnected circles, which represent universal harmony and the mathematical foundation of existence.</p>
             <canvas class="simulation-canvas" id="flower-of-life"></canvas>
         </div>
         <div class="simulation-card">
             <h3>Golden Spiral</h3>
-            <p>The Golden Spiral, derived from the Golden Ratio (φ ≈ 1.618), appears in nature’s growth patterns, from galaxies to seashells.</p>
-            <p class="instructions">Instructions: Click to add points, growing the spiral. Focus on how each point follows the Fibonacci sequence, creating perfect proportions.</p>
+            <p>The Golden Spiral grows logarithmically based on the Golden Ratio (φ = (1 + √5)/2 ≈ 1.618033988749895), found in nature’s spirals like galaxies and nautilus shells.</p>
+            <p class="instructions">Instructions: Click to add points, extending the spiral. Focus on how each point follows the Fibonacci sequence, creating mathematically perfect proportions that mirror natural growth.</p>
             <canvas class="simulation-canvas" id="golden-spiral"></canvas>
         </div>
         <div class="simulation-card">
             <h3>Metatron’s Cube</h3>
-            <p>Metatron’s Cube contains all Platonic solids, representing the energetic framework of the universe.</p>
-            <p class="instructions">Instructions: Move your cursor to scale the cube. Focus on how your movement influences the energy field, connecting mind and geometry.</p>
+            <p>Metatron’s Cube contains all five Platonic solids, representing the energetic and geometric framework of the universe, linking matter and consciousness.</p>
+            <p class="instructions">Instructions: Move your cursor to dynamically scale the cube. Focus on how your movement modulates the energy field, illustrating the connection between intent and geometric structure.</p>
             <canvas class="simulation-canvas" id="metatron-cube"></canvas>
         </div>
     </section>
@@ -376,20 +387,20 @@
         <h2>Quantum Mechanics</h2>
         <div class="simulation-card">
             <h3>Fibonacci Sequence</h3>
-            <p>The Fibonacci sequence (F(n) = F(n-1) + F(n-2)) governs natural growth, with probabilistic variations reflecting quantum uncertainty.</p>
-            <p class="instructions">Instructions: Click to add Fibonacci points in a spiral. Focus on the pattern’s growth and slight randomness, mirroring nature’s quantum nature.</p>
+            <p>The Fibonacci sequence (F(n) = F(n-1) + F(n-2)) governs natural growth patterns, with added probabilistic variations to reflect quantum uncertainty.</p>
+            <p class="instructions">Instructions: Click to add points forming a spiral based on Fibonacci numbers. Focus on the pattern’s growth and slight randomness in the z-axis, which mirrors quantum probabilistic behavior in nature.</p>
             <canvas class="simulation-canvas" id="fibonacci"></canvas>
         </div>
         <div class="simulation-card">
             <h3>Observer Effect</h3>
-            <p>In quantum mechanics, observation collapses a wave function into a definite state, altering particle behavior.</p>
-            <p class="instructions">Instructions: Move your cursor to observe particles, collapsing their spread. Focus on how your presence changes the system, proving observation’s power.</p>
+            <p>In quantum mechanics, observation collapses a wave function from a superposition of states to a definite state, fundamentally altering particle behavior.</p>
+            <p class="instructions">Instructions: Move your cursor to observe the particle cloud, collapsing its spread into a tight cluster. Focus on how your cursor’s presence fixes particle positions, proving the observer’s role in shaping quantum reality.</p>
             <canvas class="simulation-canvas" id="observer-effect"></canvas>
         </div>
         <div class="simulation-card">
             <h3>Double-Slit Experiment</h3>
-            <p>The double-slit experiment demonstrates wave-particle duality: particles create interference patterns unless observed, then act as particles.</p>
-            <p class="instructions">Instructions: Click to emit particles through two slits. Move your cursor near the slits to observe, collapsing the wave pattern. Focus on the wall’s interference bands when unobserved versus particle paths when observed.</p>
+            <p>The double-slit experiment demonstrates wave-particle duality: particles exhibit wave-like interference patterns when unobserved but act as particles when observed, passing through one slit.</p>
+            <p class="instructions">Instructions: Click to emit particles from the left toward a wall with two slits. Move your cursor near the slits to observe, collapsing the wave function. Focus on the detection screen: unobserved particles form interference bands; observed particles form two distinct bands, exactly as in the real experiment.</p>
             <canvas class="simulation-canvas" id="double-slit"></canvas>
         </div>
     </section>
@@ -397,8 +408,8 @@
         <h2>Energy & Vibration</h2>
         <div class="simulation-card">
             <h3>Vibrational Energy</h3>
-            <p>Vibrations, modeled as wave superpositions (y = Σ sin(kx + φ)), shape physical and metaphysical reality.</p>
-            <p class="instructions">Instructions: Click to add vibrational waves, move your cursor to adjust phase. Focus on how frequencies combine, illustrating energy’s influence.</p>
+            <p>Vibrational energy is modeled as a superposition of waves (y = Σ A sin(kx + φ)), where frequency and phase determine the emergent pattern, reflecting physical and metaphysical energy dynamics.</p>
+            <p class="instructions">Instructions: Click to add waves with increasing frequency, move your cursor to shift their phase. Focus on how multiple waves combine to create complex patterns, illustrating how vibrational energy shapes reality.</p>
             <canvas class="simulation-canvas" id="vibration"></canvas>
         </div>
     </section>
@@ -406,28 +417,28 @@
         <h2>Manifest Your Reality</h2>
         <div class="minigame-card">
             <h3>Law of Attraction & RAS</h3>
-            <p>The Law of Attraction and Reticular Activating System (RAS) suggest focused intent filters reality, drawing desired outcomes.</p>
-            <p class="instructions">Instructions: Type your life goal (e.g., Success, Love, CEO) and click Manifest. Watch particles converge to your goal. Focus on how your intent prioritizes one outcome among infinite possibilities.</p>
+            <p>The Law of Attraction and Reticular Activating System (RAS) propose that focused intent filters perception, prioritizing and attracting desired outcomes from infinite possibilities.</p>
+            <p class="instructions">Instructions: Type your life goal (e.g., Success, Love, CEO, President, Super Wealthy, Married, Single) and click Manifest. Watch particles converge faster to your chosen goal, while others scatter. Focus on how your intent amplifies one outcome, proving the power of focused attention.</p>
             <input type="text" id="life-goal" placeholder="Enter your life goal (e.g., Success, Love, CEO)">
             <button onclick="startAttractionGame()">Manifest</button>
             <canvas class="simulation-canvas" id="attraction-game"></canvas>
         </div>
         <div class="minigame-card">
             <h3>Power of Focus</h3>
-            <p>Clear, sustained focus on a goal aligns actions and opportunities, leading to manifestation.</p>
-            <p class="instructions">Instructions: Type a specific goal, click Focus, and click repeatedly to strengthen focus. Watch particles converge to the center. Focus on how persistence clarifies the path to your goal.</p>
+            <p>Sustained focus on a clear goal aligns perception and actions, increasing the probability of manifestation, as supported by cognitive psychology.</p>
+            <p class="instructions">Instructions: Type a specific goal, click Focus, and click repeatedly to strengthen your focus. Watch particles converge to a central point, representing your goal. Focus on how persistent clicks tighten the particle cluster, proving that clarity and effort lead to success.</p>
             <input type="text" id="focus-goal" placeholder="Enter your specific goal">
             <button onclick="startFocusGame()">Focus</button>
             <canvas class="simulation-canvas" id="focus-game"></canvas>
         </div>
     </section>
     <div class="accessibility-panel">
-        <button onclick="toggleHighContrast()">Contrast</button>
+        <button onclick="toggleHighContrast()">High Contrast</button>
         <button onclick="increaseFontSize()">Font +</button>
         <button onclick="toggleNarration()">Narrate</button>
     </div>
     <footer>
-        <p>© 2025 CosmicMatrix | Powered by Precision, Physics & Consciousness</p>
+        <p>© 2025 CosmicMatrix | Powered by AI, Precision & Infinite Possibilities</p>
     </footer>
 
     <script>
@@ -441,7 +452,7 @@
             particle.style.left = `${e.clientX}px`;
             particle.style.top = `${e.clientY}px`;
             document.body.appendChild(particle);
-            setTimeout(() => particle.remove(), 1200);
+            setTimeout(() => particle.remove(), 1500);
         });
 
         // WebGL Simulation Setup
@@ -451,7 +462,7 @@
             const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
             const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
             renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-            camera.position.z = 5;
+            camera.position.z = 6;
 
             const controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
@@ -473,7 +484,7 @@
                 } else if (type === 'vibration') {
                     particles.push({ freq: 10 + clickCount * 2, amp: 0.5 });
                 } else if (type === 'double-slit') {
-                    particles.push({ x: -3, y: 0, vx: 0.05, observed: false });
+                    particles.push({ x: -4, y: 0, vx: 0.05, observed: false });
                 } else if (type === 'focus-game' && goalData) {
                     particles.push({ x: mousePos.x, y: mousePos.y, life: 1 });
                 }
@@ -499,9 +510,9 @@
                 } else if (type === 'golden-spiral') {
                     const points = [];
                     const phi = (1 + Math.sqrt(5)) / 2;
-                    for (let i = 0; i < 10 + clickCount; i++) {
+                    for (let i = 0; i < 15 + clickCount; i++) {
                         const theta = i * 0.1;
-                        const r = Math.pow(phi, theta / Math.PI) * 0.1;
+                        const r = Math.pow(phi, theta / Math.PI) * 0.08;
                         points.push(new THREE.Vector3(r * Math.cos(theta), r * Math.sin(theta), 0));
                     }
                     const geometry = new THREE.BufferGeometry().setFromPoints(points);
@@ -513,43 +524,43 @@
                     const geometry = new THREE.IcosahedronGeometry(1);
                     const material = new THREE.MeshBasicMaterial({ color: 0x00b7eb, wireframe: true });
                     const obj = new THREE.Mesh(geometry, material);
-                    obj.scale.set(1 + mousePos.x * 0.5, 1 + mousePos.y * 0.5, 1);
+                    obj.scale.set(1 + mousePos.x * 0.6, 1 + mousePos.y * 0.6, 1);
                     objects.push(obj);
                     scene.add(obj);
                 } else if (type === 'fibonacci') {
                     const points = [];
                     const fib = (n) => n <= 1 ? n : fib(n - 1) + fib(n - 2);
-                    for (let i = 0; i < 5 + clickCount; i++) {
-                        const r = fib(i) * 0.05;
-                        points.push(new THREE.Vector3(r * Math.cos(i), r * Math.sin(i), Math.random() * 0.1));
+                    for (let i = 0; i < 7 + clickCount; i++) {
+                        const r = fib(i) * 0.04;
+                        points.push(new THREE.Vector3(r * Math.cos(i), r * Math.sin(i), Math.random() * 0.08));
                     }
                     const geometry = new THREE.BufferGeometry().setFromPoints(points);
-                    const material = new THREE.PointsMaterial({ color: 0x00b7eb, size: 0.1 });
+                    const material = new THREE.PointsMaterial({ color: 0x00b7eb, size: 0.12 });
                     const obj = new THREE.Points(geometry, material);
                     objects.push(obj);
                     scene.add(obj);
                 } else if (type === 'observer-effect') {
                     const geometry = new THREE.BufferGeometry();
-                    const vertices = new Float32Array(1000 * 3);
-                    for (let i = 0; i < 1000; i++) {
+                    const vertices = new Float32Array(1500 * 3);
+                    for (let i = 0; i < 1500; i++) {
                         const dist = Math.sqrt(mousePos.x ** 2 + mousePos.y ** 2);
-                        const isObserved = dist < 0.5;
-                        vertices[i * 3] = isObserved ? (Math.random() - 0.5) * 0.5 : (Math.random() - 0.5) * 4;
-                        vertices[i * 3 + 1] = isObserved ? (Math.random() - 0.5) * 0.5 : (Math.random() - 0.5) * 4;
-                        vertices[i * 3 + 2] = isObserved ? 0 : Math.sin(Date.now() * 0.001 + i) * 0.2;
+                        const isObserved = dist < 0.4;
+                        vertices[i * 3] = isObserved ? (Math.random() - 0.5) * 0.4 : (Math.random() - 0.5) * 5;
+                        vertices[i * 3 + 1] = isObserved ? (Math.random() - 0.5) * 0.4 : (Math.random() - 0.5) * 5;
+                        vertices[i * 3 + 2] = isObserved ? 0 : Math.sin(Date.now() * 0.001 + i) * 0.25;
                     }
                     geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
-                    const material = new THREE.PointsMaterial({ color: 0xff00cc, size: 0.05 });
+                    const material = new THREE.PointsMaterial({ color: 0xff00cc, size: 0.06 });
                     const obj = new THREE.Points(geometry, material);
                     objects.push(obj);
                     scene.add(obj);
                 } else if (type === 'double-slit') {
-                    particles = particles.filter(p => p.x < 3);
+                    particles = particles.filter(p => p.x < 4);
                     const vertices = [];
                     const colors = [];
 
                     // Slit Wall
-                    const wallGeometry = new THREE.PlaneGeometry(0.1, 4);
+                    const wallGeometry = new THREE.PlaneGeometry(0.2, 5);
                     const wallMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
                     const wall = new THREE.Mesh(wallGeometry, wallMaterial);
                     wall.position.set(0, 0, 0);
@@ -557,20 +568,20 @@
                     scene.add(wall);
 
                     // Slits
-                    const slitGeometry = new THREE.PlaneGeometry(0.1, 0.1);
+                    const slitGeometry = new THREE.PlaneGeometry(0.15, 0.15);
                     const slitMaterial = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide });
                     const slit1 = new THREE.Mesh(slitGeometry, slitMaterial);
-                    slit1.position.set(0, 0.1, 0.01);
+                    slit1.position.set(0, 0.15, 0.01);
                     const slit2 = new THREE.Mesh(slitGeometry, slitMaterial);
-                    slit2.position.set(0, -0.1, 0.01);
+                    slit2.position.set(0, -0.15, 0.01);
                     objects.push(slit1, slit2);
                     scene.add(slit1, slit2);
 
-                    // Screen
-                    const screenGeometry = new THREE.PlaneGeometry(0.1, 4);
+                    // Detection Screen
+                    const screenGeometry = new THREE.PlaneGeometry(0.2, 5);
                     const screenMaterial = new THREE.MeshBasicMaterial({ color: 0x333333, side: THREE.DoubleSide });
                     const screen = new THREE.Mesh(screenGeometry, screenMaterial);
-                    screen.position.set(2, 0, 0);
+                    screen.position.set(3, 0, 0);
                     objects.push(screen);
                     scene.add(screen);
 
@@ -578,13 +589,13 @@
                     particles.forEach(p => {
                         p.x += p.vx;
                         const dist = Math.sqrt((mousePos.x - p.x) ** 2 + (mousePos.y - p.y) ** 2);
-                        p.observed = dist < 0.3;
+                        p.observed = dist < 0.25;
                         if (p.x > 0 && !p.slit) {
-                            p.slit = p.observed ? (Math.random() > 0.5 ? 0.1 : -0.1) : null;
-                            p.y = p.observed ? p.slit : p.y + Math.sin(p.x * 20) * 0.05;
+                            p.slit = p.observed ? (Math.random() > 0.5 ? 0.15 : -0.15) : null;
+                            p.y = p.observed ? p.slit : p.y + Math.sin(p.x * 25) * 0.06;
                         }
-                        if (p.x >= 2) {
-                            vertices.push(2, p.y, 0);
+                        if (p.x >= 3) {
+                            vertices.push(3, p.y, 0);
                             colors.push(1, 1, 1);
                         } else {
                             vertices.push(p.x, p.y, 0);
@@ -595,20 +606,20 @@
                     const geometry = new THREE.BufferGeometry();
                     geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
                     geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-                    const material = new THREE.PointsMaterial({ size: 0.05, vertexColors: true });
+                    const material = new THREE.PointsMaterial({ size: 0.06, vertexColors: true });
                     const obj = new THREE.Points(geometry, material);
                     objects.push(obj);
                     scene.add(obj);
                 } else if (type === 'vibration') {
                     const geometry = new THREE.BufferGeometry();
                     const vertices = [];
-                    for (let i = 0; i < 200; i++) {
-                        const x = i * 0.02 - 2;
+                    for (let i = 0; i < 250; i++) {
+                        const x = i * 0.016 - 2;
                         let y = 0;
                         particles.forEach(p => {
-                            y += Math.sin(x * p.freq + mousePos.x * 10) * p.amp;
+                            y += Math.sin(x * p.freq + mousePos.x * 12) * p.amp;
                         });
-                        vertices.push(x, y * 0.2, 0);
+                        vertices.push(x, y * 0.25, 0);
                     }
                     geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
                     const material = new THREE.LineBasicMaterial({ color: 0xff00cc });
@@ -617,26 +628,27 @@
                     scene.add(obj);
                 } else if (type === 'attraction-game' && goalData) {
                     const outcomes = [
-                        { name: 'Success', color: 0x00ff88, x: -1, y: 1 },
-                        { name: 'Super Wealthy', color: 0xffd700, x: 1, y: 1 },
-                        { name: 'CEO', color: 0x00b7eb, x: -1, y: -1 },
-                        { name: 'President', color: 0xffffff, x: 1, y: -1 },
-                        { name: 'Love', color: 0xff4444, x: 0, y: 1.5 },
+                        { name: 'Success', color: 0x00ff88, x: -1.2, y: 1.2 },
+                        { name: 'Super Wealthy', color: 0xffd700, x: 1.2, y: 1.2 },
+                        { name: 'CEO', color: 0x00b7eb, x: -1.2, y: -1.2 },
+                        { name: 'President', color: 0xffffff, x: 1.2, y: -1.2 },
+                        { name: 'Love', color: 0xff4444, x: 0, y: 1.8 },
                         { name: 'Married', color: 0xff69b4, x: 0, y: 0 },
-                        { name: 'Single', color: 0x00ffff, x: 0, y: -1.5 }
+                        { name: 'Single', color: 0x00ffff, x: 0, y: -1.8 }
                     ];
                     particles = particles.filter(p => p.life > 0);
                     const vertices = [];
                     const colors = [];
                     particles.forEach(p => {
-                        const target = outcomes.find(o => o.name === p.target) || outcomes[0];
+                        const target = outcomes.find(o => o.name.toLowerCase() === p.target.toLowerCase()) || outcomes[0];
                         const dx = target.x - p.x;
                         const dy = target.y - p.y;
                         const dist = Math.sqrt(dx ** 2 + dy ** 2);
-                        p.x += dx * 0.02 * (goalData.toLowerCase().includes(target.name.toLowerCase()) ? 2 : 1);
-                        p.y += dy * 0.02 * (goalData.toLowerCase().includes(target.name.toLowerCase()) ? 2 : 1);
-                        p.life -= 0.01;
-                        if (dist < 0.1 && goalData.toLowerCase().includes(target.name.toLowerCase())) p.life = 0;
+                        const attraction = goalData.toLowerCase().includes(target.name.toLowerCase()) ? 2.5 : 1;
+                        p.x += dx * 0.03 * attraction;
+                        p.y += dy * 0.03 * attraction;
+                        p.life -= 0.008;
+                        if (dist < 0.08 && goalData.toLowerCase().includes(target.name.toLowerCase())) p.life = 0;
                         vertices.push(p.x, p.y, 0);
                         const c = new THREE.Color(target.color);
                         colors.push(c.r, c.g, c.b);
@@ -644,13 +656,13 @@
                     const geometry = new THREE.BufferGeometry();
                     geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
                     geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-                    const material = new THREE.PointsMaterial({ size: 0.1, vertexColors: true });
+                    const material = new THREE.PointsMaterial({ size: 0.12, vertexColors: true });
                     const obj = new THREE.Points(geometry, material);
                     objects.push(obj);
                     scene.add(obj);
                     particles.push({
-                        x: (Math.random() - 0.5) * 4,
-                        y: (Math.random() - 0.5) * 4,
+                        x: (Math.random() - 0.5) * 5,
+                        y: (Math.random() - 0.5) * 5,
                         life: 1,
                         target: outcomes[Math.floor(Math.random() * outcomes.length)].name
                     });
@@ -661,16 +673,16 @@
                         const dx = 0 - p.x;
                         const dy = 0 - p.y;
                         const dist = Math.sqrt(dx ** 2 + dy ** 2);
-                        const focusStrength = Math.min(clickCount * 0.1, 1);
-                        p.x += dx * 0.05 * focusStrength;
-                        p.y += dy * 0.05 * focusStrength;
-                        p.life -= 0.01;
-                        if (dist < 0.1) p.life = 0;
+                        const focusStrength = Math.min(clickCount * 0.12, 1.2);
+                        p.x += dx * 0.06 * focusStrength;
+                        p.y += dy * 0.06 * focusStrength;
+                        p.life -= 0.008;
+                        if (dist < 0.08) p.life = 0;
                         vertices.push(p.x, p.y, 0);
                     });
                     const geometry = new THREE.BufferGeometry();
                     geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-                    const material = new THREE.PointsMaterial({ color: 0x00ff88, size: 0.1 });
+                    const material = new THREE.PointsMaterial({ color: 0x00ff88, size: 0.12 });
                     const obj = new THREE.Points(geometry, material);
                     objects.push(obj);
                     scene.add(obj);
@@ -682,9 +694,9 @@
             function animate() {
                 requestAnimationFrame(animate);
                 if (type === 'metatron-cube') {
-                    objects[0].rotation.x += 0.01;
-                    objects[0].rotation.y += 0.01;
-                    objects[0].scale.set(1 + mousePos.x * 0.5, 1 + mousePos.y * 0.5, 1);
+                    objects[0].rotation.x += 0.012;
+                    objects[0].rotation.y += 0.012;
+                    objects[0].scale.set(1 + mousePos.x * 0.6, 1 + mousePos.y * 0.6, 1);
                 } else if (type === 'observer-effect' || type === 'double-slit' || type === 'vibration' || type === 'attraction-game' || type === 'focus-game') {
                     updateGeometry();
                 }
@@ -730,7 +742,7 @@
         let highContrast = false;
         function toggleHighContrast() {
             highContrast = !highContrast;
-            document.body.style.filter = highContrast ? 'contrast(1.5) brightness(1.2)' : 'none';
+            document.body.style.filter = highContrast ? 'contrast(1.6) brightness(1.3)' : 'none';
         }
 
         let fontSize = 16;
@@ -740,7 +752,7 @@
         }
 
         function toggleNarration() {
-            alert('Narration toggled (placeholder for text-to-speech).');
+            alert('Narration toggled (placeholder for text-to-speech integration).');
         }
     </script>
 </body>
