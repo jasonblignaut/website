@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Labverse.co.za: Instantly see your public IP address and network info with a cosmic background of Golden Spirals and quantum particles.">
-    <meta name="keywords" content="Public IP, DNS Nameservers, Network Info, Golden Spiral, Fibonacci, Quantum Particles, WebGL">
+    <meta name="keywords" content="Public IP, DNS Nameservers, Golden Spiral, Fibonacci, Quantum Particles, WebGL, IP Address">
     <meta name="author" content="Labverse">
     <meta property="og:title" content="Labverse.co.za">
-    <meta property="og:description" content="Discover your public IP address and network details instantly, with mesmerizing sacred geometry animations.">
+    <meta property="og:description" content="Discover your public IP address and network info instantly, with mesmerizing sacred geometry animations.">
     <meta property="og:image" content="assets/labverse-og.webp">
     <meta property="og:url" content="https://labverse.co.za">
     <meta property="og:type" content="website">
@@ -17,8 +17,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;700&family=Space+Mono&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <!-- Google Ads Script -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_PUBLISHER_ID" crossorigin="anonymous"></script>
     <style>
         :root {
             --matrix-blue: #00b7eb;
@@ -42,43 +40,29 @@
             position: relative;
         }
 
-        /* Header */
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(8, 8, 26, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1001;
-        }
-
-        .logo {
-            font-family: 'Space Mono', monospace;
-            font-size: 1.6rem;
-            background: linear-gradient(90deg, var(--matrix-blue), var(--cosmic-magenta));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 8px var(--matrix-blue);
-        }
-
         /* Main Content */
         .main {
             height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: 300px 1fr 300px; /* Left ad, content, right ad */
+            grid-template-rows: 200px 1fr 200px; /* Top ad, content, bottom ad */
             align-items: center;
-            text-align: center;
+            justify-items: center;
             padding: 1.5rem;
             position: relative;
             z-index: 1;
         }
 
-        .main h1 {
+        .ip-container {
+            grid-column: 2;
+            grid-row: 2;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .ip-container h1 {
             font-family: 'Space Mono', monospace;
             font-size: clamp(2rem, 5vw, 4rem);
             background: linear-gradient(90deg, var(--matrix-blue), var(--cosmic-magenta));
@@ -88,33 +72,26 @@
             text-shadow: 0 0 12px var(--matrix-blue);
         }
 
-        .ip-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: rgba(8, 8, 26, 0.9);
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 2px solid var(--matrix-blue);
-            box-shadow: 0 0 15px var(--matrix-blue);
-            margin-bottom: 1rem;
-        }
-
         .ip-display {
             font-family: 'Space Mono', monospace;
             font-size: clamp(1.8rem, 4vw, 3rem);
             color: var(--light-aura);
-            text-shadow: 0 0 8px var(--matrix-blue);
+            background: rgba(8, 8, 26, 0.85); /* Semi-transparent for animations */
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            border: 2px solid var(--matrix-blue);
+            box-shadow: 0 0 15px var(--matrix-blue);
             margin-bottom: 0.5rem;
+            text-shadow: 0 0 8px var(--matrix-blue);
         }
 
         .network-info {
             font-family: 'Space Mono', monospace;
             font-size: clamp(0.8rem, 1.5vw, 1rem);
             color: var(--light-aura);
-            text-align: center;
             max-width: 400px;
             line-height: 1.4;
+            text-shadow: 0 0 5px var(--matrix-blue);
         }
 
         .copy-button {
@@ -129,7 +106,7 @@
             text-transform: uppercase;
             box-shadow: 0 0 var(--glow-radius) var(--matrix-blue);
             transition: all 0.2s;
-            margin-top: 1rem;
+            margin-top: 0.5rem;
         }
 
         .copy-button:hover {
@@ -138,32 +115,48 @@
         }
 
         /* Ad Blocks */
-        .ad-container {
-            margin: 1rem;
-            max-width: 728px;
-            width: 100%;
-            height: 90px; /* Leaderboard ad size */
-            background: rgba(255, 255, 255, 0.1); /* Placeholder */
+        .ad-block {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px dashed var(--matrix-blue);
             display: flex;
-            justify-content: center;
             align-items: center;
-            z-index: 1;
+            justify-content: center;
+            color: var(--light-aura);
+            font-family: 'Space Mono', monospace;
+            font-size: 1rem;
+            text-align: center;
         }
 
-        .ad-container.side {
-            position: fixed;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 160px;
-            height: 600px; /* Skyscraper ad size */
+        .ad-top {
+            grid-column: 1 / 4;
+            grid-row: 1;
+            width: 100%;
+            height: 100%;
+            min-height: 90px; /* Google Ads leaderboard size */
         }
 
-        .ad-container.left {
-            left: 10px;
+        .ad-bottom {
+            grid-column: 1 / 4;
+            grid-row: 3;
+            width: 100%;
+            height: 100%;
+            min-height: 90px;
         }
 
-        .ad-container.right {
-            right: 10px;
+        .ad-left {
+            grid-column: 1;
+            grid-row: 2;
+            width: 100%;
+            height: 100%;
+            min-width: 160px; /* Google Ads skyscraper size */
+        }
+
+        .ad-right {
+            grid-column: 3;
+            grid-row: 2;
+            width: 100%;
+            height: 100%;
+            min-width: 160px;
         }
 
         /* Background Canvas */
@@ -194,12 +187,18 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .main h1 {
+            .main {
+                grid-template-columns: 1fr;
+                grid-template-rows: 100px 1fr 100px;
+            }
+
+            .ip-container h1 {
                 font-size: clamp(1.8rem, 4vw, 2.5rem);
             }
 
             .ip-display {
                 font-size: clamp(1.5rem, 3vw, 2rem);
+                padding: 0.8rem 1.5rem;
             }
 
             .network-info {
@@ -211,117 +210,64 @@
                 font-size: 0.9rem;
             }
 
-            .ad-container.side {
-                display: none; /* Hide skyscraper ads on mobile */
+            .ad-left, .ad-right {
+                display: none; /* Hide side ads on mobile */
+            }
+
+            .ad-top, .ad-bottom {
+                min-height: 50px; /* Mobile ad size */
             }
         }
     </style>
 </head>
 <body>
     <canvas id="background-canvas"></canvas>
-    <header>
-        <div class="logo">Labverse.co.za</div>
-    </header>
     <section class="main">
-        <!-- Top Ad -->
-        <div class="ad-container">
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
-                 data-ad-slot="YOUR_AD_SLOT_ID"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
-        <h1>Your Public IP Address</h1>
+        <div class="ad-block ad-top">Google Ad (Leaderboard 728x90)</div>
+        <div class="ad-block ad-left">Google Ad (Skyscraper 160x600)</div>
         <div class="ip-container">
+            <h1>Your Public IP Address</h1>
             <div class="ip-display" id="ip-display">Fetching IP...</div>
             <div class="network-info" id="network-info">Fetching network info...</div>
             <button class="copy-button" onclick="copyIP()">Copy IP</button>
         </div>
-        <!-- Bottom Ad -->
-        <div class="ad-container">
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
-                 data-ad-slot="YOUR_AD_SLOT_ID"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
+        <div class="ad-block ad-right">Google Ad (Skyscraper 160x600)</div>
+        <div class="ad-block ad-bottom">Google Ad (Leaderboard 728x90)</div>
     </section>
-    <!-- Left Ad -->
-    <div class="ad-container side left">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
-             data-ad-slot="YOUR_AD_SLOT_ID"
-             data-ad-format="vertical"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
-    <!-- Right Ad -->
-    <div class="ad-container side right">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
-             data-ad-slot="YOUR_AD_SLOT_ID"
-             data-ad-format="vertical"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
     <footer>
         <p>© 2025 Labverse.co.za | Powered by AI, Math & Cosmic Precision</p>
     </footer>
 
     <script>
-        // Fetch Public IP and Network Info
+        // Fetch Public IP
+        async function fetchPublicIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                document.getElementById('ip-display').textContent = data.ip;
+            } catch (error) {
+                document.getElementById('ip-display').textContent = 'IP unavailable';
+                console.error('IP Fetch Error:', error);
+            }
+        }
+
+        // Fetch Network Info (DNS Nameservers, ISP, Hostname)
         async function fetchNetworkInfo() {
             try {
-                const ipResponse = await fetch('https://api.ipify.org?format=json');
-                const ipData = await ipResponse.json();
-                const ip = ipData.ip;
-                document.getElementById('ip-display').textContent = ip;
-
-                // Fetch network info using ip-api.com
-                const networkResponse = await fetch(`http://ip-api.com/json/${ip}`);
-                const networkData = await networkResponse.json();
-                if (networkData.status === 'success') {
-                    const dns = await fetchDNS(); // Custom DNS fetch (see below)
-                    const info = [
-                        `ISP: ${networkData.isp || 'Unknown'}`,
-                        `Location: ${networkData.city || 'Unknown'}, ${networkData.country || 'Unknown'}`,
-                        `DNS Nameservers: ${dns.join(', ') || 'Unknown'}`,
-                        `AS: ${networkData.as || 'Unknown'}`
-                    ].join(' | ');
-                    document.getElementById('network-info').textContent = info;
-                } else {
-                    document.getElementById('network-info').textContent = 'Unable to fetch network info';
-                }
-            } catch (error) {
-                document.getElementById('ip-display').textContent = 'Unable to fetch IP';
-                document.getElementById('network-info').textContent = 'Unable to fetch network info';
-                console.error('Error:', error);
-            }
-        }
-
-        // Fetch DNS Nameservers (Fallback using public API)
-        async function fetchDNS() {
-            try {
-                const response = await fetch('https://dns.google/resolve?name=labverse.co.za&type=NS');
+                const response = await fetch('https://ipinfo.io/json?token=your-ipinfo-token'); // Replace with your ipinfo.io token
                 const data = await response.json();
-                return data.Answer?.map(record => record.data) || ['Unknown'];
-            } catch {
-                return ['Unknown'];
+                const dns = data.hostname || 'Unknown';
+                const isp = data.org || 'Unknown';
+                const city = data.city || 'Unknown';
+                document.getElementById('network-info').textContent = `Hostname: ${dns} | ISP: ${isp} | Location: ${city}`;
+            } catch (error) {
+                document.getElementById('network-info').textContent = 'Network info unavailable';
+                console.error('Network Info Error:', error);
             }
         }
 
+        // Initialize Fetch
+        fetchPublicIP();
         fetchNetworkInfo();
 
         // Copy IP to Clipboard
@@ -346,21 +292,11 @@
 
             let spirals = [], particles = [], trails = [], mousePos = { x: 0, y: 0 };
 
-            // Mouse Interaction (Minimal)
+            // Mouse Interaction
             document.addEventListener('mousemove', (e) => {
                 mousePos.x = (e.clientX / window.innerWidth) * 2 - 1;
                 mousePos.y = -(e.clientY / window.innerHeight) * 2 + 1;
             }, { passive: true });
-
-            // Check if position is outside IP and ad area (600x400px centered)
-            function isOutsideIPArea(x, y) {
-                const centerX = window.innerWidth / 2;
-                const centerY = window.innerHeight / 2;
-                const ipWidth = 600; // Expanded for IP, network info, and button
-                const ipHeight = 400; // Expanded for ad blocks
-                return (Math.abs(x * window.innerWidth - centerX) > ipWidth / 2) || 
-                       (Math.abs(y * window.innerHeight - centerY) > ipHeight / 2);
-            }
 
             // Golden Spiral
             function createSpiral(offset, scale) {
@@ -369,15 +305,8 @@
                 for (let i = 0; i < 20; i++) {
                     const theta = i * 0.2 + offset;
                     const r = Math.pow(phi, theta / Math.PI) * scale;
-                    const x = r * Math.cos(theta);
-                    const y = r * Math.sin(theta);
-                    const screenX = (x / 10 + 0.5) * window.innerWidth;
-                    const screenY = (-y / 10 + 0.5) * window.innerHeight;
-                    if (isOutsideIPArea(screenX / window.innerWidth, screenY / window.innerHeight)) {
-                        points.push(new THREE.Vector3(x, y, 0));
-                    }
+                    points.push(new THREE.Vector3(r * Math.cos(theta), r * Math.sin(theta), 0));
                 }
-                if (points.length < 2) return null;
                 const geometry = new THREE.BufferGeometry().setFromPoints(points);
                 const material = new THREE.LineBasicMaterial({ color: 0xff00cc, transparent: true, opacity: 0.6 });
                 const spiral = new THREE.Line(geometry, material);
@@ -391,9 +320,6 @@
                 const r = fib(index) * 0.08;
                 const x = r * Math.cos(index + offset);
                 const y = r * Math.sin(index + offset);
-                const screenX = (x / 10 + 0.5) * window.innerWidth;
-                const screenY = (-y / 10 + 0.5) * window.innerHeight;
-                if (!isOutsideIPArea(screenX / window.innerWidth, screenY / window.innerHeight)) return null;
                 const geometry = new THREE.BufferGeometry();
                 geometry.setAttribute('position', new THREE.Float32BufferAttribute([x, y, Math.random() * 0.05], 3));
                 const material = new THREE.PointsMaterial({ color: 0x00b7eb, size: 0.06, transparent: true, opacity: 0.7 });
@@ -404,12 +330,6 @@
 
             // Connecting Trails
             function createTrail(from, to, color) {
-                const screenX1 = (from.x / 10 + 0.5) * window.innerWidth;
-                const screenY1 = (-from.y / 10 + 0.5) * window.innerHeight;
-                const screenX2 = (to.x / 10 + 0.5) * window.innerWidth;
-                const screenY2 = (-to.y / 10 + 0.5) * window.innerHeight;
-                if (!isOutsideIPArea(screenX1 / window.innerWidth, screenY1 / window.innerHeight) ||
-                    !isOutsideIPArea(screenX2 / window.innerWidth, screenY2 / window.innerHeight)) return null;
                 const points = [from, to];
                 const geometry = new THREE.BufferGeometry().setFromPoints(points);
                 const material = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.4 });
@@ -420,11 +340,9 @@
 
             // Initialize Animations
             function initAnimations() {
-                const spiral = createSpiral(Math.random() * 2 * Math.PI, 0.08 + Math.random() * 0.04);
-                if (spiral) spirals.push(spiral);
+                spirals.push(createSpiral(Math.random() * 2 * Math.PI, 0.08 + Math.random() * 0.04));
                 for (let i = 0; i < 10; i++) {
-                    const particle = createParticle(i % 5, Math.random() * 2 * Math.PI);
-                    if (particle) particles.push(particle);
+                    particles.push(createParticle(i % 5, Math.random() * 2 * Math.PI));
                 }
             }
             initAnimations();
@@ -443,15 +361,9 @@
                 particles = particles.filter(p => {
                     if (p.life <= 0) { scene.remove(p.obj); return false; }
                     p.life -= 1 / 60;
-                    p.obj.material.opacity = s.life / 10;
-                    let newX = p.obj.position.x + (Math.random() - 0.5) * 0.01 + mousePos.x * 0.005;
-                    let newY = p.obj.position.y + (Math.random() - 0.5) * 0.01 + mousePos.y * 0.005;
-                    const screenX = (newX / 10 + 0.5) * window.innerWidth;
-                    const screenY = (-newY / 10 + 0.5) * window.innerHeight;
-                    if (isOutsideIPArea(screenX / window.innerWidth, screenY / window.innerHeight)) {
-                        p.obj.position.x = newX;
-                        p.obj.position.y = newY;
-                    }
+                    p.obj.material.opacity = p.life / 10;
+                    p.obj.position.x += (Math.random() - 0.5) * 0.01 + mousePos.x * 0.005;
+                    p.obj.position.y += (Math.random() - 0.5) * 0.01 + mousePos.y * 0.005;
                     return true;
                 });
 
@@ -463,12 +375,10 @@
                 });
 
                 if (spirals.length < 3 && Math.random() < 0.03) {
-                    const spiral = createSpiral(Math.random() * 2 * Math.PI, 0.08 + Math.random() * 0.04);
-                    if (spiral) spirals.push(spiral);
+                    spirals.push(createSpiral(Math.random() * 2 * Math.PI, 0.08 + Math.random() * 0.04));
                 }
                 if (particles.length < 10 && Math.random() < 0.05) {
-                    const particle = createParticle(Math.floor(Math.random() * 5), Math.random() * 2 * Math.PI);
-                    if (particle) particles.push(particle);
+                    particles.push(createParticle(Math.floor(Math.random() * 5), Math.random() * 2 * Math.PI));
                 }
 
                 if (trails.length < 50) {
@@ -479,8 +389,7 @@
                                 const pos2 = p2.obj.position;
                                 const dist = pos.distanceTo(pos2);
                                 if (dist < 0.5 && Math.random() < 0.01) {
-                                    const trail = createTrail(pos, pos2, 0x00b7eb);
-                                    if (trail) trails.push(trail);
+                                    trails.push(createTrail(pos, pos2, 0x00b7eb));
                                 }
                             }
                         });
@@ -490,8 +399,7 @@
                                 const spiralPos = new THREE.Vector3(points[i], points[i + 1], points[i + 2]);
                                 const dist = pos.distanceTo(spiralPos);
                                 if (dist < 0.5 && Math.random() < 0.005) {
-                                    const trail = createTrail(pos, spiralPos, 0xff00cc);
-                                    if (trail) trails.push(trail);
+                                    trails.push(createTrail(pos, spiralPos, 0xff00cc));
                                 }
                             }
                         });
