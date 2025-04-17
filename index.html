@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Labverse.co.za: Instantly see your public IP address and network info with a cosmic background of Golden Spirals and quantum particles.">
-    <meta name="keywords" content="Public IP, Golden Spiral, Fibonacci, Quantum Particles, WebGL, IP Address">
+    <meta name="description" content="Labverse.co.za: Instantly see your public IP address and network info with a cosmic background of Fibonacci particles and quantum trails.">
+    <meta name="keywords" content="Public IP, Fibonacci, Quantum Particles, WebGL, IP Address">
     <meta name="author" content="Labverse">
     <meta property="og:title" content="Labverse.co.za">
     <meta property="og:description" content="Discover your public IP address and network info instantly, with mesmerizing sacred geometry animations.">
@@ -42,17 +42,18 @@
             color: var(--light-aura);
             overflow: hidden;
             position: relative;
+            cursor: default;
         }
 
         /* Main Content */
         .main {
             height: 100vh;
             display: grid;
-            grid-template-columns: 300px 1fr 300px;
-            grid-template-rows: 200px 1fr 200px;
+            grid-template-columns: minmax(160px, 300px) minmax(300px, 1fr) minmax(160px, 300px);
+            grid-template-rows: minmax(90px, 200px) 1fr minmax(90px, 200px);
             align-items: center;
             justify-items: center;
-            padding: 1.5rem;
+            padding: clamp(1rem, 3vw, 1.5rem);
             position: relative;
             z-index: 1;
         }
@@ -64,36 +65,38 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            max-width: 100%;
         }
 
         .ip-container h1 {
             font-family: 'Space Mono', monospace;
-            font-size: clamp(2rem, 5vw, 4rem);
+            font-size: clamp(1.8rem, 5vw, 3.5rem);
             background: linear-gradient(90deg, var(--matrix-blue), var(--cosmic-magenta));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
+            margin-bottom: clamp(0.5rem, 2vw, 1rem);
             text-shadow: 0 0 12px var(--matrix-blue);
         }
 
         .ip-display {
             font-family: 'Space Mono', monospace;
-            font-size: clamp(1.8rem, 4vw, 3rem);
+            font-size: clamp(1.5rem, 4vw, 2.8rem);
             color: var(--light-aura);
             background: rgba(8, 8, 26, 0.85);
-            padding: 1rem 2.5rem;
+            padding: clamp(0.8rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2.5rem);
             border-radius: 12px;
             border: 2px solid var(--matrix-blue);
             box-shadow: 0 0 15px var(--matrix-blue);
-            margin-bottom: 0.5rem;
+            margin-bottom: clamp(0.3rem, 1vw, 0.5rem);
             text-shadow: 0 0 8px var(--matrix-blue);
+            word-break: break-all;
         }
 
         .network-info {
             font-family: 'Space Mono', monospace;
-            font-size: clamp(0.8rem, 1.5vw, 1rem);
+            font-size: clamp(0.7rem, 1.5vw, 1rem);
             color: var(--light-aura);
-            max-width: 400px;
+            max-width: clamp(200px, 80vw, 400px);
             line-height: 1.4;
             text-shadow: 0 0 5px var(--matrix-blue);
             text-align: center;
@@ -103,15 +106,15 @@
             background: linear-gradient(90deg, var(--matrix-blue), var(--cosmic-magenta));
             color: var(--light-aura);
             border: none;
-            padding: 0.8rem 2rem;
+            padding: clamp(0.6rem, 1.5vw, 0.8rem) clamp(1.5rem, 3vw, 2rem);
             border-radius: 8px;
             cursor: pointer;
             font-family: 'Space Mono', monospace;
-            font-size: 1rem;
+            font-size: clamp(0.8rem, 1.5vw, 1rem);
             text-transform: uppercase;
             box-shadow: 0 0 var(--glow-radius) var(--matrix-blue);
             transition: all 0.2s;
-            margin-top: 0.5rem;
+            margin-top: clamp(0.3rem, 1vw, 0.5rem);
         }
 
         .copy-button:hover {
@@ -124,37 +127,31 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 100%;
+            height: 100%;
         }
 
         .ad-top {
             grid-column: 1 / 4;
             grid-row: 1;
-            width: 100%;
-            height: 100%;
             min-height: 90px;
         }
 
         .ad-bottom {
             grid-column: 1 / 4;
             grid-row: 3;
-            width: 100%;
-            height: 100%;
             min-height: 90px;
         }
 
         .ad-left {
             grid-column: 1;
             grid-row: 2;
-            width: 100%;
-            height: 100%;
             min-width: 160px;
         }
 
         .ad-right {
             grid-column: 3;
             grid-row: 2;
-            width: 100%;
-            height: 100%;
             min-width: 160px;
         }
 
@@ -174,39 +171,41 @@
             bottom: 0;
             width: 100%;
             background: rgba(8, 8, 26, 0.95);
-            padding: 1rem;
+            padding: clamp(0.5rem, 2vw, 1rem);
             text-align: center;
             z-index: 1001;
         }
 
         footer p {
             color: var(--light-aura);
-            font-size: 0.9rem;
+            font-size: clamp(0.7rem, 1.5vw, 0.9rem);
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
             .main {
                 grid-template-columns: 1fr;
-                grid-template-rows: 100px 1fr 100px;
+                grid-template-rows: minmax(60px, 100px) 1fr minmax(60px, 100px);
+                padding: clamp(0.5rem, 2vw, 1rem);
             }
 
             .ip-container h1 {
-                font-size: clamp(1.8rem, 4vw, 2.5rem);
+                font-size: clamp(1.5rem, 4vw, 2.5rem);
             }
 
             .ip-display {
-                font-size: clamp(1.5rem, 3vw, 2rem);
-                padding: 0.8rem 1.5rem;
+                font-size: clamp(1.2rem, 3vw, 2rem);
+                padding: clamp(0.5rem, 1.5vw, 0.8rem) clamp(1rem, 2vw, 1.5rem);
             }
 
             .network-info {
-                font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+                font-size: clamp(0.6rem, 1.2vw, 0.9rem);
+                max-width: 90vw;
             }
 
             .copy-button {
-                padding: 0.6rem 1.5rem;
-                font-size: 0.9rem;
+                padding: clamp(0.4rem, 1vw, 0.6rem) clamp(1rem, 2vw, 1.5rem);
+                font-size: clamp(0.7rem, 1.2vw, 0.9rem);
             }
 
             .ad-left, .ad-right {
@@ -215,6 +214,28 @@
 
             .ad-top, .ad-bottom {
                 min-height: 50px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main {
+                padding: clamp(0.3rem, 1.5vw, 0.5rem);
+            }
+
+            .ip-container h1 {
+                font-size: clamp(1.2rem, 3.5vw, 2rem);
+            }
+
+            .ip-display {
+                font-size: clamp(1rem, 2.5vw, 1.5rem);
+            }
+
+            .network-info {
+                font-size: clamp(0.5rem, 1vw, 0.8rem);
+            }
+
+            .copy-button {
+                font-size: clamp(0.6rem, 1vw, 0.8rem);
             }
         }
     </style>
@@ -332,12 +353,13 @@
         fetchNetworkInfo();
 
         // Background Animation
-        let scene, camera, renderer, spirals = [], particles = [], trails = [], mousePos = { x: 0, y: 0 };
+        let scene, camera, renderer, particles = [], trails = [], mousePos = { x: 0, y: 0 };
 
         function initBackground() {
             const canvas = document.getElementById('background-canvas');
             if (!canvas.getContext('webgl') && !canvas.getContext('experimental-webgl')) {
                 console.error('WebGL not supported');
+                document.getElementById('network-info').textContent = 'WebGL not supported';
                 return;
             }
             scene = new THREE.Scene();
@@ -353,32 +375,16 @@
                 mousePos.y = -(e.clientY / window.innerHeight) * 2 + 1;
             }, { passive: true });
 
-            // Golden Spiral
-            function createSpiral(offset, scale, life = 10, color = 0xff00cc) {
-                const phi = (1 + Math.sqrt(5)) / 2;
-                const points = [];
-                for (let i = 0; i < 40; i++) {
-                    const theta = i * 0.4 + offset;
-                    const r = Math.pow(phi, theta / Math.PI) * scale * 2;
-                    points.push(new THREE.Vector3(r * Math.cos(theta), r * Math.sin(theta), 0));
-                }
-                const geometry = new THREE.BufferGeometry().setFromPoints(points);
-                const material = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.9, linewidth: 3 });
-                const spiral = new THREE.Line(geometry, material);
-                scene.add(spiral);
-                return { obj: spiral, life, offset, scale };
-            }
-
             // Fibonacci Particle
             function createParticle(index, offset, life = 10, velocity = new THREE.Vector3(0, 0, 0), color = 0x00b7eb) {
                 const phi = (1 + Math.sqrt(5)) / 2;
                 const theta = index * 2 * Math.PI * phi; // Golden angle
-                const r = Math.sqrt(index) * 0.3; // Spiral distribution
+                const r = Math.sqrt(index) * 0.4; // Smooth spiral distribution
                 const x = r * Math.cos(theta + offset);
                 const y = r * Math.sin(theta + offset);
                 const geometry = new THREE.BufferGeometry();
-                geometry.setAttribute('position', new THREE.Float32BufferAttribute([x, y, Math.random() * 0.2], 3));
-                const material = new THREE.PointsMaterial({ color, size: 0.15, transparent: true, opacity: 1 });
+                geometry.setAttribute('position', new THREE.Float32BufferAttribute([x, y, Math.random() * 0.3], 3));
+                const material = new THREE.PointsMaterial({ color, size: 0.2, transparent: true, opacity: 1 });
                 const particle = new THREE.Points(geometry, material);
                 scene.add(particle);
                 return { obj: particle, life, index, offset, velocity };
@@ -396,8 +402,7 @@
 
             // Initialize Animations
             function initAnimations() {
-                spirals.push(createSpiral(Math.random() * 2 * Math.PI, 0.3 + Math.random() * 0.2));
-                for (let i = 0; i < 20; i++) {
+                for (let i = 0; i < 30; i++) {
                     particles.push(createParticle(i, Math.random() * 2 * Math.PI));
                 }
             }
@@ -405,36 +410,31 @@
 
             // Big Bang Explosion on Copy
             function triggerBigBang() {
-                spirals.forEach(s => { scene.remove(s.obj); s.obj.geometry.dispose(); s.obj.material.dispose(); });
                 particles.forEach(p => { scene.remove(p.obj); p.obj.geometry.dispose(); p.obj.material.dispose(); });
                 trails.forEach(t => { scene.remove(t.obj); t.obj.geometry.dispose(); t.obj.material.dispose(); });
-                spirals = [];
                 particles = [];
                 trails = [];
 
                 const colors = [0x00b7eb, 0xff00cc, 0x00ffff, 0xffd700]; // Blue, magenta, cyan, gold
-                for (let i = 0; i < 12; i++) {
-                    spirals.push(createSpiral(Math.random() * 2 * Math.PI, 0.5 + Math.random() * 0.3, 5, colors[Math.floor(Math.random() * colors.length)]));
-                }
-                for (let i = 0; i < 100; i++) {
+                for (let i = 0; i < 150; i++) {
                     const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2); // Golden angle
-                    const r = Math.sqrt(i) * 0.5;
+                    const r = Math.sqrt(i) * 0.6;
                     const velocity = new THREE.Vector3(
-                        r * Math.cos(theta) * 0.1,
-                        r * Math.sin(theta) * 0.1,
-                        (Math.random() - 0.5) * 0.05
+                        r * Math.cos(theta) * 0.12,
+                        r * Math.sin(theta) * 0.12,
+                        (Math.random() - 0.5) * 0.06
                     );
                     particles.push(createParticle(i, Math.random() * 2 * Math.PI, 5, velocity, colors[Math.floor(Math.random() * colors.length)]));
                 }
-                for (let i = 0; i < 150; i++) {
+                for (let i = 0; i < 200; i++) {
                     const from = new THREE.Vector3(
-                        (Math.random() - 0.5) * 2,
-                        (Math.random() - 0.5) * 2,
+                        (Math.random() - 0.5) * 3,
+                        (Math.random() - 0.5) * 3,
                         0
                     );
                     const to = new THREE.Vector3(
-                        from.x + (Math.random() - 0.5) * 4,
-                        from.y + (Math.random() - 0.5) * 4,
+                        from.x + (Math.random() - 0.5) * 5,
+                        from.y + (Math.random() - 0.5) * 5,
                         0
                     );
                     trails.push(createTrail(from, to, colors[Math.floor(Math.random() * colors.length)], 5));
@@ -442,22 +442,12 @@
             }
 
             function updateAnimations() {
-                spirals = spirals.filter(s => {
-                    if (s.life <= 0) { scene.remove(s.obj); s.obj.geometry.dispose(); s.obj.material.dispose(); return false; }
-                    s.life -= 1 / 60;
-                    s.obj.material.opacity = s.life / 10 * 0.9;
-                    s.obj.rotation.z += 0.015 * (Math.random() - 0.5);
-                    s.obj.position.x = mousePos.x * 0.3;
-                    s.obj.position.y = mousePos.y * 0.3;
-                    return true;
-                });
-
                 particles = particles.filter(p => {
                     if (p.life <= 0) { scene.remove(p.obj); p.obj.geometry.dispose(); p.obj.material.dispose(); return false; }
                     p.life -= 1 / 60;
                     p.obj.material.opacity = p.life / 10 * 1;
-                    p.obj.position.x += p.velocity.x + mousePos.x * 0.015;
-                    p.obj.position.y += p.velocity.y + mousePos.y * 0.015;
+                    p.obj.position.x += p.velocity.x + mousePos.x * 0.02;
+                    p.obj.position.y += p.velocity.y + mousePos.y * 0.02;
                     p.obj.position.z += p.velocity.z;
                     p.velocity.multiplyScalar(0.98);
                     return true;
@@ -470,32 +460,19 @@
                     return true;
                 });
 
-                if (spirals.length < 5 && Math.random() < 0.05) {
-                    spirals.push(createSpiral(Math.random() * 2 * Math.PI, 0.3 + Math.random() * 0.2));
-                }
-                if (particles.length < 20 && Math.random() < 0.07) {
-                    particles.push(createParticle(Math.floor(Math.random() * 5), Math.random() * 2 * Math.PI));
+                if (particles.length < 30 && Math.random() < 0.07) {
+                    particles.push(createParticle(Math.floor(Math.random() * 30), Math.random() * 2 * Math.PI));
                 }
 
-                if (trails.length < 80) {
+                if (trails.length < 100) {
                     particles.forEach(p => {
                         const pos = p.obj.position;
                         particles.forEach(p2 => {
                             if (p !== p2) {
                                 const pos2 = p2.obj.position;
                                 const dist = pos.distanceTo(pos2);
-                                if (dist < 1.5 && Math.random() < 0.03) {
-                                    trails.push(createTrail(pos, pos2, 0x00b7eb));
-                                }
-                            }
-                        });
-                        spirals.forEach(s => {
-                            const points = s.obj.geometry.attributes.position.array;
-                            for (let i = 0; i < points.length; i += 3) {
-                                const spiralPos = new THREE.Vector3(points[i], points[i + 1], points[i + 2]);
-                                const dist = pos.distanceTo(spiralPos);
-                                if (dist < 1.5 && Math.random() < 0.015) {
-                                    trails.push(createTrail(pos, spiralPos, 0xff00cc));
+                                if (dist < 2 && Math.random() < 0.03) {
+                                    trails.push(createTrail(pos, pos2, Math.random() > 0.5 ? 0x00b7eb : 0xff00cc));
                                 }
                             }
                         });
@@ -527,6 +504,7 @@
                 window.triggerBigBang();
             }).catch(err => {
                 console.error('Copy Error:', err);
+                document.getElementById('network-info').textContent = 'Copy failed';
             });
         }
     </script>
