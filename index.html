@@ -6,13 +6,13 @@
   <meta name="description" content="Labverse — Cyber Lab for AI, Hacking, Cybersecurity, and Future Tech Experiments. View your public IP with cosmic Fibonacci particle animations." />
   <meta name="keywords" content="Labverse, Cyber Lab, AI, Hacking, Cybersecurity, Public IP, Fibonacci, Quantum Particles, South Africa, Sandton" />
   <meta name="author" content="Labverse Team" />
-  <meta property="og:title" content="Labverse | Cyber Labs of the Future" />
+  <meta property="og:title" content="Your Public IP" />
   <meta property="og:description" content="Discover your public IP address and network info with mesmerizing sacred geometry animations." />
   <meta property="og:image" content="https://labverse.co.za/assets/labverse-og-image.png" />
   <meta property="og:url" content="https://labverse.co.za" />
   <meta name="twitter:card" content="summary_large_image" />
 
-  <title>Labverse | Your Public IP Address</title>
+  <title>Your Public IP</title>
 
   <!-- Favicon -->
   <link rel="icon" href="favicon.ico" />
@@ -55,7 +55,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: -1; /* Lower z-index to ensure animations cover entire site */
+      z-index: -1; /* Behind all content for full-site animations */
     }
 
     .container {
@@ -135,7 +135,7 @@
       position: fixed;
       bottom: 0;
       width: 100%;
-      background: transparent; /* Transparent footer for cinematic theme */
+      background: transparent; /* Transparent for cinematic theme */
       padding: clamp(0.5rem, 2vw, 1rem);
       text-align: center;
       font-size: clamp(0.7rem, 1.5vw, 0.9rem);
@@ -193,7 +193,7 @@
   <canvas id="background-canvas"></canvas>
 
   <div class="container">
-    <h1>Labverse | Your Public IP</h1>
+    <h1>Your Public IP</h1>
     <div class="ip-display" id="ip-display">Fetching IP...</div>
     <div class="network-info" id="network-info">Fetching network info...</div>
     <button class="btn" onclick="copyIP()">Copy IP</button>
@@ -283,17 +283,22 @@
 
     function initBackground() {
       const canvas = document.getElementById('background-canvas');
-      if (!canvas.getContext('webgl') && !canvas.getContext('experimental-webgl')) {
+      // Check WebGL support
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      if (!gl) {
         console.error('WebGL not supported');
         document.getElementById('network-info').textContent = 'WebGL not supported';
         return;
       }
+
+      // Initialize Scene
       scene = new THREE.Scene();
       camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
       renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      camera.position.z = 50; // Adjusted for wider view
+      renderer.setClearColor(0x000000, 0); // Transparent background
+      camera.position.z = 50;
 
       // Mouse Interaction
       document.addEventListener('mousemove', (e) => {
@@ -305,12 +310,18 @@
       function createParticle(index, offset, life = 10, velocity = new THREE.Vector3(0, 0, 0), color = 0x00b7eb) {
         const phi = (1 + Math.sqrt(5)) / 2;
         const theta = index * 2 * Math.PI * phi;
-        const r = Math.sqrt(index) * 0.8; // Increased radius for wider spread
+        const r = Math.sqrt(index) * 0.8;
         const x = r * Math.cos(theta + offset);
         const y = r * Math.sin(theta + offset);
         const geometry = new THREE.BufferGeometry();
         geometry.setAttribute('position', new THREE.Float32BufferAttribute([x, y, Math.random() * 0.5], 3));
-        const material = new THREE.PointsMaterial({ color, size: 0.3, transparent: true, opacity: 1 });
+        const material = new THREE.PointsMaterial({ 
+          color, 
+          size: 0.3, 
+          transparent: true, 
+          opacity: 1,
+          blending: THREE.AdditiveBlending // Enhanced visibility
+        });
         const particle = new THREE.Points(geometry, material);
         scene.add(particle);
         return { obj: particle, life, index, offset, velocity };
@@ -320,7 +331,13 @@
       function createTrail(from, to, color, life = 10) {
         const points = [from, to];
         const geometry = new THREE.BufferGeometry().setFromPoints(points);
-        const material = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.7, linewidth: 2 });
+        const material = new THREE.LineBasicMaterial({ 
+          color, 
+          transparent: true, 
+          opacity: 0.7, 
+          linewidth: 2,
+          blending: THREE.AdditiveBlending // Enhanced visibility
+        });
         const trail = new THREE.Line(geometry, material);
         scene.add(trail);
         return { obj: trail, life };
@@ -328,7 +345,8 @@
 
       // Initialize Animations
       function initAnimations() {
-        for (let i = 0; i < 100; i++) { // Increased particle count for fuller effect
+        particles = []; // Clear any existing particles
+        for (let i = 0; i < 100; i++) {
           particles.push(createParticle(i, Math.random() * 2 * Math.PI));
         }
       }
@@ -342,9 +360,9 @@
         trails = [];
 
         const colors = [0x00b7eb, 0xff00cc, 0x00ffff, 0xffd700];
-        for (let i = 0; i < 300; i++) { // Increased for more dramatic explosion
+        for (let i = 0; i < 300; i++) {
           const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2);
-          const r = Math.sqrt(i) * 1.2; // Larger spread
+          const r = Math.sqrt(i) * 1.2;
           const velocity = new THREE.Vector3(
             r * Math.cos(theta) * 0.15,
             r * Math.sin(theta) * 0.15,
@@ -352,7 +370,7 @@
           );
           particles.push(createParticle(i, Math.random() * 2 * Math.PI, 5, velocity, colors[Math.floor(Math.random() * colors.length)]));
         }
-        for (let i = 0; i < 400; i++) { // More trails for richer effect
+        for (let i = 0; i < 400; i++) {
           const from = new THREE.Vector3(
             (Math.random() - 0.5) * 5,
             (Math.random() - 0.5) * 5,
@@ -369,10 +387,15 @@
 
       function updateAnimations() {
         particles = particles.filter(p => {
-          if (p.life <= 0) { scene.remove(p.obj); p.obj.geometry.dispose(); p.obj.material.dispose(); return false; }
+          if (p.life <= 0) { 
+            scene.remove(p.obj); 
+            p.obj.geometry.dispose(); 
+            p.obj.material.dispose(); 
+            return false; 
+          }
           p.life -= 1 / 60;
           p.obj.material.opacity = p.life / 10 * 1;
-          p.obj.position.x += p.velocity.x + mousePos.x * 0.03; // Increased mouse influence
+          p.obj.position.x += p.velocity.x + mousePos.x * 0.03;
           p.obj.position.y += p.velocity.y + mousePos.y * 0.03;
           p.obj.position.z += p.velocity.z;
           p.velocity.multiplyScalar(0.98);
@@ -380,7 +403,12 @@
         });
 
         trails = trails.filter(t => {
-          if (t.life <= 0) { scene.remove(t.obj); t.obj.geometry.dispose(); t.obj.material.dispose(); return false; }
+          if (t.life <= 0) { 
+            scene.remove(t.obj); 
+            t.obj.geometry.dispose(); 
+            t.obj.material.dispose(); 
+            return false; 
+          }
           t.life -= 1 / 60;
           t.obj.material.opacity = t.life / 10 * 0.7;
           return true;
@@ -390,14 +418,14 @@
           particles.push(createParticle(Math.floor(Math.random() * 100), Math.random() * 2 * Math.PI));
         }
 
-        if (trails.length < 200) { // Increased trail limit
+        if (trails.length < 200) {
           particles.forEach(p => {
             const pos = p.obj.position;
             particles.forEach(p2 => {
               if (p !== p2) {
                 const pos2 = p2.obj.position;
                 const dist = pos.distanceTo(pos2);
-                if (dist < 3 && Math.random() < 0.05) { // Adjusted for wider connections
+                if (dist < 3 && Math.random() < 0.05) {
                   trails.push(createTrail(pos, pos2, Math.random() > 0.5 ? 0x00b7eb : 0xff00cc));
                 }
               }
@@ -419,9 +447,16 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
       }, { passive: true });
 
+      // Force initial render
+      renderer.render(scene, camera);
+
       window.triggerBigBang = triggerBigBang;
     }
-    initBackground();
+
+    // Ensure WebGL initializes after DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      initBackground();
+    });
 
     // Copy IP to Clipboard
     function copyIP() {
