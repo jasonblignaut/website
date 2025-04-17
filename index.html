@@ -35,13 +35,13 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Source Code Pro', monospace; /* Default to Source Code Pro */
+      font-family: 'Source Code Pro', monospace;
     }
 
     html, body {
       height: 100%;
       width: 100%;
-      background: #000000; /* Solid black for visibility */
+      background: #000000;
       color: var(--light-aura);
       overflow: hidden;
       margin: 0;
@@ -101,7 +101,7 @@
       top: 0;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 1000; /* Above everything */
+      z-index: 1000;
       text-align: center;
       width: 100%;
       padding: clamp(0.5rem, 1vw, 1rem);
@@ -117,27 +117,18 @@
       align-items: center;
       text-align: center;
       padding: clamp(1rem, 3vw, 1.5rem);
-      padding-top: clamp(4rem, 10vh, 6rem); /* Space for AdSense */
+      padding-top: clamp(4rem, 10vh, 6rem);
     }
 
     h1 {
-      font-family: 'Source Code Pro', monospace; /* Same as footer */
+      font-family: 'Source Code Pro', monospace;
       font-size: clamp(2rem, 6vw, 4rem);
-      text-transform: uppercase; /* All caps */
-      background: linear-gradient(90deg, var(--matrix-blue), var(--cosmic-magenta));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      text-transform: uppercase;
+      color: var(--light-aura); /* Same color as footer */
       margin-bottom: clamp(1rem, 3vw, 1.5rem);
-      text-shadow: 0 0 15px var(--matrix-blue), 0 0 30px var(--cosmic-magenta);
-      animation: glow 3s infinite ease-in-out;
-      letter-spacing: 0.2rem; /* Enhanced spacing */
-      font-weight: 700; /* Bolder for perfection */
-    }
-
-    @keyframes glow {
-      0% { text-shadow: 0 0 10px var(--matrix-blue), 0 0 20px var(--cosmic-magenta); }
-      50% { text-shadow: 0 0 20px var(--matrix-blue), 0 0 40px var(--cosmic-magenta); }
-      100% { text-shadow: 0 0 10px var(--matrix-blue), 0 0 20px var(--cosmic-magenta); }
+      text-shadow: 0 0 5px var(--matrix-blue); /* Same subtle shadow as footer */
+      letter-spacing: 0.2rem;
+      font-weight: 700;
     }
 
     .ip-display {
@@ -401,13 +392,13 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        // Test renders (larger, longer duration)
+        // Test renders
         ctx.fillStyle = 'red';
-        ctx.fillRect(10, 10, 150, 150); // Large red square, top-left, 10s
+        ctx.fillRect(10, 10, 150, 150);
         setTimeout(() => {
           ctx.clearRect(10, 10, 150, 150);
           ctx.fillStyle = 'green';
-          ctx.fillRect(window.innerWidth - 160, 10, 150, 150); // Green square, top-right, 10s
+          ctx.fillRect(window.innerWidth - 160, 10, 150, 150);
           setTimeout(() => ctx.clearRect(window.innerWidth - 160, 10, 150, 150), 10000);
         }, 10000);
 
@@ -454,7 +445,7 @@
           logDebug('Triggering 2D Big Bang...');
           particles = [];
           ctx.fillStyle = 'blue';
-          ctx.fillRect(canvas.width / 2 - 50, canvas.height / 2 - 50, 100, 100); // Blue square for explosion
+          ctx.fillRect(canvas.width / 2 - 50, canvas.height / 2 - 50, 100, 100);
           setTimeout(() => ctx.clearRect(canvas.width / 2 - 50, canvas.height / 2 - 50, 100, 100), 1000);
 
           for (let i = 0; i < 50; i++) {
