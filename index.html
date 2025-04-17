@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="WhatsMyPip.co.za: Instantly discover your public IP address with a stunning, mathematically precise background of Golden Spirals and quantum particles.">
+    <meta name="description" content="WhatsMyPip.co.za: Instantly see and hear your public IP address with a cosmic background of Golden Spirals and quantum particles.">
     <meta name="keywords" content="Public IP, Golden Spiral, Fibonacci, Quantum Particles, WebGL, IP Address">
     <meta name="author" content="WhatsMyPip">
     <meta property="og:title" content="WhatsMyPip.co.za">
-    <meta property="og:description" content="See your public IP address instantly, surrounded by mesmerizing sacred geometry and particle animations.">
+    <meta property="og:description" content="Discover your public IP address instantly, with mesmerizing sacred geometry and particle animations.">
     <meta property="og:image" content="assets/pip-og.webp">
     <meta property="og:url" content="https://whatsmypip.co.za">
     <meta property="og:type" content="website">
@@ -61,23 +61,23 @@
             100% { transform: translate(-50%, -50%) scale(1); }
         }
 
-        /* Quantum Particles */
-        .quantum-particle {
+        /* Quantum Trails */
+        .quantum-trail {
             position: absolute;
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             background: var(--cosmic-magenta);
             border-radius: 50%;
             pointer-events: none;
             z-index: 1000;
-            opacity: 0.9;
-            box-shadow: 0 0 15px var(--cosmic-magenta);
-            animation: waveCollapse 1.5s ease-out forwards;
+            opacity: 0.8;
+            box-shadow: 0 0 12px var(--cosmic-magenta);
+            animation: evaporate 10s ease-out forwards;
         }
 
-        @keyframes waveCollapse {
-            0% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(3); opacity: 0.6; }
+        @keyframes evaporate {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(2); opacity: 0.4; }
             100% { transform: scale(0); opacity: 0; }
         }
 
@@ -136,8 +136,27 @@
             border-radius: 15px;
             border: 2px solid var(--matrix-blue);
             box-shadow: 0 0 20px var(--matrix-blue);
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             text-shadow: 0 0 10px var(--matrix-blue);
+        }
+
+        .copy-button {
+            background: linear-gradient(90deg, var(--matrix-blue), var(--cosmic-magenta));
+            color: var(--light-aura);
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Space Mono', monospace;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            box-shadow: 0 0 var(--glow-radius) var(--matrix-blue);
+            transition: all 0.3s;
+        }
+
+        .copy-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 calc(var(--glow-radius) * 2) var(--matrix-blue);
         }
 
         .main p {
@@ -155,28 +174,6 @@
             width: 100%;
             height: 100%;
             z-index: 0;
-        }
-
-        /* Accessibility Panel */
-        .accessibility-panel {
-            position: fixed;
-            bottom: 2.5rem;
-            left: 2.5rem;
-            background: rgba(8, 8, 26, 0.95);
-            padding: 1.2rem;
-            border-radius: 12px;
-            z-index: 1001;
-        }
-
-        .accessibility-panel button {
-            background: var(--matrix-blue);
-            color: var(--light-aura);
-            border: none;
-            padding: 0.6rem 1.2rem;
-            margin: 0.5rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1rem;
         }
 
         /* Footer */
@@ -206,9 +203,9 @@
                 padding: 1rem 2rem;
             }
 
-            .accessibility-panel {
-                bottom: 1.5rem;
-                left: 1.5rem;
+            .copy-button {
+                padding: 0.8rem 2rem;
+                font-size: 1rem;
             }
         }
     </style>
@@ -222,29 +219,25 @@
     <section class="main">
         <h1>Your Public IP Address</h1>
         <div class="ip-display" id="ip-display">Fetching IP...</div>
-        <p>Explore your digital identity amidst a mathematically precise universe of Golden Spirals and quantum particles. Move your cursor to influence the cosmic dance.</p>
+        <button class="copy-button" onclick="copyIP()">Copy IP</button>
+        <p>Discover your digital identity amidst a cosmic dance of Golden Spirals and quantum particles. Move your cursor to influence the interconnected trails.</p>
     </section>
-    <div class="accessibility-panel">
-        <button onclick="toggleHighContrast()">High Contrast</button>
-        <button onclick="increaseFontSize()">Font +</button>
-        <button onclick="toggleNarration()">Narrate</button>
-    </div>
     <footer>
         <p>© 2025 WhatsMyPip.co.za | Powered by AI, Math & Cosmic Precision</p>
     </footer>
 
     <script>
-        // Custom Cursor
+        // Custom Cursor with Quantum Trails
         const observerCursor = document.getElementById('observer-cursor');
         document.addEventListener('mousemove', (e) => {
             observerCursor.style.left = `${e.clientX}px`;
             observerCursor.style.top = `${e.clientY}px`;
-            const particle = document.createElement('div');
-            particle.className = 'quantum-particle';
-            particle.style.left = `${e.clientX}px`;
-            particle.style.top = `${e.clientY}px`;
-            document.body.appendChild(particle);
-            setTimeout(() => particle.remove(), 1500);
+            const trail = document.createElement('div');
+            trail.className = 'quantum-trail';
+            trail.style.left = `${e.clientX}px`;
+            trail.style.top = `${e.clientY}px`;
+            document.body.appendChild(trail);
+            setTimeout(() => trail.remove(), 10000);
         });
 
         // Fetch Public IP
@@ -252,13 +245,27 @@
             try {
                 const response = await fetch('https://api.ipify.org?format=json');
                 const data = await response.json();
-                document.getElementById('ip-display').textContent = data.ip;
+                const ip = data.ip;
+                document.getElementById('ip-display').textContent = ip;
+                // Auto-narrate IP
+                const utterance = new SpeechSynthesisUtterance(`Your public IP address is ${ip}`);
+                speechSynthesis.speak(utterance);
             } catch (error) {
                 document.getElementById('ip-display').textContent = 'Unable to fetch IP';
                 console.error('IP Fetch Error:', error);
             }
         }
         fetchPublicIP();
+
+        // Copy IP to Clipboard
+        function copyIP() {
+            const ip = document.getElementById('ip-display').textContent;
+            navigator.clipboard.writeText(ip).then(() => {
+                alert('IP copied to clipboard!');
+            }).catch(err => {
+                console.error('Copy Error:', err);
+            });
+        }
 
         // Background Animation
         function initBackground() {
@@ -267,9 +274,9 @@
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
-            camera.position.z = 10;
+            camera.position.z = 15;
 
-            let particles = [], spiralPoints = [], mousePos = { x: 0, y: 0 };
+            let spirals = [], particles = [], trails = [], mousePos = { x: 0, y: 0 };
 
             // Mouse Interaction
             document.addEventListener('mousemove', (e) => {
@@ -278,53 +285,122 @@
             });
 
             // Golden Spiral
-            function updateSpiral() {
+            function createSpiral(offset, scale) {
                 const phi = (1 + Math.sqrt(5)) / 2;
-                spiralPoints = [];
-                for (let i = 0; i < 50; i++) {
-                    const theta = i * 0.1;
-                    const r = Math.pow(phi, theta / Math.PI) * 0.1;
-                    spiralPoints.push(new THREE.Vector3(r * Math.cos(theta), r * Math.sin(theta), 0));
+                const points = [];
+                for (let i = 0; i < 40; i++) {
+                    const theta = i * 0.1 + offset;
+                    const r = Math.pow(phi, theta / Math.PI) * scale;
+                    points.push(new THREE.Vector3(r * Math.cos(theta), r * Math.sin(theta), 0));
                 }
-                const geometry = new THREE.BufferGeometry().setFromPoints(spiralPoints);
-                const material = new THREE.LineBasicMaterial({ color: 0xff00cc });
+                const geometry = new THREE.BufferGeometry().setFromPoints(points);
+                const material = new THREE.LineBasicMaterial({ color: 0xff00cc, transparent: true, opacity: 0.7 });
                 const spiral = new THREE.Line(geometry, material);
                 scene.add(spiral);
-                return spiral;
+                return { obj: spiral, life: 10, offset, scale };
             }
 
             // Fibonacci Particles
-            function updateParticles() {
-                particles.forEach(p => scene.remove(p));
-                particles = [];
+            function createParticle(index, offset) {
                 const fib = (n) => n <= 1 ? n : fib(n - 1) + fib(n - 2);
-                for (let i = 0; i < 20; i++) {
-                    const r = fib(i) * 0.05;
-                    const x = r * Math.cos(i) + mousePos.x * 0.5;
-                    const y = r * Math.sin(i) + mousePos.y * 0.5;
-                    const geometry = new THREE.BufferGeometry();
-                    geometry.setAttribute('position', new THREE.Float32BufferAttribute([x, y, Math.random() * 0.1], 3));
-                    const material = new THREE.PointsMaterial({ color: 0x00b7eb, size: 0.1 });
-                    const particle = new THREE.Points(geometry, material);
-                    particles.push(particle);
-                    scene.add(particle);
-                }
+                const r = fib(index) * 0.06;
+                const x = r * Math.cos(index + offset);
+                const y = r * Math.sin(index + offset);
+                const geometry = new THREE.BufferGeometry();
+                geometry.setAttribute('position', new THREE.Float32BufferAttribute([x, y, Math.random() * 0.1], 3));
+                const material = new THREE.PointsMaterial({ color: 0x00b7eb, size: 0.08, transparent: true, opacity: 0.8 });
+                const particle = new THREE.Points(geometry, material);
+                scene.add(particle);
+                return { obj: particle, life: 10, index, offset };
             }
 
-            let spiral = updateSpiral();
-            updateParticles();
+            // Connecting Trails
+            function createTrail(from, to, color) {
+                const points = [from, to];
+                const geometry = new THREE.BufferGeometry().setFromPoints(points);
+                const material = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.5 });
+                const trail = new THREE.Line(geometry, material);
+                scene.add(trail);
+                return { obj: trail, life: 10 };
+            }
+
+            // Initialize Animations
+            function initAnimations() {
+                spirals.push(createSpiral(Math.random() * 2 * Math.PI, 0.1 + Math.random() * 0.05));
+                for (let i = 0; i < 15; i++) {
+                    particles.push(createParticle(i, Math.random() * 2 * Math.PI));
+                }
+            }
+            initAnimations();
+
+            function updateAnimations() {
+                // Update Spirals
+                spirals = spirals.filter(s => s.life > 0);
+                spirals.forEach(s => {
+                    s.life -= 1 / 60; // 60fps
+                    s.obj.material.opacity = s.life / 10;
+                    s.obj.rotation.z += 0.01 * (Math.random() - 0.5);
+                    s.obj.position.x = mousePos.x * 0.2;
+                    s.obj.position.y = mousePos.y * 0.2;
+                });
+
+                // Update Particles
+                particles = particles.filter(p => p.life > 0);
+                particles.forEach(p => {
+                    p.life -= 1 / 60;
+                    p.obj.material.opacity = p.life / 10;
+                    p.obj.position.x += (Math.random() - 0.5) * 0.02 + mousePos.x * 0.01;
+                    p.obj.position.y += (Math.random() - 0.5) * 0.02 + mousePos.y * 0.01;
+                });
+
+                // Update Trails
+                trails = trails.filter(t => t.life > 0);
+                trails.forEach(t => {
+                    t.life -= 1 / 60;
+                    t.obj.material.opacity = t.life / 10;
+                });
+
+                // Create New Elements
+                if (Math.random() < 0.05) {
+                    spirals.push(createSpiral(Math.random() * 2 * Math.PI, 0.1 + Math.random() * 0.05));
+                }
+                if (Math.random() < 0.1) {
+                    particles.push(createParticle(Math.floor(Math.random() * 10), Math.random() * 2 * Math.PI));
+                }
+
+                // Connect Particles and Spirals
+                particles.forEach(p => {
+                    const pos = p.obj.position;
+                    // Connect to nearby particles
+                    particles.forEach(p2 => {
+                        if (p !== p2) {
+                            const pos2 = p2.obj.position;
+                            const dist = pos.distanceTo(pos2);
+                            if (dist < 1 && Math.random() < 0.02) {
+                                trails.push(createTrail(pos, pos2, 0x00b7eb));
+                            }
+                        }
+                    });
+                    // Connect to spiral points
+                    spirals.forEach(s => {
+                        const points = s.obj.geometry.attributes.position.array;
+                        for (let i = 0; i < points.length; i += 3) {
+                            const spiralPos = new THREE.Vector3(points[i], points[i + 1], points[i + 2]);
+                            const dist = pos.distanceTo(spiralPos);
+                            if (dist < 1 && Math.random() < 0.01) {
+                                trails.push(createTrail(pos, spiralPos, 0xff00cc));
+                            }
+                        }
+                    });
+                });
+            }
 
             function animate() {
                 requestAnimationFrame(animate);
-                scene.remove(spiral);
-                spiral = updateSpiral();
-                updateParticles();
-                spiral.rotation.z += 0.005;
-                particles.forEach(p => {
-                    p.rotation.z += 0.01;
-                    p.position.x += mousePos.x * 0.01;
-                    p.position.y += mousePos.y * 0.01;
-                });
+                updateAnimations();
+                spirals.forEach(s => scene.add(s.obj));
+                particles.forEach(p => scene.add(p.obj));
+                trails.forEach(t => scene.add(t.obj));
                 renderer.render(scene, camera);
             }
             animate();
@@ -336,25 +412,6 @@
             });
         }
         initBackground();
-
-        // Accessibility Features
-        let highContrast = false;
-        function toggleHighContrast() {
-            highContrast = !highContrast;
-            document.body.style.filter = highContrast ? 'contrast(1.6) brightness(1.3)' : 'none';
-        }
-
-        let fontSize = 16;
-        function increaseFontSize() {
-            fontSize += 2;
-            document.body.style.fontSize = `${fontSize}px`;
-        }
-
-        function toggleNarration() {
-            const ip = document.getElementById('ip-display').textContent;
-            const utterance = new SpeechSynthesisUtterance(`Your public IP address is ${ip}`);
-            speechSynthesis.speak(utterance);
-        }
     </script>
 </body>
 </html>
