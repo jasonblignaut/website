@@ -98,7 +98,7 @@
         }
 
         .copy-button {
-            background: linear-gradient(90deg, var(--matrix-blue), var(--cosmic-magenta));
+            background: linear-gradient(90deg, var(--matrix-blue), --cosmic-magenta));
             color: var(--light-aura);
             border: none;
             padding: 0.8rem 2rem;
@@ -261,42 +261,71 @@
         async function fetchPublicIP() {
             try {
                 const response = await fetch('https://api.ipify.org?format=json');
+                if (!response.ok) throw new Error('IP fetch failed');
                 const data = await response.json();
                 document.getElementById('ip-display').textContent = data.ip;
+                return data.ip;
             } catch (error) {
                 document.getElementById('ip-display').textContent = 'IP unavailable';
                 console.error('IP Fetch Error:', error);
+                return null;
             }
         }
 
-        // Fetch Network Info with Fallback
+        // Fetch Network Info with Multiple Fallbacks
         async function fetchNetworkInfo() {
+            let networkData = { hostname: 'N/A', isp: 'N/A', city: 'N/A', country: 'N/A', dns: 'N/A' };
+
+            // Try ipinfo.io (Primary)
             try {
-                // Primary API: ipinfo.io
                 const response = await fetch('https://ipinfo.io/json?token=your-ipinfo-token'); // Replace with your ipinfo.io token
-                if (!response.ok) throw new Error('ipinfo.io failed');
-                const data = await response.json();
-                const dns = data.hostname || 'N/A';
-                const isp = data.org || 'N/A';
-                const city = data.city || 'N/A';
-                const country = data.country || 'N/A';
-                document.getElementById('network-info').textContent = `Hostname: ${dns} | ISP: ${isp} | Location: ${city}, ${country}`;
-            } catch (error) {
-                console.error('Network Info Error:', error);
-                // Fallback: ip-api.com (no token required)
-                try {
-                    const fallback = await fetch('http://ip-api.com/json');
-                    const fallbackData = await fallback.json();
-                    const dns = fallbackData.hostname || 'N/A';
-                    const isp = fallbackData.isp || 'N/A';
-                    const city = fallbackData.city || 'N/A';
-                    const country = fallbackData.country || 'N/A';
-                    document.getElementById('network-info').textContent = `Hostname: ${dns} | ISP: ${isp} | Location: ${city}, ${country}`;
-                } catch (fallbackError) {
-                    document.getElementById('network-info').textContent = 'Network info unavailable';
-                    console.error('Fallback Error:', fallbackError);
+                if (response.ok) {
+                    const data = await response.json();
+                    networkData.hostname = data.hostname || 'N/A';
+                    networkData.isp = data.org || 'N/A';
+                    networkData.city = data.city || 'N/A';
+                    networkData.country = data.country || 'N/A';
+                    networkData.dns = 'N/A'; // ipinfo.io doesn't provide DNS directly
+                    document.getElementById('network-info').textContent = `Hostname: ${networkData.hostname} | ISP: ${networkData.isp} | Location: ${networkData.city}, ${networkData.country} | DNS: ${networkData.dns}`;
+                    return;
                 }
+            } catch (error) {
+                console.error('ipinfo.io Error:', error);
             }
+
+            // Fallback 1: ip-api.com
+            try {
+                const response = await fetch('http://ip-api.com/json');
+                if (response.ok) {
+                    const data = await response.json();
+                    networkData.hostname = data.hostname || 'N/A';
+                    networkData.isp = data.isp || 'N/A';
+                    networkData.city = data.city || 'N/A';
+                    networkData.country = data.country || 'N/A';
+                    document.getElementById('network-info').textContent = `Hostname: ${networkData.hostname} | ISP: ${networkData.isp} | Location: ${networkData.city}, ${networkData.country} | DNS: ${networkData.dns}`;
+                    return;
+                }
+            } catch (error) {
+                console.error('ip-api.com Error:', error);
+            }
+
+            // Fallback 2: geoip-js.com
+            try {
+                const response = await fetch('https://get.geojs.io/v1/ip/geo.json');
+                if (response.ok) {
+                    const data = await response.json();
+                    networkData.isp = data.organization || 'N/A';
+                    networkData.city = data.city || 'N/A';
+                    networkData.country = data.country || 'N/A';
+                    document.getElementById('network-info').textContent = `Hostname: ${networkData.hostname} | ISP: ${networkData.isp} | Location: ${networkData.city}, ${networkData.country} | DNS: ${networkData.dns}`;
+                    return;
+                }
+            } catch (error) {
+                console.error('geojs.io Error:', error);
+            }
+
+            // Final Fallback
+            document.getElementById('network-info').textContent = `Hostname: N/A | ISP: N/A | Location: N/A | DNS: N/A`;
         }
 
         // Initialize Fetch
@@ -325,7 +354,7 @@
             const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            camera.position.z = 20; // Increased for larger view
+            camera.position.z = 30; // Zoomed out for full-screen effect
 
             let spirals = [], particles = [], trails = [], mousePos = { x: 0, y: 0 };
 
@@ -339,13 +368,13 @@
             function createSpiral(offset, scale) {
                 const phi = (1 + Math.sqrt(5)) / 2;
                 const points = [];
-                for (let i = 0; i < 30; i++) { // Increased points for visibility
-                    const theta = i * 0.3 + offset; // Wider spacing
-                    const r = Math.pow(phi, theta / Math.PI) * scale * 1.5; // Larger scale
+                for (let i = 0; i < 40; i++) { // More points for smoother curves
+                    const theta = i * 0.4 + offset; // Wider spacing
+                    const r = Math.pow(phi, theta / Math.PI) * scale * 2; // Much larger scale
                     points.push(new THREE.Vector3(r * Math.cos(theta), r * Math.sin(theta), 0));
                 }
                 const geometry = new THREE.BufferGeometry().setFromPoints(points);
-                const material = new THREE.LineBasicMaterial({ color: 0xff00cc, transparent: true, opacity: 0.8, linewidth: 2 }); // Bolder
+                const material = new THREE.LineBasicMaterial({ color: 0xff00cc, transparent: true, opacity: 0.9, linewidth: 3 }); // Bolder, brighter
                 const spiral = new THREE.Line(geometry, material);
                 scene.add(spiral);
                 return { obj: spiral, life: 10, offset, scale };
@@ -354,12 +383,12 @@
             // Fibonacci Particles
             function createParticle(index, offset) {
                 const fib = (n) => n <= 1 ? n : fib(n - 1) + fib(n - 2);
-                const r = fib(index) * 0.15; // Larger radius
+                const r = fib(index) * 0.3; // Much larger radius
                 const x = r * Math.cos(index + offset);
                 const y = r * Math.sin(index + offset);
                 const geometry = new THREE.BufferGeometry();
-                geometry.setAttribute('position', new THREE.Float32BufferAttribute([x, y, Math.random() * 0.1], 3));
-                const material = new THREE.PointsMaterial({ color: 0x00b7eb, size: 0.1, transparent: true, opacity: 0.9 }); // Larger, brighter
+                geometry.setAttribute('position', new THREE.Float32BufferAttribute([x, y, Math.random() * 0.2], 3));
+                const material = new THREE.PointsMaterial({ color: 0x00b7eb, size: 0.15, transparent: true, opacity: 1 }); // Larger, fully opaque
                 const particle = new THREE.Points(geometry, material);
                 scene.add(particle);
                 return { obj: particle, life: 10, index, offset };
@@ -369,7 +398,7 @@
             function createTrail(from, to, color) {
                 const points = [from, to];
                 const geometry = new THREE.BufferGeometry().setFromPoints(points);
-                const material = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.6, linewidth: 1.5 }); // Bolder
+                const material = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.7, linewidth: 2 }); // Bolder
                 const trail = new THREE.Line(geometry, material);
                 scene.add(trail);
                 return { obj: trail, life: 10 };
@@ -377,8 +406,8 @@
 
             // Initialize Animations
             function initAnimations() {
-                spirals.push(createSpiral(Math.random() * 2 * Math.PI, 0.2 + Math.random() * 0.1)); // Larger scale
-                for (let i = 0; i < 15; i++) { // More particles
+                spirals.push(createSpiral(Math.random() * 2 * Math.PI, 0.3 + Math.random() * 0.2)); // Larger scale
+                for (let i = 0; i < 20; i++) { // More particles
                     particles.push(createParticle(i % 5, Math.random() * 2 * Math.PI));
                 }
             }
@@ -386,46 +415,46 @@
 
             function updateAnimations() {
                 spirals = spirals.filter(s => {
-                    if (s.life <= 0) { scene.remove(s.obj); return false; }
+                    if (s.life <= 0) { scene.remove(s.obj); s.obj.geometry.dispose(); s.obj.material.dispose(); return false; }
                     s.life -= 1 / 60;
-                    s.obj.material.opacity = s.life / 10 * 0.8;
-                    s.obj.rotation.z += 0.01 * (Math.random() - 0.5); // More dynamic
-                    s.obj.position.x = mousePos.x * 0.2;
-                    s.obj.position.y = mousePos.y * 0.2;
+                    s.obj.material.opacity = s.life / 10 * 0.9;
+                    s.obj.rotation.z += 0.015 * (Math.random() - 0.5); // More dynamic
+                    s.obj.position.x = mousePos.x * 0.3;
+                    s.obj.position.y = mousePos.y * 0.3;
                     return true;
                 });
 
                 particles = particles.filter(p => {
-                    if (p.life <= 0) { scene.remove(p.obj); return false; }
+                    if (p.life <= 0) { scene.remove(p.obj); p.obj.geometry.dispose(); p.obj.material.dispose(); return false; }
                     p.life -= 1 / 60;
-                    p.obj.material.opacity = p.life / 10 * 0.9;
-                    p.obj.position.x += (Math.random() - 0.5) * 0.02 + mousePos.x * 0.01;
-                    p.obj.position.y += (Math.random() - 0.5) * 0.02 + mousePos.y * 0.01;
+                    p.obj.material.opacity = s.life / 10 * 0.9;
+                    p.obj.position.x += (Math.random() - 0.5) * 0.03 + mousePos.x * 0.015;
+                    p.obj.position.y += (Math.random() - 0.5) * 0.03 + mousePos.y * 0.015;
                     return true;
                 });
 
                 trails = trails.filter(t => {
-                    if (t.life <= 0) { scene.remove(t.obj); return false; }
+                    if (t.life <= 0) { scene.remove(t.obj); t.obj.geometry.dispose(); t.obj.material.dispose(); return false; }
                     t.life -= 1 / 60;
-                    t.obj.material.opacity = t.life / 10 * 0.6;
+                    t.obj.material.opacity = t.life / 10 * 0.7;
                     return true;
                 });
 
-                if (spirals.length < 4 && Math.random() < 0.04) {
-                    spirals.push(createSpiral(Math.random() * 2 * Math.PI, 0.2 + Math.random() * 0.1));
+                if (spirals.length < 5 && Math.random() < 0.05) {
+                    spirals.push(createSpiral(Math.random() * 2 * Math.PI, 0.3 + Math.random() * 0.2));
                 }
-                if (particles.length < 15 && Math.random() < 0.06) {
+                if (particles.length < 20 && Math.random() < 0.07) {
                     particles.push(createParticle(Math.floor(Math.random() * 5), Math.random() * 2 * Math.PI));
                 }
 
-                if (trails.length < 60) {
+                if (trails.length < 80) {
                     particles.forEach(p => {
                         const pos = p.obj.position;
                         particles.forEach(p2 => {
                             if (p !== p2) {
                                 const pos2 = p2.obj.position;
                                 const dist = pos.distanceTo(pos2);
-                                if (dist < 1 && Math.random() < 0.02) { // Larger distance
+                                if (dist < 1.5 && Math.random() < 0.03) { // Larger distance
                                     trails.push(createTrail(pos, pos2, 0x00b7eb));
                                 }
                             }
@@ -435,7 +464,7 @@
                             for (let i = 0; i < points.length; i += 3) {
                                 const spiralPos = new THREE.Vector3(points[i], points[i + 1], points[i + 2]);
                                 const dist = pos.distanceTo(spiralPos);
-                                if (dist < 1 && Math.random() < 0.01) {
+                                if (dist < 1.5 && Math.random() < 0.015) {
                                     trails.push(createTrail(pos, spiralPos, 0xff00cc));
                                 }
                             }
