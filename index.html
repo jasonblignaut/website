@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="WhatsMyPip.co.za: Instantly see and hear your public IP address with a cosmic background of Golden Spirals and quantum particles.">
+    <meta name="description" content="Labverse.co.za: Instantly see and hear your public IP address with a cosmic background of Golden Spirals and quantum particles.">
     <meta name="keywords" content="Public IP, Golden Spiral, Fibonacci, Quantum Particles, WebGL, IP Address">
-    <meta name="author" content="WhatsMyPip">
-    <meta property="og:title" content="WhatsMyPip.co.za">
+    <meta name="author" content="Labverse">
+    <meta property="og:title" content="Labverse.co.za">
     <meta property="og:description" content="Discover your public IP address instantly, with mesmerizing sacred geometry and particle animations.">
-    <meta property="og:image" content="assets/pip-og.webp">
-    <meta property="og:url" content="https://whatsmypip.co.za">
+    <meta property="og:image" content="assets/labverse-og.webp">
+    <meta property="og:url" content="https://labverse.co.za">
     <meta property="og:type" content="website">
     <link rel="icon" type="image/png" href="assets/favicon.ico">
-    <title>WhatsMyPip.co.za | Your Public IP Address</title>
+    <title>Labverse.co.za | Your Public IP Address</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;700&family=Space+Mono&display=swap" rel="stylesheet">
@@ -23,7 +23,7 @@
             --cosmic-magenta: #ff00cc;
             --void-black: #08081a;
             --light-aura: #e6f0ff;
-            --glow-radius: 20px;
+            --glow-radius: 15px;
         }
 
         * {
@@ -38,47 +38,6 @@
             color: var(--light-aura);
             overflow: hidden;
             position: relative;
-            cursor: none;
-        }
-
-        /* Custom Cursor */
-        .observer-cursor {
-            position: fixed;
-            width: 32px;
-            height: 32px;
-            background: radial-gradient(circle, var(--matrix-blue) 20%, var(--cosmic-magenta) 60%, transparent 80%);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 1002;
-            box-shadow: 0 0 20px var(--matrix-blue), 0 0 30px var(--cosmic-magenta);
-            transform: translate(-50%, -50%);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.2); }
-            100% { transform: translate(-50%, -50%) scale(1); }
-        }
-
-        /* Quantum Trails */
-        .quantum-trail {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: var(--cosmic-magenta);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 1000;
-            opacity: 0.8;
-            box-shadow: 0 0 12px var(--cosmic-magenta);
-            animation: evaporate 10s ease-out forwards;
-        }
-
-        @keyframes evaporate {
-            0% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(2); opacity: 0.4; }
-            100% { transform: scale(0); opacity: 0; }
         }
 
         /* Header */
@@ -87,8 +46,8 @@
             top: 0;
             width: 100%;
             background: rgba(8, 8, 26, 0.95);
-            backdrop-filter: blur(15px);
-            padding: 1.2rem 2.5rem;
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -97,11 +56,11 @@
 
         .logo {
             font-family: 'Space Mono', monospace;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             background: linear-gradient(90deg, var(--matrix-blue), var(--cosmic-magenta));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 10px var(--matrix-blue);
+            text-shadow: 0 0 8px var(--matrix-blue);
         }
 
         /* Main Content */
@@ -112,58 +71,58 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 2rem;
+            padding: 1.5rem;
             position: relative;
             z-index: 1;
         }
 
         .main h1 {
             font-family: 'Space Mono', monospace;
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-size: clamp(2rem, 5vw, 4rem);
             background: linear-gradient(90deg, var(--matrix-blue), var(--cosmic-magenta));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 1.5rem;
-            text-shadow: 0 0 15px var(--matrix-blue);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 12px var(--matrix-blue);
         }
 
         .ip-display {
             font-family: 'Space Mono', monospace;
-            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-size: clamp(1.8rem, 4vw, 3rem);
             color: var(--light-aura);
             background: rgba(8, 8, 26, 0.9);
-            padding: 1.5rem 3rem;
-            border-radius: 15px;
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
             border: 2px solid var(--matrix-blue);
-            box-shadow: 0 0 20px var(--matrix-blue);
-            margin-bottom: 1.5rem;
-            text-shadow: 0 0 10px var(--matrix-blue);
+            box-shadow: 0 0 15px var(--matrix-blue);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 8px var(--matrix-blue);
         }
 
         .copy-button {
             background: linear-gradient(90deg, var(--matrix-blue), var(--cosmic-magenta));
             color: var(--light-aura);
             border: none;
-            padding: 1rem 2.5rem;
-            border-radius: 10px;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
             cursor: pointer;
             font-family: 'Space Mono', monospace;
-            font-size: 1.1rem;
+            font-size: 1rem;
             text-transform: uppercase;
             box-shadow: 0 0 var(--glow-radius) var(--matrix-blue);
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
 
         .copy-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 calc(var(--glow-radius) * 2) var(--matrix-blue);
+            transform: scale(1.05);
+            box-shadow: 0 0 calc(var(--glow-radius) * 1.5) var(--matrix-blue);
         }
 
         .main p {
-            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            font-size: clamp(1rem, 2vw, 1.2rem);
             color: var(--light-aura);
-            max-width: 600px;
-            line-height: 1.6;
+            max-width: 500px;
+            line-height: 1.5;
         }
 
         /* Background Canvas */
@@ -182,64 +141,50 @@
             bottom: 0;
             width: 100%;
             background: rgba(8, 8, 26, 0.95);
-            padding: 1.5rem;
+            padding: 1rem;
             text-align: center;
             z-index: 1001;
         }
 
         footer p {
             color: var(--light-aura);
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
             .main h1 {
-                font-size: clamp(2rem, 5vw, 3rem);
+                font-size: clamp(1.8rem, 4vw, 2.5rem);
             }
 
             .ip-display {
-                font-size: clamp(1.5rem, 4vw, 2.5rem);
-                padding: 1rem 2rem;
+                font-size: clamp(1.5rem, 3vw, 2rem);
+                padding: 0.8rem 1.5rem;
             }
 
             .copy-button {
-                padding: 0.8rem 2rem;
-                font-size: 1rem;
+                padding: 0.6rem 1.5rem;
+                font-size: 0.9rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="observer-cursor" id="observer-cursor"></div>
     <canvas id="background-canvas"></canvas>
     <header>
-        <div class="logo">WhatsMyPip.co.za</div>
+        <div class="logo">Labverse.co.za</div>
     </header>
     <section class="main">
         <h1>Your Public IP Address</h1>
         <div class="ip-display" id="ip-display">Fetching IP...</div>
         <button class="copy-button" onclick="copyIP()">Copy IP</button>
-        <p>Discover your digital identity amidst a cosmic dance of Golden Spirals and quantum particles. Move your cursor to influence the interconnected trails.</p>
+        <p>Discover your digital identity amidst a cosmic dance of Golden Spirals and quantum particles.</p>
     </section>
     <footer>
-        <p>© 2025 WhatsMyPip.co.za | Powered by AI, Math & Cosmic Precision</p>
+        <p>© 2025 Labverse.co.za | Powered by AI, Math & Cosmic Precision</p>
     </footer>
 
     <script>
-        // Custom Cursor with Quantum Trails
-        const observerCursor = document.getElementById('observer-cursor');
-        document.addEventListener('mousemove', (e) => {
-            observerCursor.style.left = `${e.clientX}px`;
-            observerCursor.style.top = `${e.clientY}px`;
-            const trail = document.createElement('div');
-            trail.className = 'quantum-trail';
-            trail.style.left = `${e.clientX}px`;
-            trail.style.top = `${e.clientY}px`;
-            document.body.appendChild(trail);
-            setTimeout(() => trail.remove(), 10000);
-        });
-
         // Fetch Public IP
         async function fetchPublicIP() {
             try {
@@ -274,27 +219,28 @@
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
-            camera.position.z = 15;
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Optimize for high-DPI
+            camera.position.z = 10;
 
             let spirals = [], particles = [], trails = [], mousePos = { x: 0, y: 0 };
 
-            // Mouse Interaction
+            // Mouse Interaction (Minimal)
             document.addEventListener('mousemove', (e) => {
                 mousePos.x = (e.clientX / window.innerWidth) * 2 - 1;
                 mousePos.y = -(e.clientY / window.innerHeight) * 2 + 1;
-            });
+            }, { passive: true });
 
             // Golden Spiral
             function createSpiral(offset, scale) {
                 const phi = (1 + Math.sqrt(5)) / 2;
                 const points = [];
-                for (let i = 0; i < 40; i++) {
-                    const theta = i * 0.1 + offset;
+                for (let i = 0; i < 20; i++) { // Reduced points
+                    const theta = i * 0.2 + offset;
                     const r = Math.pow(phi, theta / Math.PI) * scale;
                     points.push(new THREE.Vector3(r * Math.cos(theta), r * Math.sin(theta), 0));
                 }
                 const geometry = new THREE.BufferGeometry().setFromPoints(points);
-                const material = new THREE.LineBasicMaterial({ color: 0xff00cc, transparent: true, opacity: 0.7 });
+                const material = new THREE.LineBasicMaterial({ color: 0xff00cc, transparent: true, opacity: 0.6 });
                 const spiral = new THREE.Line(geometry, material);
                 scene.add(spiral);
                 return { obj: spiral, life: 10, offset, scale };
@@ -303,12 +249,12 @@
             // Fibonacci Particles
             function createParticle(index, offset) {
                 const fib = (n) => n <= 1 ? n : fib(n - 1) + fib(n - 2);
-                const r = fib(index) * 0.06;
+                const r = fib(index) * 0.08;
                 const x = r * Math.cos(index + offset);
                 const y = r * Math.sin(index + offset);
                 const geometry = new THREE.BufferGeometry();
-                geometry.setAttribute('position', new THREE.Float32BufferAttribute([x, y, Math.random() * 0.1], 3));
-                const material = new THREE.PointsMaterial({ color: 0x00b7eb, size: 0.08, transparent: true, opacity: 0.8 });
+                geometry.setAttribute('position', new THREE.Float32BufferAttribute([x, y, Math.random() * 0.05], 3));
+                const material = new THREE.PointsMaterial({ color: 0x00b7eb, size: 0.06, transparent: true, opacity: 0.7 });
                 const particle = new THREE.Points(geometry, material);
                 scene.add(particle);
                 return { obj: particle, life: 10, index, offset };
@@ -318,7 +264,7 @@
             function createTrail(from, to, color) {
                 const points = [from, to];
                 const geometry = new THREE.BufferGeometry().setFromPoints(points);
-                const material = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.5 });
+                const material = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.4 });
                 const trail = new THREE.Line(geometry, material);
                 scene.add(trail);
                 return { obj: trail, life: 10 };
@@ -326,81 +272,83 @@
 
             // Initialize Animations
             function initAnimations() {
-                spirals.push(createSpiral(Math.random() * 2 * Math.PI, 0.1 + Math.random() * 0.05));
-                for (let i = 0; i < 15; i++) {
-                    particles.push(createParticle(i, Math.random() * 2 * Math.PI));
+                spirals.push(createSpiral(Math.random() * 2 * Math.PI, 0.08 + Math.random() * 0.04));
+                for (let i = 0; i < 10; i++) { // Reduced particles
+                    particles.push(createParticle(i % 5, Math.random() * 2 * Math.PI));
                 }
             }
             initAnimations();
 
             function updateAnimations() {
                 // Update Spirals
-                spirals = spirals.filter(s => s.life > 0);
-                spirals.forEach(s => {
-                    s.life -= 1 / 60; // 60fps
+                spirals = spirals.filter(s => {
+                    if (s.life <= 0) { scene.remove(s.obj); return false; }
+                    s.life -= 1 / 60;
                     s.obj.material.opacity = s.life / 10;
-                    s.obj.rotation.z += 0.01 * (Math.random() - 0.5);
-                    s.obj.position.x = mousePos.x * 0.2;
-                    s.obj.position.y = mousePos.y * 0.2;
+                    s.obj.rotation.z += 0.005 * (Math.random() - 0.5);
+                    s.obj.position.x = mousePos.x * 0.1;
+                    s.obj.position.y = mousePos.y * 0.1;
+                    return true;
                 });
 
                 // Update Particles
-                particles = particles.filter(p => p.life > 0);
-                particles.forEach(p => {
+                particles = particles.filter(p => {
+                    if (p.life <= 0) { scene.remove(p.obj); return false; }
                     p.life -= 1 / 60;
                     p.obj.material.opacity = p.life / 10;
-                    p.obj.position.x += (Math.random() - 0.5) * 0.02 + mousePos.x * 0.01;
-                    p.obj.position.y += (Math.random() - 0.5) * 0.02 + mousePos.y * 0.01;
+                    p.obj.position.x += (Math.random() - 0.5) * 0.01 + mousePos.x * 0.005;
+                    p.obj.position.y += (Math.random() - 0.5) * 0.01 + mousePos.y * 0.005;
+                    return true;
                 });
 
                 // Update Trails
-                trails = trails.filter(t => t.life > 0);
-                trails.forEach(t => {
+                trails = trails.filter(t => {
+                    if (t.life <= 0) { scene.remove(t.obj); return false; }
                     t.life -= 1 / 60;
                     t.obj.material.opacity = t.life / 10;
+                    return true;
                 });
 
-                // Create New Elements
-                if (Math.random() < 0.05) {
-                    spirals.push(createSpiral(Math.random() * 2 * Math.PI, 0.1 + Math.random() * 0.05));
+                // Create New Elements (Throttled)
+                if (spirals.length < 3 && Math.random() < 0.03) {
+                    spirals.push(createSpiral(Math.random() * 2 * Math.PI, 0.08 + Math.random() * 0.04));
                 }
-                if (Math.random() < 0.1) {
-                    particles.push(createParticle(Math.floor(Math.random() * 10), Math.random() * 2 * Math.PI));
+                if (particles.length < 10 && Math.random() < 0.05) {
+                    particles.push(createParticle(Math.floor(Math.random() * 5), Math.random() * 2 * Math.PI));
                 }
 
                 // Connect Particles and Spirals
-                particles.forEach(p => {
-                    const pos = p.obj.position;
-                    // Connect to nearby particles
-                    particles.forEach(p2 => {
-                        if (p !== p2) {
-                            const pos2 = p2.obj.position;
-                            const dist = pos.distanceTo(pos2);
-                            if (dist < 1 && Math.random() < 0.02) {
-                                trails.push(createTrail(pos, pos2, 0x00b7eb));
+                if (trails.length < 50) { // Hard cap
+                    particles.forEach(p => {
+                        const pos = p.obj.position;
+                        // Connect to nearby particles
+                        particles.forEach(p2 => {
+                            if (p !== p2) {
+                                const pos2 = p2.obj.position;
+                                const dist = pos.distanceTo(pos2);
+                                if (dist < 0.5 && Math.random() < 0.01) {
+                                    trails.push(createTrail(pos, pos2, 0x00b7eb));
+                                }
                             }
-                        }
-                    });
-                    // Connect to spiral points
-                    spirals.forEach(s => {
-                        const points = s.obj.geometry.attributes.position.array;
-                        for (let i = 0; i < points.length; i += 3) {
-                            const spiralPos = new THREE.Vector3(points[i], points[i + 1], points[i + 2]);
-                            const dist = pos.distanceTo(spiralPos);
-                            if (dist < 1 && Math.random() < 0.01) {
-                                trails.push(createTrail(pos, spiralPos, 0xff00cc));
+                        });
+                        // Connect to spiral points
+                        spirals.forEach(s => {
+                            const points = s.obj.geometry.attributes.position.array;
+                            for (let i = 0; i < points.length; i += 3) {
+                                const spiralPos = new THREE.Vector3(points[i], points[i + 1], points[i + 2]);
+                                const dist = pos.distanceTo(spiralPos);
+                                if (dist < 0.5 && Math.random() < 0.005) {
+                                    trails.push(createTrail(pos, spiralPos, 0xff00cc));
+                                }
                             }
-                        }
+                        });
                     });
-                });
+                }
             }
 
             function animate() {
                 requestAnimationFrame(animate);
                 updateAnimations();
-                spirals.forEach(s => scene.add(s.obj));
-                particles.forEach(p => scene.add(p.obj));
-                trails.forEach(t => scene.add(t.obj));
                 renderer.render(scene, camera);
             }
             animate();
@@ -409,7 +357,7 @@
                 camera.aspect = window.innerWidth / window.innerHeight;
                 camera.updateProjectionMatrix();
                 renderer.setSize(window.innerWidth, window.innerHeight);
-            });
+            }, { passive: true });
         }
         initBackground();
     </script>
