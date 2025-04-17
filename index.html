@@ -118,13 +118,6 @@
             box-shadow: 0 0 calc(var(--glow-radius) * 1.5) var(--matrix-blue);
         }
 
-        .main p {
-            font-size: clamp(1rem, 2vw, 1.2rem);
-            color: var(--light-aura);
-            max-width: 500px;
-            line-height: 1.5;
-        }
-
         /* Background Canvas */
         #background-canvas {
             position: fixed;
@@ -178,7 +171,6 @@
         <h1>Your Public IP Address</h1>
         <div class="ip-display" id="ip-display">Fetching IP...</div>
         <button class="copy-button" onclick="copyIP()">Copy IP</button>
-        <p>Discover your digital identity amidst a cosmic dance of Golden Spirals and quantum particles.</p>
     </section>
     <footer>
         <p>© 2025 Labverse.co.za | Powered by AI, Math & Cosmic Precision</p>
@@ -219,7 +211,7 @@
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Optimize for high-DPI
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             camera.position.z = 10;
 
             let spirals = [], particles = [], trails = [], mousePos = { x: 0, y: 0 };
@@ -230,15 +222,33 @@
                 mousePos.y = -(e.clientY / window.innerHeight) * 2 + 1;
             }, { passive: true });
 
+            // Check if position is outside IP display area (400x200px centered)
+            function isOutsideIPArea(x, y) {
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
+                const ipWidth = 400;
+                const ipHeight = 200;
+                return (Math.abs(x * window.innerWidth - centerX) > ipWidth / 2) || 
+                       (Math.abs(y * window.innerHeight - centerY) > ipHeight / 2);
+            }
+
             // Golden Spiral
             function createSpiral(offset, scale) {
                 const phi = (1 + Math.sqrt(5)) / 2;
                 const points = [];
-                for (let i = 0; i < 20; i++) { // Reduced points
+                for (let i = 0; i < 20; i++) {
                     const theta = i * 0.2 + offset;
                     const r = Math.pow(phi, theta / Math.PI) * scale;
-                    points.push(new THREE.Vector3(r * Math.cos(theta), r * Math.sin(theta), 0));
+                    const x = r * Math.cos(theta);
+                    const y = r * Math.sin(theta);
+                    // Map to screen coordinates for area check
+                    const screenX = (x / 10 + 0.5) * window.innerWidth;
+                    const screenY = (-y / 10 + 0.5) * window.innerHeight;
+                    if (isOutsideIPArea(screenX / window.innerWidth, screenY / window.innerHeight)) {
+                        points.push(new THREE.Vector3(x, y, 0));
+                    }
                 }
+                if (points.length < 2) return null; // Skip if too few valid points
                 const geometry = new THREE.BufferGeometry().setFromPoints(points);
                 const material = new THREE.LineBasicMaterial({ color: 0xff00cc, transparent: true, opacity: 0.6 });
                 const spiral = new THREE.Line(geometry, material);
@@ -252,6 +262,10 @@
                 const r = fib(index) * 0.08;
                 const x = r * Math.cos(index + offset);
                 const y = r * Math.sin(index + offset);
+                // Map to screen coordinates for area check
+                const screenX = (x / 10 + 0.5) * window.innerWidth;
+                const screenY = (-y / 10 + 0.5) * window.innerHeight;
+                if (!isOutsideIPArea(screenX / window.innerWidth, screenY / window.innerHeight)) return null;
                 const geometry = new THREE.BufferGeometry();
                 geometry.setAttribute('position', new THREE.Float32BufferAttribute([x, y, Math.random() * 0.05], 3));
                 const material = new THREE.PointsMaterial({ color: 0x00b7eb, size: 0.06, transparent: true, opacity: 0.7 });
@@ -262,6 +276,13 @@
 
             // Connecting Trails
             function createTrail(from, to, color) {
+                // Check if trail endpoints are outside IP area
+                const screenX1 = (from.x / 10 + 0.5) * window.innerWidth;
+                const screenY1 = (-from.y / 10 + 0.5) * window.innerHeight;
+                const screenX2 = (to.x / 10 + 0.5) * window.innerWidth;
+                const screenY2 = (-to.y / 10 + 0.5) * window.innerHeight;
+                if (!isOutsideIPArea(screenX1 / window.innerWidth, screenY1 / window.innerHeight) ||
+                    !isOutsideIPArea(screenX2 / window.innerWidth, screenY2 / window.innerHeight)) return null;
                 const points = [from, to];
                 const geometry = new THREE.BufferGeometry().setFromPoints(points);
                 const material = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.4 });
@@ -272,9 +293,11 @@
 
             // Initialize Animations
             function initAnimations() {
-                spirals.push(createSpiral(Math.random() * 2 * Math.PI, 0.08 + Math.random() * 0.04));
-                for (let i = 0; i < 10; i++) { // Reduced particles
-                    particles.push(createParticle(i % 5, Math.random() * 2 * Math.PI));
+                const spiral = createSpiral(Math.random() * 2 * Math.PI, 0.08 + Math.random() * 0.04);
+                if (spiral) spirals.push(spiral);
+                for (let i = 0; i < 10; i++) {
+                    const particle = createParticle(i % 5, Math.random() * 2 * Math.PI);
+                    if (particle) particles.push(particle);
                 }
             }
             initAnimations();
@@ -296,8 +319,15 @@
                     if (p.life <= 0) { scene.remove(p.obj); return false; }
                     p.life -= 1 / 60;
                     p.obj.material.opacity = p.life / 10;
-                    p.obj.position.x += (Math.random() - 0.5) * 0.01 + mousePos.x * 0.005;
-                    p.obj.position.y += (Math.random() - 0.5) * 0.01 + mousePos.y * 0.005;
+                    let newX = p.obj.position.x + (Math.random() - 0.5) * 0.01 + mousePos.x * 0.005;
+                    let newY = p.obj.position.y + (Math.random() - 0.5) * 0.01 + mousePos.y * 0.005;
+                    // Ensure new position is outside IP area
+                    const screenX = (newX / 10 + 0.5) * window.innerWidth;
+                    const screenY = (-newY / 10 + 0.5) * window.innerHeight;
+                    if (isOutsideIPArea(screenX / window.innerWidth, screenY / window.innerHeight)) {
+                        p.obj.position.x = newX;
+                        p.obj.position.y = newY;
+                    }
                     return true;
                 });
 
@@ -311,14 +341,16 @@
 
                 // Create New Elements (Throttled)
                 if (spirals.length < 3 && Math.random() < 0.03) {
-                    spirals.push(createSpiral(Math.random() * 2 * Math.PI, 0.08 + Math.random() * 0.04));
+                    const spiral = createSpiral(Math.random() * 2 * Math.PI, 0.08 + Math.random() * 0.04);
+                    if (spiral) spirals.push(spiral);
                 }
                 if (particles.length < 10 && Math.random() < 0.05) {
-                    particles.push(createParticle(Math.floor(Math.random() * 5), Math.random() * 2 * Math.PI));
+                    const particle = createParticle(Math.floor(Math.random() * 5), Math.random() * 2 * Math.PI);
+                    if (particle) particles.push(particle);
                 }
 
                 // Connect Particles and Spirals
-                if (trails.length < 50) { // Hard cap
+                if (trails.length < 50) {
                     particles.forEach(p => {
                         const pos = p.obj.position;
                         // Connect to nearby particles
@@ -327,7 +359,8 @@
                                 const pos2 = p2.obj.position;
                                 const dist = pos.distanceTo(pos2);
                                 if (dist < 0.5 && Math.random() < 0.01) {
-                                    trails.push(createTrail(pos, pos2, 0x00b7eb));
+                                    const trail = createTrail(pos, pos2, 0x00b7eb);
+                                    if (trail) trails.push(trail);
                                 }
                             }
                         });
@@ -338,7 +371,8 @@
                                 const spiralPos = new THREE.Vector3(points[i], points[i + 1], points[i + 2]);
                                 const dist = pos.distanceTo(spiralPos);
                                 if (dist < 0.5 && Math.random() < 0.005) {
-                                    trails.push(createTrail(pos, spiralPos, 0xff00cc));
+                                    const trail = createTrail(pos, spiralPos, 0xff00cc);
+                                    if (trail) trails.push(trail);
                                 }
                             }
                         });
