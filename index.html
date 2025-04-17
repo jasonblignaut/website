@@ -27,7 +27,6 @@
       --cosmic-magenta: #ff00cc;
       --cosmic-gold: #ffd700;
       --cosmic-cyan: #00ffff;
-      --void-black: #08081a;
       --light-aura: #e6f0ff;
       --glow-radius: 15px;
     }
@@ -42,7 +41,7 @@
     html, body {
       height: 100%;
       width: 100%;
-      background: radial-gradient(ellipse at center, #0a0a0a 0%, #000000 100%);
+      background: #000000; /* Simplified to black to rule out gradient issues */
       color: var(--light-aura);
       overflow: hidden;
       margin: 0;
@@ -54,7 +53,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: -1; /* Behind AdSense ads */
+      z-index: 0; /* Raised to ensure visibility, behind content */
       display: block;
       opacity: 1;
     }
@@ -65,7 +64,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: -1;
+      z-index: 0;
       display: none;
       opacity: 1;
     }
@@ -76,30 +75,30 @@
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: -1;
+      z-index: 0;
       display: none;
       pointer-events: none;
     }
 
     .css-particle {
       position: absolute;
-      width: 4px;
-      height: 4px;
+      width: 6px; /* Larger for visibility */
+      height: 6px;
       background: var(--matrix-blue);
       border-radius: 50%;
-      animation: cssParticleMove 10s linear infinite;
-      opacity: 0.7;
+      animation: cssParticleMove 8s linear infinite;
+      opacity: 0.8;
     }
 
     @keyframes cssParticleMove {
-      0% { transform: translate(0, 0); opacity: 0.7; }
+      0% { transform: translate(0, 0); opacity: 0.8; }
       50% { opacity: 1; }
       100% { transform: translate(100vw, 100vh); opacity: 0; }
     }
 
     .container {
       position: relative;
-      z-index: 10; /* Above animations, below AdSense */
+      z-index: 10; /* Above animations */
       height: 100vh;
       display: flex;
       flex-direction: column;
@@ -148,6 +147,15 @@
       text-shadow: 0 0 5px var(--matrix-blue);
       margin-bottom: clamp(0.5rem, 2vw, 1rem);
       text-align: center;
+    }
+
+    .error-message {
+      font-family: 'Source Code Pro', monospace;
+      font-size: clamp(0.7rem, 1.5vw, 1rem);
+      color: #ff5555;
+      margin-top: 1rem;
+      text-shadow: 0 0 5px var(--matrix-blue);
+      display: none;
     }
 
     .btn {
@@ -203,7 +211,7 @@
         padding: clamp(0.5rem, 1.5vw, 0.8rem) clamp(1rem, 2vw, 1.5rem);
       }
 
-      .network-info {
+      .network-info, .error-message {
         font-size: clamp(0.6rem, 1.2vw, 0.9rem);
         max-width: 90vw;
       }
@@ -223,7 +231,7 @@
         font-size: clamp(1rem, 2.5vw, 1.5rem);
       }
 
-      .network-info {
+      .network-info, .error-message {
         font-size: clamp(0.5rem, 1vw, 0.8rem);
       }
 
@@ -243,6 +251,7 @@
     <h1>Your Public IP</h1>
     <div class="ip-display" id="ip-display">Fetching IP...</div>
     <div class="network-info" id="network-info">Fetching network info...</div>
+    <div class="error-message" id="error-message">Animations failed to load. Please check your browser settings.</div>
     <button class="btn" onclick="copyIP()">Copy IP</button>
   </div>
 
@@ -253,12 +262,11 @@
   <!-- Three.js with Fallback CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/three.min.js"></script>
   <script>
-    // Fallback if primary CDN fails
     if (typeof THREE === 'undefined') {
       const script = document.createElement('script');
       script.src = 'https://unpkg.com/three@0.150.0/build/three.min.js';
       document.body.appendChild(script);
-      console.log('Loading Three.js from fallback CDN');
+      console.log('[DEBUG] Loading Three.js from fallback CDN');
     }
   </script>
 
@@ -341,8 +349,92 @@
     // Animation System
     let animationMode = 'none';
     let triggerBigBang = () => {};
+    const errorMessage = document.getElementById('error-message');
 
-    // WebGL Animation
+    // Minimal 2D Canvas Animation (Primary)
+    function init2DCanvas(canvas) {
+      logDebug('Attempting 2D canvas initialization...');
+      try {
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          logDebug('2D canvas context not supported');
+          return false;
+        }
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Test renders to confirm canvas visibility
+        ctx.fillStyle = 'red';
+        ctx.fillRect(10, 10, 50, 50); // Large red square, top-left, 2s
+        setTimeout(() => {
+          ctx.clearRect(10, 10, 50, 50);
+          ctx.fillStyle = 'green';
+          ctx.fillRect(window.innerWidth - 60, 10, 50, 50); // Green square, top-right, 2s
+          setTimeout(() => ctx.clearRect(window.innerWidth - 60, 10, 50, 50), 2000);
+        }, 2000);
+
+        // Simple animation: single moving dot
+        let x = canvas.width / 2;
+        let y = canvas.height / 2;
+        let vx = 2;
+        let vy = 2;
+
+        function animate2D() {
+          try {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            ctx.arc(x, y, 5, 0, Math.PI * 2);
+            ctx.fillStyle = 'white';
+            ctx.fill();
+
+            x += vx;
+            y += vy;
+            if (x < 0 || x > canvas.width) vx = -vx;
+            if (y < 0 || y > canvas.height) vy = -vy;
+
+            requestAnimationFrame(animate2D);
+          } catch (error) {
+            logDebug('2D Canvas Render Error: ' + error.message);
+          }
+        }
+        animate2D();
+
+        function triggerBigBang2D() {
+          // Simple explosion: 50 dots
+          for (let i = 0; i < 50; i++) {
+            setTimeout(() => {
+              ctx.beginPath();
+              ctx.arc(
+                canvas.width / 2 + (Math.random() - 0.5) * 200,
+                canvas.height / 2 + (Math.random() - 0.5) * 200,
+                3,
+                0,
+                Math.PI * 2
+              );
+              ctx.fillStyle = `hsl(${Math.random() * 360}, 70%, 70%)`;
+              ctx.fill();
+            }, i * 20);
+          }
+          logDebug('2D canvas Big Bang triggered');
+        }
+
+        window.addEventListener('resize', () => {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }, { passive: true });
+
+        triggerBigBang = triggerBigBang2D;
+        animationMode = '2d';
+        logDebug('2D canvas animation started');
+        return true;
+      } catch (error) {
+        logDebug('2D Canvas Initialization Error: ' + error.message);
+        return false;
+      }
+    }
+
+    // WebGL Animation (Secondary)
     function initWebGL(canvas) {
       logDebug('Attempting WebGL initialization...');
       if (typeof THREE === 'undefined') {
@@ -368,7 +460,7 @@
         camera.position.z = 50;
         logDebug('WebGL renderer initialized');
 
-        let particles = [], trails = [], mousePos = { x: 0, y: 0 };
+        let particles = [], mousePos = { x: 0, y: 0 };
 
         document.addEventListener('mousemove', (e) => {
           mousePos.x = (e.clientX / window.innerWidth) * 2 - 1;
@@ -402,24 +494,9 @@
           return { obj: particle, life, index, offset, velocity };
         }
 
-        function createTrail(from, to, color, life = 10) {
-          const points = [from, to];
-          const geometry = new THREE.BufferGeometry().setFromPoints(points);
-          const material = new THREE.LineBasicMaterial({
-            color,
-            transparent: true,
-            opacity: 0.7,
-            linewidth: 2,
-            blending: THREE.AdditiveBlending
-          });
-          const trail = new THREE.Line(geometry, material);
-          scene.add(trail);
-          return { obj: trail, life };
-        }
-
         function initAnimations() {
           particles = [];
-          for (let i = 0; i < 30; i++) {
+          for (let i = 0; i < 20; i++) {
             particles.push(createParticle(i, Math.random() * 2 * Math.PI));
           }
           logDebug('WebGL particles initialized: ' + particles.length);
@@ -428,12 +505,10 @@
 
         function triggerBigBangWebGL() {
           particles.forEach(p => { scene.remove(p.obj); try { p.obj.geometry.dispose(); p.obj.material.dispose(); } catch (e) {} });
-          trails.forEach(t => { scene.remove(t.obj); try { t.obj.geometry.dispose(); t.obj.material.dispose(); } catch (e) {} });
           particles = [];
-          trails = [];
 
           const colors = [0x00b7eb, 0xff00cc, 0x00ffff, 0xffd700];
-          for (let i = 0; i < 100; i++) {
+          for (let i = 0; i < 50; i++) {
             const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2);
             const r = Math.sqrt(i) * 1.2;
             const velocity = new THREE.Vector3(
@@ -442,19 +517,6 @@
               (Math.random() - 0.5) * 0.08
             );
             particles.push(createParticle(i, Math.random() * 2 * Math.PI, 5, velocity, colors[Math.floor(Math.random() * colors.length)]));
-          }
-          for (let i = 0; i < 150; i++) {
-            const from = new THREE.Vector3(
-              (Math.random() - 0.5) * 5,
-              (Math.random() - 0.5) * 5,
-              0
-            );
-            const to = new THREE.Vector3(
-              from.x + (Math.random() - 0.5) * 8,
-              from.y + (Math.random() - 0.5) * 8,
-              0
-            );
-            trails.push(createTrail(from, to, colors[Math.floor(Math.random() * colors.length)], 5));
           }
           logDebug('WebGL Big Bang triggered');
         }
@@ -475,34 +537,8 @@
             return true;
           });
 
-          trails = trails.filter(t => {
-            if (t.life <= 0) {
-              scene.remove(t.obj);
-              try { t.obj.geometry.dispose(); t.obj.material.dispose(); } catch (e) {} 
-              return false;
-            }
-            t.life -= 1 / 60;
-            t.obj.material.opacity = t.life / 10 * 0.7;
-            return true;
-          });
-
-          if (particles.length < 30 && Math.random() < 0.1) {
-            particles.push(createParticle(Math.floor(Math.random() * 30), Math.random() * 2 * Math.PI));
-          }
-
-          if (trails.length < 75) {
-            particles.forEach(p => {
-              const pos = p.obj.position;
-              particles.forEach(p2 => {
-                if (p !== p2) {
-                  const pos2 = p2.obj.position;
-                  const dist = pos.distanceTo(pos2);
-                  if (dist < 3 && Math.random() < 0.05) {
-                    trails.push(createTrail(pos, pos2, Math.random() > 0.5 ? 0x00b7eb : 0xff00cc));
-                  }
-                }
-              });
-            });
+          if (particles.length < 20 && Math.random() < 0.1) {
+            particles.push(createParticle(Math.floor(Math.random() * 20), Math.random() * 2 * Math.PI));
           }
         }
 
@@ -536,172 +572,46 @@
       }
     }
 
-    // 2D Canvas Animation
-    function init2DCanvas(canvas) {
-      logDebug('Attempting 2D canvas initialization...');
-      const ctx = canvas.getContext('2d');
-      if (!ctx) {
-        logDebug('2D canvas context not supported');
-        return false;
-      }
-
-      try {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        let particles = [];
-        let mousePos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-
-        document.addEventListener('mousemove', (e) => {
-          mousePos.x = e.clientX;
-          mousePos.y = e.clientY;
-        }, { passive: true });
-
-        document.addEventListener('touchmove', (e) => {
-          if (e.touches.length > 0) {
-            mousePos.x = e.touches[0].clientX;
-            mousePos.y = e.touches[0].clientY;
-          }
-        }, { passive: true });
-
-        function createParticle() {
-          const phi = (1 + Math.sqrt(5)) / 2;
-          const index = particles.length;
-          const theta = index * 2 * Math.PI * phi;
-          const r = Math.sqrt(index) * 10;
-          return {
-            x: canvas.width / 2 + r * Math.cos(theta),
-            y: canvas.height / 2 + r * Math.sin(theta),
-            vx: (Math.random() - 0.5) * 2,
-            vy: (Math.random() - 0.5) * 2,
-            life: 600,
-            color: `hsl(${Math.random() * 360}, 70%, 70%)`
-          };
-        }
-
-        function initParticles() {
-          particles = [];
-          for (let i = 0; i < 30; i++) {
-            particles.push(createParticle());
-          }
-          logDebug('2D canvas particles initialized: ' + particles.length);
-
-          // Test render to confirm canvas visibility
-          ctx.fillStyle = 'red';
-          ctx.fillRect(10, 10, 20, 20); // Temporary red square to verify rendering
-          setTimeout(() => ctx.clearRect(10, 10, 20, 20), 1000); // Remove after 1s
-        }
-        initParticles();
-
-        function triggerBigBang2D() {
-          particles = [];
-          for (let i = 0; i < 100; i++) {
-            const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2);
-            const r = Math.sqrt(i) * 15;
-            particles.push({
-              x: canvas.width / 2,
-              y: canvas.height / 2,
-              vx: r * Math.cos(theta) * 0.05,
-              vy: r * Math.sin(theta) * 0.05,
-              life: 300,
-              color: `hsl(${Math.random() * 360}, 70%, 70%)`
-            });
-          }
-          logDebug('2D canvas Big Bang triggered');
-        }
-
-        function animate2D() {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          particles = particles.filter(p => {
-            if (p.life <= 0) return false;
-            p.life--;
-            p.x += p.vx + (mousePos.x - canvas.width / 2) * 0.0001;
-            p.y += p.vy + (mousePos.y - canvas.height / 2) * 0.0001;
-            p.vx *= 0.98;
-            p.vy *= 0.98;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
-            ctx.fillStyle = p.color;
-            ctx.globalAlpha = p.life / 600;
-            ctx.fill();
-            return true;
-          });
-
-          if (particles.length < 30 && Math.random() < 0.1) {
-            particles.push(createParticle());
-          }
-
-          particles.forEach(p1 => {
-            particles.forEach(p2 => {
-              if (p1 !== p2) {
-                const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
-                if (dist < 50 && Math.random() < 0.05) {
-                  ctx.beginPath();
-                  ctx.moveTo(p1.x, p1.y);
-                  ctx.lineTo(p2.x, p2.y);
-                  ctx.strokeStyle = p1.color;
-                  ctx.globalAlpha = 0.3;
-                  ctx.stroke();
-                }
-              }
-            });
-          });
-
-          ctx.globalAlpha = 1;
-          requestAnimationFrame(animate2D);
-        }
-        animate2D();
-
-        window.addEventListener('resize', () => {
-          canvas.width = window.innerWidth;
-          canvas.height = window.innerHeight;
-          initParticles(); // Reinitialize particles on resize
-        }, { passive: true });
-
-        triggerBigBang = triggerBigBang2D;
-        animationMode = '2d';
-        logDebug('2D canvas animation started');
-        return true;
-      } catch (error) {
-        logDebug('2D Canvas Initialization Error: ' + error.message);
-        return false;
-      }
-    }
-
     // CSS Fallback Animation
     function initCSSAnimations() {
       logDebug('Attempting CSS animation initialization...');
-      const cssParticles = document.getElementById('css-particles');
-      cssParticles.style.display = 'block';
+      try {
+        const cssParticles = document.getElementById('css-particles');
+        cssParticles.style.display = 'block';
 
-      for (let i = 0; i < 30; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'css-particle';
-        particle.style.left = `${Math.random() * 100}vw`;
-        particle.style.top = `${Math.random() * 100}vh`;
-        particle.style.animationDelay = `${Math.random() * 10}s`;
-        particle.style.background = `hsl(${Math.random() * 360}, 70%, 70%)`;
-        cssParticles.appendChild(particle);
-      }
-
-      function triggerBigBangCSS() {
-        cssParticles.innerHTML = '';
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 20; i++) {
           const particle = document.createElement('div');
           particle.className = 'css-particle';
-          particle.style.left = `${50 + (Math.random() - 0.5) * 20}vw`;
-          particle.style.top = `${50 + (Math.random() - 0.5) * 20}vh`;
-          particle.style.animationDuration = '2s';
+          particle.style.left = `${Math.random() * 100}vw`;
+          particle.style.top = `${Math.random() * 100}vh`;
+          particle.style.animationDelay = `${Math.random() * 8}s`;
           particle.style.background = `hsl(${Math.random() * 360}, 70%, 70%)`;
           cssParticles.appendChild(particle);
-          setTimeout(() => particle.remove(), 2000);
         }
-        logDebug('CSS Big Bang triggered');
-      }
 
-      triggerBigBang = triggerBigBangCSS;
-      animationMode = 'css';
-      logDebug('CSS animation started');
-      return true;
+        function triggerBigBangCSS() {
+          cssParticles.innerHTML = '';
+          for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'css-particle';
+            particle.style.left = `${50 + (Math.random() - 0.5) * 20}vw`;
+            particle.style.top = `${50 + (Math.random() - 0.5) * 20}vh`;
+            particle.style.animationDuration = '2s';
+            particle.style.background = `hsl(${Math.random() * 360}, 70%, 70%)`;
+            cssParticles.appendChild(particle);
+            setTimeout(() => particle.remove(), 2000);
+          }
+          logDebug('CSS Big Bang triggered');
+        }
+
+        triggerBigBang = triggerBigBangCSS;
+        animationMode = 'css';
+        logDebug('CSS animation started');
+        return true;
+      } catch (error) {
+        logDebug('CSS Animation Initialization Error: ' + error.message);
+        return false;
+      }
     }
 
     // Initialize Animations
@@ -709,37 +619,50 @@
       const webglCanvas = document.getElementById('background-canvas');
       const fallbackCanvas = document.getElementById('fallback-canvas');
 
+      // Try 2D Canvas first (simplest)
+      if (init2DCanvas(fallbackCanvas)) {
+        webglCanvas.style.display = 'none';
+        fallbackCanvas.style.display = 'block';
+        document.getElementById('css-particles').style.display = 'none';
+        errorMessage.style.display = 'none';
+        return;
+      }
+
       // Try WebGL
       if (initWebGL(webglCanvas)) {
         fallbackCanvas.style.display = 'none';
         document.getElementById('css-particles').style.display = 'none';
-        return;
-      }
-
-      // Try 2D Canvas
-      webglCanvas.style.display = 'none';
-      fallbackCanvas.style.display = 'block';
-      if (init2DCanvas(fallbackCanvas)) {
-        document.getElementById('css-particles').style.display = 'none';
+        errorMessage.style.display = 'none';
         return;
       }
 
       // Fall back to CSS
       webglCanvas.style.display = 'none';
       fallbackCanvas.style.display = 'none';
-      initCSSAnimations();
+      if (initCSSAnimations()) {
+        errorMessage.style.display = 'none';
+        return;
+      }
+
+      // All animations failed
+      errorMessage.style.display = 'block';
+      logDebug('All animation methods failed');
     });
 
     // Copy IP to Clipboard
     function copyIP() {
-      const ip = document.getElementById('ip-display').textContent;
-      navigator.clipboard.writeText(ip).then(() => {
-        triggerBigBang();
-        logDebug('IP copied, Big Bang triggered (' + animationMode + ')');
-      }).catch(err => {
-        logDebug('Copy Error: ' + err.message);
-        document.getElementById('network-info').innerHTML = `ISP: Unknown<br>Location: Unknown`;
-      });
+      try {
+        const ip = document.getElementById('ip-display').textContent;
+        navigator.clipboard.writeText(ip).then(() => {
+          triggerBigBang();
+          logDebug('IP copied, Big Bang triggered (' + animationMode + ')');
+        }).catch(err => {
+          logDebug('Copy Error: ' + err.message);
+          document.getElementById('network-info').innerHTML = `ISP: Unknown<br>Location: Unknown`;
+        });
+      } catch (error) {
+        logDebug('Copy IP Error: ' + error.message);
+      }
     }
   </script>
 </body>
