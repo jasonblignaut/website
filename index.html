@@ -38,6 +38,7 @@
       background: var(--dark-bg);
       color: var(--light-aura);
       overflow: hidden;
+      touch-action: manipulation;
     }
 
     #vanta-bg {
@@ -434,17 +435,23 @@
     }
 
     .iframe-container {
-      display: none;
       position: relative;
       width: 100%;
       height: 150px;
       border-radius: 8px;
       overflow: hidden;
       margin-top: 0.5rem;
+      display: none;
     }
 
     .iframe-container.active {
       display: block;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     .iframe-container::before {
@@ -459,7 +466,7 @@
       pointer-events: none;
     }
 
-    iframe {
+    #speedFrame {
       width: 100%;
       height: 100%;
       border: none;
@@ -492,7 +499,10 @@
       h1 { font-size: clamp(1.2rem, 4vw, 2rem); }
       .ip-display { font-size: clamp(1rem, 2.5vw, 1.5rem); }
       .network-info { font-size: clamp(0.5rem, 0.8vw, 0.7rem); }
-      .start-button { font-size: clamp(0.6rem, 1vw, 0.8rem); }
+      .start-button { 
+        font-size: clamp(0.6rem, 1vw, 0.8rem);
+        padding: 0.5rem 1rem;
+      }
       .speedometer { width: 150px; height: 90px; }
       .gauge { height: 120px; }
       .graph-container { height: 100px; }
@@ -562,7 +572,7 @@
       </div>
       <button class="start-button" id="startButton">Start Test</button>
       <div class="iframe-container" id="iframe-container">
-        <iframe id="speedFrame" src=""></iframe>
+        <iframe id="speedFrame" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
     </div>
   </div>
@@ -590,14 +600,6 @@
     // Utility Functions
     function log(message) {
       console.log('[DEBUG] ' + message);
-    }
-
-    function formatBytes(bytes, decimals = 2) {
-      if (bytes === 0) return '0 Bytes';
-      const k = 1024, dm = decimals < 0 ? 0 : decimals;
-      const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-      const i = Math.floor(Math.log(bytes) / Math.log(k));
-      return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
     }
 
     function copyToClipboard(text) {
@@ -844,9 +846,9 @@
       let controller = null;
       let watchdogTimer = null;
 
-      // Precise Y-axis scale with logarithmic distribution
+      // Precise Y-axis scale with 25Mbps at the halfway point
       const Y_AXIS_LABELS = [0, 10, 25, 50, 100, 200, 500, 1000];
-      const Y_AXIS_POSITIONS = [0, 20, 40, 60, 70, 80, 90, 100];
+      const Y_AXIS_POSITIONS = [0, 25, 50, 65, 75, 85, 95, 100];
 
       function setupYAxis() {
         yAxis.innerHTML = '';
@@ -871,11 +873,8 @@
             const lowerPos = Y_AXIS_POSITIONS[i];
             const upperPos = Y_AXIS_POSITIONS[i + 1];
             
-            // Calculate exact position with logarithmic interpolation
-            const logLower = Math.log10(lowerLabel || 1);
-            const logUpper = Math.log10(upperLabel);
-            const logSpeed = Math.log10(speed);
-            const fraction = (logSpeed - logLower) / (logUpper - logLower);
+            // Linear interpolation between the two points
+            const fraction = (speed - lowerLabel) / (upperLabel - lowerLabel);
             return lowerPos + fraction * (upperPos - lowerPos);
           }
         }
@@ -893,15 +892,26 @@
       }
 
       function updateSpeedometer(speed) {
-        // Logarithmic scale for better low-speed visibility
+        // Custom scale where 25Mbps is exactly halfway (180°)
         const maxScale = 1000;
-        const logSpeed = Math.log10(speed || 1);
-        const logMax = Math.log10(maxScale);
-        const percent = logSpeed / logMax;
-        const angle = 180 + (percent * 180);
+        let angle;
         
-        gaugeFill.style.transform = `rotate(${angle}deg)`;
-        gaugeNeedle.style.transform = `rotate(${angle}deg)`;
+        if (speed <= 25) {
+          // Linear scale from 0-25Mbps (0° to 180°)
+          angle = 180 * (speed / 25);
+        } else {
+          // Logarithmic scale from 25-1000Mbps (180° to 360°)
+          const logSpeed = Math.log10(speed);
+          const log25 = Math.log10(25);
+          const logMax = Math.log10(maxScale);
+          angle = 180 + 180 * ((logSpeed - log25) / (logMax - log25));
+        }
+        
+        // Convert to gauge rotation (180° is left, 360° is right)
+        const rotation = 180 + angle;
+        
+        gaugeFill.style.transform = `rotate(${rotation}deg)`;
+        gaugeNeedle.style.transform = `rotate(${rotation}deg)`;
         speedValue.textContent = speed.toFixed(1);
       }
 
@@ -1115,6 +1125,7 @@
 
       startButton.addEventListener('click', () => {
         if (startButton.textContent === 'More Info') {
+          // Properly load Cloudflare speed test in iframe
           iframe.src = 'https://speed.cloudflare.com';
           iframeContainer.classList.add('active');
           return;
