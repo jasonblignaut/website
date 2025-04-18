@@ -133,7 +133,7 @@
       padding: 1.5rem;
       max-width: 600px;
       width: 100%;
-      max-height: 60vh;
+      max-height: 70vh;
       overflow-y: auto;
       transition: opacity 0.5s ease;
     }
@@ -176,22 +176,29 @@
 
     .progress-container {
       margin: 1rem 0;
-    }
-
-    .progress {
-      height: 16px;
+      position: relative;
+      height: 20px;
       background: #1a1a3d;
-      border-radius: 8px;
+      border-radius: 10px;
       overflow: hidden;
       box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
     }
 
-    .progress-bar {
+    .laser-progress {
+      position: absolute;
+      top: 0;
+      left: 0;
       height: 100%;
       width: 0;
-      background: linear-gradient(45deg, var(--neon-blue), var(--neon-magenta));
-      box-shadow: 0 0 15px var(--neon-blue);
-      transition: width 0.2s ease;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-magenta));
+      box-shadow: 0 0 15px var(--neon-blue), 0 0 25px var(--neon-magenta);
+      animation: laserGlow 1s infinite alternate;
+      transition: width 0.1s linear;
+    }
+
+    @keyframes laserGlow {
+      from { box-shadow: 0 0 15px var(--neon-blue), 0 0 25px var(--neon-magenta); }
+      to { box-shadow: 0 0 25px var(--neon-cyan), 0 0 35px var(--neon-blue); }
     }
 
     .progress-speed, .progress-percentage {
@@ -211,6 +218,22 @@
       font-size: 0.8rem;
       color: var(--text-color);
       padding: 0.5rem 0;
+    }
+
+    .graph-container {
+      margin: 1rem 0;
+      position: relative;
+      width: 100%;
+      height: 200px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--neon-blue);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    #speed-graph {
+      width: 100%;
+      height: 100%;
     }
 
     .history-overlay {
@@ -290,6 +313,7 @@
       .ip-display { font-size: clamp(1.2rem, 2.5vw, 1.5rem); }
       .btn { font-size: 0.9rem; padding: 0.6rem 1.2rem; }
       .speed-test-container { max-height: 50vh; }
+      .graph-container { height: 150px; }
     }
 
     @media (max-width: 480px) {
@@ -340,13 +364,14 @@
       <div class="progress-container">
         <div class="progress-speed" id="current-speed">0.00 Mbps</div>
         <div class="progress-percentage" id="progress-percent">0%</div>
-        <div class="progress">
-          <div class="progress-bar" id="progress-bar"></div>
-        </div>
-        <div class="progress-stats">
-          <span id="data-transferred">0 MB</span>
-          <span id="time-elapsed">00:00</span>
-        </div>
+        <div class="laser-progress" id="laser-progress"></div>
+      </div>
+      <div class="progress-stats">
+        <span id="data-transferred">0 MB</span>
+        <span id="time-elapsed">00:00</span>
+      </div>
+      <div class="graph-container">
+        <canvas id="speed-graph" aria-label="Live speed graph"></canvas>
       </div>
       <div class="button-container">
         <button class="btn" id="refresh-test" style="display: none;" aria-label="Refresh test">Refresh</button>
@@ -360,7 +385,7 @@
     <button class="close-btn" id="close-history" aria-label="Close history">Close</button>
   </div>
   <footer>
-    © 2025 Labverse | Powered by <a href="https://onefar.co.za" target="_blank" rel="noopener">1FAR</a>
+    © 2025 Labverse | Powered by <a href="https://x.ai" target="_blank" rel="noopener">xAI</a>
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
@@ -402,7 +427,6 @@
       let scene, camera, renderer, particles = [];
 
       try {
-        // Initialize WebGL
         scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
@@ -410,7 +434,6 @@
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         camera.position.z = 50;
 
-        // Particle system using Fibonacci spiral
         const createParticle = (index) => {
           const phi = (1 + Math.sqrt(5)) / 2;
           const theta = index * 2 * Math.PI * phi;
@@ -433,7 +456,6 @@
           particles.push(createParticle(i));
         }
 
-        // Animation loop
         const animate = () => {
           requestAnimationFrame(animate);
           particles.forEach(p => {
@@ -453,14 +475,12 @@
         };
         animate();
 
-        // Resize handler
         window.addEventListener('resize', () => {
           camera.aspect = window.innerWidth / window.innerHeight;
           camera.updateProjectionMatrix();
           renderer.setSize(window.innerWidth, window.innerHeight);
         }, { passive: true });
 
-        // Visual effect trigger
         window.triggerVisualEffect = () => {
           particles.forEach(p => scene.remove(p.obj));
           particles = [];
@@ -499,29 +519,120 @@
         },
       ],
       testServer: {
-        pingUrl: '/assets/ping-test.txt',
-        downloadUrl: '/assets/25mb.bin',
-        uploadSimulation: { chunkSize: 256 * 1024, totalSize: 10 * 1024 * 1024 },
+        downloadUrl: 'https://speed.cloudflare.com/__down?bytes=25000000', // 25MB file from Cloudflare
+        uploadUrl: 'https://speed.cloudflare.com/__up', // Cloudflare upload endpoint
+        pingUrl: 'https://speed.cloudflare.com/__ping',
       },
-      testDurations: { download: 8000, upload: 5000, ping: 3000 },
+      testDurations: { download: 10000, upload: 10000, ping: 3000 },
     };
 
     async function fetchIP() {
       log('Fetching public IP...');
-      // Since GitHub may not allow CORS, use a fallback IP
-      const ip = '192.168.1.1'; // Fallback IP
-      log('Using fallback IP due to CORS restrictions: ' + ip);
-      document.getElementById('ip-display').textContent = ip;
-      return ip;
+      for (const api of CONFIG.ipApis) {
+        try {
+          const response = await fetch(api.url);
+          const data = await response.json();
+          const ip = api.parser(data);
+          log('Public IP fetched: ' + ip);
+          document.getElementById('ip-display').textContent = ip;
+          return ip;
+        } catch (error) {
+          log('IP fetch error from ' + api.url + ': ' + error.message);
+        }
+      }
+      document.getElementById('ip-display').textContent = 'IP unavailable';
+      throw new Error('Failed to fetch IP');
     }
 
     async function fetchLocationInfo() {
       log('Fetching network location info...');
-      // Since GitHub may not allow CORS, use fallback info
-      const info = { isp: 'Local ISP', city: 'Local City', country: 'Local Country' };
-      log('Using fallback network info due to CORS restrictions');
-      document.getElementById('network-info').innerHTML = `ISP: ${info.isp}<br>Location: ${info.city}, ${info.country}`;
-      return info;
+      for (const api of CONFIG.geoApis) {
+        try {
+          const response = await fetch(api.url);
+          const data = await response.json();
+          const info = api.parser(data);
+          log('Network info fetched: ' + JSON.stringify(info));
+          document.getElementById('network-info').innerHTML = `ISP: ${info.isp}<br>Location: ${info.city}, ${info.country}`;
+          return info;
+        } catch (error) {
+          log('Location fetch error from ' + api.url + ': ' + error.message);
+        }
+      }
+      document.getElementById('network-info').innerHTML = 'Network info unavailable';
+      throw new Error('Failed to fetch network info');
+    }
+
+    // Graph Functions
+    function initializeGraph() {
+      const canvas = document.getElementById('speed-graph');
+      const ctx = canvas.getContext('2d');
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+
+      const maxSpeed = 100; // Max Mbps on Y-axis
+      const downloadData = [];
+      const uploadData = [];
+      let timeIndex = 0;
+
+      function drawGraph() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw axes
+        ctx.strokeStyle = 'rgba(0, 183, 235, 0.5)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(30, 10);
+        ctx.lineTo(30, canvas.height - 20);
+        ctx.lineTo(canvas.width - 10, canvas.height - 20);
+        ctx.stroke();
+
+        // Draw Y-axis labels
+        ctx.fillStyle = 'rgba(0, 255, 255, 0.7)';
+        ctx.font = '12px Exo 2';
+        ctx.textAlign = 'right';
+        for (let i = 0; i <= 5; i++) {
+          const y = canvas.height - 20 - (i * (canvas.height - 40) / 5);
+          const speed = (i * maxSpeed / 5).toFixed(0);
+          ctx.fillText(speed, 25, y + 4);
+        }
+        ctx.fillText('Mbps', 25, 15);
+
+        // Draw lines
+        const drawLine = (data, color) => {
+          if (data.length < 2) return;
+          ctx.strokeStyle = color;
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          data.forEach((speed, i) => {
+            const x = 30 + (i / (data.length - 1)) * (canvas.width - 40);
+            const y = canvas.height - 20 - (speed / maxSpeed) * (canvas.height - 40);
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          });
+          ctx.stroke();
+        };
+
+        drawLine(downloadData, '#00b7eb');
+        drawLine(uploadData, '#ff00cc');
+      }
+
+      return {
+        addDownloadSpeed(speed) {
+          downloadData.push(Math.min(speed, maxSpeed));
+          if (downloadData.length > canvas.width / 5) downloadData.shift();
+          drawGraph();
+        },
+        addUploadSpeed(speed) {
+          uploadData.push(Math.min(speed, maxSpeed));
+          if (uploadData.length > canvas.width / 5) uploadData.shift();
+          drawGraph();
+        },
+        reset() {
+          downloadData.length = 0;
+          uploadData.length = 0;
+          drawGraph();
+        },
+      };
     }
 
     // Speed Test Functions
@@ -531,6 +642,7 @@
         currentResults: null,
         testRunning: false,
         testAborted: false,
+        graph: initializeGraph(),
 
         setupEvents() {
           document.getElementById('start-speed-test').addEventListener('click', () => this.toggleTest());
@@ -563,12 +675,13 @@
 
           // Reset UI
           ['download-value', 'upload-value', 'ping-value', 'jitter-value', 'packet-loss-value'].forEach(id => document.getElementById(id).textContent = '0');
-          document.getElementById('progress-bar').style.width = '0%';
+          document.getElementById('laser-progress').style.width = '0%';
           document.getElementById('progress-percent').textContent = '0%';
           document.getElementById('current-speed').textContent = '0.00 Mbps';
           document.getElementById('data-transferred').textContent = '0 MB';
           document.getElementById('time-elapsed').textContent = '00:00';
           ['refresh-test', 'share-results', 'view-history'].forEach(id => document.getElementById(id).style.display = 'none');
+          this.graph.reset();
 
           try {
             const pingResults = await this.runPingTest();
@@ -601,7 +714,7 @@
           const pingValue = document.getElementById('ping-value');
           const jitterValue = document.getElementById('jitter-value');
           const packetLossValue = document.getElementById('packet-loss-value');
-          const progressBar = document.getElementById('progress-bar');
+          const progress = document.getElementById('laser-progress');
           const progressPercent = document.getElementById('progress-percent');
           const currentSpeed = document.getElementById('current-speed');
           const timeElapsed = document.getElementById('time-elapsed');
@@ -622,8 +735,9 @@
               log(`Ping #${i+1} failed: ${error.message}`);
               packetsLost++;
             }
-            progressBar.style.width = `${((i + 1) / totalPackets) * 100}%`;
-            progressPercent.textContent = `${((i + 1) / totalPackets) * 100}%`;
+            const progressPercentage = ((i + 1) / totalPackets) * 100;
+            progress.style.width = `${progressPercentage}%`;
+            progressPercent.textContent = `${progressPercentage.toFixed(1)}%`;
             currentSpeed.textContent = `${pingTimes.length ? (pingTimes[pingTimes.length - 1]).toFixed(2) : 0} ms`;
             timeElapsed.textContent = `${i + 1}/${totalPackets}`;
             await new Promise(r => setTimeout(r, 300));
@@ -643,7 +757,7 @@
         async runDownloadTest() {
           log('Starting download test...');
           const downloadValue = document.getElementById('download-value');
-          const progressBar = document.getElementById('progress-bar');
+          const progress = document.getElementById('laser-progress');
           const progressPercent = document.getElementById('progress-percent');
           const currentSpeed = document.getElementById('current-speed');
           const dataTransferred = document.getElementById('data-transferred');
@@ -651,22 +765,29 @@
 
           let totalBytes = 0, startTime = performance.now();
           const maxTime = CONFIG.testDurations.download;
+          const updateInterval = 100; // Update every 100ms
 
           try {
             const response = await fetch(CONFIG.testServer.downloadUrl, { cache: 'no-store' });
             const reader = response.body.getReader();
+            let lastUpdate = startTime;
+
             while (true) {
               const { done, value } = await reader.read();
               if (done || this.testAborted) break;
               totalBytes += value.length;
               const elapsed = (performance.now() - startTime) / 1000;
-              const speed = ((totalBytes * 8) / elapsed) / (1024 * 1024);
-              downloadValue.textContent = speed.toFixed(1);
-              progressBar.style.width = `${Math.min(100, (elapsed / (maxTime / 1000)) * 100)}%`;
-              progressPercent.textContent = `${Math.min(100, (elapsed / (maxTime / 1000)) * 100).toFixed(1)}%`;
-              currentSpeed.textContent = `${speed.toFixed(2)} Mbps`;
-              dataTransferred.textContent = formatBytes(totalBytes);
-              timeElapsed.textContent = formatTime(elapsed);
+              if (performance.now() - lastUpdate >= updateInterval) {
+                const speed = ((totalBytes * 8) / elapsed) / (1024 * 1024);
+                downloadValue.textContent = speed.toFixed(1);
+                progress.style.width = `${Math.min(100, (elapsed / (maxTime / 1000)) * 100)}%`;
+                progressPercent.textContent = `${Math.min(100, (elapsed / (maxTime / 1000)) * 100).toFixed(1)}%`;
+                currentSpeed.textContent = `${speed.toFixed(2)} Mbps`;
+                dataTransferred.textContent = formatBytes(totalBytes);
+                timeElapsed.textContent = formatTime(elapsed);
+                this.graph.addDownloadSpeed(speed);
+                lastUpdate = performance.now();
+              }
               if (elapsed >= maxTime / 1000) break;
             }
           } catch (error) {
@@ -677,43 +798,77 @@
           const totalTime = (performance.now() - startTime) / 1000;
           const finalSpeed = ((totalBytes * 8) / totalTime) / (1024 * 1024);
           downloadValue.textContent = finalSpeed.toFixed(1);
+          this.graph.addDownloadSpeed(finalSpeed);
           return finalSpeed;
         },
 
         async runUploadTest() {
-          log('Simulating upload test...');
+          log('Starting upload test...');
           const uploadValue = document.getElementById('upload-value');
-          const progressBar = document.getElementById('progress-bar');
+          const progress = document.getElementById('laser-progress');
           const progressPercent = document.getElementById('progress-percent');
           const currentSpeed = document.getElementById('current-speed');
           const dataTransferred = document.getElementById('data-transferred');
           const timeElapsed = document.getElementById('time-elapsed');
 
-          const { chunkSize, totalSize } = CONFIG.testServer.uploadSimulation;
+          const totalSize = 10 * 1024 * 1024; // 10MB
+          const chunkSize = 256 * 1024; // 256KB chunks
           let uploaded = 0, startTime = performance.now();
+          const maxTime = CONFIG.testDurations.upload;
+          const updateInterval = 100; // Update every 100ms
 
-          while (uploaded < totalSize && !this.testAborted) {
-            uploaded += chunkSize;
-            const elapsed = (performance.now() - startTime) / 1000;
-            const speed = ((uploaded * 8) / elapsed) / (1024 * 1024);
-            uploadValue.textContent = speed.toFixed(1);
-            progressBar.style.width = `${(uploaded / totalSize) * 100}%`;
-            progressPercent.textContent = `${(uploaded / totalSize) * 100}%`;
-            currentSpeed.textContent = `${speed.toFixed(2)} Mbps`;
-            dataTransferred.textContent = formatBytes(uploaded);
-            timeElapsed.textContent = formatTime(elapsed);
-            await new Promise(r => setTimeout(r, 300));
+          try {
+            const formData = new FormData();
+            const blob = new Blob([new Uint8Array(totalSize).fill(0)]);
+            formData.append('file', blob, 'test.bin');
+
+            const xhr = new XMLHttpRequest();
+            let lastUpdate = startTime;
+
+            xhr.upload.onprogress = (event) => {
+              if (this.testAborted) return;
+              uploaded = event.loaded;
+              const elapsed = (performance.now() - startTime) / 1000;
+              if (performance.now() - lastUpdate >= updateInterval) {
+                const speed = ((uploaded * 8) / elapsed) / (1024 * 1024);
+                uploadValue.textContent = speed.toFixed(1);
+                progress.style.width = `${Math.min(100, (elapsed / (maxTime / 1000)) * 100)}%`;
+                progressPercent.textContent = `${Math.min(100, (elapsed / (maxTime / 1000)) * 100).toFixed(1)}%`;
+                currentSpeed.textContent = `${speed.toFixed(2)} Mbps`;
+                dataTransferred.textContent = formatBytes(uploaded);
+                timeElapsed.textContent = formatTime(elapsed);
+                this.graph.addUploadSpeed(speed);
+                lastUpdate = performance.now();
+              }
+            };
+
+            const uploadPromise = new Promise((resolve, reject) => {
+              xhr.onload = () => resolve();
+              xhr.onerror = () => reject(new Error('Upload failed'));
+              xhr.open('POST', CONFIG.testServer.uploadUrl, true);
+              xhr.send(formData);
+            });
+
+            await Promise.race([
+              uploadPromise,
+              new Promise((_, reject) => setTimeout(() => {
+                if (!this.testAborted) reject(new Error('Upload timeout'));
+              }, maxTime)),
+            ]);
+          } catch (error) {
+            log('Upload error: ' + error.message);
+            throw error;
           }
 
           const totalTime = (performance.now() - startTime) / 1000;
           const finalSpeed = ((uploaded * 8) / totalTime) / (1024 * 1024);
           uploadValue.textContent = finalSpeed.toFixed(1);
+          this.graph.addUploadSpeed(finalSpeed);
           return finalSpeed;
         },
 
         displayResults() {
           if (!this.currentResults) return;
-          const { ping, jitter, packetLoss, downloadSpeed, uploadSpeed } = this.currentResults;
           ['refresh-test', 'share-results', 'view-history'].forEach(id => document.getElementById(id).style.display = 'inline-block');
         },
 
@@ -750,7 +905,8 @@
             <div class="history-item">
               <strong>${r.timestamp}</strong><br>
               Download: ${r.download} Mbps<br>
-              Upload: ${r.upload} Mbps<br>
+              Upload: ${r.upload} Mb
+ps<br>
               Ping: ${r.ping} ms<br>
               Jitter: ${r.jitter} ms<br>
               Packet Loss: ${r.packetLoss}%
