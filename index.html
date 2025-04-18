@@ -20,7 +20,7 @@
       --cosmic-gold: #ffd700;
       --cosmic-cyan: #00ffff;
       --light-aura: #e6f0ff;
-      --dark-bg: #070b1a; /* Adjusted to match demo's dark blue */
+      --dark-bg: #070b1a;
       --card-bg: rgba(13, 20, 43, 0.7);
       --glow-radius: 15px;
     }
@@ -37,7 +37,7 @@
       width: 100%;
       background: var(--dark-bg);
       color: var(--light-aura);
-      overflow: hidden; /* No scrolling */
+      overflow: hidden;
     }
 
     #vanta-bg {
@@ -46,7 +46,7 @@
       left: 0;
       height: 100%;
       width: 100%;
-      z-index: 1; /* Above body background, below content */
+      z-index: 1;
       opacity: 0.5;
     }
 
@@ -56,7 +56,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: 2; /* Above Vanta.js, below content */
+      z-index: 2;
       opacity: 0.8;
     }
 
@@ -99,6 +99,7 @@
 
     .ip-container {
       display: flex;
+      flex-direction: column; /* Changed to column to stack IP and button */
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
@@ -118,7 +119,6 @@
       box-shadow: 0 0 15px var(--matrix-blue);
       text-shadow: 0 0 10px var(--matrix-blue);
       word-break: break-all;
-      flex-shrink: 0;
     }
 
     .copy-btn {
@@ -133,7 +133,6 @@
       text-transform: uppercase;
       box-shadow: 0 0 20px rgba(73, 115, 255, 0.4);
       transition: all 0.3s ease;
-      margin-left: 0.5rem;
     }
 
     .copy-btn:hover {
@@ -166,7 +165,7 @@
       backdrop-filter: blur(10px);
       border: 1px solid rgba(79, 172, 254, 0.3);
       width: 100%;
-      max-height: 50vh; /* Fit within viewport */
+      max-height: 50vh;
       overflow: hidden;
     }
 
@@ -232,9 +231,12 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: conic-gradient(from 180deg, transparent 50%, #4facfe 50%, #00f2fe 75%, #4facfe 100%);
+      background: linear-gradient(90deg, #4facfe, #00f2fe);
+      clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
       transform-origin: center bottom;
+      transform: rotate(180deg); /* Start at far left */
       z-index: 1;
+      transition: transform 0.3s ease-out;
     }
 
     .gauge-needle {
@@ -245,7 +247,7 @@
       bottom: 0;
       left: 50%;
       transform-origin: center bottom;
-      transform: rotate(0deg);
+      transform: rotate(180deg);
       border-radius: 2px;
       z-index: 4;
       transition: transform 0.3s ease-out;
@@ -455,7 +457,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 183, 235, 0.3); /* Neon blue overlay */
+      background: rgba(0, 183, 235, 0.3);
       z-index: 1;
       pointer-events: none;
     }
@@ -593,8 +595,8 @@
       minWidth: 200.00,
       scale: 1.00,
       scaleMobile: 1.00,
-      color: 0x00ffff, // Cyan connections
-      backgroundColor: 0x070b1a // Matches body background
+      color: 0x00ffff,
+      backgroundColor: 0x070b1a
     });
 
     // Utility Functions
@@ -608,12 +610,6 @@
       const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
       const i = Math.floor(Math.log(bytes) / Math.log(k));
       return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-    }
-
-    function formatTime(seconds) {
-      const mins = Math.floor(seconds / 60);
-      const secs = Math.floor(seconds % 60);
-      return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
 
     function copyToClipboard(text) {
@@ -757,10 +753,10 @@
     async function fetchLocationInfo() {
       log('Fetching network location info...');
       try {
-        const response = await fetch('https://ipinfo.io/json?token=your_token_here'); // Replace with your ipinfo.io token
+        const response = await fetch('https://ipinfo.io/json?token=your_token_here');
         const data = await response.json();
         const info = {
-          isp: data.org || 'Dimension Data', // Fallback
+          isp: data.org || 'Dimension Data',
           city: data.city || 'Johannesburg',
           country: data.country || 'South Africa'
         };
@@ -793,8 +789,8 @@
       const graph = document.getElementById('graph');
       let graphLine = document.getElementById('graphLine');
       let graphFill = document.getElementById('graphFill');
-      const gaugeNeedle = document.getElementById('gaugeNeedle');
       const gaugeFill = document.getElementById('gaugeFill');
+      const gaugeNeedle = document.getElementById('gaugeNeedle');
       const speedValue = document.getElementById('speedValue');
       const speedLabel = document.getElementById('speedLabel');
       const resultsContainer = document.getElementById('resultsContainer');
@@ -812,14 +808,15 @@
       let finalDownloadSpeed = 0;
       let finalPing = 0;
       let startTime = 0;
-      let testDuration = CONFIG.testDurations.download; // 10 seconds
+      let testDuration = CONFIG.testDurations.download;
       let animationFrame = null;
       let pointCount = 0;
+      let testActive = false;
 
       // Set up grid lines
       function setupGridLines() {
         gridLines.innerHTML = '';
-        const numLines = 10; // Matches Y-axis labels
+        const numLines = 10;
         for (let i = 0; i < numLines; i++) {
           const gridLine = document.createElement('div');
           gridLine.className = 'grid-line';
@@ -843,7 +840,8 @@
 
       function updateSpeedometer(speed, maxScale) {
         const percent = speed / maxScale;
-        const angle = 180 - (percent * 180);
+        const angle = 180 - (percent * 180); // 180° (left) to 0° (right)
+        gaugeFill.style.transform = `rotate(${angle}deg)`;
         gaugeNeedle.style.transform = `rotate(${angle}deg)`;
         speedValue.textContent = speed.toFixed(1);
       }
@@ -869,6 +867,7 @@
         const totalPackets = 10;
 
         for (let i = 0; i < totalPackets; i++) {
+          if (!testActive) break;
           let ping = 999;
           try {
             const start = performance.now();
@@ -894,24 +893,36 @@
         log('Starting download test from Cloudflare Johannesburg server...');
         let totalBytes = 0, startTime = performance.now();
         const updateInterval = 100;
+        let lastUpdate = startTime;
 
         try {
-          const response = await fetch(CONFIG.testServer.downloadUrl, { cache: 'no-store' });
+          const controller = new AbortController();
+          const signal = controller.signal;
+          const response = await fetch(CONFIG.testServer.downloadUrl, { cache: 'no-store', signal });
           const reader = response.body.getReader();
-          let lastUpdate = startTime;
 
-          while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-            totalBytes += value.length;
-            const elapsed = (performance.now() - startTime) / 1000;
-            if (performance.now() - lastUpdate >= updateInterval) {
-              const speed = ((totalBytes * 8) / elapsed) / (1024 * 1024);
-              callback(elapsed, speed);
-              lastUpdate = performance.now();
+          const updateLoop = async () => {
+            while (testActive) {
+              const { done, value } = await reader.read();
+              if (done || !testActive) {
+                controller.abort();
+                break;
+              }
+              totalBytes += value.length;
+              const elapsed = (performance.now() - startTime) / 1000;
+              if (performance.now() - lastUpdate >= updateInterval) {
+                const speed = ((totalBytes * 8) / elapsed) / (1024 * 1024);
+                callback(elapsed, speed);
+                lastUpdate = performance.now();
+              }
+              if (elapsed >= testDuration / 1000) {
+                controller.abort();
+                break;
+              }
             }
-            if (elapsed >= testDuration / 1000) break;
-          }
+          };
+
+          await updateLoop();
         } catch (error) {
           log('Download error: ' + error.message);
           throw error;
@@ -943,9 +954,11 @@
         graphLine = document.getElementById('graphLine');
         graphFill = document.getElementById('graphFill');
         pointCount = 0;
+        testActive = true;
 
         // Run ping test first
         runPingTest().then(() => {
+          if (!testActive) return;
           // Start download test
           runDownloadTest((elapsed, speed) => {
             const progress = Math.min(elapsed / (testDuration / 1000), 1);
@@ -972,6 +985,7 @@
               startButton.textContent = 'More Info';
               startButton.disabled = false;
               currentTest = null;
+              testActive = false;
               triggerBigBang();
             }
           }).catch(() => {
@@ -979,6 +993,7 @@
             document.getElementById('error-message').textContent = 'Speed test failed. Please try again.';
             startButton.disabled = false;
             startButton.textContent = 'Start Test';
+            testActive = false;
           });
         });
       }
@@ -986,17 +1001,19 @@
       setupGridLines();
 
       startButton.addEventListener('click', () => {
-        if (!currentTest) {
-          if (startButton.textContent === 'More Info') {
-            iframe.src = 'https://speed.cloudflare.com';
-            iframeContainer.classList.add('active');
-            return;
-          }
+        if (startButton.textContent === 'More Info') {
+          iframe.src = 'https://speed.cloudflare.com';
+          iframeContainer.classList.add('active');
+          return;
+        }
+
+        if (!currentTest && startButton.textContent === 'Start Test') {
           progressBar.style.width = '0';
           speedometer.classList.remove('hidden');
           graphContainer.classList.remove('hidden');
           resultsContainer.classList.add('hidden');
           iframeContainer.classList.remove('active');
+          iframe.src = ''; // Reset iframe src
           startButton.disabled = true;
           startButton.textContent = 'Testing...';
           currentTest = 'download';
