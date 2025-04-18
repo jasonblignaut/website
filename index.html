@@ -1,50 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="description" content="Discover your public IP with a futuristic recursive LED dodecahedron and cosmic Fibonacci animations." />
-  <meta name="keywords" content="Public IP, Dodecahedron, Fibonacci, Sacred Geometry, Quantum Particles" />
-  <meta name="author" content="Labverse Team" />
-  <meta property="og:title" content="Your Public IP" />
-  <meta property="og:description" content="View your public IP address with mesmerizing sacred geometry and vibrant LED animations." />
-  <meta property="og:image" content="https://labverse.co.za/assets/labverse-og-image.png" />
-  <meta property="og:url" content="https://labverse.co.za" />
-  <meta name="twitter:card" content="summary_large_image" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Discover your public IP and internet speed with a mesmerizing recursive LED dodecahedron and cosmic Fibonacci animations.">
+  <meta name="keywords" content="Public IP, Internet Speed Test, Dodecahedron, Fibonacci, Sacred Geometry, Quantum Physics">
+  <meta name="author" content="Labverse Team">
+  <meta property="og:title" content="Labverse: Your Public IP & Speed Test">
+  <meta property="og:description" content="Uncover your IP and internet speed with stunning sacred geometry and vibrant LED animations.">
+  <meta property="og:image" content="https://labverse.co.za/assets/labverse-og-image.png">
+  <meta property="og:url" content="https://labverse.co.za">
+  <meta name="twitter:card" content="summary_large_image">
 
-  <title>Your Public IP</title>
+  <title>Labverse: IP & Speed Test</title>
 
   <!-- Favicon -->
-  <link rel="icon" href="favicon.ico" />
+  <link rel="icon" href="favicon.ico">
 
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Source+Code+Pro&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
 
   <!-- Style -->
   <style>
     :root {
-      --matrix-blue: #00b7eb;
-      --cosmic-magenta: #ff00cc;
-      --cosmic-gold: #ffd700;
-      --cosmic-cyan: #00ffff;
+      --cosmic-blue: #00b7eb;
+      --cosmic-magenta: #ff4d94;
+      --cosmic-cyan: #4dffeb;
+      --cosmic-purple: #cc66ff;
+      --cosmic-green: #66ff99;
       --light-aura: #e6f0ff;
-      --glow-radius: 15px;
+      --glow-radius: 12px;
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Source+Code+Pro', monospace;
+      font-family: 'Source Code Pro', monospace;
     }
 
     html, body {
       height: 100%;
       width: 100%;
-      background: #000000;
+      background: #000;
       color: var(--light-aura);
       overflow: hidden;
-      margin: 0;
       touch-action: none;
     }
 
@@ -55,8 +55,6 @@
       width: 100%;
       height: 100%;
       z-index: 0;
-      display: block;
-      opacity: 1;
     }
 
     #webgl-canvas {
@@ -66,7 +64,6 @@
       width: 100%;
       height: 100%;
       z-index: 1;
-      display: block;
     }
 
     .container {
@@ -79,67 +76,75 @@
       align-items: center;
       text-align: center;
       padding: clamp(1rem, 3vw, 1.5rem);
-      padding-top: clamp(4rem, 10vh, 6rem);
     }
 
     h1 {
-      font-family: 'Source+Code+Pro', monospace;
-      font-size: clamp(2rem, 6vw, 4rem);
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
       text-transform: uppercase;
       color: var(--light-aura);
-      margin-bottom: clamp(1rem, 3vw, 1.5rem);
-      text-shadow: 0 0 5px var(--matrix-blue);
-      letter-spacing: 0.2rem;
-      font-weight: 700;
+      margin-bottom: clamp(1rem, 2.5vw, 1.5rem);
+      text-shadow: 0 0 8px var(--cosmic-blue);
+      letter-spacing: 0.15rem;
     }
 
     .ip-display {
-      font-family: 'Source+Code+Pro', monospace;
-      font-size: clamp(1.5rem, 4vw, 2.8rem);
+      font-size: clamp(1.5rem, 3.5vw, 2.5rem);
       color: var(--light-aura);
-      background: rgba(8, 8, 26, 0.85);
-      padding: clamp(0.8rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2.5rem);
-      border-radius: 12px;
-      border: 2px solid var(--matrix-blue);
-      box-shadow: 0 0 20px var(--matrix-blue);
+      background: rgba(8, 8, 26, 0.9);
+      padding: clamp(0.8rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2rem);
+      border-radius: 10px;
+      border: 2px solid var(--cosmic-blue);
+      box-shadow: 0 0 15px var(--cosmic-blue);
       margin-bottom: clamp(0.5rem, 1.5vw, 0.8rem);
-      text-shadow: 0 0 10px var(--matrix-blue);
+      text-shadow: 0 0 8px var(--cosmic-blue);
       word-break: break-all;
     }
 
     .network-info {
-      font-family: 'Source+Code+Pro', monospace;
-      font-size: clamp(0.7rem, 1.5vw, 1rem);
+      font-size: clamp(0.8rem, 1.8vw, 1.1rem);
       color: var(--light-aura);
       max-width: clamp(200px, 80vw, 400px);
-      line-height: 1.6;
-      text-shadow: 0 0 5px var(--matrix-blue);
-      margin-bottom: clamp(0.8rem, 2vw, 1.2rem);
-      text-align: center;
+      line-height: 1.5;
+      text-shadow: 0 0 5px var(--cosmic-blue);
+      margin-bottom: clamp(0.5rem, 1vw, 0.8rem);
+    }
+
+    .speed-results {
+      font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+      color: var(--cosmic-cyan);
+      max-width: clamp(200px, 80vw, 400px);
+      line-height: 1.5;
+      text-shadow: 0 0 5px var(--cosmic-cyan);
+      margin-bottom: clamp(0.5rem, 1vw, 0.8rem);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .speed-results.show {
+      opacity: 1;
     }
 
     .error-message {
-      font-family: 'Source+Code+Pro', monospace;
-      font-size: clamp(0.7rem, 1.5vw, 1rem);
+      font-size: clamp(0.7rem, 1.5vw, 0.9rem);
       color: #ff5555;
       margin-top: 1rem;
-      text-shadow: 0 0 5px var(--matrix-blue);
+      text-shadow: 0 0 5px var(--cosmic-blue);
       display: none;
     }
 
     .btn {
-      background: linear-gradient(90deg, var(--matrix-blue), var(--cosmic-magenta));
+      background: linear-gradient(90deg, var(--cosmic-blue), var(--cosmic-magenta));
       color: var(--light-aura);
       border: none;
       padding: clamp(0.6rem, 1.5vw, 0.8rem) clamp(1.5rem, 3vw, 2rem);
       border-radius: 8px;
       cursor: pointer;
-      font-family: 'Source+Code+Pro', monospace;
+      font-family: 'Source Code Pro', monospace;
       font-size: clamp(0.8rem, 1.5vw, 1rem);
       text-transform: uppercase;
-      box-shadow: 0 0 var(--glow-radius) var(--matrix-blue);
+      box-shadow: 0 0 var(--glow-radius) var(--cosmic-blue);
       transition: all 0.3s ease;
-      margin-top: clamp(0.3rem, 1vw, 0.5rem);
     }
 
     .btn:hover {
@@ -153,23 +158,21 @@
       bottom: 0;
       width: 100%;
       background: transparent;
-      padding: clamp(0.5rem, 2vw, 1rem);
+      padding: clamp(0.5rem, 1.5vw, 1rem);
       text-align: center;
       font-size: clamp(0.7rem, 1.5vw, 0.9rem);
       color: var(--light-aura);
       z-index: 10;
-      text-shadow: 0 0 5px var(--matrix-blue);
+      text-shadow: 0 0 5px var(--cosmic-blue);
     }
 
     @media (max-width: 768px) {
       .container {
         padding: clamp(0.5rem, 2vw, 1rem);
-        padding-top: clamp(3rem, 8vh, 5rem);
       }
 
       h1 {
         font-size: clamp(1.5rem, 4vw, 2.5rem);
-        letter-spacing: 0.15rem;
       }
 
       .ip-display {
@@ -177,7 +180,7 @@
         padding: clamp(0.5rem, 1.5vw, 0.8rem) clamp(1rem, 2vw, 1.5rem);
       }
 
-      .network-info, .error-message {
+      .network-info, .speed-results, .error-message {
         font-size: clamp(0.6rem, 1.2vw, 0.9rem);
         max-width: 90vw;
       }
@@ -191,19 +194,14 @@
     @media (max-width: 480px) {
       h1 {
         font-size: clamp(1.2rem, 3.5vw, 2rem);
-        letter-spacing: 0.1rem;
       }
 
       .ip-display {
         font-size: clamp(1rem, 2.5vw, 1.5rem);
       }
 
-      .network-info, .error-message {
+      .network-info, .speed-results, .error-message {
         font-size: clamp(0.5rem, 1vw, 0.8rem);
-      }
-
-      .btn {
-        font-size: clamp(0.6rem, 1vw, 0.8rem);
       }
     }
   </style>
@@ -214,16 +212,20 @@
   <canvas id="webgl-canvas"></canvas>
 
   <div class="container">
-    <h1>YOUR PUBLIC IP</h1>
+    <h1>Labverse: IP & Speed</h1>
     <div class="ip-display" id="ip-display">Fetching IP...</div>
     <div class="network-info" id="network-info">Fetching network info...</div>
-    <div class="error-message" id="error-message">Animations failed to load. Please check your browser settings.</div>
+    <div class="speed-results" id="speed-results">Speed test running...</div>
+    <div class="error-message" id="error-message">Animations or speed test failed. Please check your browser settings.</div>
     <button class="btn" onclick="copyIP()">Copy IP</button>
   </div>
 
   <footer>
-    © 2025 Labverse | Powered by 1FAR | WHAT IS MY IP ADDRESS
+    © 2025 Labverse | Powered by 1FAR | Explore Your Digital Universe
   </footer>
+
+  <!-- FIREPROBE Speed Test Script -->
+  <script async src="https://www.fireprobe.net/static/v1/speed-test.js"></script>
 
   <script type="importmap">
     {
@@ -261,18 +263,17 @@
 
     // Fetch Network Info
     async function fetchNetworkInfo() {
-      let networkData = { isp: 'Unknown', city: 'Unknown', country: 'Unknown' };
       const endpoints = [
         'https://ip-api.com/json',
         'https://ipinfo.io/json',
         'https://get.geojs.io/v1/ip/geo.json'
       ];
-
       for (const url of endpoints) {
         try {
           const response = await fetch(url);
           if (!response.ok) continue;
           const data = await response.json();
+          let networkData = { isp: 'Unknown', city: 'Unknown', country: 'Unknown' };
           if (url.includes('ip-api.com') && data.status !== 'fail') {
             networkData.isp = data.isp || 'Unknown';
             networkData.city = data.city || 'Unknown';
@@ -295,9 +296,48 @@
       document.getElementById('network-info').innerHTML = `ISP: Unknown<br>Location: Unknown`;
     }
 
-    // Initialize Fetch
+    // Initialize Speed Test
+    function initSpeedTest() {
+      try {
+        if (typeof window.SpeedTest === 'undefined') {
+          logDebug('FIREPROBE SpeedTest not loaded');
+          document.getElementById('speed-results').textContent = 'Speed test unavailable';
+          return;
+        }
+
+        const speedTest = new window.SpeedTest({
+          autoStart: true,
+          onFinish: (result) => {
+            try {
+              const download = (result.download / 1000).toFixed(2); // Convert to Mbps
+              const upload = (result.upload / 1000).toFixed(2);
+              document.getElementById('speed-results').textContent = `Download: ${download} Mbps | Upload: ${upload} Mbps`;
+              document.getElementById('speed-results').classList.add('show');
+              logDebug(`Speed Test Completed: Download ${download} Mbps, Upload ${upload} Mbps`);
+            } catch (error) {
+              logDebug('Speed Test Result Error: ' + error.message);
+              document.getElementById('speed-results').textContent = 'Speed test failed';
+            }
+          },
+          onError: (error) => {
+            logDebug('Speed Test Error: ' + error.message);
+            document.getElementById('speed-results').textContent = 'Speed test failed';
+          }
+        });
+
+        // Start the test immediately
+        speedTest.start();
+        logDebug('Speed Test Initiated');
+      } catch (error) {
+        logDebug('Speed Test Initialization Error: ' + error.message);
+        document.getElementById('speed-results').textContent = 'Speed test unavailable';
+      }
+    }
+
+    // Initialize Fetches
     fetchPublicIP();
     fetchNetworkInfo();
+    document.addEventListener('DOMContentLoaded', initSpeedTest);
 
     // WebGL Animation
     function initWebGL() {
@@ -306,7 +346,6 @@
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         camera.position.set(0, 0, 2.5);
-        camera.lookAt(0, 0, 0);
         const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.setSize(window.innerWidth, window.innerHeight);
@@ -318,13 +357,13 @@
         composer.addPass(renderPass);
         const bloomPass = new UnrealBloomPass(
           new THREE.Vector2(window.innerWidth, window.innerHeight),
-          0.7,
+          0.6,
           0.4,
-          0.75
+          0.8
         );
         composer.addPass(bloomPass);
 
-        // Outer dodecahedron
+        // Outer Dodecahedron
         const outerGeometry = new THREE.DodecahedronGeometry(1, 0);
         const outerMaterial = new THREE.ShaderMaterial({
           uniforms: {
@@ -349,29 +388,27 @@
             uniform vec3 uColor3;
             varying vec3 vNormal;
             varying vec3 vPosition;
-
             void main() {
-              float t1 = sin(time * 0.6 + 3.141592653589793) * 0.5 + 0.5;
-              float t2 = sin(time * 0.4) * 0.5 + 0.5;
+              float t1 = sin(time * 0.5 + 3.141592653589793) * 0.5 + 0.5;
+              float t2 = sin(time * 0.3) * 0.5 + 0.5;
               vec3 color = mix(uColor1, uColor2, t1);
               color = mix(color, uColor3, t2);
-              float r = 0.5 + 0.5 * sin(time * 0.3 + vPosition.x * 1.618033988749895);
-              float g = 0.5 + 0.5 * sin(time * 0.5 + vPosition.y * 1.618033988749895);
-              float b = 0.5 + 0.5 * sin(time * 0.7 + vPosition.z * 1.618033988749895);
-              vec3 ledColor = mix(color, vec3(r, g, b), 0.3);
+              float r = 0.5 + 0.5 * sin(time * 0.4 + vPosition.x * 1.618033988749895);
+              float g = 0.5 + 0.5 * sin(time * 0.6 + vPosition.y * 1.618033988749895);
+              float b = 0.5 + 0.5 * sin(time * 0.8 + vPosition.z * 1.618033988749895);
+              vec3 ledColor = mix(color, vec3(r, g, b), 0.4);
               float fresnel = pow(1.0 - abs(dot(vNormal, vec3(0.0, 0.0, 1.0))), 4.0);
-              vec3 finalColor = ledColor + fresnel * ledColor * 1.3;
+              vec3 finalColor = ledColor + fresnel * ledColor * 1.2;
               gl_FragColor = vec4(finalColor, 0.95);
             }
           `,
           transparent: true,
           side: THREE.DoubleSide
         });
-
         const outerDodecahedron = new THREE.Mesh(outerGeometry, outerMaterial);
         scene.add(outerDodecahedron);
 
-        // Middle dodecahedron
+        // Middle Dodecahedron
         const middleGeometry = new THREE.DodecahedronGeometry(0.65, 0);
         const middleMaterial = new THREE.ShaderMaterial({
           uniforms: outerMaterial.uniforms,
@@ -383,15 +420,14 @@
             uniform vec3 uColor3;
             varying vec3 vNormal;
             varying vec3 vPosition;
-
             void main() {
-              float t1 = sin(time * 0.5 + 1.5707963267948966) * 0.5 + 0.5;
-              float t2 = sin(time * 0.3) * 0.5 + 0.5;
+              float t1 = sin(time * 0.4 + 1.5707963267948966) * 0.5 + 0.5;
+              float t2 = sin(time * 0.2) * 0.5 + 0.5;
               vec3 color = mix(uColor2, uColor3, t1);
               color = mix(color, uColor1, t2);
-              float r = 0.5 + 0.5 * sin(time * 0.4 + vPosition.x * 1.618033988749895);
-              float g = 0.5 + 0.5 * sin(time * 0.6 + vPosition.y * 1.618033988749895);
-              float b = 0.5 + 0.5 * sin(time * 0.8 + vPosition.z * 1.618033988749895);
+              float r = 0.5 + 0.5 * sin(time * 0.5 + vPosition.x * 1.618033988749895);
+              float g = 0.5 + 0.5 * sin(time * 0.7 + vPosition.y * 1.618033988749895);
+              float b = 0.5 + 0.5 * sin(time * 0.9 + vPosition.z * 1.618033988749895);
               vec3 ledColor = mix(color, vec3(r, g, b), 0.35);
               float fresnel = pow(1.0 - abs(dot(vNormal, vec3(0.0, 0.0, 1.0))), 3.5);
               vec3 finalColor = ledColor + fresnel * ledColor * 1.1;
@@ -401,11 +437,10 @@
           transparent: true,
           side: THREE.DoubleSide
         });
-
         const middleDodecahedron = new THREE.Mesh(middleGeometry, middleMaterial);
         outerDodecahedron.add(middleDodecahedron);
 
-        // Inner dodecahedron
+        // Inner Dodecahedron
         const innerGeometry = new THREE.DodecahedronGeometry(0.35, 0);
         const innerMaterial = new THREE.ShaderMaterial({
           uniforms: outerMaterial.uniforms,
@@ -417,16 +452,15 @@
             uniform vec3 uColor3;
             varying vec3 vNormal;
             varying vec3 vPosition;
-
             void main() {
-              float t1 = sin(time * 0.7 + 4.71238898038469) * 0.5 + 0.5;
-              float t2 = sin(time * 0.2) * 0.5 + 0.5;
+              float t1 = sin(time * 0.6 + 4.71238898038469) * 0.5 + 0.5;
+              float t2 = sin(time * 0.25) * 0.5 + 0.5;
               vec3 color = mix(uColor3, uColor1, t1);
               color = mix(color, uColor2, t2);
-              float r = 0.5 + 0.5 * sin(time * 0.5 + vPosition.x * 2.0);
-              float g = 0.5 + 0.5 * sin(time * 0.7 + vPosition.y * 2.0);
-              float b = 0.5 + 0.5 * sin(time * 0.9 + vPosition.z * 2.0);
-              vec3 ledColor = mix(color, vec3(r, g, b), 0.4);
+              float r = 0.5 + 0.5 * sin(time * 0.6 + vPosition.x * 2.0);
+              float g = 0.5 + 0.5 * sin(time * 0.8 + vPosition.y * 2.0);
+              float b = 0.5 + 0.5 * sin(time * 1.0 + vPosition.z * 2.0);
+              vec3 ledColor = mix(color, vec3(r, g, b), 0.3);
               float fresnel = pow(1.0 - abs(dot(vNormal, vec3(0.0, 0.0, 1.0))), 3.0);
               vec3 finalColor = ledColor + fresnel * ledColor * 1.0;
               gl_FragColor = vec4(finalColor, 0.9);
@@ -435,11 +469,10 @@
           transparent: true,
           side: THREE.DoubleSide
         });
-
         const innerDodecahedron = new THREE.Mesh(innerGeometry, innerMaterial);
         middleDodecahedron.add(innerDodecahedron);
 
-        // LED strips
+        // LED Edges
         function createLEDEdges(geometry) {
           const edgesGeometry = new THREE.EdgesGeometry(geometry);
           const ledMaterial = new THREE.ShaderMaterial({
@@ -464,46 +497,37 @@
               uniform vec3 uColor3;
               uniform vec3 uColor4;
               varying vec3 vPosition;
-
               void main() {
-                float t1 = sin(time * 0.8) * 0.5 + 0.5;
-                float t2 = sin(time * 0.5 + 3.141592653589793) * 0.5 + 0.5;
-                float t3 = sin(time * 0.3) * 0.5 + 0.5;
+                float t1 = sin(time * 0.7) * 0.5 + 0.5;
+                float t2 = sin(time * 0.4 + 3.141592653589793) * 0.5 + 0.5;
+                float t3 = sin(time * 0.2) * 0.5 + 0.5;
                 vec3 color = mix(uColor1, uColor2, t1);
                 color = mix(color, uColor3, t2);
                 color = mix(color, uColor4, t3);
-                float r = 0.5 + 0.5 * sin(time * 1.0 + vPosition.x * 1.618033988749895);
-                float g = 0.5 + 0.5 * sin(time * 1.2 + vPosition.y * 1.618033988749895);
-                float b = 0.5 + 0.5 * sin(time * 1.4 + vPosition.z * 1.618033988749895);
-                vec3 ledColor = mix(color, vec3(r, g, b), 0.5);
-                float glow = sin(time * 2.5 + vPosition.x * 0.5) * 0.5 + 0.5;
-                gl_FragColor = vec4(ledColor * (1.0 + glow * 1.0), 1.0);
+                float pulse = sin(time * 2.0 + vPosition.x * 0.5) * 0.5 + 0.5;
+                gl_FragColor = vec4(color * (1.0 + pulse), 1.0);
               }
             `,
             transparent: true
           });
           return new THREE.LineSegments(edgesGeometry, ledMaterial);
         }
-
         outerDodecahedron.add(createLEDEdges(outerGeometry));
         middleDodecahedron.add(createLEDEdges(middleGeometry));
         innerDodecahedron.add(createLEDEdges(innerGeometry));
 
-        // Fibonacci-inspired LED particles
-        const ledCount = 200;
+        // Fibonacci LED Particles
+        const ledCount = 150;
         const ledGeometry = new THREE.BufferGeometry();
         const ledPositions = new Float32Array(ledCount * 3);
         const ledOffsets = new Float32Array(ledCount);
         const phi = (1 + Math.sqrt(5)) / 2;
         for (let i = 0; i < ledCount; i++) {
           const theta = i * 2 * Math.PI * phi;
-          const r = Math.sqrt(i) * 0.05;
-          const x = r * Math.cos(theta);
-          const y = r * Math.sin(theta);
-          const z = (Math.random() - 0.5) * 0.5;
-          ledPositions[i * 3] = isFinite(x) ? x : 0;
-          ledPositions[i * 3 + 1] = isFinite(y) ? y : 0;
-          ledPositions[i * 3 + 2] = isFinite(z) ? z : 0;
+          const r = Math.sqrt(i) * 0.06;
+          ledPositions[i * 3] = r * Math.cos(theta);
+          ledPositions[i * 3 + 1] = r * Math.sin(theta);
+          ledPositions[i * 3 + 2] = (Math.random() - 0.5) * 0.4;
           ledOffsets[i] = Math.random() * Math.PI * 2;
         }
         ledGeometry.setAttribute('position', new THREE.BufferAttribute(ledPositions, 3));
@@ -521,7 +545,7 @@
             varying float vOffset;
             void main() {
               vOffset = offset;
-              gl_PointSize = 8.0;
+              gl_PointSize = 7.0 + sin(offset) * 2.0;
               gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
             }
           `,
@@ -532,23 +556,18 @@
             uniform vec3 uColor3;
             uniform vec3 uColor4;
             varying float vOffset;
-
             void main() {
-              float pulse = sin(time * 3.0 + vOffset) * 0.5 + 0.5;
-              float t1 = sin(time * 0.6) * 0.5 + 0.5;
-              float t2 = sin(time * 0.4 + 3.141592653589793) * 0.5 + 0.5;
+              float pulse = sin(time * 2.5 + vOffset) * 0.5 + 0.5;
+              float t1 = sin(time * 0.5) * 0.5 + 0.5;
+              float t2 = sin(time * 0.3 + 3.141592653589793) * 0.5 + 0.5;
               vec3 color = mix(uColor1, uColor2, t1);
               color = mix(color, uColor3, t2);
               color = mix(color, uColor4, sin(time * 0.2) * 0.5 + 0.5);
-              float r = 0.5 + 0.5 * sin(time * 0.8 + vOffset * 1.618033988749895);
-              float g = 0.5 + 0.5 * sin(time * 1.0 + vOffset * 1.618033988749895);
-              float b = 0.5 + 0.5 * sin(time * 1.2 + vOffset * 1.618033988749895);
-              vec3 ledColor = mix(color, vec3(r, g, b), 0.6);
               vec2 coord = gl_PointCoord - vec2(0.5);
               float dist = length(coord);
               if (dist > 0.5) discard;
               float alpha = smoothstep(0.5, 0.2, dist);
-              gl_FragColor = vec4(ledColor * (1.0 + pulse), alpha);
+              gl_FragColor = vec4(color * (1.0 + pulse), alpha);
             }
           `,
           transparent: true
@@ -556,8 +575,8 @@
         const ledParticles = new THREE.Points(ledGeometry, ledParticleMaterial);
         outerDodecahedron.add(ledParticles);
 
-        // Fibonacci-inspired quantum particles
-        const particleCount = 50;
+        // Quantum Particles
+        const particleCount = 60;
         const particleGeometry = new THREE.BufferGeometry();
         const particlePositions = new Float32Array(particleCount * 3);
         const particleVelocities = new Float32Array(particleCount * 3);
@@ -566,16 +585,13 @@
         for (let i = 0; i < particleCount; i++) {
           const theta = i * 2 * Math.PI * phi;
           const r = Math.sqrt(i) * 0.3;
-          const x = r * Math.cos(theta);
-          const y = r * Math.sin(theta);
-          const z = (Math.random() - 0.5) * 2;
-          particlePositions[i * 3] = isFinite(x) ? x : 0;
-          particlePositions[i * 3 + 1] = isFinite(y) ? y : 0;
-          particlePositions[i * 3 + 2] = isFinite(z) ? z : 0;
-          particleVelocities[i * 3] = (Math.random() - 0.5) * 0.05;
-          particleVelocities[i * 3 + 1] = (Math.random() - 0.5) * 0.05;
-          particleVelocities[i * 3 + 2] = (Math.random() - 0.5) * 0.05;
-          particleLifetimes[i] = Math.random() * 4 + 1;
+          particlePositions[i * 3] = r * Math.cos(theta);
+          particlePositions[i * 3 + 1] = r * Math.sin(theta);
+          particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 1.5;
+          particleVelocities[i * 3] = (Math.random() - 0.5) * 0.04;
+          particleVelocities[i * 3 + 1] = (Math.random() - 0.5) * 0.04;
+          particleVelocities[i * 3 + 2] = (Math.random() - 0.5) * 0.04;
+          particleLifetimes[i] = Math.random() * 3 + 1;
           particleOffsets[i] = Math.random() * Math.PI * 2;
         }
         particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
@@ -587,7 +603,7 @@
             varying float vOffset;
             void main() {
               vOffset = offset;
-              gl_PointSize = 6.0 + sin(offset) * 3.0;
+              gl_PointSize = 6.0 + sin(offset) * 2.0;
               gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
             }
           `,
@@ -604,7 +620,7 @@
               vec2 coord = gl_PointCoord - vec2(0.5);
               float dist = length(coord);
               if (dist > 0.5) discard;
-              float alpha = smoothstep(0.5, 0.2, dist) * (0.8 + t * 0.2);
+              float alpha = smoothstep(0.5, 0.2, dist) * (0.7 + t * 0.3);
               gl_FragColor = vec4(color, alpha);
             }
           `,
@@ -614,8 +630,7 @@
         scene.add(particles);
 
         // Interactivity
-        let mouseX = 0, mouseY = 0;
-        let touchX = 0, touchY = 0;
+        let mouseX = 0, mouseY = 0, touchX = 0, touchY = 0;
         let targetRotationX = 0, targetRotationY = 0;
         let isDragging = false;
 
@@ -656,26 +671,23 @@
         document.addEventListener('touchend', () => { isDragging = false; });
 
         function triggerBigBang() {
-          const burstCount = 30;
+          const burstCount = 25;
           const burstPositions = new Float32Array(burstCount * 3);
           const burstVelocities = new Float32Array(burstCount * 3);
           for (let i = 0; i < burstCount; i++) {
             const theta = i * 2 * Math.PI * phi;
             const r = Math.sqrt(i) * 0.1;
-            const x = r * Math.cos(theta);
-            const y = r * Math.sin(theta);
-            const z = (Math.random() - 0.5) * 0.5;
-            burstPositions[i * 3] = isFinite(x) ? x : 0;
-            burstPositions[i * 3 + 1] = isFinite(y) ? y : 0;
-            burstPositions[i * 3 + 2] = isFinite(z) ? z : 0;
-            burstVelocities[i * 3] = (Math.random() - 0.5) * 0.1;
-            burstVelocities[i * 3 + 1] = (Math.random() - 0.5) * 0.1;
-            burstVelocities[i * 3 + 2] = (Math.random() - 0.5) * 0.1;
+            burstPositions[i * 3] = r * Math.cos(theta);
+            burstPositions[i * 3 + 1] = r * Math.sin(theta);
+            burstPositions[i * 3 + 2] = (Math.random() - 0.5) * 0.5;
+            burstVelocities[i * 3] = (Math.random() - 0.5) * 0.08;
+            burstVelocities[i * 3 + 1] = (Math.random() - 0.5) * 0.08;
+            burstVelocities[i * 3 + 2] = (Math.random() - 0.5) * 0.08;
           }
           const burstGeometry = new THREE.BufferGeometry();
           burstGeometry.setAttribute('position', new THREE.BufferAttribute(burstPositions, 3));
           const burstMaterial = new THREE.PointsMaterial({
-            size: 10,
+            size: 8,
             color: new THREE.Color(Math.random(), Math.random(), Math.random()),
             transparent: true,
             opacity: 0.9
@@ -704,61 +716,51 @@
         }
 
         // Lighting
-        const ambientLight = new THREE.AmbientLight(0x404040, 0.9);
+        const ambientLight = new THREE.AmbientLight(0x404040, 0.8);
         scene.add(ambientLight);
-        const pointLight1 = new THREE.PointLight(0xffffff, 2.0, 10);
+        const pointLight1 = new THREE.PointLight(0xffffff, 1.8, 10);
         pointLight1.position.set(5, 5, 5);
         scene.add(pointLight1);
-        const pointLight2 = new THREE.PointLight(0xffffff, 1.5, 10);
+        const pointLight2 = new THREE.PointLight(0xffffff, 1.3, 10);
         pointLight2.position.set(-5, -5, -5);
         scene.add(pointLight2);
 
-        // Animation loop
+        // Animation Loop
         function animate(time) {
           try {
             requestAnimationFrame(animate);
-
-            // Update Fibonacci particles
             for (let i = 0; i < particleCount; i++) {
               const t = time * 0.001 + particleOffsets[i];
               const omega = phi;
-              let x = particlePositions[i * 3] + particleVelocities[i * 3] * 0.05 * Math.sin(omega * t);
-              let y = particlePositions[i * 3 + 1] + particleVelocities[i * 3 + 1] * 0.05 * Math.cos(omega * t);
-              let z = particlePositions[i * 3 + 2] + particleVelocities[i * 3 + 2] * 0.05 * Math.sin(omega * t * phi);
-              particlePositions[i * 3] = isFinite(x) ? x : 0;
-              particlePositions[i * 3 + 1] = isFinite(y) ? y : 0;
-              particlePositions[i * 3 + 2] = isFinite(z) ? z : 0;
+              particlePositions[i * 3] += particleVelocities[i * 3] * Math.sin(omega * t);
+              particlePositions[i * 3 + 1] += particleVelocities[i * 3 + 1] * Math.cos(omega * t);
+              particlePositions[i * 3 + 2] += particleVelocities[i * 3 + 2] * Math.sin(omega * t * phi);
               particleLifetimes[i] -= 0.016;
               if (particleLifetimes[i] <= 0) {
                 const theta = i * 2 * Math.PI * phi;
                 const r = Math.sqrt(i) * 0.3;
-                x = r * Math.cos(theta);
-                y = r * Math.sin(theta);
-                z = (Math.random() - 0.5) * 2;
-                particlePositions[i * 3] = isFinite(x) ? x : 0;
-                particlePositions[i * 3 + 1] = isFinite(y) ? y : 0;
-                particlePositions[i * 3 + 2] = isFinite(z) ? z : 0;
-                particleVelocities[i * 3] = (Math.random() - 0.5) * 0.05;
-                particleVelocities[i * 3 + 1] = (Math.random() - 0.5) * 0.05;
-                particleVelocities[i * 3 + 2] = (Math.random() - 0.5) * 0.05;
-                particleLifetimes[i] = Math.random() * 4 + 1;
+                particlePositions[i * 3] = r * Math.cos(theta);
+                particlePositions[i * 3 + 1] = r * Math.sin(theta);
+                particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 1.5;
+                particleVelocities[i * 3] = (Math.random() - 0.5) * 0.04;
+                particleVelocities[i * 3 + 1] = (Math.random() - 0.5) * 0.04;
+                particleVelocities[i * 3 + 2] = (Math.random() - 0.5) * 0.04;
+                particleLifetimes[i] = Math.random() * 3 + 1;
               }
             }
             particleGeometry.attributes.position.needsUpdate = true;
 
-            // Update rotations
             outerDodecahedron.rotation.y += (targetRotationY - outerDodecahedron.rotation.y) * 0.1;
             outerDodecahedron.rotation.x += (targetRotationX - outerDodecahedron.rotation.x) * 0.1;
-            middleDodecahedron.rotation.x -= 0.003;
-            middleDodecahedron.rotation.y -= 0.003;
-            innerDodecahedron.rotation.x += 0.004;
-            innerDodecahedron.rotation.y += 0.004;
+            middleDodecahedron.rotation.x -= 0.002;
+            middleDodecahedron.rotation.y -= 0.002;
+            innerDodecahedron.rotation.x += 0.003;
+            innerDodecahedron.rotation.y += 0.003;
             outerMaterial.uniforms.time.value = time * 0.001;
             middleMaterial.uniforms.time.value = time * 0.001;
             innerMaterial.uniforms.time.value = time * 0.001;
             ledParticleMaterial.uniforms.time.value = time * 0.001;
             particleMaterial.uniforms.time.value = time * 0.001;
-
             outerDodecahedron.children.forEach(child => {
               if (child.material && child.material.uniforms) {
                 child.material.uniforms.time.value = time * 0.001;
@@ -773,7 +775,7 @@
         }
         animate(0);
 
-        // Resize handler
+        // Resize Handler
         window.addEventListener('resize', () => {
           camera.aspect = window.innerWidth / window.innerHeight;
           camera.updateProjectionMatrix();
@@ -781,7 +783,6 @@
           composer.setSize(window.innerWidth, window.innerHeight);
         }, { passive: true });
 
-        // Expose for copyIP
         window.triggerBigBang = triggerBigBang;
         return true;
       } catch (error) {
@@ -795,10 +796,7 @@
       try {
         const canvas = document.getElementById('background-canvas');
         const ctx = canvas.getContext('2d');
-        if (!ctx) {
-          logDebug('2D canvas context not supported');
-          return false;
-        }
+        if (!ctx) throw new Error('2D canvas context not supported');
 
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -809,32 +807,32 @@
             canvas.width / 2, canvas.height / 2, 0,
             canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height)
           );
-          gradient.addColorStop(0, 'rgba(15, 15, 40, 1)');
-          gradient.addColorStop(0.3, 'rgba(30, 60, 100, 0.9)');
-          gradient.addColorStop(0.7, 'rgba(10, 20, 50, 0.7)');
+          gradient.addColorStop(0, 'rgba(10, 10, 30, 1)');
+          gradient.addColorStop(0.4, 'rgba(20, 50, 80, 0.9)');
+          gradient.addColorStop(0.8, 'rgba(5, 15, 40, 0.7)');
           gradient.addColorStop(1, 'rgba(0, 0, 0, 1)');
           ctx.fillStyle = gradient;
           ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-          for (let i = 0; i < 150; i++) {
-            ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.6 + 0.3})`;
+          for (let i = 0; i < 200; i++) {
+            ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.3})`;
             ctx.beginPath();
             ctx.arc(
               Math.random() * canvas.width,
               Math.random() * canvas.height,
-              Math.random() * 2,
+              Math.random() * 1.5,
               0, Math.PI * 2
             );
             ctx.fill();
           }
 
-          ctx.strokeStyle = `rgba(100, 200, 255, ${0.35 + Math.sin(time * 0.001) * 0.25})`;
-          ctx.lineWidth = 2;
+          ctx.strokeStyle = `rgba(100, 200, 255, ${0.3 + Math.sin(time * 0.001) * 0.2})`;
+          ctx.lineWidth = 1.5;
           const centerX = canvas.width / 2;
           const centerY = canvas.height / 2;
-          const radius = Math.min(canvas.width, canvas.height) / 12;
+          const radius = Math.min(canvas.width, canvas.height) / 10;
           const offset = radius * 1.732050807568877;
-          const anim = Math.sin(time * 0.0005) * 6;
+          const anim = Math.sin(time * 0.0004) * 5;
           for (let i = -2; i <= 2; i++) {
             for (let j = -2; j <= 2; j++) {
               if (Math.abs(i) + Math.abs(j) <= 3 && !(i === 0 && j === 0)) {
@@ -848,9 +846,6 @@
           }
           ctx.beginPath();
           ctx.arc(centerX + anim, centerY + anim, radius, 0, Math.PI * 2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.arc(centerX + anim, centerY + anim, radius * 3.4641016151377544, 0, Math.PI * 2);
           ctx.stroke();
         }
 
@@ -885,16 +880,14 @@
     // Copy IP to Clipboard
     function copyIP() {
       try {
-        logDebug('Copy IP button clicked');
         const ip = document.getElementById('ip-display').textContent;
         if (!ip || ip === 'IP unavailable') {
           logDebug('No IP to copy');
           return;
         }
-
         navigator.clipboard.writeText(ip).then(() => {
-          logDebug('IP copied successfully');
           window.triggerBigBang();
+          logDebug('IP copied successfully');
         }).catch(err => {
           logDebug('Clipboard Error: ' + err.message);
           const textarea = document.createElement('textarea');
@@ -903,8 +896,8 @@
           textarea.select();
           try {
             document.execCommand('copy');
-            logDebug('Fallback copy successful');
             window.triggerBigBang();
+            logDebug('Fallback copy successful');
           } catch (e) {
             logDebug('Fallback Copy Error: ' + e.message);
           }
