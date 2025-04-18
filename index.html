@@ -194,221 +194,6 @@
       }
 
       .ip-display {
- căn’t load the speed test script directly in a static GitHub Pages environment due to CORS or missing SDKs.
-
-### Solution for Accurate Speed Test
-Since `speedtest.net` and `fast.com` aren’t viable for direct integration, I’ll use **Librespeed**, which offers:
-- **Accuracy**: Comparable to Ookla, measures download/upload via HTTP requests.
-- **Free**: Open-source, can be used with public instances or self-hosted.
-- **Foreground Execution**: Starts on page load, shows “Running...” until complete, then displays results.
-- **HTTPS**: Compatible with GitHub Pages.
-
-I’ll integrate a public Librespeed instance (e.g., `https://speedtest.0x3.me/api`) for simplicity. If you prefer, I can guide you to self-host Librespeed for full control.
-
-### Code: `index.html`
-Below is the complete `index.html`, delivering a **futuristic, mathematically precise site** with:
-- Accurate Flower of Life.
-- 3D cube with glowing LED particles.
-- Reliable Librespeed test starting on load.
-- Fixed errors and vibrant visuals.
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="description" content="Discover your public IP and internet speed with a glowing LED cube and sacred Flower of Life animations.">
-  <meta name="keywords" content="Public IP, Internet Speed Test, Flower of Life, Fibonacci, Quantum Physics">
-  <meta name="author" content="Labverse Team">
-  <meta property="og:title" content="Labverse: IP & Speed Insights">
-  <meta property="og:description" content="Explore your network with a vibrant LED cube and precise sacred geometry.">
-  <meta property="og:image" content="https://labverse.co.za/assets/labverse-og-image.png">
-  <meta property="og:url" content="https://labverse.co.za">
-  <meta name="twitter:card" content="summary_large_image">
-
-  <title>Labverse: IP & Speed Insights</title>
-
-  <!-- Favicon -->
-  <link rel="icon" href="favicon.ico">
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
-
-  <!-- Style -->
-  <style>
-    :root {
-      --cosmic-blue: #00b7eb;
-      --cosmic-magenta: #ff4d94;
-      --cosmic-cyan: #4dffeb;
-      --cosmic-purple: #cc66ff;
-      --light-aura: #e6f0ff;
-      --glow-radius: 10px;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Source Code Pro', monospace;
-    }
-
-    html, body {
-      height: 100%;
-      width: 100%;
-      background: #000;
-      color: var(--light-aura);
-      overflow: hidden;
-      touch-action: none;
-    }
-
-    #background-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-    }
-
-    #webgl-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-    }
-
-    .container {
-      position: relative;
-      z-index: 10;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: clamp(1rem, 3vw, 1.5rem);
-    }
-
-    h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      text-transform: uppercase;
-      color: var(--light-aura);
-      margin-bottom: clamp(1rem, 2.5vw, 1.5rem);
-      text-shadow: 0 0 8px var(--cosmic-blue);
-      letter-spacing: 0.15rem;
-    }
-
-    .ip-display {
-      font-size: clamp(1.5rem, 3.5vw, 2.5rem);
-      color: var(--light-aura);
-      background: rgba(8, 8, 26, 0.9);
-      padding: clamp(0.8rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2rem);
-      border-radius: 10px;
-      border: 2px solid var(--cosmic-blue);
-      box-shadow: 0 0 15px var(--cosmic-blue);
-      margin-bottom: clamp(0.5rem, 1.5vw, 0.8rem);
-      text-shadow: 0 0 8px var(--cosmic-blue);
-      word-break: break-all;
-    }
-
-    .network-info {
-      font-size: clamp(0.8rem, 1.8vw, 1.1rem);
-      color: var(--light-aura);
-      max-width: clamp(200px, 80vw, 400px);
-      line-height: 1.5;
-      text-shadow: 0 0 5px var(--cosmic-blue);
-      margin-bottom: clamp(0.5rem, 1vw, 0.8rem);
-    }
-
-    .speed-results {
-      font-size: clamp(0.7rem, 1.5vw, 0.9rem);
-      color: var(--cosmic-cyan);
-      max-width: clamp(200px, 80vw, 400px);
-      line-height: 1.5;
-      text-shadow: 0 0 5px var(--cosmic-cyan);
-      margin-bottom: clamp(0.5rem, 1vw, 0.8rem);
-      opacity: 0;
-      transition: opacity 0.5s ease;
-    }
-
-    .speed-results.show {
-      opacity: 1;
-    }
-
-    .error-message {
-      font-size: clamp(0.7rem, 1.5vw, 0.9rem);
-      color: #ff5555;
-      margin-top: 1rem;
-      text-shadow: 0 0 5px var(--cosmic-blue);
-      display: none;
-    }
-
-    .btn {
-      background: linear-gradient(90deg, var(--cosmic-blue), var(--cosmic-magenta));
-      color: var(--light-aura);
-      border: none;
-      padding: clamp(0.6rem, 1.5vw, 0.8rem) clamp(1.5rem, 3vw, 2rem);
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: clamp(0.8rem, 1.5vw, 1rem);
-      text-transform: uppercase;
-      box-shadow: 0 0 var(--glow-radius) var(--cosmic-blue);
-      transition: all 0.3s ease;
-    }
-
-    .btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 calc(var(--glow-radius) * 1.5) var(--cosmic-magenta);
-      background: var(--cosmic-cyan);
-    }
-
-    footer {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      padding: clamp(0.5rem, 1.5vw, 1rem);
-      text-align: center;
-      font-size: clamp(0.7rem, 1.5vw, 0.9rem);
-      color: var(--light-aura);
-      z-index: 10;
-      text-shadow: 0 0 5px var(--cosmic-blue);
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        padding: clamp(0.5rem, 2vw, 1rem);
-      }
-
-      h1 {
-        font-size: clamp(1.5rem, 4vw, 2.5rem);
-      }
-
-      .ip-display {
-        font-size: clamp(1.2rem, 3vw, 2rem);
-        padding: clamp(0.5rem, 1.5vw, 0.8rem) clamp(1rem, 2vw, 1.5rem);
-      }
-
-      .network-info, .speed-results, .error-message {
-        font-size: clamp(0.6rem, 1.2vw, 0.9rem);
-        max-width: 90vw;
-      }
-
-      .btn {
-        padding: clamp(0.4rem, 1vw, 0.6rem) clamp(1rem, 2vw, 1.5rem);
-        font-size: clamp(0.7rem, 1.2vw, 0.9rem);
-      }
-    }
-
-    @media (max-width: 480px) {
-      h1 {
-        font-size: clamp(1.2rem, 3.5vw, 2rem);
-      }
-
-      .ip-display {
         font-size: clamp(1rem, 2.5vw, 1.5rem);
       }
 
@@ -473,13 +258,13 @@ Below is the complete `index.html`, delivering a **futuristic, mathematically pr
     // Fetch Network Info
     async function fetchNetworkInfo() {
       const endpoints = [
-        { url: 'https://api.ipgeolocation.io/ipgeo?apiKey=free', parser: (data) => ({
-          isp: data.isp || 'Unknown',
-          city: data.city || 'Unknown',
-          country: data.country_name || 'Unknown'
-        }) },
         { url: 'https://get.geojs.io/v1/ip/geo.json', parser: (data) => ({
           isp: data.organization_name || 'Unknown',
+          city: data.city || 'Unknown',
+          country: data.country || 'Unknown'
+        }) },
+        { url: 'https://ipinfo.io/json', parser: (data) => ({
+          isp: data.org?.split(' ').slice(1).join(' ') || 'Unknown',
           city: data.city || 'Unknown',
           country: data.country || 'Unknown'
         }) }
@@ -499,35 +284,33 @@ Below is the complete `index.html`, delivering a **futuristic, mathematically pr
       document.getElementById('network-info').innerHTML = `ISP: Unknown<br>Location: Unknown`;
     }
 
-    // Initialize Speed Test (Librespeed)
+    // Initialize Speed Test (Simulated)
     async function initSpeedTest() {
       try {
         const speedResults = document.getElementById('speed-results');
         speedResults.textContent = 'Speed test running...';
 
-        // Using a public Librespeed instance (replace with your hosted instance if needed)
-        const testUrl = 'https://speedtest.0x3.me/api/speedtest.php';
-        const downloadSize = 10 * 1024 * 1024; // 10MB
-        const uploadSize = 5 * 1024 * 1024; // 5MB
-
         async function measureDownload() {
           const startTime = performance.now();
-          const response = await fetch(testUrl + '?size=' + downloadSize);
+          const fileUrl = 'https://filesamples.com/samples/video/mp4/sample_1280x720_surfing_with_audio.mp4'; // ~10MB
+          const response = await fetch(fileUrl);
           if (!response.ok) throw new Error('Download test failed');
-          await response.blob();
+          const blob = await response.blob();
           const endTime = performance.now();
           const duration = (endTime - startTime) / 1000; // seconds
-          return (downloadSize * 8 / duration / 1e6).toFixed(2); // Mbps
+          const fileSize = blob.size; // bytes
+          return (fileSize * 8 / duration / 1e6).toFixed(2); // Mbps
         }
 
         async function measureUpload() {
           const startTime = performance.now();
+          const uploadSize = 5 * 1024 * 1024; // 5MB
           const blob = new Blob([new ArrayBuffer(uploadSize)]);
           const formData = new FormData();
           formData.append('file', blob);
-          const response = await fetch(testUrl, { method: 'POST', body: formData });
+          const response = await fetch('https://httpbin.org/post', { method: 'POST', body: formData });
           if (!response.ok) throw new Error('Upload test failed');
-          await response.blob();
+          await response.json();
           const endTime = performance.now();
           const duration = (endTime - startTime) / 1000; // seconds
           return (uploadSize * 8 / duration / 1e6).toFixed(2); // Mbps
@@ -651,9 +434,9 @@ Below is the complete `index.html`, delivering a **futuristic, mathematically pr
         composer.addPass(renderPass);
         const bloomPass = new UnrealBloomPass(
           new THREE.Vector2(window.innerWidth, window.innerHeight),
-          0.6,
+          0.8,
           0.4,
-          0.8
+          0.7
         );
         composer.addPass(bloomPass);
 
@@ -760,17 +543,24 @@ Below is the complete `index.html`, delivering a **futuristic, mathematically pr
         const particles = new THREE.Points(particleGeometry, particleMaterial);
         cube.add(particles);
 
-        // Big Bang Burst
+        // Magnificent Big Bang Burst
         function triggerBigBang() {
-          const burstCount = 30;
+          const burstCount = 100;
           const burstPositions = new Float32Array(burstCount * 3);
           const burstOffsets = new Float32Array(burstCount);
+          const burstVelocities = new Float32Array(burstCount * 3);
+          const goldenAngle = 137.508 * Math.PI / 180; // radians
           for (let i = 0; i < burstCount; i++) {
-            const theta = i * 2 * Math.PI * phi;
-            const r = Math.sqrt(i) * 0.1;
-            burstPositions[i * 3] = r * Math.cos(theta) * 0.4;
-            burstPositions[i * 3 + 1] = r * Math.sin(theta) * 0.4;
-            burstPositions[i * 3 + 2] = (Math.random() - 0.5) * 0.4;
+            const theta = i * goldenAngle;
+            const phi = Math.acos(1 - 2 * (i + 0.5) / burstCount);
+            const r = 0.01;
+            const speed = 0.5 + Math.random() * 0.5;
+            burstPositions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+            burstPositions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+            burstPositions[i * 3 + 2] = r * Math.cos(phi);
+            burstVelocities[i * 3] = speed * Math.sin(phi) * Math.cos(theta);
+            burstVelocities[i * 3 + 1] = speed * Math.sin(phi) * Math.sin(theta);
+            burstVelocities[i * 3 + 2] = speed * Math.cos(phi);
             burstOffsets[i] = Math.random() * 2 * Math.PI;
           }
           const burstGeometry = new THREE.BufferGeometry();
@@ -781,10 +571,45 @@ Below is the complete `index.html`, delivering a **futuristic, mathematically pr
               time: { value: 0 },
               uColor1: { value: new THREE.Color('#ff4d94') },
               uColor2: { value: new THREE.Color('#4dffeb') },
-              uColor3: { value: new THREE.Color('#cc66ff') }
+              uColor3: { value: new THREE.Color('#cc66ff') },
+              uColor4: { value: new THREE.Color('#66ff99') }
             },
-            vertexShader: particleMaterial.vertexShader,
-            fragmentShader: particleMaterial.fragmentShader.replace('float alpha = smoothstep(0.5, 0.2, dist);', 'float alpha = smoothstep(0.5, 0.2, dist) * (1.0 - time);'),
+            vertexShader: `
+              attribute float offset;
+              varying float vOffset;
+              uniform float time;
+              void main() {
+                vOffset = offset;
+                vec3 pos = position + time * vec3(
+                  sin(time * 0.5 + offset) * 0.1,
+                  cos(time * 0.7 + offset) * 0.1,
+                  sin(time * 0.9 + offset) * 0.1
+                );
+                gl_PointSize = 12.0 + sin(offset + time) * 6.0;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+              }
+            `,
+            fragmentShader: `
+              uniform float time;
+              uniform vec3 uColor1;
+              uniform vec3 uColor2;
+              uniform vec3 uColor3;
+              uniform vec3 uColor4;
+              varying float vOffset;
+              void main() {
+                float t1 = sin(time * 0.6 + vOffset) * 0.5 + 0.5;
+                float t2 = sin(time * 0.4 + vOffset + 3.141592653589793) * 0.5 + 0.5;
+                float t3 = sin(time * 0.2 + vOffset) * 0.5 + 0.5;
+                vec3 color = mix(uColor1, uColor2, t1);
+                color = mix(color, uColor3, t2);
+                color = mix(color, uColor4, t3);
+                vec2 coord = gl_PointCoord - vec2(0.5);
+                float dist = length(coord);
+                if (dist > 0.5) discard;
+                float alpha = smoothstep(0.5, 0.2, dist) * (1.0 - time * 0.5);
+                gl_FragColor = vec4(color, alpha);
+              }
+            `,
             transparent: true
           });
           const burst = new THREE.Points(burstGeometry, burstMaterial);
@@ -793,7 +618,13 @@ Below is the complete `index.html`, delivering a **futuristic, mathematically pr
           const animateBurst = (t) => {
             burstTime += 0.016;
             burstMaterial.uniforms.time.value = burstTime;
-            if (burstTime < 1) {
+            for (let i = 0; i < burstCount; i++) {
+              burstPositions[i * 3] += burstVelocities[i * 3] * 0.016;
+              burstPositions[i * 3 + 1] += burstVelocities[i * 3 + 1] * 0.016;
+              burstPositions[i * 3 + 2] += burstVelocities[i * 3 + 2] * 0.016;
+            }
+            burstGeometry.attributes.position.needsUpdate = true;
+            if (burstTime < 2) {
               requestAnimationFrame(animateBurst);
             } else {
               cube.remove(burst);
