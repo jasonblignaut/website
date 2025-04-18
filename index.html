@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="description" content="Ignite a cyberpunk cosmos: copy your IP to forge an eternal neon universe." />
-  <meta name="keywords" content="Cyberpunk Simulation, Public IP, Sacred Geometry, WebGL" />
+  <meta name="description" content="Neon Attractor: Shape a cyberpunk cosmos with the Law of Attraction." />
+  <meta name="keywords" content="Cyberpunk Game, Law of Attraction, WebGL, Particle Simulation" />
   <meta name="author" content="Labverse Cybernetics" />
-  <meta property="og:title" content="Cyberpunk Cosmic Genesis" />
-  <meta property="og:description" content="Copy your IP to unleash a vibrant universe of evolving patterns." />
-  <meta property="og:image" content="https://labverse.co.za/assets/cyberpunk-og-image.png" />
+  <meta property="og:title" content="Neon Attractor" />
+  <meta property="og:description" content="Use intent to attract particles and forge a neon universe." />
+  <meta property="og:image" content="https://labverse.co.za/assets/neon-attractor-og-image.png" />
   <meta property="og:url" content="https://labverse.co.za" />
   <meta name="twitter:card" content="summary_large_image" />
 
-  <title>Cyberpunk Cosmic Genesis</title>
+  <title>Neon Attractor</title>
 
   <!-- Favicon -->
   <link rel="icon" href="favicon.ico" />
@@ -97,24 +97,18 @@
       62% { transform: translate(0, 0) skew(3deg); }
     }
 
-    .ip-display {
+    .game-info {
       font-family: 'Source Code Pro', monospace;
-      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      font-size: clamp(1rem, 2vw, 1.5rem);
       color: var(--glow-white);
       background: rgba(10, 10, 26, 0.8);
-      padding: clamp(0.6rem, 1.5vw, 0.8rem) clamp(1.2rem, 2.5vw, 2rem);
+      padding: clamp(0.6rem, 1.5vw, 0.8rem);
       border-radius: 8px;
       border: 2px solid var(--neon-magenta);
-      box-shadow: 0 0 15px var(--neon-magenta), inset 0 0 8px var(--neon-cyan);
+      box-shadow: 0 0 15px var(--neon-magenta);
       margin-bottom: clamp(0.4rem, 1vw, 0.6rem);
       text-shadow: 0 0 10px var(--neon-magenta);
-      word-break: break-all;
-      animation: flicker 5s infinite;
-    }
-
-    @keyframes flicker {
-      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
-      20%, 24%, 55% { opacity: 0.7; }
+      text-align: left;
     }
 
     .error-message {
@@ -208,13 +202,13 @@
     @media (max-width: 768px) {
       .container { padding: clamp(0.5rem, 2vw, 1rem); }
       h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); letter-spacing: 0.15rem; }
-      .ip-display { font-size: clamp(1.2rem, 3vw, 1.8rem); padding: clamp(0.4rem, 1vw, 0.6rem) clamp(0.8rem, 1.5vw, 1.2rem); }
+      .game-info { font-size: clamp(0.8rem, 1.5vw, 1.2rem); }
       .controls { top: 10px; right: 10px; }
     }
 
     @media (max-width: 480px) {
       h1 { font-size: clamp(1.5rem, 3vw, 2rem); letter-spacing: 0.1rem; }
-      .ip-display { font-size: clamp(0.9rem, 2vw, 1.3rem); }
+      .game-info { font-size: clamp(0.6rem, 1.2vw, 0.9rem); }
       .btn { font-size: clamp(0.7rem, 1.2vw, 0.9rem); padding: clamp(0.4rem, 1vw, 0.6rem) clamp(1rem, 2vw, 1.5rem); }
       .controls { flex-direction: row; gap: 5px; }
       .control-btn { font-size: 0.7rem; padding: 6px 8px; }
@@ -254,20 +248,22 @@
   <canvas id="fallback-canvas"></canvas>
 
   <div class="container">
-    <h1>CYBERPUNK COSMIC GENESIS</h1>
-    <div class="ip-display" id="ip-display">Fetching IP...</div>
-    <div class="error-message" id="error-message">Simulation failed. Check browser settings.</div>
-    <button class="btn" id="copy-ip">Copy IP</button>
+    <h1>NEON ATTRACTOR</h1>
+    <div class="game-info" id="game-info">
+      Level: 1 | Score: 0 | Energy: 100% | Time: 60s<br>
+      Use WASD/Arrows to move, Left Click to attract, Right Click to repel, Space to switch patterns.
+    </div>
+    <div class="error-message" id="error-message">Game failed. Check browser settings.</div>
+    <button class="btn" id="start-game">Start Game</button>
   </div>
 
   <div class="controls">
     <button class="control-btn" id="toggle-audio">Mute Audio</button>
     <button class="control-btn" id="toggle-ar">Toggle AR</button>
-    <button class="control-btn" id="toggle-forces">Toggle Forces</button>
   </div>
 
   <footer>
-    © 2025 Labverse Cybernetics | Powered by 1FAR | FORGE THE NEON VOID
+    © 2025 Labverse Cybernetics | Powered by 1FAR | SHAPE THE NEON VOID
   </footer>
 
   <!-- Three.js ES Modules -->
@@ -284,20 +280,10 @@
     import * as THREE from 'three';
     import { WEBGL } from 'three/addons/utils/WebGL.js';
 
-    // Debug Logging (Toggleable)
+    // Debug Logging
     const DEBUG = false;
     function logDebug(message) {
       if (DEBUG) console.log('[DEBUG] ' + message);
-    }
-
-    // Simple Hash for IP Personalization
-    function hashString(str) {
-      let hash = 0;
-      for (let i = 0; i < str.length; i++) {
-        hash = ((hash << 5) - hash) + str.charCodeAt(i);
-        hash |= 0;
-      }
-      return Math.abs(hash);
     }
 
     // Perlin Noise for Organic Variation
@@ -307,71 +293,51 @@
       return (seed - Math.floor(seed));
     }
 
-    // Fetch Public IP
-    async function fetchPublicIP() {
-      const apis = [
-        'https://api.ipify.org?format=json',
-        'https://api64.ipify.org?format=json',
-        'https://ip.seeip.org/json',
-        'https://api.ip-api.com/json'
-      ];
-      for (const api of apis) {
-        try {
-          const response = await fetch(api, { mode: 'cors' });
-          if (!response.ok) throw new Error(`IP fetch failed: ${response.status}`);
-          const data = await response.json();
-          const ip = data.ip || data.query || '127.0.0.1';
-          document.getElementById('ip-display').textContent = ip;
-          logDebug(`IP fetched from ${api}: ${ip}`);
-          return ip;
-        } catch (error) {
-          logDebug(`IP Fetch Error (${api}): ${error.message}`);
-        }
-      }
-      document.getElementById('ip-display').textContent = '127.0.0.1';
-      return '127.0.0.1';
-    }
-
     // Audio Integration
-    let audioContext, bigBangSound, patternSound;
+    let audioContext, attractSound, repelSound, levelUpSound;
     let isAudioMuted = false;
     function initAudio() {
       audioContext = new (window.AudioContext || window.webkitAudioContext)();
       
-      // Big Bang Sound (Low Synth Pulse)
-      bigBangSound = audioContext.createOscillator();
-      bigBangSound.type = 'sine';
-      bigBangSound.frequency.setValueAtTime(100, audioContext.currentTime);
-      const gainNode = audioContext.createGain();
-      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 2);
-      bigBangSound.connect(gainNode);
-      gainNode.connect(audioContext.currentTime);
+      attractSound = audioContext.createOscillator();
+      attractSound.type = 'sine';
+      attractSound.frequency.setValueAtTime(150, audioContext.currentTime);
+      const attractGain = audioContext.createGain();
+      attractGain.gain.setValueAtTime(0.2, audioContext.currentTime);
+      attractSound.connect(attractGain);
+      attractGain.connect(audioContext.destination);
+      attractSound.start();
 
-      // Pattern Evolution Sound (Ambient Synth)
-      patternSound = audioContext.createOscillator();
-      patternSound.type = 'sawtooth';
-      patternSound.frequency.setValueAtTime(200, audioContext.currentTime);
-      const patternGain = audioContext.createGain();
-      patternGain.gain.setValueAtTime(0.1, audioContext.currentTime);
-      patternSound.connect(patternGain);
-      patternGain.connect(audioContext.currentTime);
+      repelSound = audioContext.createOscillator();
+      repelSound.type = 'square';
+      repelSound.frequency.setValueAtTime(100, audioContext.currentTime);
+      const repelGain = audioContext.createGain();
+      repelGain.gain.setValueAtTime(0.2, audioContext.currentTime);
+      repelSound.connect(repelGain);
+      repelGain.connect(audioContext.destination);
+      repelSound.start();
 
-      bigBangSound.start();
-      patternSound.start();
+      levelUpSound = audioContext.createOscillator();
+      levelUpSound.type = 'triangle';
+      levelUpSound.frequency.setValueAtTime(300, audioContext.currentTime);
+      const levelUpGain = audioContext.createGain();
+      levelUpGain.gain.setValueAtTime(0.3, audioContext.currentTime);
+      levelUpSound.connect(levelUpGain);
+      levelUpGain.connect(audioContext.destination);
+      levelUpSound.start();
     }
 
-    function playBigBangSound() {
+    function playSound(sound, duration = 0.5) {
       if (!isAudioMuted && audioContext) {
         const gainNode = audioContext.createGain();
         gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 2);
-        bigBangSound.connect(gainNode);
-        gainNode.connect(audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+        sound.connect(gainNode);
+        gainNode.connect(audioContext.destination);
       }
     }
 
-    // WebGL Simulation
+    // WebGL Game
     function initWebGL(canvas) {
       logDebug('Initializing WebGL...');
       if (!WEBGL.isWebGL2Available() && !WEBGL.isWebGLAvailable()) {
@@ -394,7 +360,7 @@
         camera.position.z = 50;
 
         // Scene Setup
-        scene.fog = new THREE.FogExp2(0x0A0A1A, 0.02); // Subtle depth
+        scene.fog = new THREE.FogExp2(0x0A0A1A, 0.02);
         const starGeometry = new THREE.BufferGeometry();
         const starVertices = [];
         for (let i = 0; i < 1000; i++) {
@@ -413,7 +379,6 @@
         });
         scene.add(new THREE.Points(starGeometry, starMaterial));
 
-        // Neon Grid
         const gridGeometry = new THREE.PlaneGeometry(200, 200, 50, 50);
         const gridMaterial = new THREE.ShaderMaterial({
           vertexShader: `
@@ -452,53 +417,60 @@
         pointLight.position.set(20, 20, 20);
         scene.add(pointLight);
 
+        // Player Avatar
+        const avatarGeometry = new THREE.SphereGeometry(1, 32, 32);
+        const avatarMaterial = new THREE.ShaderMaterial({
+          vertexShader: `
+            varying vec2 vUv;
+            void main() {
+              vUv = uv;
+              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+          `,
+          fragmentShader: `
+            varying vec2 vUv;
+            uniform float time;
+            void main() {
+              float dist = length(vUv - vec2(0.5));
+              float alpha = 1.0 - smoothstep(0.2, 0.5, dist);
+              vec3 color = vec3(0.0, 1.0, 1.0) * (0.5 + 0.5 * sin(time));
+              gl_FragColor = vec4(color, alpha);
+            }
+          `,
+          uniforms: { time: { value: 0 } },
+          transparent: true,
+          blending: THREE.AdditiveBlending
+        });
+        const avatar = new THREE.Mesh(avatarGeometry, avatarMaterial);
+        scene.add(avatar);
+
         let particles = [];
         let trailGeometries = [];
-        let mousePos = { x: 0, y: 0 };
-        let pinchZoom = 1;
-        let forcesEnabled = { em: true, strong: true, weak: true, higgs: true, grav: true, cluster: true, wave: true, dark: true };
-        let ipHash = 0;
-        let bigBangTime = 0;
+        let gameState = {
+          level: 1,
+          score: 0,
+          energy: 100,
+          timeLeft: 60,
+          patternType: 'orbit',
+          isGameRunning: false
+        };
+        let inputState = {
+          moveUp: false,
+          moveDown: false,
+          moveLeft: false,
+          moveRight: false,
+          attract: false,
+          repel: false,
+          intentStrength: 0
+        };
         let isARMode = false;
-
-        // Gesture Controls
-        let touchStartDist = 0;
-        document.addEventListener('touchstart', (e) => {
-          if (e.touches.length === 2) {
-            touchStartDist = Math.hypot(
-              e.touches[0].clientX - e.touches[1].clientX,
-              e.touches[0].clientY - e.touches[1].clientY
-            );
-          }
-        }, { passive: true });
-
-        document.addEventListener('touchmove', (e) => {
-          if (e.touches.length === 2) {
-            const dist = Math.hypot(
-              e.touches[0].clientX - e.touches[1].clientX,
-              e.touches[0].clientY - e.touches[1].clientY
-            );
-            pinchZoom *= dist / touchStartDist;
-            pinchZoom = Math.max(0.5, Math.min(pinchZoom, 2));
-            touchStartDist = dist;
-            camera.position.z = 50 / pinchZoom;
-          } else if (e.touches.length === 1) {
-            mousePos.x = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
-            mousePos.y = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
-          }
-        }, { passive: true });
-
-        document.addEventListener('mousemove', (e) => {
-          mousePos.x = (e.clientX / window.innerWidth) * 2 - 1;
-          mousePos.y = -(e.clientY / window.innerHeight) * 2 + 1;
-        }, { passive: true });
 
         // Particle Creation
         function createParticle(index, type = 'fermion', velocity = new THREE.Vector3(0, 0, 0)) {
           const phi = (1 + Math.sqrt(5)) / 2;
           const theta = index * 2 * Math.PI * phi;
           const r = Math.sqrt(index) * 0.8;
-          const noise = perlinNoise(index, ipHash) * 20 - 10;
+          const noise = perlinNoise(index, gameState.level) * 20 - 10;
           const x = r * Math.cos(theta) + noise;
           const y = r * Math.sin(theta) + noise;
           const geometry = new THREE.BufferGeometry();
@@ -506,7 +478,7 @@
           
           let color, size, texture;
           switch (type) {
-            case 'fermion': color = ipHash % 2 ? 0x00B7EB : 0xFF00CC; size = 0.4; texture = 'smooth'; break;
+            case 'fermion': color = 0x00B7EB; size = 0.4; texture = 'smooth'; break;
             case 'boson': color = 0xFFD700; size = 0.6; texture = 'wispy'; break;
             case 'higgs': color = 0x00FFFF; size = 0.8; texture = 'crystalline'; break;
           }
@@ -541,11 +513,11 @@
             type,
             velocity,
             charge: type === 'fermion' ? (Math.random() > 0.5 ? 1 : -1) : 0,
-            color: type === 'fermion' ? (ipHash % 2 ? 'cyan' : 'magenta') : null,
+            color: type === 'fermion' ? 'cyan' : null,
             mass: type === 'higgs' ? 1.5 : type === 'fermion' ? 1 : 0.5,
             trail: [],
             region: getRegion(x, y),
-            phase: Math.random() * Math.PI * 2 + (ipHash % 100) * 0.1,
+            phase: Math.random() * Math.PI * 2,
             texture
           };
         }
@@ -563,178 +535,192 @@
         function initParticles() {
           particles = [];
           trailGeometries = [];
-          for (let i = 0; i < 10; i++) {
+          const particleCount = 50 + gameState.level * 10;
+          for (let i = 0; i < particleCount; i++) {
             particles.push(createParticle(i, Math.random() > 0.7 ? 'boson' : Math.random() > 0.9 ? 'higgs' : 'fermion'));
           }
-          logDebug('WebGL particles initialized: ' + particles.length);
+          logDebug(`WebGL particles initialized: ${particles.length}`);
         }
-        initParticles();
 
-        function triggerBigBang() {
-          bigBangTime = Date.now();
-          playBigBangSound();
-          particles.forEach(p => {
-            scene.remove(p.obj);
-            p.obj.geometry.dispose();
-            p.obj.material.dispose();
-          });
-          trailGeometries.forEach(t => scene.remove(t));
-          trailGeometries.forEach(t => {
-            t.geometry.dispose();
-            t.material.dispose();
-          });
-          particles = [];
-          trailGeometries = [];
-          
-          for (let i = 0; i < 50; i++) {
-            const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2);
-            const r = Math.sqrt(i) * 1.5;
-            const velocity = new THREE.Vector3(
-              r * Math.cos(theta) * 0.2,
-              r * Math.sin(theta) * 0.2,
-              (Math.random() - 0.5) * 0.1
-            );
-            const type = Math.random() > 0.7 ? 'boson' : Math.random() > 0.9 ? 'higgs' : 'fermion';
-            particles.push(createParticle(i, type, velocity));
+        function startGame() {
+          gameState.isGameRunning = true;
+          gameState.level = 1;
+          gameState.score = 0;
+          gameState.energy = 100;
+          gameState.timeLeft = 60;
+          gameState.patternType = 'orbit';
+          initParticles();
+          document.getElementById('start-game').style.display = 'none';
+          document.getElementById('game-info').style.display = 'block';
+          playSound(levelUpSound);
+          logDebug('Game started');
+        }
+
+        // Input Handling
+        document.addEventListener('keydown', (e) => {
+          switch (e.key.toLowerCase()) {
+            case 'w':
+            case 'arrowup':
+              inputState.moveUp = true;
+              break;
+            case 's':
+            case 'arrowdown':
+              inputState.moveDown = true;
+              break;
+            case 'a':
+            case 'arrowleft':
+              inputState.moveLeft = true;
+              break;
+            case 'd':
+            case 'arrowright':
+              inputState.moveRight = true;
+              break;
+            case ' ':
+              gameState.patternType = {
+                'orbit': 'cluster',
+                'cluster': 'spiral',
+                'spiral': 'lattice',
+                'lattice': 'orbit'
+              }[gameState.patternType];
+              playSound(attractSound, 0.2);
+              break;
           }
-          logDebug('WebGL Big Bang triggered');
-        }
+        });
 
-        // Lorenz Attractor for Chaos
-        function lorenzForce(p, dt) {
-          const sigma = 10, rho = 28, beta = 8 / 3;
-          const x = p.obj.position.x, y = p.obj.position.y, z = p.obj.position.z;
-          return new THREE.Vector3(
-            sigma * (y - x) * dt * 0.01,
-            (x * (rho - z) - y) * dt * 0.01,
-            (x * y - beta * z) * dt * 0.01
-          );
-        }
+        document.addEventListener('keyup', (e) => {
+          switch (e.key.toLowerCase()) {
+            case 'w':
+            case 'arrowup':
+              inputState.moveUp = false;
+              break;
+            case 's':
+            case 'arrowdown':
+              inputState.moveDown = false;
+              break;
+            case 'a':
+            case 'arrowleft':
+              inputState.moveLeft = false;
+              break;
+            case 'd':
+            case 'arrowright':
+              inputState.moveRight = false;
+              break;
+          }
+        });
 
-        function updateParticles() {
-          const now = Date.now();
-          const elapsed = (now - bigBangTime) / 1000;
-          
+        document.addEventListener('mousedown', (e) => {
+          if (e.button === 0) {
+            inputState.attract = true;
+            playSound(attractSound);
+          } else if (e.button === 2) {
+            inputState.repel = true;
+            playSound(repelSound);
+          }
+        });
+
+        document.addEventListener('mouseup', (e) => {
+          if (e.button === 0) inputState.attract = false;
+          else if (e.button === 2) inputState.repel = false;
+          inputState.intentStrength = 0;
+        });
+
+        document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+        function updateGame() {
+          if (!gameState.isGameRunning) return;
+
+          // Update Avatar
+          const speed = 0.5;
+          if (inputState.moveUp) avatar.position.y += speed;
+          if (inputState.moveDown) avatar.position.y -= speed;
+          if (inputState.moveLeft) avatar.position.x -= speed;
+          if (inputState.moveRight) avatar.position.x += speed;
+          avatar.position.x = Math.max(-50, Math.min(50, avatar.position.x));
+          avatar.position.y = Math.max(-50, Math.min(50, avatar.position.y));
+
+          // Update Intent
+          if (inputState.attract || inputState.repel) {
+            inputState.intentStrength = Math.min(inputState.intentStrength + 0.05, 1);
+            gameState.energy = Math.max(0, gameState.energy - 0.2);
+            if (gameState.energy <= 0) {
+              inputState.attract = false;
+              inputState.repel = false;
+              inputState.intentStrength = 0;
+            }
+          } else {
+            inputState.intentStrength = Math.max(inputState.intentStrength - 0.05, 0);
+            gameState.energy = Math.min(100, gameState.energy + 0.1);
+          }
+
+          // Update Particles
           particles.forEach(p => {
-            // Update trail
             p.trail.push(p.obj.position.clone());
             if (p.trail.length > 30) p.trail.shift();
 
-            // Apply forces
             let force = new THREE.Vector3(0, 0, 0);
+            const distToAvatar = p.obj.position.distanceTo(avatar.position);
+            if (distToAvatar > 0.2 && distToAvatar < 20) {
+              const dir = avatar.position.clone().sub(p.obj.position).normalize();
+              if (inputState.attract && gameState.energy > 0) {
+                const strength = 0.1 * inputState.intentStrength * (1 + gameState.level * 0.2);
+                force.add(dir.multiplyScalar(strength));
+                if (gameState.patternType === 'orbit' && p.region === 'planet') {
+                  const theta = Math.atan2(p.obj.position.y - avatar.position.y, p.obj.position.x - avatar.position.x);
+                  force.add(new THREE.Vector3(
+                    0.02 * Math.cos(theta + p.phase),
+                    0.02 * Math.sin(theta + p.phase),
+                    0
+                  ));
+                } else if (gameState.patternType === 'cluster' && p.region === 'life') {
+                  const f = 0.05 * Math.exp(-distToAvatar / 2);
+                  force.add(dir.multiplyScalar(f));
+                } else if (gameState.patternType === 'spiral' && p.region === 'energy') {
+                  const theta = Math.atan2(p.obj.position.y - avatar.position.y, p.obj.position.x - avatar.position.x);
+                  force.add(new THREE.Vector3(
+                    0.015 * Math.exp(-0.08 * distToAvatar) * Math.cos(theta + p.phase),
+                    0.015 * Math.exp(-0.08 * distToAvatar) * Math.sin(theta + p.phase),
+                    0
+                  ));
+                } else if (gameState.patternType === 'lattice' && p.region === 'object') {
+                  const angle = (p.id % 5) * 2 * Math.PI / 5;
+                  force.add(new THREE.Vector3(
+                    0.01 * Math.cos(angle),
+                    0.01 * Math.sin(angle),
+                    0
+                  ));
+                }
+              } else if (inputState.repel && gameState.energy > 0) {
+                const strength = -0.1 * inputState.intentStrength * (1 + gameState.level * 0.2);
+                force.add(dir.multiplyScalar(strength));
+              }
+            }
+
+            // Particle Interactions
             particles.forEach(p2 => {
               if (p !== p2) {
                 const dist = p.obj.position.distanceTo(p2.obj.position);
-                if (dist > 0.2 && dist < 20) {
-                  if (forcesEnabled.em && p.charge && p2.charge) {
-                    const k = 0.04 + 0.01 * Math.sin(p.id + ipHash * 0.01);
+                if (dist > 0.2 && dist < 15) {
+                  const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
+                  if (p.charge && p2.charge) {
+                    const k = 0.03;
                     const f = k * (p.charge * p2.charge) / (dist * dist);
-                    const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
                     force.add(dir.multiplyScalar(f));
                   }
-                  if (forcesEnabled.strong && p.type === 'fermion' && p2.type === 'boson' && dist < 5) {
-                    const g = 0.1 + 0.02 * perlinNoise(p.id, p2.id);
-                    const f = -g / dist * Math.exp(-dist / (2 + p.id % 3));
-                    const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
-                    force.add(dir.multiplyScalar(f));
-                  }
-                  if (forcesEnabled.weak && p.type === 'fermion' && Math.random() < 0.005) {
-                    p.color = p.color === 'cyan' ? 'magenta' : 'cyan';
-                    p.obj.material.fragmentShader = p.color === 'cyan' ?
-                      `varying vec2 vUv; void main() { float dist = length(vUv - vec2(0.5)); float alpha = 1.0 - smoothstep(0.2, 0.5, dist); gl_FragColor = vec4(0.0, 0.7, 0.9, alpha * 0.9); }` :
-                      `varying vec2 vUv; void main() { float dist = length(vUv - vec2(0.5)); float alpha = 1.0 - smoothstep(0.2, 0.5, dist); gl_FragColor = vec4(1.0, 0.0, 0.8, alpha * 0.9); }`;
-                    p.obj.material.needsUpdate = true;
-                  }
-                  if (forcesEnabled.higgs && p2.type === 'higgs') {
-                    force.add(p.velocity.clone().multiplyScalar(-0.06 * p.mass));
-                  }
-                  if (forcesEnabled.grav && p.region === 'planet' && dist < 12) {
-                    const G = 0.03 + 0.01 * perlinNoise(p.id, ipHash);
-                    const f = -G * p.mass * p2.mass / (dist * dist);
-                    const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
-                    force.add(dir.multiplyScalar(f));
-                    const theta = Math.atan2(p.obj.position.y, p.obj.position.x);
-                    const eccentricity = 0.3 + 0.2 * Math.sin(p.id + ipHash * 0.1);
-                    force.add(new THREE.Vector3(
-                      0.02 * Math.cos(theta + p.phase) * eccentricity,
-                      0.02 * Math.sin(theta + p.phase) * eccentricity,
-                      0
-                    ));
-                  }
-                  if (forcesEnabled.cluster && p.region === 'life' && dist < 6) {
-                    const sigma = 2.5 + 0.5 * (p.id % 3);
-                    const epsilon = 0.06 + 0.01 * perlinNoise(p.id, ipHash);
-                    const r6 = Math.pow(sigma / dist, 6);
-                    const f = epsilon * (12 * r6 * r6 - 6 * r6) / dist;
-                    const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
-                    force.add(dir.multiplyScalar(f));
-                    // Fractal branching
-                    if (elapsed > 10 && Math.random() < 0.001) {
-                      p.trail.push(p.trail[p.trail.length - 1].clone().add(new THREE.Vector3(
-                        Math.random() * 2 - 1,
-                        Math.random() * 2 - 1,
-                        0
-                      )));
-                    }
-                  }
-                  if (forcesEnabled.wave && p.region === 'energy') {
-                    const A = 0.03 + 0.01 * Math.sin(p.id + ipHash * 0.02);
-                    const f = A * Math.sin(now * 0.001 + dist + p.phase);
-                    const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
-                    force.add(dir.multiplyScalar(f));
-                    const theta = Math.atan2(p.obj.position.y, p.obj.position.x);
-                    force.add(new THREE.Vector3(
-                      0.015 * Math.exp(-0.08 * dist) * Math.cos(theta + p.phase + elapsed * 0.1),
-                      0.015 * Math.exp(-0.08 * dist) * Math.sin(theta + p.phase + elapsed * 0.1),
-                      0
-                    ));
-                  }
-                  if (p.region === 'object') {
-                    const f = -0.06 * Math.cos((p.id % 4) * Math.PI / 2 + ipHash * 0.01) / dist;
-                    const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
-                    force.add(dir.multiplyScalar(f));
-                    // Platonic solid alignment
-                    const angle = (p.id % 5) * 2 * Math.PI / 5;
-                    force.add(new THREE.Vector3(
-                      0.01 * Math.cos(angle),
-                      0.01 * Math.sin(angle),
-                      0
-                    ));
-                  }
-                  if (forcesEnabled.dark) {
-                    const f = -0.02 * Math.exp(-dist / (5 + ipHash % 5)) / dist;
-                    const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
+                  if (p.type === 'fermion' && p2.type === 'boson' && dist < 4) {
+                    const g = 0.08;
+                    const f = -g / dist * Math.exp(-dist / 2);
                     force.add(dir.multiplyScalar(f));
                   }
                 }
               }
             });
 
-            // Quantum Tunneling
-            if (Math.random() < 0.002) {
-              p.obj.position.add(new THREE.Vector3(
-                (Math.random() - 0.5) * 5,
-                (Math.random() - 0.5) * 5,
-                (Math.random() - 0.5) * 2
-              ));
-            }
-
-            // Chaos (Lorenz Attractor)
-            if (elapsed > 20 && Math.random() < 0.01) {
-              force.add(lorenzForce(p, 0.1));
-            }
-
-            // Mouse/Gesture Interaction
-            const mouseForce = new THREE.Vector3(mousePos.x * 0.03, mousePos.y * 0.03, 0);
-            force.add(mouseForce);
-
-            // Update velocity and position
             p.velocity.add(force.multiplyScalar(0.1 / p.mass));
             p.velocity.multiplyScalar(0.98);
             p.obj.position.add(p.velocity);
           });
 
-          // Update trails
+          // Update Trails
           trailGeometries.forEach(t => scene.remove(t));
           trailGeometries.forEach(t => {
             t.geometry.dispose();
@@ -772,7 +758,7 @@
                     gl_FragColor = vec4(color, alpha);
                   }
                 `,
-                uniforms: { time: { value: now * 0.001 } },
+                uniforms: { time: { value: Date.now() * 0.001 } },
                 transparent: true,
                 blending: THREE.AdditiveBlending
               });
@@ -783,49 +769,65 @@
             }
           });
 
-          // Sparse spawning
-          if (particles.length < 50 && Math.random() < 0.01) {
-            particles.push(createParticle(particles.length));
+          // Scoring
+          let patternCount = 0;
+          particles.forEach(p => {
+            let inPattern = false;
+            if (gameState.patternType === 'orbit' && p.region === 'planet') {
+              const dist = p.obj.position.distanceTo(avatar.position);
+              if (dist > 2 && dist < 5 && p.velocity.length() < 0.5) inPattern = true;
+            } else if (gameState.patternType === 'cluster' && p.region === 'life') {
+              let neighbors = particles.filter(p2 => p !== p2 && p.obj.position.distanceTo(p2.obj.position) < 3).length;
+              if (neighbors >= 3) inPattern = true;
+            } else if (gameState.patternType === 'spiral' && p.region === 'energy') {
+              const dist = p.obj.position.distanceTo(avatar.position);
+              if (dist > 2 && dist < 6 && p.velocity.length() < 0.4) inPattern = true;
+            } else if (gameState.patternType === 'lattice' && p.region === 'object') {
+              let aligned = particles.filter(p2 => p !== p2 && Math.abs(p.obj.position.distanceTo(p2.obj.position) - 2) < 0.5).length;
+              if (aligned >= 2) inPattern = true;
+            }
+            if (inPattern) patternCount++;
+          });
+          if (patternCount >= 10) {
+            gameState.score += patternCount * 10;
+            playSound(levelUpSound, 0.3);
+            particles = particles.filter(p => !p.inPattern);
+            initParticles();
           }
 
-          // Cinematic Camera
-          if (elapsed < 10) {
-            camera.position.z = 50 - elapsed * 2;
-            camera.position.x = Math.sin(elapsed * 0.3) * 10;
-            camera.lookAt(0, 0, 0);
-          } else {
-            camera.position.x = Math.sin(now * 0.0001) * 5;
-            camera.position.z = 50 / pinchZoom;
-            camera.lookAt(0, 0, 0);
-          }
-
-          // Update grid
-          gridMaterial.uniforms.time.value = now * 0.001;
-        }
-
-        // Performance Optimization
-        let lastFrameTime = performance.now();
-        let frameCount = 0;
-        let fps = 60;
-        function calculateFPS() {
-          frameCount++;
-          const now = performance.now();
-          if (now - lastFrameTime >= 1000) {
-            fps = frameCount;
-            frameCount = 0;
-            lastFrameTime = now;
-            if (fps < 30 && particles.length > 25) {
-              particles = particles.slice(0, 25);
-              logDebug('Reduced particle count for performance');
+          // Time and Level Progression
+          gameState.timeLeft -= 1 / 60;
+          if (gameState.timeLeft <= 0) {
+            if (gameState.level < 5) {
+              gameState.level++;
+              gameState.timeLeft = 60;
+              gameState.energy = 100;
+              initParticles();
+              playSound(levelUpSound);
+            } else {
+              gameState.isGameRunning = false;
+              document.getElementById('start-game').textContent = 'Restart Game';
+              document.getElementById('start-game').style.display = 'block';
             }
           }
+
+          // Update UI
+          document.getElementById('game-info').innerHTML = `
+            Level: ${gameState.level} | Score: ${gameState.score} | Energy: ${Math.round(gameState.energy)}% | Time: ${Math.round(gameState.timeLeft)}s<br>
+            Pattern: ${gameState.patternType} | Use WASD/Arrows to move, Left Click to attract, Right Click to repel, Space to switch patterns.
+          `;
         }
 
         function animate() {
           try {
             requestAnimationFrame(animate);
-            updateParticles();
-            calculateFPS();
+            updateGame();
+            avatarMaterial.uniforms.time.value = Date.now() * 0.001;
+            gridMaterial.uniforms.time.value = Date.now() * 0.001;
+            camera.position.x = avatar.position.x * 0.5;
+            camera.position.y = avatar.position.y * 0.5;
+            camera.position.z = 50;
+            camera.lookAt(avatar.position);
             renderer.render(scene, camera);
           } catch (error) {
             logDebug('WebGL Render Error: ' + error.message);
@@ -843,7 +845,7 @@
           renderer.setSize(window.innerWidth, window.innerHeight);
         }, { passive: true });
 
-        // AR Mode (WebXR)
+        // AR Mode
         async function toggleAR() {
           if (!navigator.xr) {
             logDebug('WebXR not supported');
@@ -857,7 +859,7 @@
               });
               renderer.xr.enabled = true;
               renderer.xr.setSession(session);
-              camera.position.set(0, 1.6, 0); // User eye level
+              camera.position.set(0, 1.6, 0);
               logDebug('AR mode enabled');
             } catch (error) {
               logDebug('AR Error: ' + error.message);
@@ -877,18 +879,10 @@
         });
 
         document.getElementById('toggle-ar').addEventListener('click', toggleAR);
+        document.getElementById('start-game').addEventListener('click', startGame);
 
-        document.getElementById('toggle-forces').addEventListener('click', () => {
-          forcesEnabled.em = !forcesEnabled.em;
-          forcesEnabled.grav = !forcesEnabled.grav;
-          forcesEnabled.cluster = !forcesEnabled.cluster;
-          forcesEnabled.wave = !forcesEnabled.wave;
-          document.getElementById('toggle-forces').textContent = forcesEnabled.em ? 'Disable Forces' : 'Enable Forces';
-        });
-
-        animationMode = 'webgl';
-        logDebug('WebGL simulation started');
-        return { triggerBigBang, setIPHash: (hash) => { ipHash = hash; } };
+        logDebug('WebGL game started');
+        return { startGame };
       } catch (error) {
         logDebug('WebGL Initialization Error: ' + error.message);
         return false;
@@ -905,28 +899,99 @@
         if (!ctx) return false;
 
         let particles = [];
-        let mousePos = { x: canvas.width / 2, y: canvas.height / 2 };
-        let forcesEnabled = { em: true, strong: true, weak: true, higgs: true, grav: true, cluster: true, wave: true, dark: true };
-        let ipHash = 0;
-        let bigBangTime = 0;
+        let avatar = { x: canvas.width / 2, y: canvas.height / 2 };
+        let gameState = {
+          level: 1,
+          score: 0,
+          energy: 100,
+          timeLeft: 60,
+          patternType: 'orbit',
+          isGameRunning: false
+        };
+        let inputState = {
+          moveUp: false,
+          moveDown: false,
+          moveLeft: false,
+          moveRight: false,
+          attract: false,
+          repel: false,
+          intentStrength: 0
+        };
 
-        document.addEventListener('mousemove', (e) => {
-          mousePos.x = e.clientX;
-          mousePos.y = e.clientY;
-        }, { passive: true });
-
-        document.addEventListener('touchmove', (e) => {
-          if (e.touches.length === 1) {
-            mousePos.x = e.touches[0].clientX;
-            mousePos.y = e.touches[0].clientY;
+        document.addEventListener('keydown', (e) => {
+          switch (e.key.toLowerCase()) {
+            case 'w':
+            case 'arrowup':
+              inputState.moveUp = true;
+              break;
+            case 's':
+            case 'arrowdown':
+              inputState.moveDown = true;
+              break;
+            case 'a':
+            case 'arrowleft':
+              inputState.moveLeft = true;
+              break;
+            case 'd':
+            case 'arrowright':
+              inputState.moveRight = true;
+              break;
+            case ' ':
+              gameState.patternType = {
+                'orbit': 'cluster',
+                'cluster': 'spiral',
+                'spiral': 'lattice',
+                'lattice': 'orbit'
+              }[gameState.patternType];
+              playSound(attractSound, 0.2);
+              break;
           }
-        }, { passive: true });
+        });
+
+        document.addEventListener('keyup', (e) => {
+          switch (e.key.toLowerCase()) {
+            case 'w':
+            case 'arrowup':
+              inputState.moveUp = false;
+              break;
+            case 's':
+            case 'arrowdown':
+              inputState.moveDown = false;
+              break;
+            case 'a':
+            case 'arrowleft':
+              inputState.moveLeft = false;
+              break;
+            case 'd':
+            case 'arrowright':
+              inputState.moveRight = false;
+              break;
+          }
+        });
+
+        document.addEventListener('mousedown', (e) => {
+          if (e.button === 0) {
+            inputState.attract = true;
+            playSound(attractSound);
+          } else if (e.button === 2) {
+            inputState.repel = true;
+            playSound(repelSound);
+          }
+        });
+
+        document.addEventListener('mouseup', (e) => {
+          if (e.button === 0) inputState.attract = false;
+          else if (e.button === 2) inputState.repel = false;
+          inputState.intentStrength = 0;
+        });
+
+        document.addEventListener('contextmenu', (e) => e.preventDefault());
 
         function createParticle(index, type = 'fermion', vx = 0, vy = 0) {
           const phi = (1 + Math.sqrt(5)) / 2;
           const theta = index * 2 * Math.PI * phi;
           const r = Math.sqrt(index) * 15;
-          const noise = perlinNoise(index, ipHash) * 100 - 50;
+          const noise = perlinNoise(index, gameState.level) * 100 - 50;
           return {
             id: index,
             x: canvas.width / 2 + r * Math.cos(theta) + noise,
@@ -934,12 +999,12 @@
             vx,
             vy,
             type,
-            color: type === 'fermion' ? (ipHash % 2 ? 'cyan' : 'magenta') : type === 'boson' ? 'yellow' : 'cyan',
+            color: type === 'fermion' ? 'cyan' : type === 'boson' ? 'yellow' : 'cyan',
             charge: type === 'fermion' ? (Math.random() > 0.5 ? 1 : -1) : 0,
             mass: type === 'higgs' ? 1.5 : type === 'fermion' ? 1 : 0.5,
             trail: [],
             region: getRegion2D(canvas.width / 2 + r * Math.cos(theta), canvas.height / 2 + r * Math.sin(theta)),
-            phase: Math.random() * Math.PI * 2 + (ipHash % 100) * 0.1
+            phase: Math.random() * Math.PI * 2
           };
         }
 
@@ -955,115 +1020,120 @@
 
         function initParticles() {
           particles = [];
-          for (let i = 0; i < 10; i++) {
+          const particleCount = 50 + gameState.level * 10;
+          for (let i = 0; i < particleCount; i++) {
             particles.push(createParticle(i, Math.random() > 0.7 ? 'boson' : Math.random() > 0.9 ? 'higgs' : 'fermion'));
           }
-          logDebug('2D canvas particles initialized: ' + particles.length);
+          logDebug(`2D canvas particles initialized: ${particles.length}`);
         }
-        initParticles();
 
-        function triggerBigBang() {
-          bigBangTime = Date.now();
-          playBigBangSound();
-          particles = [];
-          for (let i = 0; i < 50; i++) {
-            const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2);
-            const r = Math.sqrt(i) * 20;
-            const type = Math.random() > 0.7 ? 'boson' : Math.random() > 0.9 ? 'higgs' : 'fermion';
-            particles.push(createParticle(i, type, r * Math.cos(theta) * 0.05, r * Math.sin(theta) * 0.05));
-          }
-          logDebug('2D Big Bang triggered');
+        function startGame() {
+          gameState.isGameRunning = true;
+          gameState.level = 1;
+          gameState.score = 0;
+          gameState.energy = 100;
+          gameState.timeLeft = 60;
+          gameState.patternType = 'orbit';
+          initParticles();
+          document.getElementById('start-game').style.display = 'none';
+          document.getElementById('game-info').style.display = 'block';
+          playSound(levelUpSound);
+          logDebug('Game started');
         }
 
         function animate() {
           try {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const now = Date.now();
-            const elapsed = (now - bigBangTime) / 1000;
+            if (!gameState.isGameRunning) return;
 
+            // Update Avatar
+            const speed = 5;
+            if (inputState.moveUp) avatar.y -= speed;
+            if (inputState.moveDown) avatar.y += speed;
+            if (inputState.moveLeft) avatar.x -= speed;
+            if (inputState.moveRight) avatar.x += speed;
+            avatar.x = Math.max(0, Math.min(canvas.width, avatar.x));
+            avatar.y = Math.max(0, Math.min(canvas.height, avatar.y));
+
+            // Draw Avatar
+            ctx.beginPath();
+            ctx.arc(avatar.x, avatar.y, 10, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(0, 255, 255, ${0.5 + 0.5 * Math.sin(Date.now() * 0.005)})`;
+            ctx.globalAlpha = 0.9;
+            ctx.fill();
+
+            // Update Intent
+            if (inputState.attract || inputState.repel) {
+              inputState.intentStrength = Math.min(inputState.intentStrength + 0.05, 1);
+              gameState.energy = Math.max(0, gameState.energy - 0.2);
+              if (gameState.energy <= 0) {
+                inputState.attract = false;
+                inputState.repel = false;
+                inputState.intentStrength = 0;
+              }
+            } else {
+              inputState.intentStrength = Math.max(inputState.intentStrength - 0.05, 0);
+              gameState.energy = Math.min(100, gameState.energy + 0.1);
+            }
+
+            // Update Particles
             particles.forEach(p => {
               p.trail.push({ x: p.x, y: p.y });
               if (p.trail.length > 30) p.trail.shift();
 
               let fx = 0, fy = 0;
+              const dx = avatar.x - p.x;
+              const dy = avatar.y - p.y;
+              const distToAvatar = Math.hypot(dx, dy);
+              if (distToAvatar > 2 && distToAvatar < 200) {
+                if (inputState.attract && gameState.energy > 0) {
+                  const strength = 0.1 * inputState.intentStrength * (1 + gameState.level * 0.2);
+                  fx += strength * dx / distToAvatar;
+                  fy += strength * dy / distToAvatar;
+                  if (gameState.patternType === 'orbit' && p.region === 'planet') {
+                    const theta = Math.atan2(dy, dx);
+                    fx += 0.02 * Math.cos(theta + p.phase);
+                    fy += 0.02 * Math.sin(theta + p.phase);
+                  } else if (gameState.patternType === 'cluster' && p.region === 'life') {
+                    fx += 0.05 * Math.exp(-distToAvatar / 20) * dx / distToAvatar;
+                    fy += 0.05 * Math.exp(-distToAvatar / 20) * dy / distToAvatar;
+                  } else if (gameState.patternType === 'spiral' && p.region === 'energy') {
+                    const theta = Math.atan2(dy, dx);
+                    fx += 0.015 * Math.exp(-0.08 * distToAvatar) * Math.cos(theta + p.phase);
+                    fy += 0.015 * Math.exp(-0.08 * distToAvatar) * Math.sin(theta + p.phase);
+                  } else if (gameState.patternType === 'lattice' && p.region === 'object') {
+                    const angle = (p.id % 5) * 2 * Math.PI / 5;
+                    fx += 0.01 * Math.cos(angle);
+                    fy += 0.01 * Math.sin(angle);
+                  }
+                } else if (inputState.repel && gameState.energy > 0) {
+                  const strength = -0.1 * inputState.intentStrength * (1 + gameState.level * 0.2);
+                  fx += strength * dx / distToAvatar;
+                  fy += strength * dy / distToAvatar;
+                }
+              }
+
               particles.forEach(p2 => {
                 if (p !== p2) {
                   const dx = p2.x - p.x;
                   const dy = p2.y - p.y;
                   const dist = Math.hypot(dx, dy);
-                  if (dist > 2 && dist < 200) {
-                    if (forcesEnabled.em && p.charge && p2.charge) {
-                      const k = 0.04 + 0.01 * Math.sin(p.id + ipHash * 0.01);
+                  if (dist > 2 && dist < 150) {
+                    if (p.charge && p2.charge) {
+                      const k = 0.03;
                       const f = k * (p.charge * p2.charge) / (dist * dist);
                       fx += f * dx / dist;
                       fy += f * dy / dist;
                     }
-                    if (forcesEnabled.strong && p.type === 'fermion' && p2.type === 'boson' && dist < 50) {
-                      const g = 0.1 + 0.02 * perlinNoise(p.id, p2.id);
-                      const f = -g / dist * Math.exp(-dist / (20 + p.id % 3));
-                      fx += f * dx / dist;
-                      fy += f * dy / dist;
-                    }
-                    if (forcesEnabled.weak && p.type === 'fermion' && Math.random() < 0.005) {
-                      p.color = p.color === 'cyan' ? 'magenta' : 'cyan';
-                    }
-                    if (forcesEnabled.higgs && p2.type === 'higgs') {
-                      fx -= p.vx * 0.06 * p.mass;
-                      fy -= p.vy * 0.06 * p.mass;
-                    }
-                    if (forcesEnabled.grav && p.region === 'planet' && dist < 120) {
-                      const G = 0.03 + 0.01 * perlinNoise(p.id, ipHash);
-                      const f = -G * p.mass * p2.mass / (dist * dist);
-                      fx += f * dx / dist;
-                      fy += f * dy / dist;
-                      const theta = Math.atan2(p.y, p.x);
-                      const eccentricity = 0.3 + 0.2 * Math.sin(p.id + ipHash * 0.1);
-                      fx += 0.02 * Math.cos(theta + p.phase) * eccentricity;
-                      fy += 0.02 * Math.sin(theta + p.phase) * eccentricity;
-                    }
-                    if (forcesEnabled.cluster && p.region === 'life' && dist < 60) {
-                      const sigma = 25 + 5 * (p.id % 3);
-                      const epsilon = 0.06 + 0.01 * perlinNoise(p.id, ipHash);
-                      const r6 = Math.pow(sigma / dist, 6);
-                      const f = epsilon * (12 * r6 * r6 - 6 * r6) / dist;
-                      fx += f * dx / dist;
-                      fy += f * dy / dist;
-                    }
-                    if (forcesEnabled.wave && p.region === 'energy') {
-                      const A = 0.03 + 0.01 * Math.sin(p.id + ipHash * 0.02);
-                      const f = A * Math.sin(now * 0.001 + dist + p.phase);
-                      fx += f * dx / dist;
-                      fy += f * dy / dist;
-                      const theta = Math.atan2(p.y, p.x);
-                      fx += 0.015 * Math.exp(-0.08 * dist) * Math.cos(theta + p.phase + elapsed * 0.1);
-                      fy += 0.015 * Math.exp(-0.08 * dist) * Math.sin(theta + p.phase + elapsed * 0.1);
-                    }
-                    if (p.region === 'object') {
-                      const f = -0.06 * Math.cos((p.id % 4) * Math.PI / 2 + ipHash * 0.01) / dist;
-                      fx += f * dx / dist;
-                      fy += f * dy / dist;
-                      const angle = (p.id % 5) * 2 * Math.PI / 5;
-                      fx += 0.01 * Math.cos(angle);
-                      fy += 0.01 * Math.sin(angle);
-                    }
-                    if (forcesEnabled.dark) {
-                      const f = -0.02 * Math.exp(-dist / (50 + ipHash % 5)) / dist;
+                    if (p.type === 'fermion' && p2.type === 'boson' && dist < 40) {
+                      const g = 0.08;
+                      const f = -g / dist * Math.exp(-dist / 20);
                       fx += f * dx / dist;
                       fy += f * dy / dist;
                     }
                   }
                 }
               });
-
-              // Quantum Tunneling
-              if (Math.random() < 0.002) {
-                p.x += (Math.random() - 0.5) * 50;
-                p.y += (Math.random() - 0.5) * 50;
-              }
-
-              // Mouse Interaction
-              fx += (mousePos.x - canvas.width / 2) * 0.00008;
-              fy += (mousePos.y - canvas.height / 2) * 0.00008;
 
               p.vx += fx / p.mass;
               p.vy += fy / p.mass;
@@ -1072,7 +1142,7 @@
               p.x += p.vx;
               p.y += p.vy;
 
-              // Draw particle
+              // Draw Particle
               ctx.beginPath();
               ctx.arc(p.x, p.y, p.type === 'higgs' ? 5 : 3, 0, Math.PI * 2);
               ctx.fillStyle = p.color;
@@ -1080,7 +1150,7 @@
               ctx.fill();
             });
 
-            // Draw trails
+            // Draw Trails
             particles.forEach(p => {
               if (p.trail.length >= 2) {
                 ctx.beginPath();
@@ -1096,9 +1166,52 @@
 
             ctx.globalAlpha = 1;
 
-            if (particles.length < 50 && Math.random() < 0.01) {
-              particles.push(createParticle(particles.length));
+            // Scoring
+            let patternCount = 0;
+            particles.forEach(p => {
+              let inPattern = false;
+              const dist = Math.hypot(p.x - avatar.x, p.y - avatar.y);
+              if (gameState.patternType === 'orbit' && p.region === 'planet') {
+                if (dist > 20 && dist < 50 && Math.hypot(p.vx, p.vy) < 5) inPattern = true;
+              } else if (gameState.patternType === 'cluster' && p.region === 'life') {
+                let neighbors = particles.filter(p2 => p !== p2 && Math.hypot(p2.x - p.x, p2.y - p.y) < 30).length;
+                if (neighbors >= 3) inPattern = true;
+              } else if (gameState.patternType === 'spiral' && p.region === 'energy') {
+                if (dist > 20 && dist < 60 && Math.hypot(p.vx, p.vy) < 4) inPattern = true;
+              } else if (gameState.patternType === 'lattice' && p.region === 'object') {
+                let aligned = particles.filter(p2 => p !== p2 && Math.abs(Math.hypot(p2.x - p.x, p2.y - p.y) - 20) < 5).length;
+                if (aligned >= 2) inPattern = true;
+              }
+              if (inPattern) patternCount++;
+            });
+            if (patternCount >= 10) {
+              gameState.score += patternCount * 10;
+              playSound(levelUpSound, 0.3);
+              particles = particles.filter(p => !p.inPattern);
+              initParticles();
             }
+
+            // Time and Level Progression
+            gameState.timeLeft -= 1 / 60;
+            if (gameState.timeLeft <= 0) {
+              if (gameState.level < 5) {
+                gameState.level++;
+                gameState.timeLeft = 60;
+                gameState.energy = 100;
+                initParticles();
+                playSound(levelUpSound);
+              } else {
+                gameState.isGameRunning = false;
+                document.getElementById('start-game').textContent = 'Restart Game';
+                document.getElementById('start-game').style.display = 'block';
+              }
+            }
+
+            // Update UI
+            document.getElementById('game-info').innerHTML = `
+              Level: ${gameState.level} | Score: ${gameState.score} | Energy: ${Math.round(gameState.energy)}% | Time: ${Math.round(gameState.timeLeft)}s<br>
+              Pattern: ${gameState.patternType} | Use WASD/Arrows to move, Left Click to attract, Right Click to repel, Space to switch patterns.
+            `;
 
             requestAnimationFrame(animate);
           } catch (error) {
@@ -1114,21 +1227,19 @@
           initParticles();
         }, { passive: true });
 
-        animationMode = '2d';
-        logDebug('2D canvas simulation started');
-        return { triggerBigBang, setIPHash: (hash) => { ipHash = hash; } };
+        logDebug('2D canvas game started');
+        return { startGame };
       } catch (error) {
         logDebug('2D Canvas Initialization Error: ' + error.message);
         return false;
       }
     }
 
-    // Initialize Simulation
-    let simulation = null;
-    let animationMode = 'none';
+    // Initialize Game
+    let game = null;
     const errorMessage = document.getElementById('error-message');
 
-    async function initializeSimulation() {
+    async function initializeGame() {
       const webglCanvas = document.getElementById('background-canvas');
       const fallbackCanvas = document.getElementById('fallback-canvas');
 
@@ -1137,8 +1248,6 @@
         fallbackCanvas.style.display = 'none';
         errorMessage.style.display = 'none';
         initAudio();
-        const ip = await fetchPublicIP();
-        sim.setIPHash(hashString(ip));
         return sim;
       }
 
@@ -1148,37 +1257,18 @@
         fallbackCanvas.style.display = 'block';
         errorMessage.style.display = 'none';
         initAudio();
-        const ip = await fetchPublicIP();
-        sim.setIPHash(hashString(ip));
         return sim;
       }
 
       errorMessage.style.display = 'block';
-      logDebug('All simulation methods failed');
+      logDebug('All game methods failed');
       return null;
-    }
-
-    // Copy IP to Clipboard
-    function copyIP() {
-      try {
-        const ip = document.getElementById('ip-display').textContent;
-        navigator.clipboard.writeText(ip).then(() => {
-          logDebug('IP copied successfully');
-          if (simulation) simulation.triggerBigBang();
-        }).catch(err => {
-          logDebug('Clipboard Error: ' + err.message);
-          if (simulation) simulation.triggerBigBang();
-        });
-      } catch (error) {
-        logDebug('Copy IP Error: ' + error.message);
-        if (simulation) simulation.triggerBigBang();
-      }
     }
 
     // Initialize and Bind Events
     document.addEventListener('DOMContentLoaded', async () => {
-      simulation = await initializeSimulation();
-      document.getElementById('copy-ip').addEventListener('click', copyIP);
+      game = await initializeGame();
+      document.getElementById('game-info').style.display = 'none';
     });
   </script>
 </body>
