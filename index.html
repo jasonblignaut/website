@@ -27,6 +27,7 @@
       --cosmic-magenta: #ff4d94;
       --cosmic-cyan: #4dffeb;
       --cosmic-purple: #cc66ff;
+      --cosmic-gold: #ffb700;
       --light-aura: #e6f0ff;
       --glow-radius: 10px;
     }
@@ -85,6 +86,13 @@
       margin-bottom: clamp(1rem, 2.5vw, 1.5rem);
       text-shadow: 0 0 8px var(--cosmic-blue);
       letter-spacing: 0.15rem;
+      animation: pulse-glow 4s infinite alternate;
+    }
+
+    @keyframes pulse-glow {
+      0% { text-shadow: 0 0 8px var(--cosmic-blue); }
+      50% { text-shadow: 0 0 15px var(--cosmic-magenta); }
+      100% { text-shadow: 0 0 12px var(--cosmic-cyan); }
     }
 
     .ip-display {
@@ -98,6 +106,26 @@
       margin-bottom: clamp(0.5rem, 1.5vw, 0.8rem);
       text-shadow: 0 0 8px var(--cosmic-blue);
       word-break: break-all;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ip-display::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(ellipse at center, rgba(77, 255, 235, 0.2) 0%, rgba(0, 0, 0, 0) 70%);
+      animation: ripple 5s infinite ease-in-out;
+      pointer-events: none;
+    }
+
+    @keyframes ripple {
+      0% { transform: scale(0.5); opacity: 0.5; }
+      50% { transform: scale(1); opacity: 0.2; }
+      100% { transform: scale(0.5); opacity: 0.5; }
     }
 
     .network-info {
@@ -107,6 +135,14 @@
       line-height: 1.5;
       text-shadow: 0 0 5px var(--cosmic-blue);
       margin-bottom: clamp(0.5rem, 1vw, 0.8rem);
+      position: relative;
+    }
+
+    .network-info::before {
+      content: '⚡';
+      margin-right: 0.5rem;
+      color: var(--cosmic-gold);
+      text-shadow: 0 0 5px var(--cosmic-gold);
     }
 
     .speed-results {
@@ -129,6 +165,21 @@
       margin-bottom: clamp(0.5rem, 1vw, 0.8rem);
       width: 100%;
       max-width: 600px;
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 15px var(--cosmic-purple);
+    }
+
+    .speed-test-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      pointer-events: none;
+      background: linear-gradient(135deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);
     }
 
     .speed-test-container div {
@@ -148,6 +199,7 @@
       min-height: 180px;
       border: none;
       overflow: hidden !important;
+      filter: hue-rotate(40deg) brightness(0.9);
     }
 
     .speed-test-attribution {
@@ -159,10 +211,12 @@
     .speed-test-attribution a {
       color: var(--cosmic-cyan);
       text-decoration: none;
+      transition: all 0.3s ease;
     }
 
     .speed-test-attribution a:hover {
-      text-decoration: underline;
+      color: var(--cosmic-magenta);
+      text-shadow: 0 0 8px var(--cosmic-magenta);
     }
 
     .error-message {
@@ -185,12 +239,33 @@
       box-shadow: 0 0 var(--glow-radius) var(--cosmic-blue);
       transition: all 0.3s ease;
       margin-top: clamp(0.5rem, 1vw, 0.8rem);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0) 70%);
+      transform: scale(0);
+      opacity: 0;
+      transition: transform 0.5s, opacity 0.5s;
+      pointer-events: none;
     }
 
     .btn:hover {
       transform: scale(1.05);
       box-shadow: 0 0 calc(var(--glow-radius) * 1.5) var(--cosmic-magenta);
-      background: var(--cosmic-cyan);
+      background: linear-gradient(90deg, var(--cosmic-magenta), var(--cosmic-cyan));
+    }
+
+    .btn:hover::before {
+      transform: scale(1);
+      opacity: 1;
     }
 
     footer {
@@ -203,6 +278,7 @@
       color: var(--light-aura);
       z-index: 10;
       text-shadow: 0 0 5px var(--cosmic-blue);
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
     }
 
     @media (max-width: 768px) {
@@ -259,6 +335,51 @@
         min-height: 120px;
       }
     }
+
+    /* CSS to hide OpenSpeedTest logo */
+    .speed-test-container iframe {
+      margin-top: -40px; /* Push content up to hide top bar */
+    }
+
+    /* Custom CSS loader for initial loading */
+    .quantum-loader {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 80px;
+      z-index: 20;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .quantum-loader .dot {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--cosmic-cyan);
+      animation: quantum-spin 3s linear infinite;
+    }
+
+    @keyframes quantum-spin {
+      0% { 
+        transform: rotate(0deg) translateX(20px) rotate(0deg);
+        background-color: var(--cosmic-cyan);
+      }
+      33% { 
+        background-color: var(--cosmic-purple);
+      }
+      66% { 
+        background-color: var(--cosmic-magenta);
+      }
+      100% { 
+        transform: rotate(360deg) translateX(20px) rotate(-360deg); 
+        background-color: var(--cosmic-cyan);
+      }
+    }
   </style>
 </head>
 
@@ -272,7 +393,11 @@
     <div class="network-info" id="network-info">Fetching network info...</div>
     <div class="speed-test-container">
       <div>
-        <iframe src="https://openspeedtest.com/speedtest" allowfullscreen></iframe>
+        <iframe id="speedtest-frame" src="https://openspeedtest.com/speedtest?start=true" allowfullscreen></iframe>
+        <div class="speed-test-overlay"></div>
+        <div class="quantum-loader" id="quantum-loader">
+          <!-- Dots will be generated by JS -->
+        </div>
       </div>
       <div class="speed-test-attribution">Powered by <a href="https://labverse.co.za" target="_blank">Labverse SpeedTest</a></div>
     </div>
@@ -298,24 +423,60 @@
     import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
     import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
+    // Constants for mathematical patterns
+    const PHI = (1 + Math.sqrt(5)) / 2; // Golden ratio
+    const TAU = Math.PI * 2;            // Full circle in radians
+    const SQRT3 = Math.sqrt(3);         // Square root of 3 for perfect hexagons
+
     // Debug Logging
     function logDebug(message) {
       console.log('[DEBUG] ' + message);
     }
 
-    // Fetch Public IP
-    async function fetchPublicIP() {
-      try {
-        const response = await fetch('https://api.ipify.org?format=json');
-        if (!response.ok) throw new Error('IP fetch failed');
-        const data = await response.json();
-        document.getElementById('ip-display').textContent = data.ip;
-        return data.ip;
-      } catch (error) {
-        document.getElementById('ip-display').textContent = 'IP unavailable';
-        logDebug('IP Fetch Error: ' + error.message);
-        return null;
+    // Create quantum loader animation
+    function createQuantumLoader() {
+      const loader = document.getElementById('quantum-loader');
+      const dotCount = 8;
+      
+      for (let i = 0; i < dotCount; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'dot';
+        dot.style.animationDelay = `${i * (3 / dotCount)}s`;
+        loader.appendChild(dot);
       }
+      
+      // Hide loader when speedtest is ready
+      const speedtestFrame = document.getElementById('speedtest-frame');
+      speedtestFrame.addEventListener('load', () => {
+        setTimeout(() => {
+          loader.style.display = 'none';
+        }, 2000); // Give a bit of time for the speedtest to initialize
+      });
+    }
+
+    // Fetch Public IP with improved error handling
+    async function fetchPublicIP() {
+      const endpoints = [
+        'https://api.ipify.org?format=json',
+        'https://api.ip.sb/jsonip',
+        'https://api.myip.com'
+      ];
+      
+      for (const endpoint of endpoints) {
+        try {
+          const response = await fetch(endpoint);
+          if (!response.ok) continue;
+          const data = await response.json();
+          const ip = data.ip || data.myip || 'IP unavailable';
+          document.getElementById('ip-display').textContent = ip;
+          return ip;
+        } catch (error) {
+          logDebug(`IP Fetch Error (${endpoint}): ${error.message}`);
+        }
+      }
+      
+      document.getElementById('ip-display').textContent = 'IP unavailable';
+      return null;
     }
 
     // Fetch Network Info
@@ -348,7 +509,7 @@
       document.getElementById('network-info').innerHTML = `ISP: Unknown<br>Location: Unknown`;
     }
 
-    // Flower of Life Background
+    // Flower of Life Background with improved mathematical accuracy
     function initBackgroundCanvas() {
       try {
         const canvas = document.getElementById('background-canvas');
@@ -358,65 +519,127 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        const PI = Math.PI;
-        const SQRT3 = Math.sqrt(3);
+        // Constants for Flower of Life
+        const VESICA_RATIO = SQRT3 / 2; // Perfect ratio for Vesica Piscis formation
 
         function drawFlowerOfLife(time) {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-          // Cosmic Gradient
+          // Deep Space Gradient
           const gradient = ctx.createRadialGradient(
             canvas.width / 2, canvas.height / 2, 0,
             canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height)
           );
           gradient.addColorStop(0, 'rgba(10, 10, 30, 1)');
-          gradient.addColorStop(0.4, 'rgba(20, 50, 80, 0.9)');
-          gradient.addColorStop(0.8, 'rgba(5, 15, 40, 0.7)');
+          gradient.addColorStop(0.3, 'rgba(15, 40, 70, 0.9)');
+          gradient.addColorStop(0.6, 'rgba(8, 20, 50, 0.8)');
           gradient.addColorStop(1, 'rgba(0, 0, 0, 1)');
           ctx.fillStyle = gradient;
           ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-          // Stars
-          for (let i = 0; i < 200; i++) {
-            ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.3})`;
+          // Fibonacci Spiral Stars
+          let phi = 0;
+          const starCount = 300;
+          for (let i = 0; i < starCount; i++) {
+            // Golden angle progression
+            phi += TAU * (1 - 1/PHI);
+            
+            // Fibonacci distance from center
+            const distance = Math.sqrt(i) * 3;
+            const x = Math.cos(phi) * distance;
+            const y = Math.sin(phi) * distance;
+            
+            // Star size based on fibonacci sequence
+            const starSize = ((i % 5 === 0) ? 1.5 : 0.8) * Math.random();
+            
+            // Star brightness with time pulsation
+            const brightness = 0.3 + 0.4 * Math.sin(time * 0.0004 + i * 0.1);
+            
+            ctx.fillStyle = `rgba(255, 255, 255, ${brightness})`;
             ctx.beginPath();
             ctx.arc(
-              Math.random() * canvas.width,
-              Math.random() * canvas.height,
-              Math.random() * 1.5,
-              0, 2 * PI
+              canvas.width / 2 + x,
+              canvas.height / 2 + y,
+              starSize,
+              0, TAU
             );
             ctx.fill();
           }
 
-          // Accurate Flower of Life
-          ctx.strokeStyle = `rgba(100, 200, 255, ${0.3 + Math.sin(time * 0.001) * 0.2})`;
-          ctx.lineWidth = 1.5;
+          // Mathematically accurate Flower of Life
           const centerX = canvas.width / 2;
           const centerY = canvas.height / 2;
-          const radius = Math.min(canvas.width, canvas.height) / 10;
-          const anim = Math.sin(time * 0.0004) * 5;
-          const positions = [
-            { x: 0, y: 0 },
-            ...Array.from({ length: 6 }, (_, i) => ({
-              x: radius * Math.cos(i * PI / 3),
-              y: radius * Math.sin(i * PI / 3)
-            })),
-            ...Array.from({ length: 12 }, (_, i) => {
-              const angle = i * PI / 6;
-              const r = radius * SQRT3;
-              return {
-                x: r * Math.cos(angle),
-                y: r * Math.sin(angle)
-              };
-            })
+          const baseRadius = Math.min(canvas.width, canvas.height) / 10;
+          const pulseRadius = baseRadius * (1 + 0.05 * Math.sin(time * 0.001));
+          
+          // Define the base circle pattern points
+          // These are precise points that form a perfect Flower of Life
+          const seedPoints = [
+            { x: 0, y: 0 }, // Center circle
           ];
-
-          positions.forEach(pos => {
-            ctx.beginPath();
-            ctx.arc(centerX + pos.x + anim, centerY + pos.y + anim, radius, 0, 2 * PI);
-            ctx.stroke();
+          
+          // First ring - 6 circles
+          for (let i = 0; i < 6; i++) {
+            const angle = i * TAU / 6;
+            seedPoints.push({
+              x: pulseRadius * Math.cos(angle),
+              y: pulseRadius * Math.sin(angle)
+            });
+          }
+          
+          // Second ring - 12 circles at intersections
+          for (let i = 0; i < 12; i++) {
+            const angle = (i * TAU / 12) + (TAU / 24); // Offset to place at intersections
+            const r = pulseRadius * SQRT3; // Perfect distance for second ring
+            seedPoints.push({
+              x: r * Math.cos(angle),
+              y: r * Math.sin(angle)
+            });
+          }
+          
+          // Draw each circle with a dynamic glow and opacity
+          seedPoints.forEach((pos, index) => {
+            // Layer effect with multiple circles at slightly different opacities
+            for (let layer = 3; layer >= 0; layer--) {
+              const layerRadius = pulseRadius * (1 + layer * 0.03);
+              const opacity = 0.1 + (0.1 * (3 - layer)) + 0.05 * Math.sin(time * 0.001 + index * 0.2);
+              
+              // Dynamic color cycling for sacred geometry effect
+              const hue = (time * 0.02 + index * 15) % 360;
+              ctx.strokeStyle = `hsla(${hue}, 80%, 70%, ${opacity})`;
+              ctx.lineWidth = 1 + 0.5 * Math.sin(time * 0.0005 + index * 0.3);
+              
+              ctx.beginPath();
+              ctx.arc(
+                centerX + pos.x,
+                centerY + pos.y,
+                layerRadius,
+                0, TAU
+              );
+              ctx.stroke();
+            }
           });
+          
+          // Central Vesica Piscis for special emphasis
+          const vesica = {
+            x1: centerX - pulseRadius * 0.5,
+            y1: centerY,
+            x2: centerX + pulseRadius * 0.5,
+            y2: centerY
+          };
+          
+          // Draw vesica piscis with dynamic glow
+          const vesicaGlow = Math.sin(time * 0.001) * 0.3 + 0.6;
+          ctx.strokeStyle = `rgba(180, 220, 255, ${vesicaGlow})`;
+          ctx.lineWidth = 2;
+          
+          ctx.beginPath();
+          ctx.arc(vesica.x1, vesica.y1, pulseRadius, 0, TAU);
+          ctx.stroke();
+          
+          ctx.beginPath();
+          ctx.arc(vesica.x2, vesica.y2, pulseRadius, 0, TAU);
+          ctx.stroke();
         }
 
         function animateBackground(time) {
@@ -433,11 +656,12 @@
         return true;
       } catch (error) {
         logDebug('Background Canvas Initialization Error: ' + error.message);
+        document.getElementById('error-message').style.display = 'block';
         return false;
       }
     }
 
-    // WebGL Cube with LED Particles
+    // WebGL Cube with LED Particles - Enhanced
     function initWebGL() {
       try {
         const canvas = document.getElementById('webgl-canvas');
@@ -449,7 +673,7 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setClearColor(0x000000, 0);
 
-        // Post-processing
+        // Post-processing with enhanced bloom
         const composer = new EffectComposer(renderer);
         const renderPass = new RenderPass(scene, camera);
         composer.addPass(renderPass);
@@ -459,9 +683,12 @@
           0.4,
           0.7
         );
+        bloomPass.threshold = 0.2;
+        bloomPass.strength = 1.2;
+        bloomPass.radius = 0.7;
         composer.addPass(bloomPass);
 
-        // Cube
+        // Cube with Metatron's Cube inspired geometry
         const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
         const cubeMaterial = new THREE.MeshBasicMaterial({
           color: 0x000000,
@@ -472,7 +699,7 @@
         const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
         scene.add(cube);
 
-        // Cube Edges (LED Lines)
+        // Cube Edges with Quantum Fluctuation Effect
         const edgeGeometry = new THREE.EdgesGeometry(cubeGeometry);
         const edgeMaterial = new THREE.ShaderMaterial({
           uniforms: {
@@ -483,9 +710,17 @@
           },
           vertexShader: `
             varying vec3 vPosition;
+            uniform float time;
+            
             void main() {
               vPosition = position;
-              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+              
+              // Add subtle quantum fluctuation to edges
+              vec3 pos = position;
+              float fluctuation = sin(time * 2.0 + position.x * 10.0) * 0.01 * sin(position.y * 15.0);
+              pos += normalize(position) * fluctuation;
+              
+              gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
             }
           `,
           fragmentShader: `
@@ -494,201 +729,14 @@
             uniform vec3 uColor2;
             uniform vec3 uColor3;
             varying vec3 vPosition;
-            void main() {
-              float t1 = sin(time * 0.5) * 0.5 + 0.5;
-              float t2 = sin(time * 0.3 + 3.141592653589793) * 0.5 + 0.5;
-              vec3 color = mix(uColor1, uColor2, t1);
-              color = mix(color, uColor3, t2);
-              float pulse = sin(time * 2.0 + vPosition.x * 0.5) * 0.5 + 0.5;
-              gl_FragColor = vec4(color * (1.0 + pulse), 1.0);
-            }
-          `,
-          transparent: true
-        });
-        const edges = new THREE.LineSegments(edgeGeometry, edgeMaterial);
-        cube.add(edges);
-
-        // LED Particles Inside Cube
-        const phi = (1 + Math.sqrt(5)) / 2;
-        const particleCount = 50;
-        const particleGeometry = new THREE.BufferGeometry();
-        const positions = new Float32Array(particleCount * 3);
-        const offsets = new Float32Array(particleCount);
-        for (let i = 0; i < particleCount; i++) {
-          const theta = i * 2 * Math.PI * phi;
-          const r = Math.sqrt(i) * 0.3;
-          positions[i * 3] = r * Math.cos(theta) * 0.4;
-          positions[i * 3 + 1] = r * Math.sin(theta) * 0.4;
-          positions[i * 3 + 2] = (Math.random() - 0.5) * 0.4;
-          offsets[i] = Math.random() * 2 * Math.PI;
-        }
-        particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        particleGeometry.setAttribute('offset', new THREE.BufferAttribute(offsets, 1));
-        const particleMaterial = new THREE.ShaderMaterial({
-          uniforms: {
-            time: { value: 0 },
-            uColor1: { value: new THREE.Color('#ff4d94') },
-            uColor2: { value: new THREE.Color('#4dffeb') },
-            uColor3: { value: new THREE.Color('#cc66ff') }
-          },
-          vertexShader: `
-            attribute float offset;
-            varying float vOffset;
-            void main() {
-              vOffset = offset;
-              gl_PointSize = 8.0 + sin(offset) * 4.0;
-              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-            }
-          `,
-          fragmentShader: `
-            uniform float time;
-            uniform vec3 uColor1;
-            uniform vec3 uColor2;
-            uniform vec3 uColor3;
-            varying float vOffset;
-            void main() {
-              float t1 = sin(time * 0.4) * 0.5 + 0.5;
-              float t2 = sin(time * 0.2 + 3.141592653589793) * 0.5 + 0.5;
-              vec3 color = mix(uColor1, uColor2, t1);
-              color = mix(color, uColor3, t2);
-              float pulse = sin(time * 2.5 + vOffset) * 0.5 + 0.5;
-              vec2 coord = gl_PointCoord - vec2(0.5);
-              float dist = length(coord);
-              if (dist > 0.5) discard;
-              float alpha = smoothstep(0.5, 0.2, dist);
-              gl_FragColor = vec4(color * (1.0 + pulse), alpha);
-            }
-          `,
-          transparent: true
-        });
-        const particles = new THREE.Points(particleGeometry, particleMaterial);
-        cube.add(particles);
-
-        // Magnificent Big Bang Burst
-        function triggerBigBang() {
-          const burstCount = 100;
-          const burstPositions = new Float32Array(burstCount * 3);
-          const burstOffsets = new Float32Array(burstCount);
-          const burstVelocities = new Float32Array(burstCount * 3);
-          const goldenAngle = 137.508 * Math.PI / 180; // radians
-          for (let i = 0; i < burstCount; i++) {
-            const theta = i * goldenAngle;
-            const phiAngle = Math.acos(1 - 2 * (i + 0.5) / burstCount);
-            const r = 0.01;
-            const speed = 0.5 + Math.random() * 0.5;
-            burstPositions[i * 3] = r * Math.sin(phiAngle) * Math.cos(theta);
-            burstPositions[i * 3 + 1] = r * Math.sin(phiAngle) * Math.sin(theta);
-            burstPositions[i * 3 + 2] = r * Math.cos(phiAngle);
-            burstVelocities[i * 3] = speed * Math.sin(phiAngle) * Math.cos(theta);
-            burstVelocities[i * 3 + 1] = speed * Math.sin(phiAngle) * Math.sin(theta);
-            burstVelocities[i * 3 + 2] = speed * Math.cos(phiAngle);
-            burstOffsets[i] = Math.random() * 2 * Math.PI;
-          }
-          const burstGeometry = new THREE.BufferGeometry();
-          burstGeometry.setAttribute('position', new THREE.BufferAttribute(burstPositions, 3));
-          burstGeometry.setAttribute('offset', new THREE.BufferAttribute(burstOffsets, 1));
-          const burstMaterial = new THREE.ShaderMaterial({
-            uniforms: {
-              time: { value: 0 },
-              uColor1: { value: new THREE.Color('#ff4d94') },
-              uColor2: { value: new THREE.Color('#4dffeb') },
-              uColor3: { value: new THREE.Color('#cc66ff') },
-              uColor4: { value: new THREE.Color('#66ff99') }
-            },
-            vertexShader: `
-              attribute float offset;
-              uniform float time;
-              varying float vOffset;
-              varying float vTime;
-              void main() {
-                vOffset = offset;
-                vTime = time;
-                vec3 pos = position;
-                pos += vec3(
-                  position.x * time * 0.5,
-                  position.y * time * 0.5,
-                  position.z * time * 0.5
-                );
-                gl_PointSize = 10.0 + sin(offset + time) * 6.0;
-                gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-              }
-            `,
-            fragmentShader: `
-              uniform float time;
-              uniform vec3 uColor1;
-              uniform vec3 uColor2;
-              uniform vec3 uColor3;
-              uniform vec3 uColor4;
-              varying float vOffset;
-              varying float vTime;
-              void main() {
-                float t1 = sin(time * 0.6 + vOffset) * 0.5 + 0.5;
-                float t2 = sin(time * 0.4 + vOffset + 3.141592653589793) * 0.5 + 0.5;
-                vec3 color = mix(uColor1, uColor2, t1);
-                color = mix(color, uColor3, t2);
-                color = mix(color, uColor4, sin(time * 0.3) * 0.5 + 0.5);
-                vec2 coord = gl_PointCoord - vec2(0.5);
-                float dist = length(coord);
-                if (dist > 0.5) discard;
-                float alpha = smoothstep(0.5, 0.2, dist) * (1.0 - vTime / 2.0);
-                gl_FragColor = vec4(color, alpha);
-              }
-            `,
-            transparent: true
-          });
-          const burst = new THREE.Points(burstGeometry, burstMaterial);
-          cube.add(burst);
-          let burstTime = 0;
-          const animateBurst = () => {
-            burstTime += 0.016;
-            burstMaterial.uniforms.time.value = burstTime;
-            for (let i = 0; i < burstPositions.length; i++) {
-              burstGeometry.attributes.position.array[i] +=
-                burstVelocities[i] * 0.016;
-            }
-            burstGeometry.attributes.position.needsUpdate = true;
-            if (burstTime < 2) {
-              requestAnimationFrame(animateBurst);
-            } else {
-              cube.remove(burst);
-              burstGeometry.dispose();
-              burstMaterial.dispose();
-            }
-          };
-          animateBurst();
-          logDebug('Big Bang Triggered');
-        }
-
-        // Interactivity
-        let mouseX = 0, mouseY = 0, touchX = 0, touchY = 0;
-        let targetRotationX = 0, targetRotationY = 0;
-        let isDragging = false;
-
-        document.addEventListener('mousemove', (e) => {
-          mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-          mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
-          if (!isDragging) {
-            targetRotationY = mouseX * Math.PI * 1.5;
-            targetRotationX = mouseY * Math.PI * 0.75;
-          }
-        }, { passive: true });
-
-        document.addEventListener('mousedown', () => { isDragging = true; });
-        document.addEventListener('mouseup', () => { isDragging = false; });
-
-        document.addEventListener('touchstart', (e) => {
-          if (e.touches.length > 0) {
-            const touch = e.touches[0];
-            touchX = (touch.clientX / window.innerWidth) * 2 - 1;
-            touchY = -(touch.clientY / window.innerHeight) * 2 + 1;
-            isDragging = true;
-            triggerBigBang();
-          }
-        }, { passive: true });
-
-        document.addEventListener('touchmove', (e) => {
-          if (e.touches.length > 0 && isDragging) {
-            const touch = e.touches[0];
-            const newTouchX = (touch.clientX / window.innerWidth) * 2 - 1;
-            const newTouchY = -(touch.clientY / window.innerHeight) * 2 + 1;
-            targetRotationY += (newTouch
+            
+            // Simplex noise function for quantum randomness
+            vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+            vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+            vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
+            
+            float snoise(vec2 v) {
+              const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
+              vec2 i  = floor(v + dot(v, C.yy));
+              vec2 x0 = v - i + dot(i, C.xx);
+              vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(
