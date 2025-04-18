@@ -722,7 +722,6 @@
     async function fetchIP() {
       log('Fetching public IP...');
       try {
-        // Using multiple IP services with fallbacks for reliability
         const ipServices = [
           'https://api.ipify.org?format=json',
           'https://api.seeip.org/jsonip',
@@ -730,12 +729,10 @@
           'https://ipinfo.io/json'
         ];
         
-        // Try each service with a short timeout
         for (const service of ipServices) {
           try {
             const response = await fetch(service, { signal: AbortSignal.timeout(3000) });
             const data = await response.json();
-            // Different APIs return IP in different formats
             const ip = data.ip || data.query || data.YourFuckingIPAddress || '';
             
             if (ip && ip.match(/^(?:\d{1,3}\.){3}\d{1,3}$|^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/)) {
@@ -745,7 +742,7 @@
             }
           } catch (err) {
             log(`IP service ${service} failed: ${err.message}`);
-            continue; // Try next service
+            continue;
           }
         }
         
@@ -760,7 +757,6 @@
     async function fetchLocationInfo(ip) {
       log('Fetching network location info...');
       try {
-        // Try multiple geolocation services with fallbacks
         const geoServices = [
           `https://ipinfo.io/${ip}/json`,
           'https://ipapi.co/json/',
@@ -773,19 +769,16 @@
             const response = await fetch(service, { signal: AbortSignal.timeout(3000) });
             const data = await response.json();
             
-            // Extract data - different APIs have different field names
             const info = {
               isp: data.org || data.as || data.isp || 'Unknown ISP',
               city: data.city || data.location?.city || 'Unknown City',
               country: data.country || data.country_name || 'Unknown Country'
             };
             
-            // Clean up ISP name - remove AS numbers if present
             if (info.isp.includes('AS')) {
               info.isp = info.isp.split(' ').slice(1).join(' ').trim() || 'Unknown ISP';
             }
             
-            // Validate data
             if (info.city && info.country) {
               log('Network info fetched: ' + JSON.stringify(info));
               document.getElementById('network-info').innerHTML = `ISP: ${info.isp}<br>Location: ${info.city}, ${info.country}`;
@@ -793,7 +786,7 @@
             }
           } catch (err) {
             log(`Geo service ${service} failed: ${err.message}`);
-            continue; // Try next service
+            continue;
           }
         }
         
@@ -813,8 +806,8 @@
         pingResource: 'https://labverse.co.za/assets/ping-test.txt',
       },
       testDurations: { download: 10000, ping: 3000 },
-      maxTestTimeout: 20000, // 20 seconds
-      watchdogTimeout: 25000, // Watchdog to force-finalize after 25 seconds
+      maxTestTimeout: 20000,
+      watchdogTimeout: 25000,
     };
 
     function initializeSpeedTest() {
@@ -851,7 +844,7 @@
       let controller = null;
       let watchdogTimer = null;
 
-      // Y-axis setup with logarithmic scale for better visualization
+      // Precise Y-axis scale with logarithmic distribution
       const Y_AXIS_LABELS = [0, 10, 25, 50, 100, 200, 500, 1000];
       const Y_AXIS_POSITIONS = [0, 20, 40, 60, 70, 80, 90, 100];
 
@@ -870,44 +863,42 @@
         if (speed <= 0) return 0;
         if (speed >= 1000) return 100;
 
-        // Find the two closest labels the speed falls between
-        let lowerLabel = 0, upperLabel = 10;
-        let lowerPos = 0, upperPos = 20;
-        
+        // Find the exact position between two Y-axis markers
         for (let i = 0; i < Y_AXIS_LABELS.length - 1; i++) {
           if (speed >= Y_AXIS_LABELS[i] && speed <= Y_AXIS_LABELS[i + 1]) {
-            lowerLabel = Y_AXIS_LABELS[i];
-            upperLabel = Y_AXIS_LABELS[i + 1];
-            lowerPos = Y_AXIS_POSITIONS[i];
-            upperPos = Y_AXIS_POSITIONS[i + 1];
-            break;
+            const lowerLabel = Y_AXIS_LABELS[i];
+            const upperLabel = Y_AXIS_LABELS[i + 1];
+            const lowerPos = Y_AXIS_POSITIONS[i];
+            const upperPos = Y_AXIS_POSITIONS[i + 1];
+            
+            // Calculate exact position with logarithmic interpolation
+            const logLower = Math.log10(lowerLabel || 1);
+            const logUpper = Math.log10(upperLabel);
+            const logSpeed = Math.log10(speed);
+            const fraction = (logSpeed - logLower) / (logUpper - logLower);
+            return lowerPos + fraction * (upperPos - lowerPos);
           }
         }
-
-        // Linear interpolation between the two points
-        const fraction = (speed - lowerLabel) / (upperLabel - lowerLabel);
-        const height = lowerPos + fraction * (upperPos - lowerPos);
-        return height;
+        return 0;
       }
 
       function setupGridLines() {
         gridLines.innerHTML = '';
-        const numLines = Y_AXIS_POSITIONS.length;
-        for (let i = 0; i < numLines; i++) {
+        Y_AXIS_POSITIONS.forEach(pos => {
           const gridLine = document.createElement('div');
           gridLine.className = 'grid-line';
-          gridLine.style.bottom = `${Y_AXIS_POSITIONS[i]}%`;
+          gridLine.style.bottom = `${pos}%`;
           gridLines.appendChild(gridLine);
-        }
+        });
       }
 
       function updateSpeedometer(speed) {
-        // Use logarithmic scale for the speedometer to better show lower speeds
+        // Logarithmic scale for better low-speed visibility
         const maxScale = 1000;
-        const logSpeed = Math.log1p(speed);
-        const logMax = Math.log1p(maxScale);
+        const logSpeed = Math.log10(speed || 1);
+        const logMax = Math.log10(maxScale);
         const percent = logSpeed / logMax;
-        const angle = 180 + (percent * 180); // 180° (left) to 360° (right)
+        const angle = 180 + (percent * 180);
         
         gaugeFill.style.transform = `rotate(${angle}deg)`;
         gaugeNeedle.style.transform = `rotate(${angle}deg)`;
@@ -953,7 +944,7 @@
         log('Starting download test from Cloudflare Johannesburg server...');
         let totalBytes = 0;
         startTime = performance.now();
-        const updateInterval = 100; // Update every 100ms for smoother animation
+        const updateInterval = 100; // Update every 100ms for smooth animation
         let lastUpdate = startTime;
         let lastBytes = 0;
         let lastTime = startTime;
@@ -990,7 +981,6 @@
             const currentTime = performance.now();
             const elapsed = (currentTime - startTime) / 1000;
             
-            // Calculate speed every updateInterval ms
             if (currentTime - lastUpdate >= updateInterval) {
               const elapsedSinceLast = (currentTime - lastTime) / 1000;
               const bytesSinceLast = totalBytes - lastBytes;
