@@ -127,14 +127,19 @@
     .speed-test-container {
       text-align: center;
       margin-bottom: clamp(0.5rem, 1vw, 0.8rem);
+      width: 100%;
+      max-width: 600px;
     }
 
     .speed-test-container div {
       min-height: 180px;
+      position: relative;
+      width: 100%;
+      height: 0;
+      padding-bottom: 50%;
     }
 
     .speed-test-container iframe {
-      border: none;
       position: absolute;
       top: 0;
       left: 0;
@@ -179,6 +184,7 @@
       text-transform: uppercase;
       box-shadow: 0 0 var(--glow-radius) var(--cosmic-blue);
       transition: all 0.3s ease;
+      margin-top: clamp(0.5rem, 1vw, 0.8rem);
     }
 
     .btn:hover {
@@ -265,17 +271,17 @@
     <div class="ip-display" id="ip-display">Fetching IP...</div>
     <div class="network-info" id="network-info">Fetching network info...</div>
     <div class="speed-test-container">
-      <div style="width:100%;height:0;padding-bottom:50%;position:relative;">
-        <iframe style="border:none;position:absolute;top:0;left:0;width:100%;height:100%;min-height:180px;border:none;overflow:hidden !important;" src="//openspeedtest.com/speedtest"></iframe>
+      <div>
+        <iframe src="https://openspeedtest.com/speedtest" allowfullscreen></iframe>
       </div>
-      <div class="speed-test-attribution">Provided by <a href="https://labverse.co.za">Labverse SpeedTest</a></div>
+      <div class="speed-test-attribution">Powered by <a href="https://labverse.co.za" target="_blank">Labverse SpeedTest</a></div>
     </div>
     <div class="error-message" id="error-message">Animations failed. Please check your browser settings.</div>
     <button class="btn" id="copy-ip-btn">Copy IP</button>
   </div>
 
   <footer>
-    © 2025 Labverse | Powered by 1FAR | Discover Your Digital Cosmos
+    © 2025 Labverse | Powered by 1FAR | WHAT IS MY IP ADDRESS
   </footer>
 
   <script type="importmap">
@@ -326,6 +332,7 @@
           country: data.country || 'Unknown'
         }) }
       ];
+      
       for (const { url, parser } of endpoints) {
         try {
           const response = await fetch(url);
@@ -351,8 +358,8 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        const PI = 3.141592653589793;
-        const SQRT3 = 1.732050807568877;
+        const PI = Math.PI;
+        const SQRT3 = Math.sqrt(3);
 
         function drawFlowerOfLife(time) {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -632,13 +639,13 @@
           const burst = new THREE.Points(burstGeometry, burstMaterial);
           cube.add(burst);
           let burstTime = 0;
-          const animateBurst = (t) => {
+          const animateBurst = () => {
             burstTime += 0.016;
             burstMaterial.uniforms.time.value = burstTime;
-            burstGeometry.attributes.position.array.forEach((_, i) => {
+            for (let i = 0; i < burstPositions.length; i++) {
               burstGeometry.attributes.position.array[i] +=
                 burstVelocities[i] * 0.016;
-            });
+            }
             burstGeometry.attributes.position.needsUpdate = true;
             if (burstTime < 2) {
               requestAnimationFrame(animateBurst);
@@ -648,7 +655,7 @@
               burstMaterial.dispose();
             }
           };
-          animateBurst(0);
+          animateBurst();
           logDebug('Big Bang Triggered');
         }
 
@@ -670,104 +677,18 @@
         document.addEventListener('mouseup', () => { isDragging = false; });
 
         document.addEventListener('touchstart', (e) => {
-          e.preventDefault();
-          const touch = e.touches[0];
-          touchX = (touch.clientX / window.innerWidth) * 2 - 1;
-          touchY = -(touch.clientY / window.innerHeight) * 2 + 1;
-          isDragging = true;
-          triggerBigBang();
-        }, { passive: false });
-
-        document.addEventListener('touchmove', (e) => {
-          e.preventDefault();
-          const touch = e.touches[0];
-          const newTouchX = (touch.clientX / window.innerWidth) * 2 - 1;
-          const newTouchY = -(touch.clientY / window.innerHeight) * 2 + 1;
-          if (isDragging) {
-            targetRotationY += (newTouchX - touchX) * Math.PI * 2;
-            targetRotationX += (newTouchY - touchY) * Math.PI;
-            touchX = newTouchX;
-            touchY = newTouchY;
+          if (e.touches.length > 0) {
+            const touch = e.touches[0];
+            touchX = (touch.clientX / window.innerWidth) * 2 - 1;
+            touchY = -(touch.clientY / window.innerHeight) * 2 + 1;
+            isDragging = true;
+            triggerBigBang();
           }
-        }, { passive: false });
-
-        document.addEventListener('touchend', () => { isDragging = false; });
-
-        // Animation Loop
-        function animate(time) {
-          try {
-            requestAnimationFrame(animate);
-            cube.rotation.y += (targetRotationY - cube.rotation.y) * 0.1;
-            cube.rotation.x += (targetRotationX - cube.rotation.x) * 0.1;
-            edgeMaterial.uniforms.time.value = time * 0.001;
-            particleMaterial.uniforms.time.value = time * 0.001;
-            composer.render();
-          } catch (error) {
-            logDebug('WebGL Render Error: ' + error.message);
-            document.getElementById('error-message').style.display = 'block';
-          }
-        }
-        animate(0);
-
-        // Resize Handler
-        window.addEventListener('resize', () => {
-          camera.aspect = window.innerWidth / window.innerHeight;
-          camera.updateProjectionMatrix();
-          renderer.setSize(window.innerWidth, window.innerHeight);
-          composer.setSize(window.innerWidth, window.innerHeight);
         }, { passive: true });
 
-        window.triggerBigBang = triggerBigBang;
-        return true;
-      } catch (error) {
-        logDebug('WebGL Initialization Error: ' + error.message);
-        return false;
-      }
-    }
-
-    // Copy IP to Clipboard
-    window.copyIP = function() {
-      try {
-        const ip = document.getElementById('ip-display').textContent;
-        if (!ip || ip === 'IP unavailable') {
-          logDebug('No IP to copy');
-          return;
-        }
-        navigator.clipboard.writeText(ip).then(() => {
-          window.triggerBigBang();
-          logDebug('IP copied successfully');
-        }).catch(err => {
-          logDebug('Clipboard Error: ' + err.message);
-          const textarea = document.createElement('textarea');
-          textarea.value = ip;
-          document.body.appendChild(textarea);
-          textarea.select();
-          try {
-            document.execCommand('copy');
-            window.triggerBigBang();
-            logDebug('Fallback copy successful');
-          } catch (e) {
-            logDebug('Fallback Copy Error: ' + e.message);
-          }
-          document.body.removeChild(textarea);
-        });
-      } catch (error) {
-        logDebug('Copy IP Error: ' + error.message);
-      }
-    };
-
-    // Initialize Everything
-    document.addEventListener('DOMContentLoaded', () => {
-      fetchPublicIP();
-      fetchNetworkInfo();
-      const errorMessage = document.getElementById('error-message');
-      if (!initBackgroundCanvas() || !initWebGL()) {
-        errorMessage.style.display = 'block';
-      } else {
-        errorMessage.style.display = 'none';
-      }
-      document.getElementById('copy-ip-btn').addEventListener('click', window.copyIP);
-    });
-  </script>
-</body>
-</html>
+        document.addEventListener('touchmove', (e) => {
+          if (e.touches.length > 0 && isDragging) {
+            const touch = e.touches[0];
+            const newTouchX = (touch.clientX / window.innerWidth) * 2 - 1;
+            const newTouchY = -(touch.clientY / window.innerHeight) * 2 + 1;
+            targetRotationY += (newTouch
