@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infinite Dodecahedron LED - Realistic</title>
+    <title>Infinite Dodecahedron LED - Cinematic</title>
     <style>
         body { margin: 0; overflow: hidden; background: #000; }
         canvas { display: block; }
@@ -38,21 +38,21 @@
         composer.addPass(renderPass);
         const bloomPass = new UnrealBloomPass(
             new THREE.Vector2(window.innerWidth, window.innerHeight),
-            0.3, // Subtle bloom
-            0.2, // radius
-            0.9 // threshold
+            0.5, // Cinematic bloom
+            0.3, // radius
+            0.85 // threshold
         );
         composer.addPass(bloomPass);
 
-        // Dodecahedron geometry (no subdivision for sharp facets)
+        // Dodecahedron geometry (sharp, no subdivision)
         const geometry = new THREE.DodecahedronGeometry(1, 0);
         const material = new THREE.ShaderMaterial({
             uniforms: {
                 time: { value: 0 },
                 uColor1: { value: new THREE.Color('#ff4d94') },
                 uColor2: { value: new THREE.Color('#4dffeb') },
-                uRefractPower: { value: 1.2 },
-                uFresnelPower: { value: 2.0 },
+                uRefractPower: { value: 1.15 },
+                uFresnelPower: { value: 2.5 },
                 uEnvMap: { value: null }
             },
             vertexShader: `
@@ -94,15 +94,15 @@
                     vec4 refractColor = textureCube(uEnvMap, refractDir);
                     
                     // Combine effects
-                    vec3 finalColor = mix(refractColor.rgb, reflectColor.rgb, fresnel * 0.5);
-                    finalColor = mix(finalColor, color, 0.3);
-                    finalColor += fresnel * color * 0.6;
+                    vec3 finalColor = mix(refractColor.rgb, reflectColor.rgb, fresnel * 0.6);
+                    finalColor = mix(finalColor, color, 0.25);
+                    finalColor += fresnel * color * 0.7;
                     
                     // Edge enhancement
                     float edge = abs(dot(vNormal, vViewDir));
-                    finalColor += vec3(0.1) * (1.0 - edge) * fresnel;
+                    finalColor += vec3(0.15) * (1.0 - edge) * fresnel;
                     
-                    gl_FragColor = vec4(finalColor, 0.85); // Slightly more transparent
+                    gl_FragColor = vec4(finalColor, 0.9); // Crystalline transparency
                 }
             `,
             transparent: true,
@@ -112,11 +112,67 @@
         const dodecahedron = new THREE.Mesh(geometry, material);
         scene.add(dodecahedron);
 
-        // Wireframe for facet emphasis
+        // Glowing wireframe for facet emphasis
         const wireframeGeometry = new THREE.EdgesGeometry(geometry);
-        const wireframeMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, opacity: 0.2, transparent: true });
+        const wireframeMaterial = new THREE.LineBasicMaterial({ color: 0x66ccff, opacity: 0.3, transparent: true });
         const wireframe = new THREE.LineSegments(wireframeGeometry, wireframeMaterial);
         dodecahedron.add(wireframe);
+
+        // Glowing LED particles inside
+        const ledCount = 50;
+        const ledGeometry = new THREE.BufferGeometry();
+        const ledPositions = new Float32Array(ledCount * 3);
+        const ledOffsets = new Float32Array(ledCount);
+        for (let i = 0; i < ledCount; i++) {
+            // Random positions inside dodecahedron (within radius 0.8)
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos(2 * Math.random() - 1);
+            const r = Math.pow(Math.random(), 1/3) * 0.8; // Cube root for uniform distribution
+            ledPositions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+            ledPositions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+            ledPositions[i * 3 + 2] = r * Math.cos(phi);
+            ledOffsets[i] = Math.random() * Math.PI * 2; // Random phase for pulsing
+        }
+        ledGeometry.setAttribute('position', new THREE.BufferAttribute(ledPositions, 3));
+        ledGeometry.setAttribute('offset', new THREE.BufferAttribute(ledOffsets, 1));
+        const ledMaterial = new THREE.ShaderMaterial({
+            uniforms: {
+                time: { value: 0 },
+                uColor1: { value: new THREE.Color('#ff4d94') },
+                uColor2: { value: new THREE.Color('#4dffeb') }
+            },
+            vertexShader: `
+                attribute float offset;
+                varying float vOffset;
+                void main() {
+                    vOffset = offset;
+                    gl_PointSize = 8.0; // Size of LED particles
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform float time;
+                uniform vec3 uColor1;
+                uniform vec3 uColor2;
+                varying float vOffset;
+                void main() {
+                    // Pulsing effect
+                    float pulse = sin(time * 2.0 + vOffset) * 0.5 + 0.5;
+                    // Color animation
+                    float t = sin(time * 0.3) * 0.5 + 0.5;
+                    vec3 color = mix(uColor1, uColor2, t);
+                    // Circular point with soft edges
+                    vec2 coord = gl_PointCoord - vec2(0.5);
+                    float dist = length(coord);
+                    if (dist > 0.5) discard;
+                    float alpha = smoothstep(0.5, 0.3, dist);
+                    gl_FragColor = vec4(color * pulse, alpha * 0.9);
+                }
+            `,
+            transparent: true
+        });
+        const ledParticles = new THREE.Points(ledGeometry, ledMaterial);
+        dodecahedron.add(ledParticles); // Attach to dodecahedron for rotation
 
         // Reflective environment
         const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(256, {
@@ -127,48 +183,55 @@
         material.uniforms.uEnvMap.value = cubeRenderTarget.texture;
 
         // Background particles
-        const particleGeometry = new THREE.BufferGeometry();
-        const particleCount = 500;
-        const posArray = new Float32Array(particleCount * 3);
-        for (let i = 0; i < particleCount * 3; i++) {
-            posArray[i] = (Math.random() - 0.5) * 50;
+        const bgParticleGeometry = new THREE.BufferGeometry();
+        const bgParticleCount = 500;
+        const bgPosArray = new Float32Array(bgParticleCount * 3);
+        for (let i = 0; i < bgParticleCount * 3; i++) {
+            bgPosArray[i] = (Math.random() - 0.5) * 50;
         }
-        particleGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-        const particleMaterial = new THREE.PointsMaterial({
+        bgParticleGeometry.setAttribute('position', new THREE.BufferAttribute(bgPosArray, 3));
+        const bgParticleMaterial = new THREE.PointsMaterial({
             size: 0.05,
-            color: '#ffffff',
+            color: '#99ccff',
             transparent: true,
-            opacity: 0.5
+            opacity: 0.4
         });
-        const particles = new THREE.Points(particleGeometry, particleMaterial);
-        scene.add(particles);
+        const bgParticles = new THREE.Points(bgParticleGeometry, bgParticleMaterial);
+        scene.add(bgParticles);
 
         // Lighting
-        const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+        const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
         scene.add(ambientLight);
-        const pointLight = new THREE.PointLight(0xffffff, 0.8, 10);
+        const pointLight = new THREE.PointLight(0xffffff, 1, 10);
         pointLight.position.set(5, 5, 5);
         scene.add(pointLight);
 
-        // Camera position
-        camera.position.z = 3;
+        // Camera position and animation
+        camera.position.set(0, 0, 2.5);
+        let cameraAngle = 0;
 
-        // Animation loop with two-pass rendering
+        // Animation loop
         function animate(time) {
             requestAnimationFrame(animate);
 
-            // Hide dodecahedron during cube camera render to avoid feedback loop
+            // Camera orbit
+            cameraAngle += 0.002;
+            camera.position.x = 2.5 * Math.sin(cameraAngle);
+            camera.position.z = 2.5 * Math.cos(cameraAngle);
+            camera.lookAt(0, 0, 0);
+
+            // Update rotations and time
+            dodecahedron.rotation.x += 0.004;
+            dodecahedron.rotation.y += 0.004;
+            material.uniforms.time.value = time * 0.001;
+            ledMaterial.uniforms.time.value = time * 0.001;
+
+            // Two-pass rendering to avoid feedback loop
             dodecahedron.visible = false;
             cubeCamera.position.copy(dodecahedron.position);
             cubeCamera.update(renderer, scene);
             dodecahedron.visible = true;
 
-            // Update rotation and time
-            dodecahedron.rotation.x += 0.005;
-            dodecahedron.rotation.y += 0.005;
-            material.uniforms.time.value = time * 0.001;
-
-            // Render with composer
             composer.render();
         }
         animate();
