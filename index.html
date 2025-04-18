@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="description" content="Ignite a cyberpunk cosmos: copy your IP to create an eternal universe of planets and life." />
-  <meta name="keywords" content="Cyberpunk Simulation, Standard Model, Public IP, Sacred Geometry" />
+  <meta name="description" content="Ignite a cyberpunk cosmos: copy your IP to create an eternal universe of unique patterns." />
+  <meta name="keywords" content="Cyberpunk Simulation, Public IP, Sacred Geometry" />
   <meta name="author" content="Labverse Cybernetics" />
   <meta property="og:title" content="Cyberpunk Cosmic Genesis" />
-  <meta property="og:description" content="Copy your IP to unleash a neon universe of evolving patterns." />
+  <meta property="og:description" content="Copy your IP to unleash a neon universe of evolving shapes." />
   <meta property="og:image" content="https://labverse.co.za/assets/cyberpunk-og-image.png" />
   <meta property="og:url" content="https://labverse.co.za" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -19,9 +19,6 @@
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Source+Code+Pro&display=swap" rel="stylesheet">
-
-  <!-- MathJax for equations -->
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
   <!-- Style -->
   <style>
@@ -150,24 +147,6 @@
       20%, 24%, 55% { opacity: 0.7; }
     }
 
-    .equations {
-      font-family: 'Source Code Pro', monospace;
-      font-size: clamp(0.6rem, 1.2vw, 0.9rem);
-      color: var(--neon-cyan);
-      max-width: clamp(180px, 75vw, 350px);
-      line-height: 1.5;
-      text-shadow: 0 0 8px var(--neon-cyan);
-      margin-bottom: clamp(0.6rem, 1.5vw, 1rem);
-      text-align: center;
-      opacity: 0;
-      transition: opacity 1s ease;
-      filter: url(#scanlines);
-    }
-
-    .equations.active {
-      opacity: 1;
-    }
-
     .error-message {
       font-family: 'Source Code Pro', monospace;
       font-size: clamp(0.6rem, 1.2vw, 0.9rem);
@@ -287,7 +266,6 @@
   <div class="container">
     <h1>CYBERPUNK COSMIC GENESIS</h1>
     <div class="ip-display" id="ip-display">Fetching IP...</div>
-    <div class="equations" id="equations">Energy: Calculating...</div>
     <div class="error-message" id="error-message">Simulation failed. Check browser settings.</div>
     <button class="btn" id="copy-ip">Copy IP</button>
   </div>
@@ -351,8 +329,6 @@
 
     // Simulation System
     let animationMode = 'none';
-    let totalEnergy = 0;
-    const equationsDiv = document.getElementById('equations');
     const errorMessage = document.getElementById('error-message');
 
     // WebGL Simulation
@@ -385,7 +361,7 @@
         let particles = [];
         let trailGeometries = [];
         let mousePos = { x: 0, y: 0 };
-        let forcesEnabled = { em: true, strong: true, weak: true, higgs: true, grav: true, cluster: true };
+        let forcesEnabled = { em: true, strong: true, weak: true, higgs: true, grav: true, cluster: true, wave: true };
 
         document.addEventListener('mousemove', (e) => {
           mousePos.x = (e.clientX / window.innerWidth) * 2 - 1;
@@ -419,11 +395,13 @@
             size,
             transparent: true,
             opacity: 0.9,
-            blending: THREE.AdditiveBlending
+            blending: THREE.AdditiveBlending,
+            filter: 'url(#scanlines)'
           });
           const particle = new THREE.Points(geometry, material);
           scene.add(particle);
           return {
+            id: index,
             obj: particle,
             type,
             velocity,
@@ -431,7 +409,8 @@
             color: type === 'fermion' ? (Math.random() > 0.5 ? 'red' : 'blue') : null,
             mass: type === 'higgs' ? 1.5 : type === 'fermion' ? 1 : 0.5,
             trail: [],
-            region: getRegion(x, y)
+            region: getRegion(x, y),
+            phase: Math.random() * Math.PI * 2 // Unique phase for oscillations
           };
         }
 
@@ -475,38 +454,7 @@
             const type = Math.random() > 0.7 ? 'boson' : Math.random() > 0.9 ? 'higgs' : 'fermion';
             particles.push(createParticle(i, type, velocity));
           }
-          equationsDiv.classList.add('active');
-          setTimeout(() => equationsDiv.classList.remove('active'), 10000);
           logDebug('WebGL Big Bang triggered');
-        }
-
-        function calculateEnergy() {
-          let kinetic = 0;
-          let potential = 0;
-          particles.forEach(p => {
-            const v2 = p.velocity.lengthSq();
-            kinetic += 0.5 * p.mass * v2;
-            particles.forEach(p2 => {
-              if (p !== p2) {
-                const dist = p.obj.position.distanceTo(p2.obj.position);
-                if (dist > 0.2) {
-                  if (forcesEnabled.em && p.charge && p2.charge) {
-                    potential += (p.charge * p2.charge) / dist;
-                  }
-                  if (forcesEnabled.strong && p.type === 'fermion' && p2.type === 'boson' && dist < 4) {
-                    potential += -0.08 / dist * Math.exp(-dist / 1.5);
-                  }
-                }
-              }
-            });
-          });
-          totalEnergy = kinetic + potential;
-          equationsDiv.innerHTML = `
-            Energy: ${totalEnergy.toFixed(2)}<br>
-            Lagrangian: \\(\\mathcal{L} = \\overline{\\psi} \\not{D} \\psi - \\frac{1}{4} F_{\\mu\\nu} F^{\\mu\\nu} + |D_\\mu \\Phi|^2 - V(\\Phi)\\)<br>
-            EM Force: \\(\\vec{F} = \\frac{q_1 q_2}{r^2}\\)<br>
-            Strong Potential: \\(V(r) = -\\frac{g^2}{r} e^{-r/\\lambda}\\)
-          `;
         }
 
         function updateParticles() {
@@ -520,14 +468,16 @@
             particles.forEach(p2 => {
               if (p !== p2) {
                 const dist = p.obj.position.distanceTo(p2.obj.position);
-                if (dist > 0.2 && dist < 20) {
+                if (dist > 0.2 && dist < 15) {
                   if (forcesEnabled.em && p.charge && p2.charge) {
-                    const f = (p.charge * p2.charge) / (dist * dist);
+                    const k = 0.03 + 0.01 * Math.sin(p.id); // Unique per particle
+                    const f = k * (p.charge * p2.charge) / (dist * dist);
                     const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
-                    force.add(dir.multiplyScalar(f * 0.03));
+                    force.add(dir.multiplyScalar(f));
                   }
                   if (forcesEnabled.strong && p.type === 'fermion' && p2.type === 'boson' && dist < 4) {
-                    const f = -0.08 / dist * Math.exp(-dist / 1.5);
+                    const g = 0.08 + 0.02 * perlinNoise(p.id, p2.id);
+                    const f = -g / dist * Math.exp(-dist / (1.5 + 0.5 * p.id % 2));
                     const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
                     force.add(dir.multiplyScalar(f));
                   }
@@ -539,20 +489,42 @@
                     force.add(p.velocity.clone().multiplyScalar(-0.05 * p.mass));
                   }
                   if (forcesEnabled.grav && p.region === 'planet' && dist < 10) {
-                    const f = -0.02 * p.mass * p2.mass / (dist * dist);
+                    const G = 0.02 + 0.005 * perlinNoise(p.id, 0);
+                    const f = -G * p.mass * p2.mass / (dist * dist);
                     const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
                     force.add(dir.multiplyScalar(f));
+                    // Elliptical perturbation
+                    const theta = Math.atan2(p.obj.position.y, p.obj.position.x);
+                    force.add(new THREE.Vector3(
+                      0.01 * Math.cos(theta + p.phase),
+                      0.01 * Math.sin(theta + p.phase),
+                      0
+                    ));
                   }
                   if (forcesEnabled.cluster && p.region === 'life' && dist < 5) {
-                    const sigma = 2;
-                    const epsilon = 0.05;
+                    const sigma = 2 + 0.5 * p.id % 3;
+                    const epsilon = 0.05 + 0.01 * perlinNoise(p.id, 1);
                     const r6 = Math.pow(sigma / dist, 6);
                     const f = epsilon * (12 * r6 * r6 - 6 * r6) / dist;
                     const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
                     force.add(dir.multiplyScalar(f));
                   }
-                  if (p.region === 'energy') {
-                    const f = 0.02 * Math.sin(Date.now() * 0.001 + dist);
+                  if (forcesEnabled.wave && p.region === 'energy') {
+                    const A = 0.02 + 0.005 * Math.sin(p.id);
+                    const f = A * Math.sin(Date.now() * 0.001 + dist + p.phase);
+                    const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
+                    force.add(dir.multiplyScalar(f));
+                    // Logarithmic spiral
+                    const theta = Math.atan2(p.obj.position.y, p.obj.position.x);
+                    force.add(new THREE.Vector3(
+                      0.01 * Math.exp(-0.1 * dist) * Math.cos(theta + p.phase),
+                      0.01 * Math.exp(-0.1 * dist) * Math.sin(theta + p.phase),
+                      0
+                    ));
+                  }
+                  if (p.region === 'object') {
+                    // Lattice alignment
+                    const f = -0.05 * Math.cos(p.id % 4 * Math.PI / 2) / dist;
                     const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
                     force.add(dir.multiplyScalar(f));
                   }
@@ -561,7 +533,7 @@
             });
 
             // Mouse interaction
-            const mouseForce = new THREE.Vector3(mousePos.x * 0.03, mousePos.y * 0.03, 0);
+            const mouseForce = new THREE.Vector3(mousePos.x * 0.02, mousePos.y * 0.02, 0);
             force.add(mouseForce);
 
             // Update velocity and position
@@ -590,7 +562,8 @@
                 color: p.type === 'fermion' ? (p.color === 'red' ? 0xFF0000 : 0x00B7EB) : p.type === 'boson' ? 0xFF00CC : 0xFFD700,
                 transparent: true,
                 opacity: 0.05,
-                blending: THREE.AdditiveBlending
+                blending: THREE.AdditiveBlending,
+                filter: 'url(#scanlines)'
               });
               const line = new THREE.Line(geometry, material);
               scene.add(line);
@@ -602,8 +575,6 @@
           if (particles.length < 50 && Math.random() < 0.01) {
             particles.push(createParticle(particles.length));
           }
-
-          calculateEnergy();
         }
 
         function animate() {
@@ -653,7 +624,7 @@
 
         let particles = [];
         let mousePos = { x: canvas.width / 2, y: canvas.height / 2 };
-        let forcesEnabled = { em: true, strong: true, weak: true, higgs: true, grav: true, cluster: true };
+        let forcesEnabled = { em: true, strong: true, weak: true, higgs: true, grav: true, cluster: true, wave: true };
 
         document.addEventListener('mousemove', (e) => {
           mousePos.x = e.clientX;
@@ -673,6 +644,7 @@
           const r = Math.sqrt(index) * 10;
           const noise = perlinNoise(index, index) * 100 - 50;
           return {
+            id: index,
             x: canvas.width / 2 + r * Math.cos(theta) + noise,
             y: canvas.height / 2 + r * Math.sin(theta) + noise,
             vx,
@@ -682,7 +654,8 @@
             charge: type === 'fermion' ? (Math.random() > 0.5 ? 1 : -1) : 0,
             mass: type === 'higgs' ? 1.5 : type === 'fermion' ? 1 : 0.5,
             trail: [],
-            region: getRegion2D(canvas.width / 2 + r * Math.cos(theta), canvas.height / 2 + r * Math.sin(theta))
+            region: getRegion2D(canvas.width / 2 + r * Math.cos(theta), canvas.height / 2 + r * Math.sin(theta)),
+            phase: Math.random() * Math.PI * 2
           };
         }
 
@@ -713,38 +686,7 @@
             const type = Math.random() > 0.7 ? 'boson' : Math.random() > 0.9 ? 'higgs' : 'fermion';
             particles.push(createParticle(i, type, r * Math.cos(theta) * 0.04, r * Math.sin(theta) * 0.04));
           }
-          equationsDiv.classList.add('active');
-          setTimeout(() => equationsDiv.classList.remove('active'), 10000);
           logDebug('2D Big Bang triggered');
-        }
-
-        function calculateEnergy() {
-          let kinetic = 0;
-          let potential = 0;
-          particles.forEach(p => {
-            const v2 = p.vx * p.vx + p.vy * p.vy;
-            kinetic += 0.5 * p.mass * v2;
-            particles.forEach(p2 => {
-              if (p !== p2) {
-                const dist = Math.hypot(p2.x - p.x, p2.y - p.y);
-                if (dist > 2) {
-                  if (forcesEnabled.em && p.charge && p2.charge) {
-                    potential += (p.charge * p2.charge) / dist;
-                  }
-                  if (forcesEnabled.strong && p.type === 'fermion' && p2.type === 'boson' && dist < 40) {
-                    potential += -0.08 / dist * Math.exp(-dist / 15);
-                  }
-                }
-              }
-            });
-          });
-          totalEnergy = kinetic + potential;
-          equationsDiv.innerHTML = `
-            Energy: ${totalEnergy.toFixed(2)}<br>
-            Lagrangian: \\(\\mathcal{L} = \\overline{\\psi} \\not{D} \\psi - \\frac{1}{4} F_{\\mu\\nu} F^{\\mu\\nu} + |D_\\mu \\Phi|^2 - V(\\Phi)\\)<br>
-            EM Force: \\(\\vec{F} = \\frac{q_1 q_2}{r^2}\\)<br>
-            Strong Potential: \\(V(r) = -\\frac{g^2}{r} e^{-r/\\lambda}\\)
-          `;
         }
 
         function animate() {
@@ -763,14 +705,16 @@
                   const dx = p2.x - p.x;
                   const dy = p2.y - p.y;
                   const dist = Math.hypot(dx, dy);
-                  if (dist > 2 && dist < 200) {
+                  if (dist > 2 && dist < 150) {
                     if (forcesEnabled.em && p.charge && p2.charge) {
-                      const f = (p.charge * p2.charge) / (dist * dist);
-                      fx += f * dx / dist * 0.03;
-                      fy += f * dy / dist * 0.03;
+                      const k = 0.03 + 0.01 * Math.sin(p.id);
+                      const f = k * (p.charge * p2.charge) / (dist * dist);
+                      fx += f * dx / dist;
+                      fy += f * dy / dist;
                     }
                     if (forcesEnabled.strong && p.type === 'fermion' && p2.type === 'boson' && dist < 40) {
-                      const f = -0.08 / dist * Math.exp(-dist / 15);
+                      const g = 0.08 + 0.02 * perlinNoise(p.id, p2.id);
+                      const f = -g / dist * Math.exp(-dist / (15 + 5 * p.id % 2));
                       fx += f * dx / dist;
                       fy += f * dy / dist;
                     }
@@ -782,20 +726,35 @@
                       fy -= p.vy * 0.05 * p.mass;
                     }
                     if (forcesEnabled.grav && p.region === 'planet' && dist < 100) {
-                      const f = -0.02 * p.mass * p2.mass / (dist * dist);
+                      const G = 0.02 + 0.005 * perlinNoise(p.id, 0);
+                      const f = -G * p.mass * p2.mass / (dist * dist);
                       fx += f * dx / dist;
                       fy += f * dy / dist;
+                      // Elliptical perturbation
+                      const theta = Math.atan2(p.y, p.x);
+                      fx += 0.01 * Math.cos(theta + p.phase);
+                      fy += 0.01 * Math.sin(theta + p.phase);
                     }
                     if (forcesEnabled.cluster && p.region === 'life' && dist < 50) {
-                      const sigma = 20;
-                      const epsilon = 0.05;
+                      const sigma = 20 + 5 * p.id % 3;
+                      const epsilon = 0.05 + 0.01 * perlinNoise(p.id, 1);
                       const r6 = Math.pow(sigma / dist, 6);
                       const f = epsilon * (12 * r6 * r6 - 6 * r6) / dist;
                       fx += f * dx / dist;
                       fy += f * dy / dist;
                     }
-                    if (p.region === 'energy') {
-                      const f = 0.02 * Math.sin(Date.now() * 0.001 + dist);
+                    if (forcesEnabled.wave && p.region === 'energy') {
+                      const A = 0.02 + 0.005 * Math.sin(p.id);
+                      const f = A * Math.sin(Date.now() * 0.001 + dist + p.phase);
+                      fx += f * dx / dist;
+                      fy += f * dy / dist;
+                      // Logarithmic spiral
+                      const theta = Math.atan2(p.y, p.x);
+                      fx += 0.01 * Math.exp(-0.1 * dist) * Math.cos(theta + p.phase);
+                      fy += 0.01 * Math.exp(-0.1 * dist) * Math.sin(theta + p.phase);
+                    }
+                    if (p.region === 'object') {
+                      const f = -0.05 * Math.cos(p.id % 4 * Math.PI / 2) / dist;
                       fx += f * dx / dist;
                       fy += f * dy / dist;
                     }
@@ -804,8 +763,8 @@
               });
 
               // Mouse interaction
-              fx += (mousePos.x - canvas.width / 2) * 0.00008;
-              fy += (mousePos.y - canvas.height / 2) * 0.00008;
+              fx += (mousePos.x - canvas.width / 2) * 0.00006;
+              fy += (mousePos.y - canvas.height / 2) * 0.00006;
 
               // Update velocity and position
               p.vx += fx / p.mass;
@@ -844,7 +803,6 @@
               particles.push(createParticle(particles.length));
             }
 
-            calculateEnergy();
             requestAnimationFrame(animate);
           } catch (error) {
             logDebug('2D Canvas Render Error: ' + error.message);
@@ -900,8 +858,6 @@
             cssParticles.appendChild(particle);
             particles.push(particle);
           }
-          equationsDiv.classList.add('active');
-          setTimeout(() => equationsDiv.classList.remove('active'), 10000);
           logDebug('CSS Big Bang triggered');
         }
 
