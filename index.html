@@ -20,7 +20,7 @@
       --cosmic-gold: #ffd700;
       --cosmic-cyan: #00ffff;
       --light-aura: #e6f0ff;
-      --dark-bg: #0a0a23;
+      --dark-bg: #000000; /* Space black */
       --card-bg: rgba(8, 8, 26, 0.85);
       --glow-radius: 15px;
     }
@@ -97,6 +97,8 @@
       justify-content: center;
       gap: 1rem;
       margin-bottom: 1rem;
+      width: 100%;
+      max-width: 500px;
     }
 
     .ip-display {
@@ -110,6 +112,28 @@
       box-shadow: 0 0 20px var(--matrix-blue);
       text-shadow: 0 0 10px var(--matrix-blue);
       word-break: break-all;
+      flex-shrink: 0;
+    }
+
+    .copy-btn {
+      background: var(--matrix-blue);
+      color: var(--light-aura);
+      border: none;
+      padding: clamp(0.6rem, 1.5vw, 0.8rem) clamp(1.5rem, 3vw, 2rem);
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(0.8rem, 1.5vw, 1rem);
+      text-transform: uppercase;
+      box-shadow: 0 0 var(--glow-radius) var(--matrix-blue);
+      transition: all 0.3s ease;
+      margin-left: 1rem;
+    }
+
+    .copy-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 calc(var(--glow-radius) * 1.5) var(--cosmic-magenta);
+      background: linear-gradient(90deg, var(--matrix-blue), var(--cosmic-magenta));
     }
 
     .network-info {
@@ -284,7 +308,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(10, 10, 35, 0.5); /* Lighter overlay for visibility */
+      background: rgba(0, 183, 235, 0.3); /* Neon blue overlay */
       z-index: 1;
       pointer-events: none;
     }
@@ -328,7 +352,7 @@
       h1 { font-size: clamp(1.5rem, 4vw, 2.5rem); }
       .ip-display { font-size: clamp(1.2rem, 3vw, 2rem); }
       .network-info { font-size: clamp(0.6rem, 1.2vw, 0.9rem); }
-      .btn { font-size: clamp(0.7rem, 1.2vw, 0.9rem); }
+      .btn, .copy-btn { font-size: clamp(0.7rem, 1.2vw, 0.9rem); }
       .speed-test-container { max-height: 60vh; }
       .graph-container { height: 150px; }
       .iframe-container { height: 350px; }
@@ -336,7 +360,7 @@
 
     @media (max-width: 480px) {
       h1 { font-size: clamp(1.2rem, 3.5vw, 2rem); }
-      .ip-container { flex-direction: column; gap: 0.5rem; }
+      .ip-container { flex-direction: row; gap: 0.5rem; }
       .ip-display { font-size: clamp(1rem, 2.5vw, 1.5rem); }
       .metrics { grid-template-columns: 1fr; }
       .iframe-container { height: 300px; }
@@ -351,7 +375,7 @@
     <h1>Labverse Speed Test</h1>
     <div class="ip-container">
       <div class="ip-display" id="ip-display">Fetching IP...</div>
-      <button class="btn" id="copy-ip-btn" aria-label="Copy IP address">Copy IP</button>
+      <button class="copy-btn" id="copy-ip-btn" aria-label="Copy IP address">Copy IP</button>
     </div>
     <div class="network-info" id="network-info">Fetching network info...</div>
     <div class="error-message" id="error-message">Animations failed to load. Please check your browser settings.</div>
@@ -398,7 +422,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
   <script>
-    // Initialize Vanta.js background
+    // Initialize Vanta.js background (space black)
     VANTA.NET({
       el: "#vanta-bg",
       mouseControls: true,
@@ -407,8 +431,8 @@
       minWidth: 200.00,
       scale: 1.00,
       scaleMobile: 1.00,
-      color: 0x00ffff,
-      backgroundColor: 0x0a0a23
+      color: 0x00ffff, // Cyan connections
+      backgroundColor: 0x000000 // Space black
     });
 
     // Utility Functions
@@ -596,8 +620,7 @@
       canvas.height = canvas.offsetHeight;
 
       const maxSpeed = 100;
-      const downloadData = [];
-      let lastSpeed = 0;
+      let downloadData = [];
 
       function drawGraph() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -644,17 +667,12 @@
 
       return {
         addDownloadSpeed(speed) {
-          lastSpeed = speed;
           downloadData.push(Math.min(speed, maxSpeed));
           if (downloadData.length > canvas.width / 5) downloadData.shift();
           drawGraph();
         },
-        getLastSpeed() {
-          return lastSpeed;
-        },
         reset() {
-          downloadData.length = 0;
-          lastSpeed = 0;
+          downloadData = [];
           drawGraph();
         }
       };
@@ -664,7 +682,7 @@
     const CONFIG = {
       testServer: {
         downloadUrl: 'https://speed.cloudflare.com/__down?bytes=25000000',
-        pingResource: 'https://speed.cloudflare.com/favicon.ico',
+        pingResource: 'https://labverse.co.za/assets/ping-test.txt',
       },
       testDurations: { download: 10000, ping: 3000 },
     };
@@ -745,7 +763,7 @@
         },
 
         async runPingTest() {
-          log('Starting ping test to Cloudflare Johannesburg server...');
+          log('Starting ping test to local server...');
           const pingValue = document.getElementById('ping-value');
           const progress = document.getElementById('laser-progress');
           const progressPercent = document.getElementById('progress-percent');
@@ -760,24 +778,15 @@
             let ping = 999;
             try {
               const start = performance.now();
-              await new Promise((resolve, reject) => {
-                const img = new Image();
-                img.onload = () => {
-                  ping = performance.now() - start;
-                  resolve();
-                };
-                img.onerror = () => {
-                  reject(new Error('Image load failed'));
-                };
-                img.src = CONFIG.testServer.pingResource + '?t=' + Date.now();
-              });
+              await fetch(CONFIG.testServer.pingResource + '?t=' + Date.now(), { cache: 'no-store' });
+              ping = performance.now() - start;
               pingTimes.push(ping);
               log(`Ping #${i+1}: ${ping.toFixed(2)}ms`);
             } catch (error) {
               pingTimes.push(ping);
               log(`Ping #${i+1} failed: ${error.message}`);
             }
-            const progressPercentage = ((i + 1) / totalPackets) * 50; // 50% for ping
+            const progressPercentage = ((i + 1) / totalPackets) * 50;
             progress.style.width = `${progressPercentage}%`;
             progressPercent.textContent = `${progressPercentage.toFixed(1)}%`;
             currentSpeed.textContent = `${pingTimes[pingTimes.length - 1].toFixed(2)} ms`;
@@ -817,7 +826,7 @@
               if (performance.now() - lastUpdate >= updateInterval) {
                 const speed = ((totalBytes * 8) / elapsed) / (1024 * 1024);
                 downloadValue.textContent = speed.toFixed(1);
-                const progressPercentage = 50 + (elapsed / (maxTime / 1000)) * 50; // 50% to 100% for download
+                const progressPercentage = 50 + (elapsed / (maxTime / 1000)) * 50;
                 progress.style.width = `${Math.min(100, progressPercentage)}%`;
                 progressPercent.textContent = `${Math.min(100, progressPercentage).toFixed(1)}%`;
                 currentSpeed.textContent = `${speed.toFixed(2)} Mbps`;
