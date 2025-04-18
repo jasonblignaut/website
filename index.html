@@ -386,7 +386,7 @@
     <button class="close-btn" id="close-history" aria-label="Close history">Close</button>
   </div>
   <footer>
-    © 2025 Labverse | Powered by <a href="https://x.ai" target="_blank" rel="noopener">xAI</a>
+    © 2025 Labverse | Powered by <a href="https://onefar.co.za" target="_blank" rel="noopener">1FAR</a>
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
@@ -437,8 +437,8 @@
 
         // Create starry background
         const starGeometry = new THREE.BufferGeometry();
-        const starPositions = new Float32Array(1000 * 3);
-        for (let i = 0; i < 1000; i++) {
+        const starPositions = new Float32Array(1500 * 3);
+        for (let i = 0; i < 1500; i++) {
           starPositions[i * 3] = (Math.random() - 0.5) * 2000;
           starPositions[i * 3 + 1] = (Math.random() - 0.5) * 2000;
           starPositions[i * 3 + 2] = (Math.random() - 0.5) * 2000;
@@ -466,7 +466,7 @@
           return { obj: particle, life: 10, velocity: new THREE.Vector3(0, 0, 0) };
         };
 
-        for (let i = 0; i < 150; i++) {
+        for (let i = 0; i < 200; i++) {
           particles.push(createParticle(i));
         }
 
@@ -500,7 +500,7 @@
           particles.forEach(p => scene.remove(p.obj));
           particles = [];
           const colors = [0x00b7eb, 0xff00cc, 0x00ffff, 0xffd700];
-          for (let i = 0; i < 300; i++) {
+          for (let i = 0; i < 400; i++) {
             const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2);
             const r = Math.sqrt(i) * 2;
             const particle = createParticle(i);
@@ -534,10 +534,10 @@
         },
       ],
       testServer: {
-        downloadUrl: 'https://speed.cloudflare.com/__down?bytes=25000000&location=johannesburg',
-        websocketUrl: 'wss://speed.cloudflare.com?location=johannesburg',
-        uploadUrl: 'https://your-cloudflare-worker.workers.dev/upload', // Replace with your Cloudflare Worker URL
-        backupUploadUrl: 'https://simple-speed-test.example.com/upload', // Fallback, replace with actual URL
+        downloadUrl: 'https://speed.cloudflare.com/__down?bytes=25000000',
+        pingUrl: 'https://speedtest.mybroadband.co.za/ping',
+        uploadUrl: 'https://speedtest.mybroadband.co.za/upload',
+        backupUploadUrl: 'https://speedsmart.net/upload',
       },
       testDurations: { download: 10000, upload: 10000, ping: 3000 },
     };
@@ -741,32 +741,20 @@
 
           for (let i = 0; i < totalPackets; i++) {
             if (this.testAborted) break;
-            let ws;
             try {
               const start = performance.now();
-              ws = new WebSocket(CONFIG.testServer.websocketUrl);
-              await new Promise((resolve, reject) => {
-                ws.onopen = () => {
-                  ws.send('ping');
-                };
-                ws.onmessage = () => {
-                  const ping = performance.now() - start;
-                  pingTimes.push(ping);
-                  log(`Ping #${i+1}: ${ping.toFixed(2)}ms`);
-                  resolve();
-                };
-                ws.onerror = () => {
-                  packetsLost++;
-                  log(`Ping #${i+1} failed: WebSocket error`);
-                  reject(new Error('WebSocket error'));
-                };
-                setTimeout(() => reject(new Error('Timeout')), 1000);
-              });
+              const response = await fetch(CONFIG.testServer.pingUrl, { method: 'HEAD', cache: 'no-store' });
+              if (response.ok) {
+                const ping = performance.now() - start;
+                pingTimes.push(ping);
+                log(`Ping #${i+1}: ${ping.toFixed(2)}ms`);
+              } else {
+                packetsLost++;
+                log(`Ping #${i+1} failed: Server error`);
+              }
             } catch (error) {
               packetsLost++;
               log(`Ping #${i+1} failed: ${error.message}`);
-            } finally {
-              if (ws) ws.close();
             }
             const progressPercentage = ((i + 1) / totalPackets) * 100;
             progress.style.width = `${progressPercentage}%`;
@@ -854,39 +842,24 @@
           try {
             const formData = new FormData();
             formData.append('file', blob, 'testfile.bin');
-            const xhr = new XMLHttpRequest();
-            let lastUpdate = startTime;
-
-            xhr.open('POST', url, true);
-            xhr.upload.onprogress = (event) => {
-              if (event.lengthComputable) {
-                uploaded = event.loaded;
-                const elapsed = (performance.now() - startTime) / 1000;
-                if (performance.now() - lastUpdate >= updateInterval) {
-                  const speed = ((uploaded * 8) / elapsed) / (1024 * 1024);
-                  uploadValue.textContent = speed.toFixed(1);
-                  progress.style.width = `${Math.min(100, (elapsed / (maxTime / 1000)) * 100)}%`;
-                  progressPercent.textContent = `${Math.min(100, (elapsed / (maxTime / 1000)) * 100).toFixed(1)}%`;
-                  currentSpeed.textContent = `${speed.toFixed(2)} Mbps`;
-                  dataTransferred.textContent = formatBytes(uploaded);
-                  timeElapsed.textContent = formatTime(elapsed);
-                  this.graph.addUploadSpeed(speed);
-                  lastUpdate = performance.now();
-                }
-              }
-            };
-
-            await new Promise((resolve, reject) => {
-              xhr.onload = () => resolve();
-              xhr.onerror = () => reject(new Error('Upload failed'));
-              xhr.send(formData);
+            const response = await fetch(url, {
+              method: 'POST',
+              body: formData,
+              mode: 'cors',
             });
 
+            if (!response.ok) throw new Error('Upload failed');
+            uploaded = totalSize;
             const totalTime = (performance.now() - startTime) / 1000;
-            const finalSpeed = ((uploaded * 8) / totalTime) / (1024 * 1024);
-            uploadValue.textContent = finalSpeed.toFixed(1);
-            this.graph.addUploadSpeed(finalSpeed);
-            return finalSpeed;
+            const speed = ((uploaded * 8) / totalTime) / (1024 * 1024);
+            uploadValue.textContent = speed.toFixed(1);
+            progress.style.width = '100%';
+            progressPercent.textContent = '100%';
+            currentSpeed.textContent = `${speed.toFixed(2)} Mbps`;
+            dataTransferred.textContent = formatBytes(uploaded);
+            timeElapsed.textContent = formatTime(totalTime);
+            this.graph.addUploadSpeed(speed);
+            return speed;
           } catch (error) {
             log('Upload error: ' + error.message);
             if (!useBackup) {
