@@ -10,11 +10,20 @@
     </style>
 </head>
 <body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/jsm/postprocessing/EffectComposer.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/jsm/postprocessing/RenderPass.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/jsm/postprocessing/UnrealBloomPass.js"></script>
-    <script>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdnjs.cloudflare.com/ajax/libs/three.js/r165/three.module.min.js",
+                "three/addons/": "https://cdnjs.cloudflare.com/ajax/libs/three.js/r165/examples/jsm/"
+            }
+        }
+    </script>
+    <script type="module">
+        import * as THREE from 'three';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+
         // Scene setup
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -24,10 +33,10 @@
         document.body.appendChild(renderer.domElement);
 
         // Post-processing
-        const composer = new THREE.EffectComposer(renderer);
-        const renderPass = new THREE.RenderPass(scene, camera);
+        const composer = new EffectComposer(renderer);
+        const renderPass = new RenderPass(scene, camera);
         composer.addPass(renderPass);
-        const bloomPass = new THREE.UnrealBloomPass(
+        const bloomPass = new UnrealBloomPass(
             new THREE.Vector2(window.innerWidth, window.innerHeight),
             0.5, // strength
             0.4, // radius
@@ -87,6 +96,7 @@
                     // Combine effects
                     vec3 finalColor = mix(refractColor.rgb, reflectColor.rgb, fresnel * 0.5);
                     finalColor = mix(finalColor, color, 0.3);
+                    finalColor += fres Angled Fresnel for rim lighting
                     finalColor += fresnel * color * 0.5;
                     
                     gl_FragColor = vec4(finalColor, 0.8); // Semi-transparent
