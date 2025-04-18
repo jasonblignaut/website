@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="description" content="Experience a cyberpunk cosmos: copy your IP and trigger a cosmic explosion of life." />
+  <meta name="description" content="Ignite a cyberpunk cosmos: copy your IP to unleash an eternal universe of evolving life." />
   <meta name="keywords" content="Cyberpunk Simulation, Standard Model, Public IP, Sacred Geometry" />
   <meta name="author" content="Labverse Cybernetics" />
-  <meta property="og:title" content="Cyberpunk Life Simulation" />
-  <meta property="og:description" content="Copy your IP to unleash a futuristic explosion of particles and equations in a cyberpunk universe." />
+  <meta property="og:title" content="Cyberpunk Cosmic Genesis" />
+  <meta property="og:description" content="Copy your IP to trigger a cosmic explosion, forming planets and life in a neon universe." />
   <meta property="og:image" content="https://labverse.co.za/assets/cyberpunk-og-image.png" />
   <meta property="og:url" content="https://labverse.co.za" />
   <meta name="twitter:card" content="summary_large_image" />
 
-  <title>Cyberpunk Life Simulation</title>
+  <title>Cyberpunk Cosmic Genesis</title>
 
   <!-- Favicon -->
   <link rel="icon" href="favicon.ico" />
@@ -21,7 +21,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Source+Code+Pro&display=swap" rel="stylesheet">
 
   <!-- MathJax for equations -->
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
   <!-- Style -->
@@ -268,7 +267,7 @@
   <div class="css-particles" id="css-particles"></div>
 
   <div class="container">
-    <h1>CYBERPUNK LIFE SIMULATION</h1>
+    <h1>CYBERPUNK COSMIC GENESIS</h1>
     <div class="ip-display" id="ip-display">Fetching IP...</div>
     <div class="equations" id="equations">Energy: Calculating...</div>
     <div class="error-message" id="error-message">Simulation failed. Check browser settings.</div>
@@ -276,7 +275,7 @@
   </div>
 
   <footer>
-    © 2025 Labverse Cybernetics | Powered by 1FAR | IGNITE THE COSMOS
+    © 2025 Labverse Cybernetics | Powered by 1FAR | CREATE ETERNITY
   </footer>
 
   <!-- Three.js ES Modules -->
@@ -302,14 +301,15 @@
       const apis = [
         'https://api.ipify.org?format=json',
         'https://api64.ipify.org?format=json',
-        'https://ip.seeip.org/json'
+        'https://ip.seeip.org/json',
+        'https://api.ip-api.com/json'
       ];
       for (const api of apis) {
         try {
           const response = await fetch(api, { mode: 'cors' });
           if (!response.ok) throw new Error(`IP fetch failed: ${response.status}`);
           const data = await response.json();
-          const ip = data.ip || 'IP unavailable';
+          const ip = data.ip || data.query || 'IP unavailable';
           document.getElementById('ip-display').textContent = ip;
           logDebug(`IP fetched from ${api}: ${ip}`);
           return ip;
@@ -353,11 +353,12 @@
         // Lighting
         const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
         scene.add(ambientLight);
-        const pointLight = new THREE.PointLight(0x00FFFF, 1.5, 100);
+        const pointLight = new THREE.PointLight(0x00FFFF, 2, 100);
         pointLight.position.set(20, 20, 20);
         scene.add(pointLight);
 
         let particles = [];
+        let trails = [];
         let mousePos = { x: 0, y: 0 };
         let forcesEnabled = { em: true, strong: true, weak: true, higgs: true };
 
@@ -373,7 +374,7 @@
           }
         }, { passive: true });
 
-        function createParticle(index, type = 'fermion', life = 10, velocity = new THREE.Vector3(0, 0, 0)) {
+        function createParticle(index, type = 'fermion', velocity = new THREE.Vector3(0, 0, 0)) {
           const phi = (1 + Math.sqrt(5)) / 2;
           const theta = index * 2 * Math.PI * phi;
           const r = Math.sqrt(index) * 0.8;
@@ -398,18 +399,18 @@
           scene.add(particle);
           return {
             obj: particle,
-            life,
-            index,
             type,
             velocity,
             charge: type === 'fermion' ? (Math.random() > 0.5 ? 1 : -1) : 0,
             color: type === 'fermion' ? (Math.random() > 0.5 ? 'red' : 'blue') : null,
-            mass: type === 'higgs' ? 2 : type === 'fermion' ? 1 : 0.5
+            mass: type === 'higgs' ? 2 : type === 'fermion' ? 1 : 0.5,
+            trail: []
           };
         }
 
         function initParticles() {
           particles = [];
+          trails = [];
           for (let i = 0; i < 20; i++) {
             particles.push(createParticle(i, Math.random() > 0.7 ? 'boson' : Math.random() > 0.9 ? 'higgs' : 'fermion'));
           }
@@ -418,14 +419,6 @@
         initParticles();
 
         function triggerBigBang() {
-          particles.forEach(p => {
-            scene.remove(p.obj);
-            try {
-              p.obj.geometry.dispose();
-              p.obj.material.dispose();
-            } catch (e) {}
-          });
-          particles = [];
           for (let i = 0; i < 100; i++) {
             const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2);
             const r = Math.sqrt(i) * 1.5;
@@ -435,10 +428,10 @@
               (Math.random() - 0.5) * 0.1
             );
             const type = Math.random() > 0.7 ? 'boson' : Math.random() > 0.9 ? 'higgs' : 'fermion';
-            particles.push(createParticle(i, type, 5, velocity));
+            particles.push(createParticle(particles.length, type, velocity));
           }
           equationsDiv.classList.add('active');
-          setTimeout(() => equationsDiv.classList.remove('active'), 5000);
+          setTimeout(() => equationsDiv.classList.remove('active'), 10000);
           logDebug('WebGL Big Bang triggered');
         }
 
@@ -472,21 +465,18 @@
         }
 
         function updateParticles() {
-          particles = particles.filter(p => {
-            if (p.life <= 0) {
-              scene.remove(p.obj);
-              try {
-                p.obj.geometry.dispose();
-                p.obj.material.dispose();
-              } catch (e) {}
-              return false;
-            }
-            p.life -= 1 / 60;
-            p.obj.material.opacity = p.life / 10;
+          // Cap active particles to 200 for performance
+          const activeParticles = particles.slice(0, 200);
+          const frozenParticles = particles.slice(200);
+
+          activeParticles.forEach(p => {
+            // Update trail (store last 50 positions)
+            p.trail.push(p.obj.position.clone());
+            if (p.trail.length > 50) p.trail.shift();
 
             // Apply forces
             let force = new THREE.Vector3(0, 0, 0);
-            particles.forEach(p2 => {
+            activeParticles.forEach(p2 => {
               if (p !== p2) {
                 const dist = p.obj.position.distanceTo(p2.obj.position);
                 if (dist > 0.1) {
@@ -502,7 +492,7 @@
                   }
                   if (forcesEnabled.weak && p.type === 'fermion' && Math.random() < 0.01) {
                     p.color = p.color === 'red' ? 'blue' : 'red';
-                    p.obj.material.color.set(p.color === 'red' ? 0xFF0000 : 0x0000FF);
+                    p.obj.material.color.set(p.color === 'red' ? 0xFF0000 : 0x00B7EB);
                   }
                   if (forcesEnabled.higgs && p2.type === 'higgs') {
                     force.add(p.velocity.clone().multiplyScalar(-0.1 * p.mass));
@@ -519,13 +509,44 @@
             p.velocity.add(force.multiplyScalar(0.1 / p.mass));
             p.velocity.multiplyScalar(0.98);
             p.obj.position.add(p.velocity);
-
-            return true;
           });
 
-          if (particles.length < 20 && Math.random() < 0.1) {
+          // Draw trails
+          trails.forEach(t => {
+            const geometry = new THREE.BufferGeometry();
+            const positions = [];
+            t.positions.forEach(pos => positions.push(pos.x, pos.y, pos.z));
+            geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+            const material = new THREE.LineBasicMaterial({
+              color: t.color,
+              transparent: true,
+              opacity: 0.1,
+              blending: THREE.AdditiveBlending
+            });
+            const line = new THREE.Line(geometry, material);
+            scene.add(line);
+            setTimeout(() => {
+              scene.remove(line);
+              line.geometry.dispose();
+              line.material.dispose();
+            }, 1000);
+          });
+
+          // Update trails for active particles
+          activeParticles.forEach(p => {
+            if (p.trail.length >= 2) {
+              trails.push({
+                positions: [...p.trail],
+                color: p.type === 'fermion' ? (p.color === 'red' ? 0xFF0000 : 0x00B7EB) : p.type === 'boson' ? 0xFF00CC : 0xFFD700
+              });
+            }
+          });
+
+          // Spawn new particles sparingly
+          if (particles.length < 200 && Math.random() < 0.01) {
             particles.push(createParticle(particles.length));
           }
+
           calculateEnergy();
         }
 
@@ -575,6 +596,7 @@
         }
 
         let particles = [];
+        let trails = [];
         let mousePos = { x: canvas.width / 2, y: canvas.height / 2 };
         let forcesEnabled = { em: true, strong: true, weak: true, higgs: true };
 
@@ -590,25 +612,26 @@
           }
         }, { passive: true });
 
-        function createParticle(index, type = 'fermion') {
+        function createParticle(index, type = 'fermion', vx = (Math.random() - 0.5) * 2, vy = (Math.random() - 0.5) * 2) {
           const phi = (1 + Math.sqrt(5)) / 2;
           const theta = index * 2 * Math.PI * phi;
           const r = Math.sqrt(index) * 10;
           return {
             x: canvas.width / 2 + r * Math.cos(theta),
             y: canvas.height / 2 + r * Math.sin(theta),
-            vx: (Math.random() - 0.5) * 2,
-            vy: (Math.random() - 0.5) * 2,
-            life: 600,
+            vx,
+            vy,
             type,
             color: type === 'fermion' ? (Math.random() > 0.5 ? 'red' : 'blue') : type === 'boson' ? 'magenta' : 'yellow',
             charge: type === 'fermion' ? (Math.random() > 0.5 ? 1 : -1) : 0,
-            mass: type === 'higgs' ? 2 : type === 'fermion' ? 1 : 0.5
+            mass: type === 'higgs' ? 2 : type === 'fermion' ? 1 : 0.5,
+            trail: []
           };
         }
 
         function initParticles() {
           particles = [];
+          trails = [];
           for (let i = 0; i < 20; i++) {
             particles.push(createParticle(i, Math.random() > 0.7 ? 'boson' : Math.random() > 0.9 ? 'higgs' : 'fermion'));
           }
@@ -617,29 +640,14 @@
         initParticles();
 
         function triggerBigBang() {
-          particles = [];
-          ctx.fillStyle = 'white';
-          ctx.fillRect(canvas.width / 2 - 50, canvas.height / 2 - 50, 100, 100);
-          setTimeout(() => ctx.clearRect(canvas.width / 2 - 50, canvas.height / 2 - 50, 100, 100), 1000);
-
           for (let i = 0; i < 100; i++) {
             const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2);
             const r = Math.sqrt(i) * 15;
             const type = Math.random() > 0.7 ? 'boson' : Math.random() > 0.9 ? 'higgs' : 'fermion';
-            particles.push({
-              x: canvas.width / 2,
-              y: canvas.height / 2,
-              vx: r * Math.cos(theta) * 0.05,
-              vy: r * Math.sin(theta) * 0.05,
-              life: 300,
-              type,
-              color: type === 'fermion' ? (Math.random() > 0.5 ? 'red' : 'blue') : type === 'boson' ? 'magenta' : 'yellow',
-              charge: type === 'fermion' ? (Math.random() > 0.5 ? 1 : -1) : 0,
-              mass: type === 'higgs' ? 2 : type === 'fermion' ? 1 : 0.5
-            });
+            particles.push(createParticle(particles.length, type, r * Math.cos(theta) * 0.05, r * Math.sin(theta) * 0.05));
           }
           equationsDiv.classList.add('active');
-          setTimeout(() => equationsDiv.classList.remove('active'), 5000);
+          setTimeout(() => equationsDiv.classList.remove('active'), 10000);
           logDebug('2D Big Bang triggered');
         }
 
@@ -675,13 +683,19 @@
         function animate() {
           try {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles = particles.filter(p => {
-              if (p.life <= 0) return false;
-              p.life--;
+
+            // Cap active particles
+            const activeParticles = particles.slice(0, 200);
+            const frozenParticles = particles.slice(200);
+
+            activeParticles.forEach(p => {
+              // Update trail
+              p.trail.push({ x: p.x, y: p.y });
+              if (p.trail.length > 50) p.trail.shift();
 
               // Apply forces
               let fx = 0, fy = 0;
-              particles.forEach(p2 => {
+              activeParticles.forEach(p2 => {
                 if (p !== p2) {
                   const dx = p2.x - p.x;
                   const dy = p2.y - p.y;
@@ -720,34 +734,32 @@
               p.x += p.vx;
               p.y += p.vy;
 
-              // Draw
+              // Draw particle
               ctx.beginPath();
               ctx.arc(p.x, p.y, p.type === 'higgs' ? 5 : 3, 0, Math.PI * 2);
               ctx.fillStyle = p.type === 'fermion' ? p.color : p.type === 'boson' ? 'magenta' : 'yellow';
-              ctx.globalAlpha = p.life / 600;
+              ctx.globalAlpha = 1;
               ctx.fill();
-              return true;
             });
 
             // Draw trails
-            particles.forEach(p1 => {
-              particles.forEach(p2 => {
-                if (p1 !== p2) {
-                  const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
-                  if (dist < 50 && Math.random() < 0.05) {
-                    ctx.beginPath();
-                    ctx.moveTo(p1.x, p1.y);
-                    ctx.lineTo(p2.x, p2.y);
-                    ctx.strokeStyle = p1.type === 'fermion' ? p1.color : p1.type === 'boson' ? 'magenta' : 'yellow';
-                    ctx.globalAlpha = 0.3;
-                    ctx.stroke();
-                  }
+            particles.forEach(p => {
+              if (p.trail.length >= 2) {
+                ctx.beginPath();
+                ctx.moveTo(p.trail[0].x, p.trail[0].y);
+                for (let i = 1; i < p.trail.length; i++) {
+                  ctx.lineTo(p.trail[i].x, p.trail[i].y);
                 }
-              });
+                ctx.strokeStyle = p.type === 'fermion' ? p.color : p.type === 'boson' ? 'magenta' : 'yellow';
+                ctx.globalAlpha = 0.1;
+                ctx.stroke();
+              }
             });
 
             ctx.globalAlpha = 1;
-            if (particles.length < 20 && Math.random() < 0.1) {
+
+            // Spawn new particles
+            if (particles.length < 200 && Math.random() < 0.01) {
               particles.push(createParticle(particles.length));
             }
 
@@ -782,6 +794,7 @@
         const cssParticles = document.getElementById('css-particles');
         cssParticles.style.display = 'block';
 
+        let particles = [];
         for (let i = 0; i < 20; i++) {
           const particle = document.createElement('div');
           particle.className = 'css-particle';
@@ -790,22 +803,24 @@
           particle.style.animationDelay = `${Math.random() * 6}s`;
           particle.style.background = `hsl(${Math.random() * 360}, 70%, 70%)`;
           cssParticles.appendChild(particle);
+          particles.push(particle);
         }
 
         function triggerBigBang() {
-          cssParticles.innerHTML = '';
+          particles.forEach(p => p.remove());
+          particles = [];
           for (let i = 0; i < 100; i++) {
             const particle = document.createElement('div');
             particle.className = 'css-particle';
             particle.style.left = `${50 + (Math.random() - 0.5) * 20}vw`;
             particle.style.top = `${50 + (Math.random() - 0.5) * 20}vh`;
-            particle.style.animationDuration = '2s';
+            particle.style.animationDuration = '10s';
             particle.style.background = `hsl(${Math.random() * 360}, 70%, 70%)`;
             cssParticles.appendChild(particle);
-            setTimeout(() => particle.remove(), 2000);
+            particles.push(particle);
           }
           equationsDiv.classList.add('active');
-          setTimeout(() => equationsDiv.classList.remove('active'), 5000);
+          setTimeout(() => equationsDiv.classList.remove('active'), 10000);
           logDebug('CSS Big Bang triggered');
         }
 
@@ -819,6 +834,7 @@
     }
 
     // Initialize Simulation
+    let simulation = null;
     function initializeSimulation() {
       const webglCanvas = document.getElementById('background-canvas');
       const fallbackCanvas = document.getElementById('fallback-canvas');
@@ -862,38 +878,27 @@
         const ip = document.getElementById('ip-display').textContent;
         if (!ip || ip === 'IP unavailable') {
           logDebug('No IP to copy');
+          if (simulation) simulation.triggerBigBang();
           return;
         }
 
         navigator.clipboard.writeText(ip).then(() => {
           logDebug('IP copied successfully');
-          simulation.triggerBigBang();
+          if (simulation) simulation.triggerBigBang();
         }).catch(err => {
           logDebug('Clipboard Error: ' + err.message);
-          const textarea = document.createElement('textarea');
-          textarea.value = ip;
-          document.body.appendChild(textarea);
-          textarea.select();
-          try {
-            document.execCommand('copy');
-            logDebug('Fallback copy successful');
-            simulation.triggerBigBang();
-          } catch (e) {
-            logDebug('Fallback Copy Error: ' + e.message);
-          }
-          document.body.removeChild(textarea);
+          if (simulation) simulation.triggerBigBang();
         });
       } catch (error) {
         logDebug('Copy IP Error: ' + error.message);
+        if (simulation) simulation.triggerBigBang();
       }
     }
 
     // Initialize and Bind Events
     document.addEventListener('DOMContentLoaded', () => {
-      const simulation = initializeSimulation();
-      if (simulation) {
-        document.getElementById('copy-ip').addEventListener('click', copyIP);
-      }
+      simulation = initializeSimulation();
+      document.getElementById('copy-ip').addEventListener('click', copyIP);
     });
   </script>
 </body>
