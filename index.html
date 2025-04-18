@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infinite Dodecahedron LED</title>
+    <title>Infinite Dodecahedron LED - Realistic</title>
     <style>
         body { margin: 0; overflow: hidden; background: #000; }
         canvas { display: block; }
@@ -11,52 +11,126 @@
 </head>
 <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/jsm/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/jsm/postprocessing/RenderPass.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/jsm/postprocessing/UnrealBloomPass.js"></script>
     <script>
         // Scene setup
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
+        // Post-processing
+        const composer = new THREE.EffectComposer(renderer);
+        const renderPass = new THREE.RenderPass(scene, camera);
+        composer.addPass(renderPass);
+        const bloomPass = new THREE.UnrealBloomPass(
+            new THREE.Vector2(window.innerWidth, window.innerHeight),
+            0.5, // strength
+            0.4, // radius
+            0.85 // threshold
+        );
+        composer.addPass(bloomPass);
+
         // Dodecahedron geometry
-        const geometry = new THREE.DodecahedronGeometry(1);
+        const geometry = new THREE.DodecahedronGeometry(1, 2);
         const material = new THREE.ShaderMaterial({
             uniforms: {
                 time: { value: 0 },
-                color1: { value: new THREE.Color('#ff0066') },
-                color2: { value: new THREE.Color('#00ccff') }
+                uColor1: { value: new THREE.Color('#ff4d94') },
+                uColor2: { value: new THREE.Color('#4dffeb') },
+                uRefractPower: { value: 1.2 },
+                uFresnelPower: { value: 2.0 },
+                uEnvMap: { value: null }
             },
             vertexShader: `
                 varying vec3 vNormal;
+                varying vec3 vViewDir;
+                varying vec3 vWorldPos;
                 void main() {
-                    vNormal = normal;
+                    vNormal = normalize(normalMatrix * normal);
+                    vWorldPos = (modelMatrix * vec4(position, 1.0)).xyz;
+                    vViewDir = normalize(cameraPosition - vWorldPos);
                     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
                 }
             `,
             fragmentShader: `
                 uniform float time;
-                uniform vec3 color1;
-                uniform vec3 color2;
+                uniform vec3 uColor1;
+                uniform vec3 uColor2;
+                uniform float uRefractPower;
+                uniform float uFresnelPower;
+                uniform samplerCube uEnvMap;
                 varying vec3 vNormal;
+                varying vec3 vViewDir;
+                varying vec3 vWorldPos;
+
                 void main() {
-                    float t = sin(time * 0.5) * 0.5 + 0.5;
-                    vec3 color = mix(color1, color2, t);
-                    float glow = abs(dot(vNormal, vec3(0, 0, 1))) * 0.5 + 0.5;
-                    gl_FragColor = vec4(color * glow, 1.0);
+                    // Fresnel effect for rim lighting
+                    float fresnel = pow(1.0 - dot(vNormal, vViewDir), uFresnelPower);
+                    
+                    // Color animation
+                    float t = sin(time * 0.3) * 0.5 + 0.5;
+                    vec3 color = mix(uColor1, uColor2, t);
+                    
+                    // Reflection
+                    vec3 reflectDir = reflect(-vViewDir, vNormal);
+                    vec4 reflectColor = textureCube(uEnvMap, reflectDir);
+                    
+                    // Refraction
+                    vec3 refractDir = refract(-vViewDir, vNormal, 1.0 / uRefractPower);
+                    vec4 refractColor = textureCube(uEnvMap, refractDir);
+                    
+                    // Combine effects
+                    vec3 finalColor = mix(refractColor.rgb, reflectColor.rgb, fresnel * 0.5);
+                    finalColor = mix(finalColor, color, 0.3);
+                    finalColor += fresnel * color * 0.5;
+                    
+                    gl_FragColor = vec4(finalColor, 0.8); // Semi-transparent
                 }
             `,
+            transparent: true,
             side: THREE.DoubleSide
         });
 
         const dodecahedron = new THREE.Mesh(geometry, material);
         scene.add(dodecahedron);
 
-        // Reflective environment (simplified infinite effect)
-        const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(128);
+        // Reflective environment
+        const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(512, {
+            generateMipmaps: true,
+            minFilter: THREE.LinearMipmapLinearFilter
+        });
         const cubeCamera = new THREE.CubeCamera(0.1, 1000, cubeRenderTarget);
         scene.add(cubeCamera);
-        dodecahedron.material.envMap = cubeRenderTarget.texture;
+        material.uniforms.uEnvMap.value = cubeRenderTarget.texture;
+
+        // Background particles for depth
+        const particleGeometry = new THREE.BufferGeometry();
+        const particleCount = 1000;
+        const posArray = new Float32Array(particleCount * 3);
+        for (let i = 0; i < particleCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 50;
+        }
+        particleGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const particleMaterial = new THREE.PointsMaterial({
+            size: 0.05,
+            color: '#ffffff',
+            transparent: true,
+            opacity: 0.5
+        });
+        const particles = new THREE.Points(particleGeometry, particleMaterial);
+        scene.add(particles);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+        scene.add(ambientLight);
+        const pointLight = new THREE.PointLight(0xffffff, 1, 10);
+        pointLight.position.set(5, 5, 5);
+        scene.add(pointLight);
 
         // Camera position
         camera.position.z = 3;
@@ -64,11 +138,12 @@
         // Animation loop
         function animate(time) {
             requestAnimationFrame(animate);
-            dodecahedron.rotation.x += 0.01;
-            dodecahedron.rotation.y += 0.01;
+            dodecahedron.rotation.x += 0.005;
+            dodecahedron.rotation.y += 0.005;
             material.uniforms.time.value = time * 0.001;
+            cubeCamera.position.copy(dodecahedron.position);
             cubeCamera.update(renderer, scene);
-            renderer.render(scene, camera);
+            composer.render();
         }
         animate();
 
@@ -77,6 +152,7 @@
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
+            composer.setSize(window.innerWidth, window.innerHeight);
         });
     </script>
 </body>
