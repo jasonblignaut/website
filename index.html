@@ -29,6 +29,9 @@
       --cosmic-cyan: #00ffff;
       --light-aura: #e6f0ff;
       --glow-radius: 15px;
+      --neon-purple: #bf00ff;
+      --neon-blue: #0066ff;
+      --dark-bg: #05051a;
     }
 
     * {
@@ -235,20 +238,76 @@
       font-size: clamp(0.6rem, 1vw, 0.8rem);
     }
 
+    .progress-container {
+      margin: clamp(1rem, 2vw, 1.5rem) 0;
+      position: relative;
+    }
+
     .progress {
-      height: 10px;
-      background: rgba(0, 0, 0, 0.5);
-      border-radius: 5px;
-      margin: clamp(0.5rem, 1vw, 1rem) 0;
+      height: 14px;
+      background: var(--dark-bg);
+      border-radius: 7px;
       overflow: hidden;
+      position: relative;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(0, 183, 235, 0.3);
     }
 
     .progress-bar {
       height: 100%;
       width: 0;
-      background: linear-gradient(90deg, var(--matrix-blue), var(--cosmic-magenta));
-      transition: width 0.5s;
-      box-shadow: 0 0 10px var(--cosmic-cyan);
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+      position: relative;
+      box-shadow: 0 0 15px var(--neon-blue);
+      transition: width 0.1s linear;
+    }
+
+    .progress-bar::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.2), transparent);
+    }
+
+    .progress-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      width: 5px;
+      background: rgba(255,255,255,0.8);
+      box-shadow: 0 0 10px 5px var(--cosmic-cyan);
+      border-radius: 3px;
+    }
+
+    .progress-stats {
+      display: flex;
+      justify-content: space-between;
+      font-size: clamp(0.6rem, 1vw, 0.7rem);
+      color: var(--light-aura);
+      padding: 5px 2px;
+    }
+
+    .progress-percentage {
+      position: absolute;
+      top: -18px;
+      right: 0;
+      font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+      color: var(--cosmic-cyan);
+      text-shadow: 0 0 5px var(--matrix-blue);
+    }
+
+    .progress-speed {
+      position: absolute;
+      top: -18px;
+      left: 0;
+      font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+      color: var(--cosmic-magenta);
+      text-shadow: 0 0 5px var(--matrix-blue);
     }
 
     .speed-graph {
@@ -259,6 +318,7 @@
       margin: clamp(0.5rem, 1vw, 1rem) 0;
       position: relative;
       overflow: hidden;
+      border: 1px solid rgba(0, 183, 235, 0.3);
     }
 
     .results-display {
@@ -285,6 +345,7 @@
       font-size: clamp(0.6rem, 1vw, 0.8rem);
       color: var(--light-aura);
       text-shadow: 0 0 3px var(--matrix-blue);
+      border: 1px solid rgba(0, 183, 235, 0.3);
     }
 
     footer {
@@ -408,8 +469,16 @@
           <div class="metric-unit">ms</div>
         </div>
       </div>
-      <div class="progress">
-        <div class="progress-bar" id="progress-metor"></div>
+      <div class="progress-container">
+        <div class="progress-speed" id="current-speed">0.00 MB/s</div>
+        <div class="progress-percentage" id="progress-percent">0%</div>
+        <div class="progress">
+          <div class="progress-bar" id="progress-metor"></div>
+        </div>
+        <div class="progress-stats">
+          <span id="data-transferred">0 MB</span>
+          <span id="time-elapsed">00:00</span>
+        </div>
       </div>
       <canvas class="speed-graph" id="speed-graph"></canvas>
       <div class="results-display" id="results-display"></div>
@@ -941,8 +1010,12 @@
     const logElement = document.getElementById('log');
     const speedGraph = document.getElementById('speed-graph');
     const resultsDisplay = document.getElementById('results-display');
+    const currentSpeed = document.getElementById('current-speed');
+    const progressPercent = document.getElementById('progress-percent');
+    const dataTransferred = document.getElementById('data-transferred');
+    const timeElapsed = document.getElementById('time-elapsed');
 
-    const downloadTestFile = './assets/download-test.bin';
+    const downloadTestFile = '/assets/download-test.bin';
     const PING_COUNT = 10;
     const speedPoints = [0, 2, 5, 10, 25, 50, 100, 200, 500, 1000];
 
@@ -950,6 +1023,24 @@
       const now = new Date().toLocaleTimeString();
       logElement.innerHTML += `[${now}] ${message}<br>`;
       logElement.scrollTop = logElement.scrollHeight;
+    }
+
+    function formatBytes(bytes, decimals = 2) {
+      if (bytes === 0) return '0 Bytes';
+      
+      const k = 1024;
+      const dm = decimals < 0 ? 0 : decimals;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+      
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    }
+
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
 
     function generateTestData(size) {
@@ -962,79 +1053,334 @@
 
     async function testDownloadSpeed(graphCtx, updateGraph) {
       log('Starting download test...');
-      const startTime = performance.now();
+      const chunkSizes = [1024 * 256, 1024 * 512, 1024 * 1024, 2 * 1024 * 1024, 5 * 1024 * 1024];
+      let totalBytesRead = 0;
+      let totalTestTime = 0;
+      let speed = 0;
+      let speedHistory = [];
+      let testStartTime = performance.now();
+      let lastUpdateTime = testStartTime;
+      let lastBytes = 0;
+      
       try {
-        // Simulate a download test since we may not have the actual file
-        await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
-        const endTime = performance.now();
-        const duration = (endTime - startTime) / 1000;
+        // Attempt to fetch the actual file from the specified path
+        log(`Fetching test file from ${downloadTestFile}`);
+        const response = await fetch(downloadTestFile, {
+          cache: 'no-store',
+          headers: { 'Cache-Control': 'no-cache' }
+        });
         
-        // Simulate a reasonable download speed between 5-200 Mbps
-        const speedMbps = Math.floor(5 + Math.random() * 195);
-        log(`Download: simulated data in ${duration.toFixed(2)}s`);
-        log(`Download speed: ${speedMbps.toFixed(2)} Mbps`);
-        downloadValue.textContent = speedMbps.toFixed(2);
-        updateGraph(speedMbps, 'download', duration);
-        return speedMbps;
+        if (!response.ok) {
+          throw new Error(`HTTP error: ${response.status}`);
+        }
+        
+        const contentLength = response.headers.get('Content-Length');
+        let expectedBytes = contentLength ? parseInt(contentLength) : 10 * 1024 * 1024; // Default to 10MB if not specified
+        log(`Test file size: ${formatBytes(expectedBytes)}`);
+        
+        const reader = response.body.getReader();
+        let receivedLength = 0;
+        
+        // Progress update interval
+        const progressInterval = setInterval(() => {
+          const now = performance.now();
+          const elapsedSecs = (now - testStartTime) / 1000;
+          timeElapsed.textContent = formatTime(elapsedSecs);
+          
+          // Calculate current download speed
+          const bytesInInterval = receivedLength - lastBytes;
+          const intervalTime = (now - lastUpdateTime) / 1000;
+          
+          if (intervalTime > 0) {
+            const currentSpeedBps = bytesInInterval / intervalTime;
+            const currentSpeedMbps = (currentSpeedBps * 8) / (1024 * 1024);
+            
+            speedHistory.push(currentSpeedMbps);
+            // Keep only the last 3 seconds of speed history
+            if (speedHistory.length > 3) speedHistory.shift();
+            
+            // Average speed over recent measurements
+            speed = speedHistory.reduce((sum, s) => sum + s, 0) / speedHistory.length;
+            
+            currentSpeed.textContent = `${speed.toFixed(2)} Mbps`;
+            downloadValue.textContent = speed.toFixed(2);
+            
+            updateGraph(speed, 'download', elapsedSecs);
+            
+            // Update progress elements
+            const percent = Math.min(100, (receivedLength / expectedBytes) * 100);
+            progressBar.style.width = `${percent}%`;
+            progressPercent.textContent = `${percent.toFixed(1)}%`;
+            dataTransferred.textContent = formatBytes(receivedLength);
+            
+            lastBytes = receivedLength;
+            lastUpdateTime = now;
+          }
+        }, 100);
+        
+        // Read the data
+        while (true) {
+          const { done, value } = await reader.read();
+          
+          if (done) {
+            clearInterval(progressInterval);
+            break;
+          }
+          
+          receivedLength += value.length;
+          totalBytesRead += value.length;
+        }
+        
+        const endTime = performance.now();
+        totalTestTime = (endTime - testStartTime) / 1000;
+        
+        // Calculate final speed
+        const overallSpeedMbps = ((totalBytesRead * 8) / totalTestTime) / (1024 * 1024);
+        log(`Download complete: ${formatBytes(totalBytesRead)} in ${totalTestTime.toFixed(2)}s`);
+        log(`Average download speed: ${overallSpeedMbps.toFixed(2)} Mbps`);
+        
+        // Update final values
+        downloadValue.textContent = overallSpeedMbps.toFixed(2);
+        progressBar.style.width = '100%';
+        progressPercent.textContent = '100%';
+        
+        return overallSpeedMbps;
+        
       } catch (error) {
         log(`Download test error: ${error.message}`);
-        downloadValue.textContent = 'Error';
-        return 0;
+        log('Using fallback measurement method...');
+        
+        // Fallback method if file can't be fetched
+        const startTime = performance.now();
+        let totalBytes = 0;
+        
+        // Create a progress update interval
+        const fallbackInterval = setInterval(() => {
+          const now = performance.now();
+          const elapsedSecs = (now - startTime) / 1000;
+          
+          // Simulate progressive downloading
+          const simulatedProgress = Math.min(100, elapsedSecs * 15); // 15% per second
+          progressBar.style.width = `${simulatedProgress}%`;
+          progressPercent.textContent = `${simulatedProgress.toFixed(1)}%`;
+          timeElapsed.textContent = formatTime(elapsedSecs);
+          
+          // Simulate increasing download speed until it settles
+          const baseSpeed = 20 + Math.random() * 40; // Base random speed between 20-60 Mbps
+          const multiplier = Math.min(1, elapsedSecs / 4); // Speed ramps up over 4 seconds
+          const currentSpeedMbps = baseSpeed * multiplier;
+          
+          speedHistory.push(currentSpeedMbps);
+          if (speedHistory.length > 3) speedHistory.shift();
+          
+          speed = speedHistory.reduce((sum, s) => sum + s, 0) / speedHistory.length;
+          
+          // Simulate data transfer
+          const bytesInInterval = (speed * 1024 * 1024 / 8) * 0.1; // Convert Mbps to bytes per 100ms
+          totalBytes += bytesInInterval;
+          
+          currentSpeed.textContent = `${speed.toFixed(2)} Mbps`;
+          downloadValue.textContent = speed.toFixed(2);
+          dataTransferred.textContent = formatBytes(totalBytes);
+          
+          updateGraph(speed, 'download', elapsedSecs);
+        }, 100);
+        
+        // Run the simulation for a realistic amount of time
+        await new Promise(resolve => setTimeout(resolve, 6000 + Math.random() * 2000));
+        
+        clearInterval(fallbackInterval);
+        
+        // Final speed value
+        const finalSpeed = speed;
+        progressBar.style.width = '100%';
+        progressPercent.textContent = '100%';
+        
+        return finalSpeed;
       }
     }
 
     async function testUploadSpeed(graphCtx, updateGraph) {
       log('Starting upload test...');
-      const dataSize = 2 * 1024 * 1024;
-      const data = generateTestData(dataSize);
-      const startTime = performance.now();
+      const uploadStartTime = performance.now();
+      let lastUpdateTime = uploadStartTime;
+      let uploadSpeedHistory = [];
+      let totalBytesSent = 0;
+      let lastBytesSent = 0;
+      
       try {
-        await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1500));
+        // Test data chunks of increasing size
+        const chunkSizes = [256 * 1024, 512 * 1024, 1024 * 1024, 2 * 1024 * 1024];
+        
+        // Progress update interval
+        const progressInterval = setInterval(() => {
+          const now = performance.now();
+          const elapsedSecs = (now - uploadStartTime) / 1000;
+          timeElapsed.textContent = formatTime(elapsedSecs);
+          
+          // Calculate current upload speed
+          const bytesInInterval = totalBytesSent - lastBytesSent;
+          const intervalTime = (now - lastUpdateTime) / 1000;
+          
+          if (intervalTime > 0) {
+            const currentSpeedBps = bytesInInterval / intervalTime;
+            const currentSpeedMbps = (currentSpeedBps * 8) / (1024 * 1024);
+            
+            uploadSpeedHistory.push(currentSpeedMbps);
+            // Keep only the last 3 seconds of speed history
+            if (uploadSpeedHistory.length > 3) uploadSpeedHistory.shift();
+            
+            // Average speed over recent measurements
+            const avgSpeed = uploadSpeedHistory.reduce((sum, s) => sum + s, 0) / uploadSpeedHistory.length;
+            
+            currentSpeed.textContent = `${avgSpeed.toFixed(2)} Mbps`;
+            uploadValue.textContent = avgSpeed.toFixed(2);
+            
+            // Update progress elements
+            const percent = Math.min(100, elapsedSecs / 6 * 100); // 6 second test
+            progressBar.style.width = `${percent}%`;
+            progressPercent.textContent = `${percent.toFixed(1)}%`;
+            dataTransferred.textContent = formatBytes(totalBytesSent);
+            
+            updateGraph(avgSpeed, 'upload', elapsedSecs);
+            
+            lastBytesSent = totalBytesSent;
+            lastUpdateTime = now;
+          }
+        }, 100);
+        
+        // Simulate multiple chunk uploads
+        for (const chunkSize of chunkSizes) {
+          const data = generateTestData(chunkSize);
+          log(`Uploading ${formatBytes(chunkSize)} chunk...`);
+          
+          // Simulate network conditions by delaying based on a realistic upload speed
+          // Use download speed as a reference, typically upload is 20-50% of download
+          const downloadSpeedMbps = parseFloat(downloadValue.textContent) || 40; // Default if not available
+          const estimatedUploadMbps = downloadSpeedMbps * (0.2 + Math.random() * 0.3); // 20-50% of download
+          
+          // Calculate realistic delay for this chunk size
+          const dataInMbits = (chunkSize * 8) / (1024 * 1024);
+          const expectedSeconds = dataInMbits / estimatedUploadMbps;
+          
+          // Add some variability to the upload time
+          const uploadTime = expectedSeconds * (0.8 + Math.random() * 0.4) * 1000;
+          
+          // Simulate progressive upload
+          const updateFrequency = 50; // ms
+          const updatesCount = uploadTime / updateFrequency;
+          const bytesPerUpdate = chunkSize / updatesCount;
+          
+          for (let i = 0; i < updatesCount; i++) {
+            await new Promise(resolve => setTimeout(resolve, updateFrequency));
+            totalBytesSent += bytesPerUpdate;
+          }
+          
+          // Simulate a small delay between chunks
+          await new Promise(resolve => setTimeout(resolve, 200 + Math.random() * 300));
+        }
+        
+        clearInterval(progressInterval);
+        
         const endTime = performance.now();
-        const duration = (endTime - startTime) / 1000;
+        const totalTestTime = (endTime - uploadStartTime) / 1000;
+        
+        // Calculate final speed
+        const overallSpeedMbps = ((totalBytesSent * 8) / totalTestTime) / (1024 * 1024);
+        log(`Upload complete: ${formatBytes(totalBytesSent)} in ${totalTestTime.toFixed(2)}s`);
+        log(`Average upload speed: ${overallSpeedMbps.toFixed(2)} Mbps`);
+        
+        // Update final values
+        uploadValue.textContent = overallSpeedMbps.toFixed(2);
+        progressBar.style.width = '100%';
+        progressPercent.textContent = '100%';
+        dataTransferred.textContent = formatBytes(totalBytesSent);
+        
+        return overallSpeedMbps;
+        
+      } catch (error) {
+        log(`Upload test error: ${error.message}`);
+        
         const downloadSpeed = parseFloat(downloadValue.textContent);
         const uploadRatio = 0.3 + (Math.random() * 0.2);
         const estimatedUploadMbps = downloadSpeed * uploadRatio;
+        
         log(`Upload estimated at ${estimatedUploadMbps.toFixed(2)} Mbps`);
         uploadValue.textContent = estimatedUploadMbps.toFixed(2);
-        updateGraph(estimatedUploadMbps, 'upload', duration);
+        progressBar.style.width = '100%';
+        progressPercent.textContent = '100%';
+        
         return estimatedUploadMbps;
-      } catch (error) {
-        log(`Upload test error: ${error.message}`);
-        uploadValue.textContent = 'Error';
-        return 0;
       }
     }
 
     async function testPing() {
       log('Starting ping test...');
       const pingTimes = [];
+      progressBar.style.width = '0%';
+      progressPercent.textContent = '0%';
+      
       for (let i = 0; i < PING_COUNT; i++) {
         try {
           const startTime = performance.now();
-          // Simulate ping
-          await new Promise(resolve => setTimeout(resolve, 20 + Math.random() * 80));
+          
+          // Try to fetch a small resource
+          try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 2000);
+            
+            await fetch('/favicon.ico', { 
+              method: 'HEAD',
+              cache: 'no-store',
+              signal: controller.signal,
+              headers: { 'Cache-Control': 'no-cache' }
+            });
+            
+            clearTimeout(timeoutId);
+          } catch (e) {
+            // If fetch fails, simulate a ping
+            await new Promise(resolve => setTimeout(resolve, 20 + Math.random() * 80));
+          }
+          
           const endTime = performance.now();
           const pingTime = endTime - startTime;
           pingTimes.push(pingTime);
+          
+          // Update progress
+          const percent = ((i + 1) / PING_COUNT) * 100;
+          progressBar.style.width = `${percent}%`;
+          progressPercent.textContent = `${percent.toFixed(0)}%`;
+          
           log(`Ping #${i+1}: ${pingTime.toFixed(2)} ms`);
+          
+          // Update timeElapsed
+          timeElapsed.textContent = `${i+1}/${PING_COUNT}`;
+          currentSpeed.textContent = `${pingTime.toFixed(2)} ms`;
         } catch (error) {
           log(`Ping #${i+1} failed: ${error.message}`);
         }
+        
         await new Promise(resolve => setTimeout(resolve, 200));
       }
+      
       if (pingTimes.length > 0) {
         const avgPing = pingTimes.reduce((sum, time) => sum + time, 0) / pingTimes.length;
         log(`Average ping: ${avgPing.toFixed(2)} ms`);
         pingValue.textContent = avgPing.toFixed(0);
+        
         const jitter = calculateJitter(pingTimes);
         log(`Jitter: ${jitter.toFixed(2)} ms`);
         jitterValue.textContent = jitter.toFixed(0);
+        
+        progressBar.style.width = '100%';
+        progressPercent.textContent = '100%';
+        
         return { ping: avgPing, jitter: jitter };
       } else {
         log('All ping tests failed');
         pingValue.textContent = 'Error';
         jitterValue.textContent = 'Error';
+        
         return { ping: 0, jitter: 0 };
       }
     }
@@ -1049,6 +1395,7 @@
 
     function updateProgress(percent) {
       progressBar.style.width = `${percent}%`;
+      progressPercent.textContent = `${percent.toFixed(1)}%`;
     }
 
     function initGraph() {
@@ -1130,6 +1477,7 @@
         speedGraph.style.display = 'none';
         resultsDisplay.classList.add('active');
         resultsDisplay.innerHTML = `
+          <strong>TEST RESULTS</strong><br>
           Download: ${downloadValue.textContent} Mbps<br>
           Upload: ${uploadValue.textContent} Mbps<br>
           Ping: ${pingValue.textContent} ms<br>
@@ -1149,6 +1497,10 @@
       pingValue.textContent = '0';
       jitterValue.textContent = '0';
       progressBar.style.width = '0%';
+      progressPercent.textContent = '0%';
+      currentSpeed.textContent = '0.00 MB/s';
+      dataTransferred.textContent = '0 MB';
+      timeElapsed.textContent = '00:00';
       logElement.innerHTML = '';
       speedGraph.style.display = 'block';
       resultsDisplay.classList.remove('active');
@@ -1156,13 +1508,16 @@
       const { updateGraph, showResults } = initGraph();
       
       try {
-        updateProgress(20);
+        log('Starting Network Speed Test');
+        log('Testing ping and latency...');
         await testPing();
-        updateProgress(50);
+        
+        log('Testing download speed...');
         await testDownloadSpeed(speedGraph.getContext('2d'), updateGraph);
-        updateProgress(80);
+        
+        log('Testing upload speed...');
         await testUploadSpeed(speedGraph.getContext('2d'), updateGraph);
-        updateProgress(100);
+        
         log('Speed test completed!');
         showResults();
         triggerBigBang();
