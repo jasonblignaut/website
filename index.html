@@ -782,7 +782,373 @@
             
             // Clean up ISP name - remove AS numbers if present
             if (info.isp.includes('AS')) {
-              info.isp = info.isp.split(' ').slice(1).join(' ');
+              info.isp = info.isp.split(' ').slice(1).join(' ').trim() || 'Unknown ISP';
             }
             
-            log('Network info fetche
+            // Validate data
+            if (info.city && info.country) {
+              log('Network info fetched: ' + JSON.stringify(info));
+              document.getElementById('network-info').innerHTML = `ISP: ${info.isp}<br>Location: ${info.city}, ${info.country}`;
+              return info;
+            }
+          } catch (err) {
+            log(`Geo service ${service} failed: ${err.message}`);
+            continue; // Try next service
+          }
+        }
+        
+        throw new Error("All geo services failed");
+      } catch (error) {
+        log('Location fetch error: ' + error.message);
+        const fallbackInfo = { isp: 'Dimension Data', city: 'Johannesburg', country: 'South Africa' };
+        document.getElementById('network-info').innerHTML = `ISP: ${fallbackInfo.isp}<br>Location: ${fallbackInfo.city}, ${fallbackInfo.country}`;
+        return fallbackInfo;
+      }
+    }
+
+    // Speed Test Functions
+    const CONFIG = {
+      testServer: {
+        downloadUrl: 'https://speed.cloudflare.com/__down?bytes=25000000',
+        pingResource: 'https://labverse.co.za/assets/ping-test.txt',
+      },
+      testDurations: { download: 10000, ping: 3000 },
+      maxTestTimeout: 20000, // 20 seconds
+      watchdogTimeout: 25000, // Watchdog to force-finalize after 25 seconds
+    };
+
+    function initializeSpeedTest() {
+      const startButton = document.getElementById('startButton');
+      const progressBar = document.getElementById('progressBar');
+      const testType = document.getElementById('testType');
+      const speedometer = document.getElementById('speedometer');
+      const graphContainer = document.getElementById('graphContainer');
+      const graph = document.getElementById('graph');
+      let graphLine = document.getElementById('graphLine');
+      let graphFill = document.getElementById('graphFill');
+      const gaugeFill = document.getElementById('gaugeFill');
+      const gaugeNeedle = document.getElementById('gaugeNeedle');
+      const speedValue = document.getElementById('speedValue');
+      const speedLabel = document.getElementById('speedLabel');
+      const resultsContainer = document.getElementById('resultsContainer');
+      const downloadResult = document.getElementById('downloadResult');
+      const pingResult = document.getElementById('pingResult');
+      const yAxis = document.getElementById('yAxis');
+      const gridLines = document.getElementById('gridLines');
+      const iframeContainer = document.getElementById('iframe-container');
+      const iframe = document.getElementById('speedFrame');
+
+      let currentTest = null;
+      let testData = [];
+      let currentSpeed = 0;
+      let maxSpeed = 0;
+      let finalDownloadSpeed = 0;
+      let finalPing = 0;
+      let startTime = 0;
+      let testDuration = CONFIG.testDurations.download;
+      let animationFrame = null;
+      let testActive = false;
+      let controller = null;
+      let watchdogTimer = null;
+
+      // Y-axis setup
+      const Y_AXIS_LABELS = [0, 5, 10, 20, 25, 50, 100, 200, 500, 1000];
+      const Y_AXIS_POSITIONS = Array.from({ length: 10 }, (_, i) => (i / 9) * 100); // 0%, 11.11%, ..., 100%
+
+      function setupYAxis() {
+        yAxis.innerHTML = '';
+        Y_AXIS_LABELS.forEach((label, index) => {
+          const labelDiv = document.createElement('div');
+          labelDiv.className = 'y-axis-label';
+          labelDiv.style.bottom = `${Y_AXIS_POSITIONS[index]}%`;
+          labelDiv.textContent = label;
+          yAxis.appendChild(labelDiv);
+        });
+      }
+
+      function speedToHeight(speed) {
+        if (speed <= 0) return 0;
+        if (speed >= 1000) return 100;
+
+        let lowerLabel, upperLabel, lowerPos, upperPos;
+        for (let i = 0; i < Y_AXIS_LABELS.length - 1; i++) {
+          if (speed >= Y_AXIS_LABELS[i] && speed <= Y_AXIS_LABELS[i + 1]) {
+            lowerLabel = Y_AXIS_LABELS[i];
+            upperLabel = Y_AXIS_LABELS[i + 1];
+            lowerPos = Y_AXIS_POSITIONS[i];
+            upperPos = Y_AXIS_POSITIONS[i + 1];
+            break;
+          }
+        }
+
+        const fraction = (speed - lowerLabel) / (upperLabel - lowerLabel);
+        const height = lowerPos + fraction * (upperPos - lowerPos);
+        return height;
+      }
+
+      function setupGridLines() {
+        gridLines.innerHTML = '';
+        const numLines = Y_AXIS_POSITIONS.length;
+        for (let i = 0; i < numLines; i++) {
+          const gridLine = document.createElement('div');
+          gridLine.className = 'grid-line';
+          gridLine.style.bottom = `${Y_AXIS_POSITIONS[i]}%`;
+          gridLines.appendChild(gridLine);
+        }
+      }
+
+      function updateSpeedometer(speed) {
+        const maxScale = 1000;
+        const percent = speed / maxScale;
+        const angle = 180 + (percent * 180); // 180° (left) to 360° (right)
+        gaugeFill.style.transform = `rotate(${angle}deg)`;
+        gaugeNeedle.style.transform = `rotate(${angle}deg)`;
+        speedValue.textContent = speed.toFixed(1);
+      }
+
+      function updateGraph(percentage, speed) {
+        const heightPercentage = speedToHeight(speed);
+        graphLine.style.width = `${percentage * 100}%`;
+        graphFill.style.width = `${percentage * 100}%`;
+        graphFill.style.height = `${heightPercentage}%`;
+      }
+
+      async function runPingTest() {
+        log('Starting ping test to local server...');
+        const pingTimes = [];
+        const totalPackets = 10;
+
+        for (let i = 0; i < totalPackets; i++) {
+          if (!testActive) break;
+          let ping = 999;
+          try {
+            const start = performance.now();
+            await fetch(CONFIG.testServer.pingResource + '?t=' + Date.now(), { cache: 'no-store', signal: AbortSignal.timeout(2000) });
+            ping = performance.now() - start;
+            pingTimes.push(ping);
+            log(`Ping #${i+1}: ${ping.toFixed(2)}ms`);
+          } catch (error) {
+            pingTimes.push(ping);
+            log(`Ping #${i+1} failed: ${error.message}`);
+          }
+          await new Promise(r => setTimeout(r, 300));
+        }
+
+        const successfulPings = pingTimes.filter(t => t !== 999);
+        const avgPing = successfulPings.length ? successfulPings.reduce((sum, t) => sum + t, 0) / successfulPings.length : 999;
+        finalPing = avgPing;
+        pingResult.textContent = `${avgPing.toFixed(0)} ms`;
+        return avgPing;
+      }
+
+      async function runDownloadTest(callback) {
+        log('Starting download test from Cloudflare Johannesburg server...');
+        let totalBytes = 0;
+        startTime = performance.now();
+        const updateInterval = 100;
+        let lastUpdate = startTime;
+        let lastBytes = 0;
+        let lastTime = startTime;
+
+        const overallTimeout = setTimeout(() => {
+          log('Download test timed out after 20 seconds');
+          testActive = false;
+          if (controller) controller.abort();
+          finalizeTest();
+        }, CONFIG.maxTestTimeout);
+
+        try {
+          controller = new AbortController();
+          const signal = controller.signal;
+          const response = await fetch(CONFIG.testServer.downloadUrl, { cache: 'no-store', signal });
+          if (!response.ok) throw new Error('Failed to fetch download resource: ' + response.statusText);
+          const reader = response.body.getReader();
+
+          while (testActive) {
+            let result;
+            try {
+              result = await reader.read();
+            } catch (error) {
+              log('Reader error: ' + error.message);
+              throw error;
+            }
+            const { done, value } = result;
+            if (done || !testActive) {
+              controller.abort();
+              break;
+            }
+            totalBytes += value ? value.length : 0;
+            const currentTime = performance.now();
+            const elapsed = (currentTime - startTime) / 1000;
+            if (currentTime - lastUpdate >= updateInterval) {
+              const elapsedSinceLast = (currentTime - lastTime) / 1000;
+              const bytesSinceLast = totalBytes - lastBytes;
+              const speed = elapsedSinceLast > 0 ? ((bytesSinceLast * 8) / elapsedSinceLast) / (1024 * 1024) : 0;
+              callback(elapsed, speed);
+              lastUpdate = currentTime;
+              lastBytes = totalBytes;
+              lastTime = currentTime;
+              if (testData.length > 50) testData.shift();
+            }
+            if (elapsed >= testDuration / 1000) {
+              controller.abort();
+              break;
+            }
+          }
+        } catch (error) {
+          log('Download error: ' + error.message);
+          const totalTime = (performance.now() - startTime) / 1000;
+          const finalSpeed = totalTime > 0 ? ((totalBytes * 8) / totalTime) / (1024 * 1024) : 0;
+          testData.push({ time: totalTime, speed: finalSpeed });
+        } finally {
+          clearTimeout(overallTimeout);
+          controller = null;
+        }
+
+        const totalTime = (performance.now() - startTime) / 1000;
+        const finalSpeed = totalTime > 0 ? ((totalBytes * 8) / totalTime) / (1024 * 1024) : 0;
+        return finalSpeed;
+      }
+
+      function finalizeTest() {
+        clearTimeout(watchdogTimer);
+        testActive = false;
+        if (controller) {
+          controller.abort();
+          controller = null;
+        }
+
+        const dataPoints = testData.length;
+        if (dataPoints === 0) {
+          document.getElementById('error-message').style.display = 'block';
+          document.getElementById('error-message').textContent = 'Speed test failed. Please try again.';
+          finalDownloadSpeed = 0;
+        } else {
+          let weightedSum = 0, weightSum = 0;
+          for (let i = 0; i < dataPoints; i++) {
+            const weight = 0.5 + 0.5 * (i / dataPoints);
+            weightedSum += testData[i].speed * weight;
+            weightSum += weight;
+          }
+          finalDownloadSpeed = weightedSum / weightSum;
+        }
+
+        downloadResult.textContent = `${finalDownloadSpeed.toFixed(1)} Mbps`;
+        resultsContainer.classList.remove('hidden');
+        startButton.textContent = 'More Info';
+        startButton.disabled = false;
+        currentTest = null;
+        triggerBigBang();
+      }
+
+      function runTest(testType) {
+        if (animationFrame) {
+          cancelAnimationFrame(animationFrame);
+        }
+
+        testData = [];
+        currentSpeed = 0;
+        maxSpeed = 0;
+        startTime = Date.now();
+        graph.innerHTML = '';
+        const newGraphLine = document.createElement('div');
+        newGraphLine.className = 'graph-line';
+        newGraphLine.id = 'graphLine';
+        const newGraphFill = document.createElement('div');
+        newGraphFill.className = 'graph-fill';
+        newGraphFill.id = 'graphFill';
+        graph.appendChild(newGraphFill);
+        graph.appendChild(newGraphLine);
+        graphLine = document.getElementById('graphLine');
+        graphFill = document.getElementById('graphFill');
+        testActive = true;
+
+        watchdogTimer = setTimeout(() => {
+          log('Watchdog triggered: Test did not complete within 25 seconds');
+          finalizeTest();
+        }, CONFIG.watchdogTimeout);
+
+        runPingTest().then(() => {
+          if (!testActive) {
+            finalizeTest();
+            return;
+          }
+          runDownloadTest((elapsed, speed) => {
+            if (!testActive) return;
+            const progress = Math.min(elapsed / (testDuration / 1000), 1);
+            currentSpeed = speed;
+            maxSpeed = Math.max(maxSpeed, currentSpeed);
+            testData.push({ time: elapsed, speed: currentSpeed });
+            progressBar.style.width = `${progress * 100}%`;
+            updateSpeedometer(currentSpeed);
+            updateGraph(progress, currentSpeed);
+
+            if (progress >= 1) {
+              progressBar.style.width = '100%';
+              finalizeTest();
+            }
+          }).finally(() => {
+            finalizeTest();
+          });
+        }).catch(() => {
+          finalizeTest();
+        });
+      }
+
+      setupYAxis();
+      setupGridLines();
+
+      startButton.addEventListener('click', () => {
+        if (startButton.textContent === 'More Info') {
+          iframe.src = 'https://speed.cloudflare.com';
+          iframeContainer.classList.add('active');
+          return;
+        }
+
+        if (!currentTest && startButton.textContent === 'Start Test') {
+          progressBar.style.width = '0';
+          speedometer.classList.remove('hidden');
+          graphContainer.classList.remove('hidden');
+          resultsContainer.classList.add('hidden');
+          iframeContainer.classList.remove('active');
+          iframe.src = '';
+          startButton.disabled = true;
+          startButton.textContent = 'Testing...';
+          currentTest = 'download';
+          testType.textContent = 'Testing Download Speed';
+          speedLabel.textContent = 'Download';
+          runTest('download');
+        }
+      });
+
+      window.addEventListener('beforeunload', () => {
+        testActive = false;
+        if (controller) controller.abort();
+        clearTimeout(watchdogTimer);
+      });
+    }
+
+    // Main Initialization
+    document.addEventListener('DOMContentLoaded', async () => {
+      let ip = '';
+      try {
+        ip = await fetchIP();
+        await fetchLocationInfo(ip);
+      } catch (error) {
+        log('Initialization error: ' + error.message);
+      }
+
+      initializeSpeedTest();
+
+      document.getElementById('copy-ip-btn').addEventListener('click', () => {
+        const ip = document.getElementById('ip-display').textContent;
+        if (ip !== 'Fetching IP...' && ip !== 'IP unavailable') {
+          copyToClipboard(ip);
+          triggerBigBang();
+          alert('IP copied to clipboard!');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
