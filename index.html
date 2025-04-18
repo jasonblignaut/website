@@ -165,9 +165,8 @@
       backdrop-filter: blur(10px);
       border: 1px solid rgba(79, 172, 254, 0.3);
       width: 100%;
-      max-height: 60vh;
+      max-height: 50vh;
       overflow: hidden;
-      position: relative;
     }
 
     .test-type {
@@ -201,7 +200,7 @@
       width: 200px;
       height: 120px;
       margin: 0 auto 0.5rem;
-      overflow: visible;
+      overflow: hidden;
     }
 
     .gauge {
@@ -235,9 +234,9 @@
       background: linear-gradient(90deg, #4facfe, #00f2fe);
       clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
       transform-origin: center bottom;
-      transform: rotate(0deg);
+      transform: rotate(180deg);
       z-index: 1;
-      transition: transform 0.5s ease-out;
+      transition: transform 0.3s ease-out;
     }
 
     .gauge-needle {
@@ -248,10 +247,10 @@
       bottom: 0;
       left: 50%;
       transform-origin: center bottom;
-      transform: rotate(0deg);
+      transform: rotate(180deg);
       border-radius: 2px;
       z-index: 4;
-      transition: transform 0.5s ease-out;
+      transition: transform 0.3s ease-out;
       box-shadow: 0 0 10px rgba(224, 224, 255, 0.8);
     }
 
@@ -302,24 +301,6 @@
       z-index: 5;
     }
 
-    .gauge-labels {
-      position: absolute;
-      top: -30px;
-      left: 0;
-      right: 0;
-      height: 30px;
-      display: flex;
-      justify-content: space-between;
-      padding: 0 10px;
-      z-index: 5;
-    }
-
-    .gauge-label {
-      font-size: clamp(0.5rem, 0.8vw, 0.7rem);
-      color: #8492b4;
-      position: relative;
-    }
-
     .graph-container {
       height: 150px;
       position: relative;
@@ -367,7 +348,7 @@
       background-size: 20px 100%;
       box-shadow: 0 0 10px rgba(73, 115, 255, 0.8);
       border-radius: 2px;
-      transition: width 0.1s linear;
+      transition: width 0.05s linear;
     }
 
     .graph-fill {
@@ -377,7 +358,7 @@
       width: 0;
       background: linear-gradient(to top, rgba(73, 115, 255, 0.2), rgba(0, 242, 254, 0.05));
       border-radius: 0 5px 0 0;
-      transition: width 0.1s linear, height 0.1s linear;
+      transition: width 0.05s linear, height 0.05s linear;
     }
 
     .grid-lines {
@@ -401,8 +382,6 @@
       display: flex;
       justify-content: space-around;
       margin-top: 0.5rem;
-      flex-wrap: wrap;
-      gap: 0.5rem;
     }
 
     .result-box {
@@ -454,61 +433,18 @@
       display: none;
     }
 
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(7, 11, 26, 0.95);
-      z-index: 100;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
-    }
-
-    .overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .overlay-content {
-      position: relative;
-      width: 90%;
-      max-width: 600px;
-      height: 80%;
-      background: var(--card-bg);
-      border-radius: 15px;
-      padding: 1rem;
-      box-shadow: 0 0 30px rgba(73, 115, 255, 0.3);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: none;
-      border: none;
-      color: #e0e0ff;
-      font-size: 1.2rem;
-      cursor: pointer;
-      transition: color 0.3s ease;
-    }
-
-    .close-btn:hover {
-      color: #ff5555;
-    }
-
     .iframe-container {
-      flex: 1;
+      display: none;
+      position: relative;
+      width: 100%;
+      height: 150px;
       border-radius: 8px;
       overflow: hidden;
-      position: relative;
+      margin-top: 0.5rem;
+    }
+
+    .iframe-container.active {
+      display: block;
     }
 
     .iframe-container::before {
@@ -530,26 +466,6 @@
       border-radius: 8px;
       position: relative;
       z-index: 0;
-    }
-
-    .loading-spinner {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 40px;
-      height: 40px;
-      border: 4px solid rgba(73, 115, 255, 0.3);
-      border-top: 4px solid #00f2fe;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      z-index: 20;
-      display: none;
-    }
-
-    @keyframes spin {
-      0% { transform: translate(-50%, -50%) rotate(0deg); }
-      100% { transform: translate(-50%, -50%) rotate(360deg); }
     }
 
     footer {
@@ -580,9 +496,8 @@
       .speedometer { width: 150px; height: 90px; }
       .gauge { height: 120px; }
       .graph-container { height: 100px; }
-      .overlay-content { height: 70%; }
+      .iframe-container { height: 120px; }
       .y-axis { width: 25px; font-size: 0.6rem; }
-      .result-box { width: 45%; }
     }
 
     @media (max-width: 480px) {
@@ -593,7 +508,7 @@
       .result-box { width: 100%; }
       .speedometer { width: 120px; height: 70px; }
       .gauge { height: 100px; }
-      .overlay-content { height: 60%; }
+      .iframe-container { height: 100px; }
       .y-axis { width: 20px; font-size: 0.5rem; }
     }
   </style>
@@ -614,13 +529,11 @@
     <div class="error-message" id="error-message">Animations failed to load. Please check your browser settings.</div>
 
     <div class="speed-test-card">
-      <div class="loading-spinner" id="loadingSpinner"></div>
       <div class="test-type" id="testType">Speedtest</div>
       <div class="progress-bar">
         <div class="progress" id="progressBar"></div>
       </div>
       <div class="speedometer hidden" id="speedometer">
-        <div class="gauge-labels" id="gaugeLabels"></div>
         <div class="gauge">
           <div class="gauge-fill" id="gaugeFill"></div>
           <div class="gauge-needle" id="gaugeNeedle"></div>
@@ -648,13 +561,7 @@
         </div>
       </div>
       <button class="start-button" id="startButton">Start Test</button>
-    </div>
-  </div>
-
-  <div class="overlay" id="overlay">
-    <div class="overlay-content">
-      <button class="close-btn" id="closeOverlay">✕</button>
-      <div class="iframe-container">
+      <div class="iframe-container" id="iframe-container">
         <iframe id="speedFrame" src=""></iframe>
       </div>
     </div>
@@ -694,18 +601,13 @@
     }
 
     function copyToClipboard(text) {
-      navigator.clipboard.writeText(text).then(() => {
-        triggerBigBang();
-        alert('IP copied to clipboard!');
-      }).catch(() => {
+      navigator.clipboard.writeText(text).catch(() => {
         const textarea = document.createElement('textarea');
         textarea.value = text;
         document.body.appendChild(textarea);
         textarea.select();
         document.execCommand('copy');
         document.body.removeChild(textarea);
-        triggerBigBang();
-        alert('IP copied to clipboard!');
       });
     }
 
@@ -753,6 +655,7 @@
     function triggerBigBang() {
       log('Triggering Big Bang...');
       particles = [];
+      
       for (let i = 0; i < 50; i++) {
         const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2);
         const r = Math.sqrt(i) * 15;
@@ -819,17 +722,22 @@
     async function fetchIP() {
       log('Fetching public IP...');
       try {
+        // Using multiple IP services with fallbacks for reliability
         const ipServices = [
           'https://api.ipify.org?format=json',
           'https://api.seeip.org/jsonip',
           'https://api.myip.com',
           'https://ipinfo.io/json'
         ];
+        
+        // Try each service with a short timeout
         for (const service of ipServices) {
           try {
             const response = await fetch(service, { signal: AbortSignal.timeout(3000) });
             const data = await response.json();
+            // Different APIs return IP in different formats
             const ip = data.ip || data.query || data.YourFuckingIPAddress || '';
+            
             if (ip && ip.match(/^(?:\d{1,3}\.){3}\d{1,3}$|^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/)) {
               log('Public IP fetched: ' + ip);
               document.getElementById('ip-display').textContent = ip;
@@ -837,9 +745,10 @@
             }
           } catch (err) {
             log(`IP service ${service} failed: ${err.message}`);
-            continue;
+            continue; // Try next service
           }
         }
+        
         throw new Error("All IP services failed");
       } catch (error) {
         log('IP fetch error: ' + error.message);
@@ -851,24 +760,32 @@
     async function fetchLocationInfo(ip) {
       log('Fetching network location info...');
       try {
+        // Try multiple geolocation services with fallbacks
         const geoServices = [
           `https://ipinfo.io/${ip}/json`,
           'https://ipapi.co/json/',
           'https://extreme-ip-lookup.com/json/',
           'https://freegeoip.app/json/'
         ];
+        
         for (const service of geoServices) {
           try {
             const response = await fetch(service, { signal: AbortSignal.timeout(3000) });
             const data = await response.json();
+            
+            // Extract data - different APIs have different field names
             const info = {
               isp: data.org || data.as || data.isp || 'Unknown ISP',
               city: data.city || data.location?.city || 'Unknown City',
               country: data.country || data.country_name || 'Unknown Country'
             };
+            
+            // Clean up ISP name - remove AS numbers if present
             if (info.isp.includes('AS')) {
               info.isp = info.isp.split(' ').slice(1).join(' ').trim() || 'Unknown ISP';
             }
+            
+            // Validate data
             if (info.city && info.country) {
               log('Network info fetched: ' + JSON.stringify(info));
               document.getElementById('network-info').innerHTML = `ISP: ${info.isp}<br>Location: ${info.city}, ${info.country}`;
@@ -876,9 +793,10 @@
             }
           } catch (err) {
             log(`Geo service ${service} failed: ${err.message}`);
-            continue;
+            continue; // Try next service
           }
         }
+        
         throw new Error("All geo services failed");
       } catch (error) {
         log('Location fetch error: ' + error.message);
@@ -895,8 +813,8 @@
         pingResource: 'https://labverse.co.za/assets/ping-test.txt',
       },
       testDurations: { download: 10000, ping: 3000 },
-      maxTestTimeout: 20000,
-      watchdogTimeout: 25000,
+      maxTestTimeout: 20000, // 20 seconds
+      watchdogTimeout: 25000, // Watchdog to force-finalize after 25 seconds
     };
 
     function initializeSpeedTest() {
@@ -917,11 +835,8 @@
       const pingResult = document.getElementById('pingResult');
       const yAxis = document.getElementById('yAxis');
       const gridLines = document.getElementById('gridLines');
-      const gaugeLabels = document.getElementById('gaugeLabels');
-      const overlay = document.getElementById('overlay');
-      const closeOverlay = document.getElementById('closeOverlay');
+      const iframeContainer = document.getElementById('iframe-container');
       const iframe = document.getElementById('speedFrame');
-      const loadingSpinner = document.getElementById('loadingSpinner');
 
       let currentTest = null;
       let testData = [];
@@ -936,9 +851,9 @@
       let controller = null;
       let watchdogTimer = null;
 
-      // Y-axis setup
-      const Y_AXIS_LABELS = [0, 5, 10, 20, 25, 50, 100, 200, 500, 1000];
-      const Y_AXIS_POSITIONS = Array.from({ length: 10 }, (_, i) => (i / 9) * 100);
+      // Y-axis setup with logarithmic scale for better visualization
+      const Y_AXIS_LABELS = [0, 10, 25, 50, 100, 200, 500, 1000];
+      const Y_AXIS_POSITIONS = [0, 20, 40, 60, 70, 80, 90, 100];
 
       function setupYAxis() {
         yAxis.innerHTML = '';
@@ -951,25 +866,14 @@
         });
       }
 
-      function setupGaugeLabels() {
-        gaugeLabels.innerHTML = '';
-        const positions = [0, 20, 40, 60, 80, 100]; // Percentages for positioning
-        const labels = [0, 5, 100, 200, 500, 1000]; // Corresponding speed values
-        positions.forEach((pos, index) => {
-          const labelDiv = document.createElement('div');
-          labelDiv.className = 'gauge-label';
-          labelDiv.style.left = `${pos}%`;
-          labelDiv.style.transform = 'translateX(-50%)';
-          labelDiv.textContent = labels[index];
-          gaugeLabels.appendChild(labelDiv);
-        });
-      }
-
       function speedToHeight(speed) {
         if (speed <= 0) return 0;
         if (speed >= 1000) return 100;
 
-        let lowerLabel, upperLabel, lowerPos, upperPos;
+        // Find the two closest labels the speed falls between
+        let lowerLabel = 0, upperLabel = 10;
+        let lowerPos = 0, upperPos = 20;
+        
         for (let i = 0; i < Y_AXIS_LABELS.length - 1; i++) {
           if (speed >= Y_AXIS_LABELS[i] && speed <= Y_AXIS_LABELS[i + 1]) {
             lowerLabel = Y_AXIS_LABELS[i];
@@ -980,9 +884,10 @@
           }
         }
 
+        // Linear interpolation between the two points
         const fraction = (speed - lowerLabel) / (upperLabel - lowerLabel);
         const height = lowerPos + fraction * (upperPos - lowerPos);
-        return Math.min(Math.max(height, 0), 100);
+        return height;
       }
 
       function setupGridLines() {
@@ -997,9 +902,13 @@
       }
 
       function updateSpeedometer(speed) {
+        // Use logarithmic scale for the speedometer to better show lower speeds
         const maxScale = 1000;
-        const percent = Math.min(speed / maxScale, 1);
-        const angle = percent * 180; // 0° to 180° (left to right)
+        const logSpeed = Math.log1p(speed);
+        const logMax = Math.log1p(maxScale);
+        const percent = logSpeed / logMax;
+        const angle = 180 + (percent * 180); // 180° (left) to 360° (right)
+        
         gaugeFill.style.transform = `rotate(${angle}deg)`;
         gaugeNeedle.style.transform = `rotate(${angle}deg)`;
         speedValue.textContent = speed.toFixed(1);
@@ -1041,13 +950,14 @@
       }
 
       async function runDownloadTest(callback) {
-        log('Starting download test from Cloudflare server...');
+        log('Starting download test from Cloudflare Johannesburg server...');
         let totalBytes = 0;
         startTime = performance.now();
-        const updateInterval = 100;
+        const updateInterval = 100; // Update every 100ms for smoother animation
         let lastUpdate = startTime;
         let lastBytes = 0;
         let lastTime = startTime;
+        let speeds = [];
 
         const overallTimeout = setTimeout(() => {
           log('Download test timed out after 20 seconds');
@@ -1079,16 +989,31 @@
             totalBytes += value ? value.length : 0;
             const currentTime = performance.now();
             const elapsed = (currentTime - startTime) / 1000;
+            
+            // Calculate speed every updateInterval ms
             if (currentTime - lastUpdate >= updateInterval) {
               const elapsedSinceLast = (currentTime - lastTime) / 1000;
               const bytesSinceLast = totalBytes - lastBytes;
               const speed = elapsedSinceLast > 0 ? ((bytesSinceLast * 8) / elapsedSinceLast) / (1024 * 1024) : 0;
-              callback(elapsed, speed);
+              
+              // Store the speed for averaging
+              speeds.push(speed);
+              
+              // Calculate moving average of last 3 speeds for smoother display
+              const windowSize = 3;
+              const recentSpeeds = speeds.slice(-windowSize);
+              const avgSpeed = recentSpeeds.reduce((sum, s) => sum + s, 0) / recentSpeeds.length;
+              
+              callback(elapsed, avgSpeed);
+              
               lastUpdate = currentTime;
               lastBytes = totalBytes;
               lastTime = currentTime;
+              
+              // Keep only the last 50 data points
               if (testData.length > 50) testData.shift();
             }
+            
             if (elapsed >= testDuration / 1000) {
               controller.abort();
               break;
@@ -1096,6 +1021,9 @@
           }
         } catch (error) {
           log('Download error: ' + error.message);
+          const totalTime = (performance.now() - startTime) / 1000;
+          const finalSpeed = totalTime > 0 ? ((totalBytes * 8) / totalTime) / (1024 * 1024) : 0;
+          testData.push({ time: totalTime, speed: finalSpeed });
         } finally {
           clearTimeout(overallTimeout);
           controller = null;
@@ -1120,17 +1048,17 @@
           document.getElementById('error-message').textContent = 'Speed test failed. Please try again.';
           finalDownloadSpeed = 0;
         } else {
+          // Calculate weighted average with more weight to recent measurements
           let weightedSum = 0, weightSum = 0;
           for (let i = 0; i < dataPoints; i++) {
-            const weight = 0.5 + 0.5 * (i / dataPoints);
+            const weight = 0.5 + 0.5 * (i / dataPoints); // Linear weighting from 0.5 to 1.0
             weightedSum += testData[i].speed * weight;
             weightSum += weight;
           }
           finalDownloadSpeed = weightedSum / weightSum;
-          downloadResult.textContent = `${finalDownloadSpeed.toFixed(1)} Mbps`;
         }
 
-        loadingSpinner.style.display = 'none';
+        downloadResult.textContent = `${finalDownloadSpeed.toFixed(1)} Mbps`;
         resultsContainer.classList.remove('hidden');
         startButton.textContent = 'More Info';
         startButton.disabled = false;
@@ -1170,9 +1098,6 @@
             finalizeTest();
             return;
           }
-          currentTest = 'download';
-          testType.textContent = 'Testing Download Speed';
-          speedLabel.textContent = 'Download';
           runDownloadTest((elapsed, speed) => {
             if (!testActive) return;
             const progress = Math.min(elapsed / (testDuration / 1000), 1);
@@ -1185,10 +1110,9 @@
 
             if (progress >= 1) {
               progressBar.style.width = '100%';
-              updateGraph(1, currentSpeed); // Ensure graph completes to 100%
               finalizeTest();
             }
-          }).catch(() => {
+          }).finally(() => {
             finalizeTest();
           });
         }).catch(() => {
@@ -1198,36 +1122,28 @@
 
       setupYAxis();
       setupGridLines();
-      setupGaugeLabels();
 
       startButton.addEventListener('click', () => {
         if (startButton.textContent === 'More Info') {
           iframe.src = 'https://speed.cloudflare.com';
-          overlay.classList.add('active');
+          iframeContainer.classList.add('active');
           return;
         }
 
         if (!currentTest && startButton.textContent === 'Start Test') {
           progressBar.style.width = '0';
           speedometer.classList.remove('hidden');
-          gaugeFill.style.transform = 'rotate(0deg)';
-          gaugeNeedle.style.transform = 'rotate(0deg)';
-          speedValue.textContent = '0';
           graphContainer.classList.remove('hidden');
           resultsContainer.classList.add('hidden');
-          overlay.classList.remove('active');
+          iframeContainer.classList.remove('active');
           iframe.src = '';
           startButton.disabled = true;
           startButton.textContent = 'Testing...';
-          loadingSpinner.style.display = 'block';
           currentTest = 'download';
+          testType.textContent = 'Testing Download Speed';
+          speedLabel.textContent = 'Download';
           runTest('download');
         }
-      });
-
-      closeOverlay.addEventListener('click', () => {
-        overlay.classList.remove('active');
-        iframe.src = '';
       });
 
       window.addEventListener('beforeunload', () => {
@@ -1253,6 +1169,8 @@
         const ip = document.getElementById('ip-display').textContent;
         if (ip !== 'Fetching IP...' && ip !== 'IP unavailable') {
           copyToClipboard(ip);
+          triggerBigBang();
+          alert('IP copied to clipboard!');
         }
       });
     });
