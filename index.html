@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="description" content="Labverse Speed Test - Cyberpunk-themed download speed and ping test with neon visuals.">
+  <meta name="description" content="Labverse Speed Test - Cyberpunk-themed speed test with a dynamic space-moving graph.">
   <meta name="keywords" content="Speed Test, Public IP, Ping, Cyberpunk, Neon Animations">
   <meta name="author" content="Labverse Team">
   <meta property="og:title" content="Labverse Speed Test">
-  <meta property="og:description" content="Test your network speed with a cyberpunk-inspired interface and neon visuals.">
+  <meta property="og:description" content="Test your network speed with a cyberpunk-inspired interface and a dynamic space graph.">
   <meta property="og:image" content="https://labverse.co.za/assets/labverse-og-image.png">
   <meta property="og:url" content="https://labverse.co.za">
   <meta name="twitter:card" content="summary_large_image">
@@ -303,6 +303,32 @@
       border-left: 1px solid var(--card-glow);
       border-bottom: 1px solid var(--card-glow);
       padding: 5px;
+      background: radial-gradient(circle at center, rgba(0, 183, 235, 0.1) 0%, transparent 70%);
+      overflow: hidden;
+    }
+
+    .graph-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--neon-cyan);
+      border-radius: 50%;
+      opacity: 0.5;
+      animation: twinkle 3s ease-in-out infinite;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
     }
 
     .y-axis {
@@ -318,6 +344,7 @@
       font-size: clamp(0.6rem, 0.8vw, 0.7rem);
       text-align: right;
       padding-right: 5px;
+      z-index: 2;
     }
 
     .y-axis-label {
@@ -332,6 +359,7 @@
       left: 0;
       right: 0;
       bottom: 0;
+      z-index: 2;
     }
 
     .grid-line {
@@ -346,17 +374,7 @@
       position: relative;
       height: 100%;
       width: 100%;
-      overflow: hidden;
-    }
-
-    .graph-dot {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      background: var(--neon-cyan);
-      border-radius: 50%;
-      box-shadow: 0 0 8px var(--neon-cyan);
-      transform: translate(-50%, -50%);
+      z-index: 3;
     }
 
     .graph-line {
@@ -364,10 +382,28 @@
       bottom: 0;
       left: 0;
       width: 0;
-      height: 1px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+      box-shadow: 0 0 10px var(--neon-cyan);
+      transition: width 0.5s linear, bottom 0.2s ease;
+    }
+
+    .graph-line::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: -3px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
       background: var(--neon-cyan);
-      opacity: 0.3;
-      transition: width 0.05s linear;
+      box-shadow: 0 0 12px var(--neon-cyan);
+      animation: pulse-dot 1s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
     }
 
     .results {
@@ -568,9 +604,12 @@
         <div class="speed-unit">Mbps</div>
       </div>
       <div class="graph-container hidden" id="graphContainer">
+        <div class="graph-background" id="graphBackground"></div>
         <div class="y-axis" id="yAxis"></div>
         <div class="grid-lines" id="gridLines"></div>
-        <div class="graph" id="graph"></div>
+        <div class="graph" id="graph">
+          <div class="graph-line" id="graphLine"></div>
+        </div>
       </div>
       <div class="results hidden" id="resultsContainer">
         <div class="result-box" id="downloadBox">
@@ -855,6 +894,8 @@
           speedometer: document.getElementById('speedometer'),
           graphContainer: document.getElementById('graphContainer'),
           graph: document.getElementById('graph'),
+          graphLine: document.getElementById('graphLine'),
+          graphBackground: document.getElementById('graphBackground'),
           gaugeTicks: document.getElementById('gaugeTicks'),
           gaugeFill: document.getElementById('gaugeFill'),
           gaugeNeedle: document.getElementById('gaugeNeedle'),
@@ -888,7 +929,7 @@
       setupUI() {
         const labels = [0, 10, 25, 50, 100, 200, 500, 1000];
         const positions = [0, 25, 50, 65, 75, 85, 95, 100];
-        const angles = labels.map((_, i) => 180 + (180 * positions[i] / 100)); // Map to 180°-360°
+        const angles = labels.map((_, i) => 180 + (180 * positions[i] / 100));
 
         // Y-Axis
         this.elements.yAxis.innerHTML = '';
@@ -920,12 +961,23 @@
           const tickLabel = document.createElement('div');
           tickLabel.className = 'tick-label';
           const angleRad = angles[index] * Math.PI / 180;
-          const radius = 85; // Adjust for label positioning
+          const radius = 85;
           tickLabel.style.left = `calc(50% + ${radius * Math.cos(angleRad - Math.PI / 2)}px)`;
           tickLabel.style.bottom = `calc(50% + ${radius * Math.sin(angleRad - Math.PI / 2)}px)`;
           tickLabel.textContent = label;
           this.elements.gaugeTicks.appendChild(tickLabel);
         });
+
+        // Graph Background Stars
+        this.elements.graphBackground.innerHTML = '';
+        for (let i = 0; i < 20; i++) {
+          const star = document.createElement('div');
+          star.className = 'star';
+          star.style.left = `${Math.random() * 100}%`;
+          star.style.bottom = `${Math.random() * 100}%`;
+          star.style.animationDelay = `${Math.random() * 3}s`;
+          this.elements.graphBackground.appendChild(star);
+        }
       }
 
       speedToHeight(speed) {
@@ -944,7 +996,7 @@
 
       speedToAngle(speed) {
         const height = this.speedToHeight(speed);
-        return 180 + (180 * height / 100); // Map 0-100% height to 180°-360°
+        return 180 + (180 * height / 100);
       }
 
       updateSpeedometer(speed) {
@@ -958,14 +1010,11 @@
       updateGraph(elapsed, speed) {
         const testDuration = CONFIG.speedTest.durations.download / 1000;
         const second = Math.floor(elapsed);
-        if (second > this.state.lastUpdateTime) {
+        if (second > this.state.lastUpdateTime && second <= testDuration) {
           const xPercent = (second / testDuration) * 100;
           const yPercent = this.speedToHeight(speed);
-          const dot = document.createElement('div');
-          dot.className = 'graph-dot';
-          dot.style.left = `${xPercent}%`;
-          dot.style.bottom = `${yPercent}%`;
-          this.elements.graph.appendChild(dot);
+          this.elements.graphLine.style.width = `${xPercent}%`;
+          this.elements.graphLine.style.bottom = `${yPercent}%`;
           this.state.lastUpdateTime = second;
         }
       }
@@ -1104,7 +1153,8 @@
         this.state.maxSpeed = 0;
         this.state.startTime = Date.now();
         this.state.lastUpdateTime = 0;
-        this.elements.graph.innerHTML = '';
+        this.elements.graphLine.style.width = '0';
+        this.elements.graphLine.style.bottom = '0';
         this.state.testActive = true;
 
         this.state.watchdogTimer = setTimeout(() => {
@@ -1156,7 +1206,6 @@
             this.elements.iframe.onload = () => {
               this.elements.loadingSpinner.style.display = 'none';
               this.elements.iframeContainer.classList.add('active');
-              // Attempt to trigger Cloudflare test (note: may depend on Cloudflare's API)
               try {
                 this.elements.iframe.contentWindow.postMessage({ action: 'startTest' }, 'https://speed.cloudflare.com');
               } catch (err) {
