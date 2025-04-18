@@ -774,6 +774,203 @@
 
               // Draw
               ctx.beginPath();
-              ctx.arc(p.x, p.y, p.type mantuvo mi interés durante todo el proceso, desde el diseño inicial hasta la implementación final. La integración de conceptos físicos como el Modelo Estándar y la simulación de partículas fue un desafío fascinante, y estoy emocionado de ver cómo este proyecto puede evolucionar en el futuro.
+              ctx.arc(p.x, p.y, p.type === 'higgs' ? 5 : 3, 0, Math.PI * 2);
+              ctx.fillStyle = p.type === 'fermion' ? p.color : p.type === 'boson' ? 'magenta' : 'yellow';
+              ctx.globalAlpha = p.life / 600;
+              ctx.fill();
+              return true;
+            });
 
-Si necesitas más ajustes, pruebas en dispositivos específicos, o deseas explorar mejoras adicionales (como integración de audio, shaders avanzados, o una narrativa interactiva), no dudes en decírmelo. También puedo generar una imagen mockup del sitio si confirmas que te gustaría visualizar el diseño. ¡Gracias por la oportunidad de trabajar en este proyecto tan creativo!
+            // Draw trails
+            particles.forEach(p1 => {
+              particles.forEach(p2 => {
+                if (p1 !== p2) {
+                  const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+                  if (dist < 50 && Math.random() < 0.05) {
+                    ctx.beginPath();
+                    ctx.moveTo(p1.x, p1.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.strokeStyle = p1.type === 'fermion' ? p1.color : p1.type === 'boson' ? 'magenta' : 'yellow';
+                    ctx.globalAlpha = 0.3;
+                    ctx.stroke();
+                  }
+                }
+              });
+            });
+
+            ctx.globalAlpha = 1;
+            if (particles.length < 20 && Math.random() < 0.1) {
+              particles.push(createParticle(particles.length));
+            }
+
+            calculateEnergy2D();
+            requestAnimationFrame(animate2D);
+          } catch (error) {
+            logDebug('2D Canvas Render Error: ' + error.message);
+            return false;
+          }
+        }
+        animate2D();
+
+        window.addEventListener('resize', () => {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+          initParticles();
+        }, { passive: true });
+
+        triggerBigBang = triggerBigBang2D;
+        spawnParticles = spawnNewParticles2D;
+        toggleForces = toggleForces2D;
+        animationMode = '2d';
+        logDebug('2D canvas simulation started');
+        return true;
+      } catch (error) {
+        logDebug('2D Canvas Initialization Error: ' + error.message);
+        return false;
+      }
+    }
+
+    // CSS Fallback
+    function initCSSAnimations() {
+      logDebug('Attempting CSS animation initialization...');
+      try {
+        const cssParticles = document.getElementById('css-particles');
+        cssParticles.style.display = 'block';
+
+        for (let i = 0; i < 20; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'css-particle';
+          particle.style.left = `${Math.random() * 100}vw`;
+          particle.style.top = `${Math.random() * 100}vh`;
+          particle.style.animationDelay = `${Math.random() * 8}s`;
+          particle.style.background = `hsl(${Math.random() * 360}, 70%, 70%)`;
+          cssParticles.appendChild(particle);
+        }
+
+        function triggerBigBangCSS() {
+          cssParticles.innerHTML = '';
+          for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'css-particle';
+            particle.style.left = `${50 + (Math.random() - 0.5) * 20}vw`;
+            particle.style.top = `${50 + (Math.random() - 0.5) * 20}vh`;
+            particle.style.animationDuration = '2s';
+            particle.style.background = `hsl(${Math.random() * 360}, 70%, 70%)`;
+            cssParticles.appendChild(particle);
+            setTimeout(() => particle.remove(), 2000);
+          }
+          logDebug('CSS Big Bang triggered');
+        }
+
+        function spawnNewParticlesCSS() {
+          for (let i = 0; i < 5; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'css-particle';
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.top = `${Math.random() * 100}vh`;
+            particle.style.animationDelay = `${Math.random() * 8}s`;
+            particle.style.background = `hsl(${Math.random() * 360}, 70%, 70%)`;
+            cssParticles.appendChild(particle);
+          }
+          logDebug('Spawned new CSS particles');
+        }
+
+        function toggleForcesCSS() {
+          logDebug('CSS forces toggle not implemented');
+        }
+
+        triggerBigBang = triggerBigBangCSS;
+        spawnParticles = spawnNewParticlesCSS;
+        toggleForces = toggleForcesCSS;
+        animationMode = 'css';
+        logDebug('CSS animation started');
+        return true;
+      } catch (error) {
+        logDebug('CSS Animation Initialization Error: ' + error.message);
+        return false;
+      }
+    }
+
+    // Initialize Simulation
+    function initializeSimulation() {
+      const webglCanvas = document.getElementById('background-canvas');
+      const fallbackCanvas = document.getElementById('fallback-canvas');
+
+      // Try WebGL first
+      if (initWebGL(webglCanvas)) {
+        fallbackCanvas.style.display = 'none';
+        document.getElementById('css-particles').style.display = 'none';
+        errorMessage.style.display = 'none';
+        return;
+      }
+
+      // Try 2D Canvas
+      if (init2DCanvas(fallbackCanvas)) {
+        webglCanvas.style.display = 'none';
+        fallbackCanvas.style.display = 'block';
+        document.getElementById('css-particles').style.display = 'none';
+        errorMessage.style.display = 'none';
+        return;
+      }
+
+      // Fall back to CSS
+      webglCanvas.style.display = 'none';
+      fallbackCanvas.style.display = 'none';
+      if (initCSSAnimations()) {
+        errorMessage.style.display = 'none';
+        return;
+      }
+
+      errorMessage.style.display = 'block';
+      logDebug('All simulation methods failed');
+    }
+
+    // Copy IP to Clipboard
+    function copyIP() {
+      try {
+        const ip = document.getElementById('ip-display').textContent;
+        if (!ip || ip === 'IP unavailable') {
+          logDebug('No IP to copy');
+          return;
+        }
+
+        navigator.clipboard.writeText(ip).then(() => {
+          logDebug('IP copied successfully');
+          triggerBigBang();
+        }).catch(err => {
+          logDebug('Clipboard Error: ' + err.message);
+          const textarea = document.createElement('textarea');
+          textarea.value = ip;
+          document.body.appendChild(textarea);
+          textarea.select();
+          try {
+            document.execCommand('copy');
+            logDebug('Fallback copy successful');
+            triggerBigBang();
+          } catch (e) {
+            logDebug('Fallback Copy Error: ' + e.message);
+          }
+          document.body.removeChild(textarea);
+        });
+      } catch (error) {
+        logDebug('Copy IP Error: ' + error.message);
+      }
+    }
+
+    // Event Listeners
+    document.addEventListener('DOMContentLoaded', () => {
+      initializeSimulation();
+
+      // Attach event listeners to buttons
+      document.getElementById('copy-ip').addEventListener('click', copyIP);
+      document.getElementById('spawn-particles').addEventListener('click', spawnParticles);
+      document.getElementById('big-bang').addEventListener('click', triggerBigBang);
+      document.getElementById('toggle-forces').addEventListener('click', toggleForces);
+    });
+  </script>
+
+  <!-- MathJax for rendering equations -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>
