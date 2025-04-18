@@ -13,8 +13,8 @@
     <script type="importmap">
         {
             "imports": {
-                "three": "https://cdnjs.cloudflare.com/ajax/libs/three.js/r165/three.module.min.js",
-                "three/addons/": "https://cdnjs.cloudflare.com/ajax/libs/three.js/r165/examples/jsm/"
+                "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"
             }
         }
     </script>
@@ -28,7 +28,7 @@
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Optimize for performance
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
@@ -38,9 +38,9 @@
         composer.addPass(renderPass);
         const bloomPass = new UnrealBloomPass(
             new THREE.Vector2(window.innerWidth, window.innerHeight),
-            0.5, // strength
-            0.4, // radius
-            0.85 // threshold
+            0.4, // Reduced strength for GitHub Pages performance
+            0.3, // radius
+            0.9 // threshold
         );
         composer.addPass(bloomPass);
 
@@ -96,7 +96,6 @@
                     // Combine effects
                     vec3 finalColor = mix(refractColor.rgb, reflectColor.rgb, fresnel * 0.5);
                     finalColor = mix(finalColor, color, 0.3);
-                    finalColor += fres Angled Fresnel for rim lighting
                     finalColor += fresnel * color * 0.5;
                     
                     gl_FragColor = vec4(finalColor, 0.8); // Semi-transparent
@@ -110,7 +109,7 @@
         scene.add(dodecahedron);
 
         // Reflective environment
-        const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(512, {
+        const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(256, { // Reduced for performance
             generateMipmaps: true,
             minFilter: THREE.LinearMipmapLinearFilter
         });
@@ -118,9 +117,9 @@
         scene.add(cubeCamera);
         material.uniforms.uEnvMap.value = cubeRenderTarget.texture;
 
-        // Background particles for depth
+        // Background particles for depth (reduced count)
         const particleGeometry = new THREE.BufferGeometry();
-        const particleCount = 1000;
+        const particleCount = 500;
         const posArray = new Float32Array(particleCount * 3);
         for (let i = 0; i < particleCount * 3; i++) {
             posArray[i] = (Math.random() - 0.5) * 50;
@@ -138,7 +137,7 @@
         // Lighting
         const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
         scene.add(ambientLight);
-        const pointLight = new THREE.PointLight(0xffffff, 1, 10);
+        const pointLight = new THREE.PointLight(0xffffff, 0.8, 10);
         pointLight.position.set(5, 5, 5);
         scene.add(pointLight);
 
