@@ -12,7 +12,7 @@
   <meta property="og:url" content="https://labverse.co.za">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:creator" content="@LabverseTeam">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-3ds/6c3WVqT3tH7W8bV67DAXbD+3O0+4z3eUMdO3r2W2G3iW+8G7yW+OmW+1lWm7+jD8CuJ8JTi9A90L3eU0Q=='; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https://labverse.co.za; frame-src https://speed.cloudflare.com; connect-src 'self' https://api.ipify.org https://api.seeip.org https://api.myip.com https://ipinfo.io https://ipapi.co https://extreme-ip-lookup.com https://freegeoip.app https://speed.cloudflare.com https://labverse.co.za;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-EHH0aXSZNRFOeCHV3wZwenHrZR6s4GjH0kdr9wiX3/M='; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https://labverse.co.za; frame-src https://speed.cloudflare.com; connect-src 'self' https://api.ipify.org https://api.seeip.org https://api.myip.com https://ipinfo.io https://ipapi.co https://extreme-ip-lookup.com https://freegeoip.app https://speed.cloudflare.com https://labverse.co.za;">
   <title>Labverse Speed Test</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
   <style>
@@ -141,6 +141,10 @@
 
     .copy-btn:active {
       transform: scale(0.98);
+    }
+
+    .copy-btn.copied {
+      background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan));
     }
 
     .network-info {
@@ -717,7 +721,7 @@
     © 2025 Labverse | Powered by <a href="https://onefar.co.za" target="_blank" rel="noopener">1FAR</a>
   </footer>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js" integrity="sha512-3ds/6c3WVqT3tH7W8bV67DAXbD+3O0+4z3eUMdO3r2W2G3iW+8G7yW+OmW+1lWm7+jD8CuJ8JTi9A90L3eU0Q==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   <script>
     // Configuration
     const CONFIG = {
@@ -1260,9 +1264,6 @@
         this.elements.startButton.textContent = 'More Info';
         this.elements.startButton.disabled = false;
         cyberpunk.triggerBurst();
-
-        // Optional analytics (commented out)
-        // Utils.log(`Analytics: Speed=${this.state.finalDownloadSpeed.toFixed(1)} Mbps, Ping=${this.state.finalPing.toFixed(0)} ms`);
       }
 
       runTest() {
@@ -1383,9 +1384,11 @@
             cyberpunk.triggerBurst();
             const copyBtn = document.getElementById('copyIpBtn');
             copyBtn.textContent = 'Copied!';
+            copyBtn.classList.add('copied');
             copyBtn.disabled = true;
             setTimeout(() => {
               copyBtn.textContent = 'Copy IP';
+              copyBtn.classList.remove('copied');
               copyBtn.disabled = false;
             }, 1500);
           }
