@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="description" content="View your public IP with cosmic Fibonacci particle animations." />
-  <meta name="keywords" content="Public IP, Fibonacci, Quantum Particles" />
+  <meta name="description" content="Simulate life with cosmic particle interactions and view your public IP." />
+  <meta name="keywords" content="Life Simulation, Standard Model, Public IP, Sacred Geometry" />
   <meta name="author" content="Labverse Team" />
-  <meta property="og:title" content="Your Public IP" />
-  <meta property="og:description" content="Discover your public IP address and network info with mesmerizing sacred geometry animations." />
+  <meta property="og:title" content="Cosmic Life Simulation" />
+  <meta property="og:description" content="Explore a physics-based simulation of life with mesmerizing particle interactions and discover your public IP." />
   <meta property="og:image" content="https://labverse.co.za/assets/labverse-og-image.png" />
   <meta property="og:url" content="https://labverse.co.za" />
   <meta name="twitter:card" content="summary_large_image" />
 
-  <title>Your Public IP</title>
+  <title>Cosmic Life Simulation</title>
 
   <!-- Favicon -->
   <link rel="icon" href="favicon.ico" />
@@ -96,17 +96,6 @@
       100% { transform: translate(100vw, 100vh); opacity: 0; }
     }
 
-    .adsense-container {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1000;
-      text-align: center;
-      width: 100%;
-      padding: clamp(0.5rem, 1vw, 1rem);
-    }
-
     .container {
       position: relative;
       z-index: 10;
@@ -121,12 +110,12 @@
     }
 
     h1 {
-      font-family: 'Source Code Pro', monospace;
+      font-family: 'Orbitron', sans-serif;
       font-size: clamp(2rem, 6vw, 4rem);
       text-transform: uppercase;
-      color: var(--light-aura); /* Same color as footer */
+      color: var(--light-aura);
       margin-bottom: clamp(1rem, 3vw, 1.5rem);
-      text-shadow: 0 0 5px var(--matrix-blue); /* Same subtle shadow as footer */
+      text-shadow: 0 0 10px var(--cosmic-cyan);
       letter-spacing: 0.2rem;
       font-weight: 700;
     }
@@ -138,10 +127,10 @@
       background: rgba(8, 8, 26, 0.85);
       padding: clamp(0.8rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2.5rem);
       border-radius: 12px;
-      border: 2px solid var(--matrix-blue);
-      box-shadow: 0 0 20px var(--matrix-blue);
+      border: 2px solid var(--cosmic-magenta);
+      box-shadow: 0 0 20px var(--cosmic-magenta);
       margin-bottom: clamp(0.5rem, 1.5vw, 0.8rem);
-      text-shadow: 0 0 10px var(--matrix-blue);
+      text-shadow: 0 0 10px var(--cosmic-magenta);
       word-break: break-all;
     }
 
@@ -165,6 +154,12 @@
       display: none;
     }
 
+    .controls {
+      display: flex;
+      gap: clamp(0.5rem, 1vw, 1rem);
+      margin-top: clamp(0.5rem, 1vw, 1rem);
+    }
+
     .btn {
       background: linear-gradient(90deg, var(--matrix-blue), var(--cosmic-magenta));
       color: var(--light-aura);
@@ -177,7 +172,6 @@
       text-transform: uppercase;
       box-shadow: 0 0 var(--glow-radius) var(--matrix-blue);
       transition: all 0.3s ease;
-      margin-top: clamp(0.3rem, 1vw, 0.5rem);
     }
 
     .btn:hover {
@@ -193,14 +187,10 @@
       background: transparent;
       padding: clamp(0.5rem, 2vw, 1rem);
       text-align: center;
-      font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+      font-size: clamp(0.7rem, 1.5vw, 0damn it.9rem);
       color: var(--light-aura);
       z-index: 10;
       text-shadow: 0 0 5px var(--matrix-blue);
-    }
-
-    ins.adsbygoogle {
-      z-index: 1000 !important;
     }
 
     @media (max-width: 768px) {
@@ -219,14 +209,9 @@
         padding: clamp(0.5rem, 1.5vw, 0.8rem) clamp(1rem, 2vw, 1.5rem);
       }
 
-      .network-info, .error-message {
-        font-size: clamp(0.6rem, 1.2vw, 0.9rem);
-        max-width: 90vw;
-      }
-
-      .btn {
-        padding: clamp(0.4rem, 1vw, 0.6rem) clamp(1rem, 2vw, 1.5rem);
-        font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+      .controls {
+        flex-direction: column;
+        gap: clamp(0.3rem, 0.8vw, 0.5rem);
       }
     }
 
@@ -240,54 +225,37 @@
         font-size: clamp(1rem, 2.5vw, 1.5rem);
       }
 
-      .network-info, .error-message {
-        font-size: clamp(0.5rem, 1vw, 0.8rem);
-      }
-
       .btn {
         font-size: clamp(0.6rem, 1vw, 0.8rem);
+        padding: clamp(0.4rem, 1vw, 0.6rem) clamp(1rem, 2vw, 1.5rem);
       }
     }
   </style>
 </head>
 
 <body>
-  <!-- AdSense Placement -->
-  <div class="adsense-container">
-    <!-- Replace this comment with your Google AdSense code -->
-    <!-- Example: -->
-    <!--
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
-     crossorigin="anonymous"></script>
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-         data-ad-slot="XXXXXXXXXX"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-    -->
-  </div>
-
   <canvas id="background-canvas"></canvas>
   <canvas id="fallback-canvas"></canvas>
   <div class="css-particles" id="css-particles"></div>
 
   <div class="container">
-    <h1>YOUR PUBLIC IP</h1>
+    <h1>COSMIC LIFE SIMULATION</h1>
     <div class="ip-display" id="ip-display">Fetching IP...</div>
     <div class="network-info" id="network-info">Fetching network info...</div>
-    <div class="error-message" id="error-message">Animations failed to load. Please check your browser settings.</div>
-    <button class="btn" onclick="copyIP()">Copy IP</button>
+    <div class="error-message" id="error-message">Simulation failed to load. Please check your browser settings.</div>
+    <div class="controls">
+      <button class="btn" onclick="copyIP()">Copy IP</button>
+      <button class="btn" onclick="spawnParticles()">Spawn Particles</button>
+      <button class="btn" onclick="triggerBigBang()">Big Bang</button>
+      <button class="btn" onclick="toggleForces()">Toggle Forces</button>
+    </div>
   </div>
 
   <footer>
-    © 2025 Labverse | Powered by 1FAR | WHAT IS MY IP ADDRESS
+    © 2025 Labverse | Powered by 1FAR | SIMULATE LIFE
   </footer>
 
-  <!-- Three.js with Fallback CDN -->
+  <!-- Three.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/three.min.js"></script>
   <script>
     if (typeof THREE === 'undefined') {
@@ -299,7 +267,7 @@
   </script>
 
   <script>
-    // Debug Logging (Console Only)
+    // Debug Logging
     function logDebug(message) {
       console.log('[DEBUG] ' + message);
     }
@@ -322,7 +290,6 @@
     // Fetch Network Info
     async function fetchNetworkInfo() {
       let networkData = { isp: 'Unknown', city: 'Unknown', country: 'Unknown' };
-
       try {
         const response = await fetch('http://ip-api.com/json');
         if (response.ok) {
@@ -337,195 +304,35 @@
         }
       } catch (error) {
         logDebug('ip-api.com Error: ' + error.message);
-      }
-
-      try {
-        const response = await fetch('https://ipinfo.io/json');
-        if (response.ok) {
-          const data = await response.json();
-          networkData.isp = data.org?.split(' ').slice(1).join(' ') || 'Unknown';
-          networkData.city = data.city || 'Unknown';
-          networkData.country = data.country || 'Unknown';
-          document.getElementById('network-info').innerHTML = `ISP: ${networkData.isp}<br>Location: ${networkData.city}, ${networkData.country}`;
-          return;
+        try {
+          const response = await fetch('https://ipinfo.io/json');
+          if (response.ok) {
+            const data = await response.json();
+            networkData.isp = data.org?.split(' ').slice(1).join(' ') || 'Unknown';
+            networkData.city = data.city || 'Unknown';
+            networkData.country = data.country || 'Unknown';
+            document.getElementById('network-info').innerHTML = `ISP: ${networkData.isp}<br>Location: ${networkData.city}, ${networkData.country}`;
+            return;
+          }
+        } catch (error) {
+          logDebug('ipinfo.io Error: ' + error.message);
+          document.getElementById('network-info').innerHTML = `ISP: Unknown<br>Location: Unknown`;
         }
-      } catch (error) {
-        logDebug('ipinfo.io Error: ' + error.message);
       }
-
-      try {
-        const response = await fetch('https://get.geojs.io/v1/ip/geo.json');
-        if (response.ok) {
-          const data = await response.json();
-          networkData.isp = data.organization_name || 'Unknown';
-          networkData.city = data.city || 'Unknown';
-          networkData.country = data.country || 'Unknown';
-          document.getElementById('network-info').innerHTML = `ISP: ${networkData.isp}<br>Location: ${networkData.city}, ${networkData.country}`;
-          return;
-        }
-      } catch (error) {
-        logDebug('geoip-js.com Error: ' + error.message);
-      }
-
-      document.getElementById('network-info').innerHTML = `ISP: Unknown<br>Location: Unknown`;
     }
 
     // Initialize Fetch
     fetchPublicIP();
     fetchNetworkInfo();
 
-    // Animation System
+    // Simulation System
     let animationMode = 'none';
     let triggerBigBang = () => {};
+    let spawnParticles = () => {};
+    let toggleForces = () => {};
     const errorMessage = document.getElementById('error-message');
 
-    // 2D Canvas Animation (Primary)
-    function init2DCanvas(canvas) {
-      logDebug('Attempting 2D canvas initialization...');
-      try {
-        const ctx = canvas.getContext('2d');
-        if (!ctx) {
-          logDebug('2D canvas context not supported');
-          return false;
-        }
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        // Test renders
-        ctx.fillStyle = 'red';
-        ctx.fillRect(10, 10, 150, 150);
-        setTimeout(() => {
-          ctx.clearRect(10, 10, 150, 150);
-          ctx.fillStyle = 'green';
-          ctx.fillRect(window.innerWidth - 160, 10, 150, 150);
-          setTimeout(() => ctx.clearRect(window.innerWidth - 160, 10, 150, 150), 10000);
-        }, 10000);
-
-        // Fibonacci particles
-        let particles = [];
-        let mousePos = { x: canvas.width / 2, y: canvas.height / 2 };
-
-        document.addEventListener('mousemove', (e) => {
-          mousePos.x = e.clientX;
-          mousePos.y = e.clientY;
-        }, { passive: true });
-
-        document.addEventListener('touchmove', (e) => {
-          if (e.touches.length > 0) {
-            mousePos.x = e.touches[0].clientX;
-            mousePos.y = e.touches[0].clientY;
-          }
-        }, { passive: true });
-
-        function createParticle(index) {
-          const phi = (1 + Math.sqrt(5)) / 2;
-          const theta = index * 2 * Math.PI * phi;
-          const r = Math.sqrt(index) * 10;
-          return {
-            x: canvas.width / 2 + r * Math.cos(theta),
-            y: canvas.height / 2 + r * Math.sin(theta),
-            vx: (Math.random() - 0.5) * 2,
-            vy: (Math.random() - 0.5) * 2,
-            life: 600,
-            color: `hsl(${Math.random() * 360}, 70%, 70%)`
-          };
-        }
-
-        function initParticles() {
-          particles = [];
-          for (let i = 0; i < 20; i++) {
-            particles.push(createParticle(i));
-          }
-          logDebug('2D canvas particles initialized: ' + particles.length);
-        }
-        initParticles();
-
-        function triggerBigBang2D() {
-          logDebug('Triggering 2D Big Bang...');
-          particles = [];
-          ctx.fillStyle = 'blue';
-          ctx.fillRect(canvas.width / 2 - 50, canvas.height / 2 - 50, 100, 100);
-          setTimeout(() => ctx.clearRect(canvas.width / 2 - 50, canvas.height / 2 - 50, 100, 100), 1000);
-
-          for (let i = 0; i < 50; i++) {
-            const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2);
-            const r = Math.sqrt(i) * 15;
-            particles.push({
-              x: canvas.width / 2,
-              y: canvas.height / 2,
-              vx: r * Math.cos(theta) * 0.05,
-              vy: r * Math.sin(theta) * 0.05,
-              life: 300,
-              color: `hsl(${Math.random() * 360}, 70%, 70%)`
-            });
-          }
-        }
-
-        function animate2D() {
-          try {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles = particles.filter(p => {
-              if (p.life <= 0) return false;
-              p.life--;
-              p.x += p.vx + (mousePos.x - canvas.width / 2) * 0.0001;
-              p.y += p.vy + (mousePos.y - canvas.height / 2) * 0.0001;
-              p.vx *= 0.98;
-              p.vy *= 0.98;
-              ctx.beginPath();
-              ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
-              ctx.fillStyle = p.color;
-              ctx.globalAlpha = p.life / 600;
-              ctx.fill();
-              return true;
-            });
-
-            if (particles.length < 20 && Math.random() < 0.1) {
-              particles.push(createParticle(particles.length));
-            }
-
-            // Trails
-            particles.forEach(p1 => {
-              particles.forEach(p2 => {
-                if (p1 !== p2) {
-                  const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
-                  if (dist < 50 && Math.random() < 0.05) {
-                    ctx.beginPath();
-                    ctx.moveTo(p1.x, p1.y);
-                    ctx.lineTo(p2.x, p2.y);
-                    ctx.strokeStyle = p1.color;
-                    ctx.globalAlpha = 0.3;
-                    ctx.stroke();
-                  }
-                }
-              });
-            });
-
-            ctx.globalAlpha = 1;
-            requestAnimationFrame(animate2D);
-          } catch (error) {
-            logDebug('2D Canvas Render Error: ' + error.message);
-          }
-        }
-        animate2D();
-
-        window.addEventListener('resize', () => {
-          canvas.width = window.innerWidth;
-          canvas.height = window.innerHeight;
-          initParticles();
-        }, { passive: true });
-
-        triggerBigBang = triggerBigBang2D;
-        animationMode = '2d';
-        logDebug('2D canvas animation started');
-        return true;
-      } catch (error) {
-        logDebug('2D Canvas Initialization Error: ' + error.message);
-        return false;
-      }
-    }
-
-    // WebGL Animation (Secondary)
+    // WebGL Simulation
     function initWebGL(canvas) {
       logDebug('Attempting WebGL initialization...');
       if (typeof THREE === 'undefined') {
@@ -549,9 +356,17 @@
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.setClearColor(0x000000, 0);
         camera.position.z = 50;
-        logDebug('WebGL renderer initialized');
 
-        let particles = [], mousePos = { x: 0, y: 0 };
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0x404040);
+        scene.add(ambientLight);
+        const pointLight = new THREE.PointLight(0xffffff, 1, 100);
+        pointLight.position.set(10, 10, 10);
+        scene.add(pointLight);
+
+        let particles = [];
+        let mousePos = { x: 0, y: 0 };
+        let forcesEnabled = { em: true, strong: true, weak: false, higgs: true };
 
         document.addEventListener('mousemove', (e) => {
           mousePos.x = (e.clientX / window.innerWidth) * 2 - 1;
@@ -565,40 +380,60 @@
           }
         }, { passive: true });
 
-        function createParticle(index, offset, life = 10, velocity = new THREE.Vector3(0, 0, 0), color = 0x00b7eb) {
+        function createParticle(index, type = 'fermion', life = 10, velocity = new THREE.Vector3(0, 0, 0)) {
           const phi = (1 + Math.sqrt(5)) / 2;
           const theta = index * 2 * Math.PI * phi;
           const r = Math.sqrt(index) * 0.8;
-          const x = r * Math.cos(theta + offset);
-          const y = r * Math.sin(theta + offset);
+          const x = r * Math.cos(theta);
+          const y = r * Math.sin(theta);
           const geometry = new THREE.BufferGeometry();
           geometry.setAttribute('position', new THREE.Float32BufferAttribute([x, y, Math.random() * 0.5], 3));
+          let color, size;
+          switch (type) {
+            case 'fermion': color = 0x00b7eb; size = 0.3; break;
+            case 'boson': color = 0xff00cc; size = 0.5; break;
+            case 'higgs': color = 0xffd700; size = 0.7; break;
+          }
           const material = new THREE.PointsMaterial({
             color,
-            size: 0.3,
+            size,
             transparent: true,
             opacity: 1,
             blending: THREE.AdditiveBlending
           });
           const particle = new THREE.Points(geometry, material);
           scene.add(particle);
-          return { obj: particle, life, index, offset, velocity };
+          return {
+            obj: particle,
+            life,
+            index,
+            type,
+            velocity,
+            charge: type === 'fermion' ? (Math.random() > 0.5 ? 1 : -1) : 0,
+            color: type === 'fermion' ? (Math.random() > 0.5 ? 'red' : 'blue') : null,
+            mass: type === 'higgs' ? 2 : type === 'fermion' ? 1 : 0.5
+          };
         }
 
-        function initAnimations() {
+        function initParticles() {
           particles = [];
           for (let i = 0; i < 20; i++) {
-            particles.push(createParticle(i, Math.random() * 2 * Math.PI));
+            particles.push(createParticle(i, Math.random() > 0.7 ? 'boson' : Math.random() > 0.9 ? 'higgs' : 'fermion'));
           }
           logDebug('WebGL particles initialized: ' + particles.length);
         }
-        initAnimations();
+        initParticles();
+
+        function spawnNewParticles() {
+          for (let i = 0; i < 5; i++) {
+            particles.push(createParticle(particles.length, Math.random() > 0.7 ? 'boson' : Math.random() > 0.9 ? 'higgs' : 'fermion'));
+          }
+          logDebug('Spawned new particles: ' + particles.length);
+        }
 
         function triggerBigBangWebGL() {
           particles.forEach(p => { scene.remove(p.obj); try { p.obj.geometry.dispose(); p.obj.material.dispose(); } catch (e) {} });
           particles = [];
-
-          const colors = [0x00b7eb, 0xff00cc, 0x00ffff, 0xffd700];
           for (let i = 0; i < 50; i++) {
             const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2);
             const r = Math.sqrt(i) * 1.2;
@@ -607,12 +442,21 @@
               r * Math.sin(theta) * 0.15,
               (Math.random() - 0.5) * 0.08
             );
-            particles.push(createParticle(i, Math.random() * 2 * Math.PI, 5, velocity, colors[Math.floor(Math.random() * colors.length)]));
+            const type = Math.random() > 0.7 ? 'boson' : Math.random() > 0.9 ? 'higgs' : 'fermion';
+            particles.push(createParticle(i, type, 5, velocity));
           }
           logDebug('WebGL Big Bang triggered');
         }
 
-        function updateAnimations() {
+        function toggleForcesWebGL() {
+          forcesEnabled.em = !forcesEnabled.em;
+          forcesEnabled.strong = !forcesEnabled.strong;
+          forcesEnabled.weak = !forcesEnabled.weak;
+          forcesEnabled.higgs = !forcesEnabled.higgs;
+          logDebug(`Forces toggled: EM=${forcesEnabled.em}, Strong=${forcesEnabled.strong}, Weak=${forcesEnabled.weak}, Higgs=${forcesEnabled.higgs}`);
+        }
+
+        function updateParticles() {
           particles = particles.filter(p => {
             if (p.life <= 0) {
               scene.remove(p.obj);
@@ -620,23 +464,62 @@
               return false;
             }
             p.life -= 1 / 60;
-            p.obj.material.opacity = p.life / 10 * 1;
-            p.obj.position.x += p.velocity.x + mousePos.x * 0.03;
-            p.obj.position.y += p.velocity.y + mousePos.y * 0.03;
-            p.obj.position.z += p.velocity.z;
-            p.velocity.multiplyScalar(0.98);
+            p.obj.material.opacity = p.life / 10;
+
+            // Apply forces
+            let force = new THREE.Vector3(0, 0, 0);
+            particles.forEach(p2 => {
+              if (p !== p2) {
+                const dist = p.obj.position.distanceTo(p2.obj.position);
+                if (dist > 0.1) {
+                  // Electromagnetic (U(1))
+                  if (forcesEnabled.em && p.charge && p2.charge) {
+                    const f = (p.charge * p2.charge) / (dist * dist);
+                    const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
+                    force.add(dir.multiplyScalar(f * 0.05));
+                  }
+                  // Strong (SU(3))
+                  if (forcesEnabled.strong && p.type === 'fermion' && p2.type === 'boson' && dist < 5) {
+                    const f = -0.1 / dist * Math.exp(-dist / 2);
+                    const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
+                    force.add(dir.multiplyScalar(f));
+                  }
+                  // Weak (SU(2))
+                  if (forcesEnabled.weak && p.type === 'fermion' && Math.random() < 0.01) {
+                    p.color = p.color === 'red' ? 'blue' : 'red';
+                    p.obj.material.color.set(p.color === 'red' ? 0xff0000 : 0x0000ff);
+                  }
+                  // Higgs
+                  if (forcesEnabled.higgs && p2.type === 'higgs') {
+                    force.add(p.velocity.clone().multiplyScalar(-0.1 * p.mass));
+                  }
+                }
+              }
+            });
+
+            // Mouse interaction
+            const mouseForce = new THREE.Vector3(mousePos.x * 0.05, mousePos.y * 0.05, 0);
+            force.add(mouseForce);
+
+            // Update velocity and position
+            p.velocity.add(force.multiplyScalar(0.1 / p.mass));
+            p.velocity.multiplyScalar(0.98); // Damping
+            p.obj.position.add(p.velocity);
+
             return true;
           });
 
           if (particles.length < 20 && Math.random() < 0.1) {
-            particles.push(createParticle(Math.floor(Math.random() * 20), Math.random() * 2 * Math.PI));
+            particles.push(createParticle(particles.length));
           }
         }
 
         function animate() {
           try {
             requestAnimationFrame(animate);
-            updateAnimations();
+            updateParticles();
+            camera.position.x += Math.sin(Date.now() * 0.0001) * 0.1;
+            camera.lookAt(0, 0, 0);
             renderer.render(scene, camera);
           } catch (error) {
             logDebug('WebGL Render Error: ' + error.message);
@@ -652,10 +535,11 @@
           renderer.setSize(window.innerWidth, window.innerHeight);
         }, { passive: true });
 
-        renderer.render(scene, camera);
         triggerBigBang = triggerBigBangWebGL;
+        spawnParticles = spawnNewParticles;
+        toggleForces = toggleForcesWebGL;
         animationMode = 'webgl';
-        logDebug('WebGL animation started');
+        logDebug('WebGL simulation started');
         return true;
       } catch (error) {
         logDebug('WebGL Initialization Error: ' + error.message);
@@ -663,7 +547,210 @@
       }
     }
 
-    // CSS Fallback Animation
+    // 2D Canvas Fallback
+    function init2DCanvas(canvas) {
+      logDebug('Attempting 2D canvas initialization...');
+      try {
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          logDebug('2D canvas context not supported');
+          return false;
+        }
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particles = [];
+        let mousePos = { x: canvas.width / 2, y: canvas.height / 2 };
+        let forcesEnabled = { em: true, strong: true, weak: false, higgs: true };
+
+        document.addEventListener('mousemove', (e) => {
+          mousePos.x = e.clientX;
+          mousePos.y = e.clientY;
+        }, { passive: true });
+
+        document.addEventListener('touchmove', (e) => {
+          if (e.touches.length > 0) {
+            mousePos.x = e.touches[0].clientX;
+            mousePos.y = e.touches[0].clientY;
+          }
+        }, { passive: true });
+
+        function createParticle(index, type = 'fermion') {
+          const phi = (1 + Math.sqrt(5)) / 2;
+          const theta = index * 2 * Math.PI * phi;
+          const r = Math.sqrt(index) * 10;
+          return {
+            x: canvas.width / 2 + r * Math.cos(theta),
+            y: canvas.height / 2 + r * Math.sin(theta),
+            vx: (Math.random() - 0.5) * 2,
+            vy: (Math.random() - 0.5) * 2,
+            life: 600,
+            type,
+            color: type === 'fermion' ? (Math.random() > 0.5 ? 'red' : 'blue') : type === 'boson' ? 'magenta' : 'yellow',
+            charge: type === 'fermion' ? (Math.random() > 0.5 ? 1 : -1) : 0,
+            mass: type === 'higgs' ? 2 : type === 'fermion' ? 1 : 0.5
+          };
+        }
+
+        function initParticles() {
+          particles = [];
+          for (let i = 0; i < 20; i++) {
+            particles.push(createParticle(i, Math.random() > 0.7 ? 'boson' : Math.random() > 0.9 ? 'higgs' : 'fermion'));
+          }
+          logDebug('2D canvas particles initialized: ' + particles.length);
+        }
+        initParticles();
+
+        function spawnNewParticles2D() {
+          for (let i = 0; i < 5; i++) {
+            particles.push(createParticle(particles.length, Math.random() > 0.7 ? 'boson' : Math.random() > 0.9 ? 'higgs' : 'fermion'));
+          }
+          logDebug('Spawned new 2D particles: ' + particles.length);
+        }
+
+        function triggerBigBang2D() {
+          particles = [];
+          ctx.fillStyle = 'white';
+          ctx.fillRect(canvas.width / 2 - 50, canvas.height / 2 - 50, 100, 100);
+          setTimeout(() => ctx.clearRect(canvas.width / 2 - 50, canvas.height / 2 - 50, 100, 100), 1000);
+
+          for (let i = 0; i < 50; i++) {
+            const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2);
+            const r = Math.sqrt(i) * 15;
+            const type = Math.random() > 0.7 ? 'boson' : Math.random() > 0.9 ? 'higgs' : 'fermion';
+            particles.push({
+              x: canvas.width / 2,
+              y: canvas.height / 2,
+              vx: r * Math.cos(theta) * 0.05,
+              vy: r * Math.sin(theta) * 0.05,
+              life: 300,
+              type,
+              color: type === 'fermion' ? (Math.random() > 0.5 ? 'red' : 'blue') : type === 'boson' ? 'magenta' : 'yellow',
+              charge: type === 'fermion' ? (Math.random() > 0.5 ? 1 : -1) : 0,
+              mass: type === 'higgs' ? 2 : type === 'fermion' ? 1 : 0.5
+            });
+          }
+          logDebug('2D Big Bang triggered');
+        }
+
+        function toggleForces2D() {
+          forcesEnabled.em = !forcesEnabled.em;
+          forcesEnabled.strong = !forcesEnabled.strong;
+          forcesEnabled.weak = !forcesEnabled.weak;
+          forcesEnabled.higgs = !forcesEnabled.higgs;
+          logDebug(`2D Forces toggled: EM=${forcesEnabled.em}, Strong=${forcesEnabled.strong}, Weak=${forcesEnabled.weak}, Higgs=${forcesEnabled.higgs}`);
+        }
+
+        function animate2D() {
+          try {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles = particles.filter(p => {
+              if (p.life <= 0) return false;
+              p.life--;
+
+              // Apply forces
+              let fx = 0, fy = 0;
+              particles.forEach(p2 => {
+                if (p !== p2) {
+                  const dx = p2.x - p.x;
+                  const dy = p2.y - p.y;
+                  const dist = Math.hypot(dx, dy);
+                  if (dist > 1) {
+                    // Electromagnetic
+                    if (forcesEnabled.em && p.charge && p2.charge) {
+                      const f = (p.charge * p2.charge) / (dist * dist);
+                      fx += f * dx / dist * 0.05;
+                      fy += f * dy / dist * 0.05;
+                    }
+                    // Strong
+                    if (forcesEnabled.strong && p.type === 'fermion' && p2.type === 'boson' && dist < 50) {
+                      const f = -0.1 / dist * Math.exp(-dist / 20);
+                      fx += f * dx / dist;
+                      fy += f * dy / dist;
+                    }
+                    // Weak
+                    if (forcesEnabled.weak && p.type === 'fermion' && Math.random() < 0.01) {
+                      p.color = p.color === 'red' ? 'blue' : 'red';
+                    }
+                    // Higgs
+                    if (forcesEnabled.higgs && p2.type === 'higgs') {
+                      fx -= p.vx * 0.1 * p.mass;
+                      fy -= p.vy * 0.1 * p.mass;
+                    }
+                  }
+                }
+              });
+
+              // Mouse interaction
+              fx += (mousePos.x - canvas.width / 2) * 0.0001;
+              fy += (mousePos.y - canvas.height / 2) * 0.0001;
+
+              // Update velocity and position
+              p.vx += fx / p.mass;
+              p.vy += fy / p.mass;
+              p.vx *= 0.98;
+              p.vy *= 0.98;
+              p.x += p.vx;
+              p.y += p.vy;
+
+              // Draw
+              ctx.beginPath();
+              ctx.arc(p.x, p.y, p.type === 'higgs' ? 5 : 3, 0, Math.PI * 2);
+              ctx.fillStyle = p.type === 'fermion' ? p.color : p.type === 'boson' ? 'magenta' : 'yellow';
+              ctx.globalAlpha = p.life / 600;
+              ctx.fill();
+              return true;
+            });
+
+            // Draw trails
+            particles.forEach(p1 => {
+              particles.forEach(p2 => {
+                if (p1 !== p2) {
+                  const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+                  if (dist < 50 && Math.random() < 0.05) {
+                    ctx.beginPath();
+                    ctx.moveTo(p1.x, p1.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.strokeStyle = p1.type === 'fermion' ? p1.color : p1.type === 'boson' ? 'magenta' : 'yellow';
+                    ctx.globalAlpha = 0.3;
+                    ctx.stroke();
+                  }
+                }
+              });
+            });
+
+            ctx.globalAlpha = 1;
+            if (particles.length < 20 && Math.random() < 0.1) {
+              particles.push(createParticle(particles.length));
+            }
+
+            requestAnimationFrame(animate2D);
+          } catch (error) {
+            logDebug('2D Canvas Render Error: ' + error.message);
+          }
+        }
+        animate2D();
+
+        window.addEventListener('resize', () => {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+          initParticles();
+        }, { passive: true });
+
+        triggerBigBang = triggerBigBang2D;
+        spawnParticles = spawnNewParticles2D;
+        toggleForces = toggleForces2D;
+        animationMode = '2d';
+        logDebug('2D canvas simulation started');
+        return true;
+      } catch (error) {
+        logDebug('2D Canvas Initialization Error: ' + error.message);
+        return false;
+      }
+    }
+
+    // CSS Fallback
     function initCSSAnimations() {
       logDebug('Attempting CSS animation initialization...');
       try {
@@ -695,7 +782,26 @@
           logDebug('CSS Big Bang triggered');
         }
 
+        function spawnNewParticlesCSS() {
+          for (let i = 0; i < 5; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'css-particle';
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.top = `${Math.random() * 100}vh`;
+            particle.style.animationDelay = `${Math.random() * 8}s`;
+            particle.style.background = `hsl(${Math.random() * 360}, 70%, 70%)`;
+            cssParticles.appendChild(particle);
+          }
+          logDebug('Spawned new CSS particles');
+        }
+
+        function toggleForcesCSS() {
+          logDebug('CSS forces toggle not implemented');
+        }
+
         triggerBigBang = triggerBigBangCSS;
+        spawnParticles = spawnNewParticlesCSS;
+        toggleForces = toggleForcesCSS;
         animationMode = 'css';
         logDebug('CSS animation started');
         return true;
@@ -705,12 +811,18 @@
       }
     }
 
-    // Initialize Animations
+    // Initialize Simulation
     document.addEventListener('DOMContentLoaded', () => {
       const webglCanvas = document.getElementById('background-canvas');
       const fallbackCanvas = document.getElementById('fallback-canvas');
 
-      // Try 2D Canvas first
+      if (initWebGL(webglCanvas)) {
+        fallbackCanvas.style.display = 'none';
+        document.getElementById('css-particles').style.display = 'none';
+        errorMessage.style.display = 'none';
+        return;
+      }
+
       if (init2DCanvas(fallbackCanvas)) {
         webglCanvas.style.display = 'none';
         fallbackCanvas.style.display = 'block';
@@ -719,16 +831,7 @@
         return;
       }
 
-      // Try WebGL
-      if (initWebGL(webglCanvas)) {
-        fallbackCanvas.style.display = 'none';
-        document.getElementById('css-particles').style.display = 'none';
-        errorMessage.style.display = 'none';
-        return;
-      }
-
-      // Fall back to CSS
-      webglCanvas.style.display='none';
+      webglCanvas.style.display = 'none';
       fallbackCanvas.style.display = 'none';
       if (initCSSAnimations()) {
         errorMessage.style.display = 'none';
@@ -736,13 +839,12 @@
       }
 
       errorMessage.style.display = 'block';
-      logDebug('All animation methods failed');
+      logDebug('All simulation methods failed');
     });
 
     // Copy IP to Clipboard
     function copyIP() {
       try {
-        logDebug('Copy IP button clicked');
         const ip = document.getElementById('ip-display').textContent;
         if (!ip || ip === 'IP unavailable') {
           logDebug('No IP to copy');
@@ -750,11 +852,10 @@
         }
 
         navigator.clipboard.writeText(ip).then(() => {
-          logDebug('IP copied successfully via clipboard API');
+          logDebug('IP copied successfully');
           triggerBigBang();
         }).catch(err => {
           logDebug('Clipboard Error: ' + err.message);
-          // Fallback copy method
           const textarea = document.createElement('textarea');
           textarea.value = ip;
           document.body.appendChild(textarea);
@@ -772,14 +873,6 @@
         logDebug('Copy IP Error: ' + error.message);
       }
     }
-
-    // Manual test for explosion (remove after debugging)
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'e') {
-        logDebug('Manual explosion triggered via "e" key');
-        triggerBigBang();
-      }
-    });
   </script>
 </body>
 </html>
