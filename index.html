@@ -518,7 +518,7 @@
     async function fetchNetworkInfo() {
       let networkData = { isp: 'Unknown', city: 'Unknown', country: 'Unknown' };
       try {
-        const response = await fetch('http://ip-api.com/json');
+        const response = await fetch('https://ip-api.com/json');
         if (response.ok) {
           const data = await response.json();
           if (data.status !== 'fail') {
