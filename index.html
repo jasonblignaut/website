@@ -234,7 +234,7 @@
       background: linear-gradient(90deg, #4facfe, #00f2fe);
       clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
       transform-origin: center bottom;
-      transform: rotate(180deg); /* Start at far left */
+      transform: rotate(180deg);
       z-index: 1;
       transition: transform 0.3s ease-out;
     }
@@ -307,12 +307,12 @@
       margin: 0.5rem 0;
       border-left: 1px solid rgba(73, 115, 255, 0.4);
       border-bottom: 1px solid rgba(73, 115, 255, 0.4);
-      padding: 5px 5px 5px 35px; /* Add padding-left for Y-axis */
+      padding: 5px 5px 5px 35px;
     }
 
     .y-axis {
       position: absolute;
-      left: 0; /* Adjusted to be visible */
+      left: 0;
       top: 0;
       height: 100%;
       width: 30px;
@@ -340,11 +340,12 @@
       bottom: 0;
       left: 0;
       width: 0;
-      background: linear-gradient(90deg, rgba(73, 115, 255, 0.8), rgba(0, 242, 254, 0.8));
       height: 3px;
+      background: linear-gradient(90deg, rgba(73, 115, 255, 0.8) 0%, rgba(0, 242, 254, 0.8) 50%, rgba(73, 115, 255, 0.8) 100%);
+      background-size: 20px 100%;
       box-shadow: 0 0 10px rgba(73, 115, 255, 0.8);
       border-radius: 2px;
-      transition: width 0.1s linear;
+      transition: width 0.05s linear;
     }
 
     .graph-fill {
@@ -354,17 +355,7 @@
       width: 0;
       background: linear-gradient(to top, rgba(73, 115, 255, 0.2), rgba(0, 242, 254, 0.05));
       border-radius: 0 5px 0 0;
-      transition: width 0.1s linear;
-    }
-
-    .graph-point {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #00f2fe;
-      box-shadow: 0 0 10px rgba(0, 242, 254, 0.8);
-      transform: translate(-50%, 50%);
+      transition: width 0.05s linear, height 0.05s linear;
     }
 
     .grid-lines {
@@ -525,7 +516,7 @@
 
   <div class="container">
     <header>
-      <h1>Labverse Public IP & Speed Test</h1>
+      <h1>Labverse Speed Test</h1>
     </header>
     <div class="ip-container">
       <div class="ip-display" id="ip-display">Fetching IP...</div>
@@ -535,7 +526,7 @@
     <div class="error-message" id="error-message">Animations failed to load. Please check your browser settings.</div>
 
     <div class="speed-test-card">
-      <div class="test-type" id="testType">Speedtest</div>
+      <div class="test-type" id="testType">Ready to Test</div>
       <div class="progress-bar">
         <div class="progress" id="progressBar"></div>
       </div>
@@ -585,7 +576,7 @@
   </div>
 
   <footer>
-    © 2025 Labverse | Powered by <a href="https://onefar.co.za" target="_blank" rel="noopener">1FAR</a>
+    © 2025 Labverse | Powered by <a href="https://onefar.co.za" target="_blank" rel="noopener">onefar.co.za (1FAR)</a>
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
@@ -783,6 +774,7 @@
         pingResource: 'https://labverse.co.za/assets/ping-test.txt',
       },
       testDurations: { download: 10000, ping: 3000 },
+      maxTestTimeout: 15000, // 15 seconds max test duration to prevent hanging
     };
 
     function initializeSpeedTest() {
@@ -815,7 +807,6 @@
       let startTime = 0;
       let testDuration = CONFIG.testDurations.download;
       let animationFrame = null;
-      let pointCount = 0;
       let testActive = false;
       let controller = null;
 
@@ -831,20 +822,15 @@
         }
       }
 
-      // Update Y-axis based on max speed
-      function updateYAxis(max) {
-        const scale = [0, 5, 10, 20, 25, 50, 100, 200, 500, 1000];
-        let maxScale = scale[scale.length - 1];
-        for (let i = 0; i < scale.length; i++) {
-          if (max <= scale[i]) {
-            maxScale = scale[i];
-            break;
-          }
-        }
-        return maxScale;
+      // Map speed to Y-axis height (0 to 1000 Mbps)
+      function speedToHeight(speed) {
+        const maxScale = 1000; // Fixed max scale to match Y-axis
+        const heightPercent = (speed / maxScale) * 100;
+        return Math.min(heightPercent, 100); // Cap at 100%
       }
 
-      function updateSpeedometer(speed, maxScale) {
+      function updateSpeedometer(speed) {
+        const maxScale = 1000;
         const percent = speed / maxScale;
         const angle = 180 + (percent * 180); // 180° (left) to 360° (right)
         gaugeFill.style.transform = `rotate(${angle}deg)`;
@@ -852,19 +838,11 @@
         speedValue.textContent = speed.toFixed(1);
       }
 
-      function updateGraph(percentage, speed, maxScale) {
-        const point = document.createElement('div');
-        point.className = 'graph-point';
-        const heightPercentage = (speed / maxScale) * 100;
-        point.style.bottom = `${heightPercentage}%`;
-        point.style.left = `${percentage * 100}%`;
-        graph.appendChild(point);
-
+      function updateGraph(percentage, speed) {
+        const heightPercentage = speedToHeight(speed);
         graphLine.style.width = `${percentage * 100}%`;
         graphFill.style.width = `${percentage * 100}%`;
         graphFill.style.height = `${heightPercentage}%`;
-
-        pointCount++;
       }
 
       async function runPingTest() {
@@ -901,25 +879,41 @@
         startTime = performance.now();
         const updateInterval = 100;
         let lastUpdate = startTime;
+        const overallTimeout = setTimeout(() => {
+          log('Download test timed out after 15 seconds');
+          testActive = false;
+          if (controller) controller.abort();
+          finalizeTest();
+        }, CONFIG.maxTestTimeout);
 
         try {
           controller = new AbortController();
           const signal = controller.signal;
           const response = await fetch(CONFIG.testServer.downloadUrl, { cache: 'no-store', signal });
+          if (!response.ok) throw new Error('Failed to fetch download resource');
           const reader = response.body.getReader();
 
           while (testActive) {
-            const { done, value } = await reader.read();
+            let result;
+            try {
+              result = await reader.read();
+            } catch (error) {
+              log('Reader error: ' + error.message);
+              throw error;
+            }
+            const { done, value } = result;
             if (done || !testActive) {
               controller.abort();
               break;
             }
-            totalBytes += value.length;
+            totalBytes += value ? value.length : 0;
             const elapsed = (performance.now() - startTime) / 1000;
             if (performance.now() - lastUpdate >= updateInterval) {
               const speed = ((totalBytes * 8) / elapsed) / (1024 * 1024);
               callback(elapsed, speed);
               lastUpdate = performance.now();
+              // Clear old data to prevent memory buildup
+              if (testData.length > 100) testData.shift();
             }
             if (elapsed >= testDuration / 1000) {
               controller.abort();
@@ -930,12 +924,40 @@
           log('Download error: ' + error.message);
           throw error;
         } finally {
+          clearTimeout(overallTimeout);
           controller = null;
         }
 
         const totalTime = (performance.now() - startTime) / 1000;
-        const finalSpeed = ((totalBytes * 8) / totalTime) / (1024 * 1024);
+        const finalSpeed = totalTime > 0 ? ((totalBytes * 8) / totalTime) / (1024 * 1024) : 0;
         return finalSpeed;
+      }
+
+      function finalizeTest() {
+        const dataPoints = testData.length;
+        if (dataPoints === 0) {
+          document.getElementById('error-message').style.display = 'block';
+          document.getElementById('error-message').textContent = 'Speed test failed. Please try again.';
+          startButton.disabled = false;
+          startButton.textContent = 'Start Test';
+          testActive = false;
+          return;
+        }
+
+        let weightedSum = 0, weightSum = 0;
+        for (let i = 0; i < dataPoints; i++) {
+          const weight = 0.5 + 0.5 * (i / dataPoints);
+          weightedSum += testData[i].speed * weight;
+          weightSum += weight;
+        }
+        finalDownloadSpeed = weightedSum / weightSum;
+        downloadResult.textContent = `${finalDownloadSpeed.toFixed(1)} Mbps`;
+        resultsContainer.classList.remove('hidden');
+        startButton.textContent = 'More Info';
+        startButton.disabled = false;
+        currentTest = null;
+        testActive = false;
+        triggerBigBang();
       }
 
       function runTest(testType) {
@@ -958,7 +980,6 @@
         graph.appendChild(newGraphLine);
         graphLine = document.getElementById('graphLine');
         graphFill = document.getElementById('graphFill');
-        pointCount = 0;
         testActive = true;
 
         // Run ping test first
@@ -970,37 +991,20 @@
             const progress = Math.min(elapsed / (testDuration / 1000), 1);
             currentSpeed = speed;
             maxSpeed = Math.max(maxSpeed, currentSpeed);
-            const maxScale = updateYAxis(maxSpeed * 1.2);
             testData.push({ time: elapsed, speed: currentSpeed });
             progressBar.style.width = `${progress * 100}%`;
-            updateSpeedometer(currentSpeed, maxScale);
-            updateGraph(progress, currentSpeed, maxScale);
+            updateSpeedometer(currentSpeed);
+            updateGraph(progress, currentSpeed);
 
             if (progress >= 1) {
               progressBar.style.width = '100%';
-              const dataPoints = testData.length;
-              let weightedSum = 0, weightSum = 0;
-              for (let i = 0; i < dataPoints; i++) {
-                const weight = 0.5 + 0.5 * (i / dataPoints);
-                weightedSum += testData[i].speed * weight;
-                weightSum += weight;
-              }
-              finalDownloadSpeed = weightedSum / weightSum;
-              downloadResult.textContent = `${finalDownloadSpeed.toFixed(1)} Mbps`;
-              resultsContainer.classList.remove('hidden');
-              startButton.textContent = 'More Info';
-              startButton.disabled = false;
-              currentTest = null;
-              testActive = false;
-              triggerBigBang();
+              finalizeTest();
             }
           }).catch(() => {
-            document.getElementById('error-message').style.display = 'block';
-            document.getElementById('error-message').textContent = 'Speed test failed. Please try again.';
-            startButton.disabled = false;
-            startButton.textContent = 'Start Test';
-            testActive = false;
+            finalizeTest();
           });
+        }).catch(() => {
+          finalizeTest();
         });
       }
 
