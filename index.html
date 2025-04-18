@@ -253,7 +253,7 @@
       Level: 1 | Score: 0 | Energy: 100% | Time: 60s<br>
       Use WASD/Arrows to move, Left Click to attract, Right Click to repel, Space to switch patterns.
     </div>
-    <div class="error-message" id="error-message">Game failed. Check browser settings.</div>
+    <div class="error-message" id="error-message">Game failed to load. Please check your browser settings or try a different browser.</div>
     <button class="btn" id="start-game">Start Game</button>
   </div>
 
@@ -278,16 +278,16 @@
 
   <script type="module">
     import * as THREE from 'three';
-    import { WEBGL } from 'three/addons/utils/WebGL.js';
+    import { WEBGL } from 'three/addons/capabilities/WebGL.js'; // Corrected path
 
     // Debug Logging
-    const DEBUG = false;
+    const DEBUG = true; // Set to true for debugging, false for production
     function logDebug(message) {
       if (DEBUG) console.log('[DEBUG] ' + message);
     }
 
     // Perlin Noise for Organic Variation
-    function perlinNoise(x, y) {
+    function perlinNoise(x, yospodist) {
       const n = x + y * 57;
       const seed = Math.sin(n * 12345.6789) * 43758.5453;
       return (seed - Math.floor(seed));
@@ -297,43 +297,53 @@
     let audioContext, attractSound, repelSound, levelUpSound;
     let isAudioMuted = false;
     function initAudio() {
-      audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      
-      attractSound = audioContext.createOscillator();
-      attractSound.type = 'sine';
-      attractSound.frequency.setValueAtTime(150, audioContext.currentTime);
-      const attractGain = audioContext.createGain();
-      attractGain.gain.setValueAtTime(0.2, audioContext.currentTime);
-      attractSound.connect(attractGain);
-      attractGain.connect(audioContext.destination);
-      attractSound.start();
+      try {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        attractSound = audioContext.createOscillator();
+        attractSound.type = 'sine';
+        attractSound.frequency.setValueAtTime(150, audioContext.currentTime);
+        const attractGain = audioContext.createGain();
+        attractGain.gain.setValueAtTime(0.2, audioContext.currentTime);
+        attractSound.connect(attractGain);
+        attractGain.connect(audioContext.destination);
+        attractSound.start();
 
-      repelSound = audioContext.createOscillator();
-      repelSound.type = 'square';
-      repelSound.frequency.setValueAtTime(100, audioContext.currentTime);
-      const repelGain = audioContext.createGain();
-      repelGain.gain.setValueAtTime(0.2, audioContext.currentTime);
-      repelSound.connect(repelGain);
-      repelGain.connect(audioContext.destination);
-      repelSound.start();
+        repelSound = audioContext.createOscillator();
+        repelSound.type = 'square';
+        repelSound.frequency.setValueAtTime(100, audioContext.currentTime);
+        const repelGain = audioContext.createGain();
+        repelGain.gain.setValueAtTime(0.2, audioContext.currentTime);
+        repelSound.connect(repelGain);
+        repelGain.connect(audioContext.destination);
+        repelSound.start();
 
-      levelUpSound = audioContext.createOscillator();
-      levelUpSound.type = 'triangle';
-      levelUpSound.frequency.setValueAtTime(300, audioContext.currentTime);
-      const levelUpGain = audioContext.createGain();
-      levelUpGain.gain.setValueAtTime(0.3, audioContext.currentTime);
-      levelUpSound.connect(levelUpGain);
-      levelUpGain.connect(audioContext.destination);
-      levelUpSound.start();
+        levelUpSound = audioContext.createOscillator();
+        levelUpSound.type = 'triangle';
+        levelUpSound.frequency.setValueAtTime(300, audioContext.currentTime);
+        const levelUpGain = audioContext.createGain();
+        levelUpGain.gain.setValueAtTime(0.3, audioContext.currentTime);
+        levelUpSound.connect(levelUpGain);
+        levelUpGain.connect(audioContext.destination);
+        levelUpSound.start();
+
+        logDebug('Audio initialized successfully');
+      } catch (error) {
+        logDebug('Audio Initialization Error: ' + error.message);
+      }
     }
 
     function playSound(sound, duration = 0.5) {
       if (!isAudioMuted && audioContext) {
-        const gainNode = audioContext.createGain();
-        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-        sound.connect(gainNode);
-        gainNode.connect(audioContext.destination);
+        try {
+          const gainNode = audioContext.createGain();
+          gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+          sound.connect(gainNode);
+          gainNode.connect(audioContext.destination);
+        } catch (error) {
+          logDebug('Play Sound Error: ' + error.message);
+        }
       }
     }
 
@@ -349,7 +359,10 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
-        if (!gl) return false;
+        if (!gl) {
+          logDebug('WebGL context creation failed');
+          return false;
+        }
 
         let scene = new THREE.Scene();
         let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -786,7 +799,12 @@
               let aligned = particles.filter(p2 => p !== p2 && Math.abs(p.obj.position.distanceTo(p2.obj.position) - 2) < 0.5).length;
               if (aligned >= 2) inPattern = true;
             }
-            if (inPattern) patternCount++;
+            if (inPattern) {
+              p.inPattern = true;
+              patternCount++;
+            } else {
+              p.inPattern = false;
+            }
           });
           if (patternCount >= 10) {
             gameState.score += patternCount * 10;
@@ -876,12 +894,12 @@
         document.getElementById('toggle-audio').addEventListener('click', () => {
           isAudioMuted = !isAudioMuted;
           document.getElementById('toggle-audio').textContent = isAudioMuted ? 'Unmute Audio' : 'Mute Audio';
+          logDebug(`Audio ${isAudioMuted ? 'muted' : 'unmuted'}`);
         });
 
         document.getElementById('toggle-ar').addEventListener('click', toggleAR);
-        document.getElementById('start-game').addEventListener('click', startGame);
 
-        logDebug('WebGL game started');
+        logDebug('WebGL game initialized successfully');
         return { startGame };
       } catch (error) {
         logDebug('WebGL Initialization Error: ' + error.message);
@@ -896,7 +914,10 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         const ctx = canvas.getContext('2d', { alpha: true });
-        if (!ctx) return false;
+        if (!ctx) {
+          logDebug('2D Canvas context creation failed');
+          return false;
+        }
 
         let particles = [];
         let avatar = { x: canvas.width / 2, y: canvas.height / 2 };
@@ -1044,7 +1065,10 @@
         function animate() {
           try {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            if (!gameState.isGameRunning) return;
+            if (!gameState.isGameRunning) {
+              requestAnimationFrame(animate);
+              return;
+            }
 
             // Update Avatar
             const speed = 5;
@@ -1182,7 +1206,12 @@
                 let aligned = particles.filter(p2 => p !== p2 && Math.abs(Math.hypot(p2.x - p.x, p2.y - p.y) - 20) < 5).length;
                 if (aligned >= 2) inPattern = true;
               }
-              if (inPattern) patternCount++;
+              if (inPattern) {
+                p.inPattern = true;
+                patternCount++;
+              } else {
+                p.inPattern = false;
+              }
             });
             if (patternCount >= 10) {
               gameState.score += patternCount * 10;
@@ -1227,7 +1256,7 @@
           initParticles();
         }, { passive: true });
 
-        logDebug('2D canvas game started');
+        logDebug('2D canvas game initialized successfully');
         return { startGame };
       } catch (error) {
         logDebug('2D Canvas Initialization Error: ' + error.message);
@@ -1238,8 +1267,10 @@
     // Initialize Game
     let game = null;
     const errorMessage = document.getElementById('error-message');
+    const startButton = document.getElementById('start-game');
 
     async function initializeGame() {
+      logDebug('Starting game initialization...');
       const webglCanvas = document.getElementById('background-canvas');
       const fallbackCanvas = document.getElementById('fallback-canvas');
 
@@ -1248,6 +1279,7 @@
         fallbackCanvas.style.display = 'none';
         errorMessage.style.display = 'none';
         initAudio();
+        logDebug('WebGL initialization successful');
         return sim;
       }
 
@@ -1257,18 +1289,36 @@
         fallbackCanvas.style.display = 'block';
         errorMessage.style.display = 'none';
         initAudio();
+        logDebug('2D Canvas initialization successful');
         return sim;
       }
 
       errorMessage.style.display = 'block';
-      logDebug('All game methods failed');
+      startButton.style.display = 'none';
+      logDebug('All game initialization methods failed');
       return null;
     }
 
     // Initialize and Bind Events
     document.addEventListener('DOMContentLoaded', async () => {
-      game = await initializeGame();
-      document.getElementById('game-info').style.display = 'none';
+      try {
+        game = await initializeGame();
+        document.getElementById('game-info').style.display = 'none';
+        if (game) {
+          startButton.addEventListener('click', () => {
+            logDebug('Start Game button clicked');
+            game.startGame();
+          });
+        } else {
+          errorMessage.style.display = 'block';
+          startButton.style.display = 'none';
+          logDebug('Game object not initialized');
+        }
+      } catch (error) {
+        logDebug('Initialization Error: ' + error.message);
+        errorMessage.style.display = 'block';
+        startButton.style.display = 'none';
+      }
     });
   </script>
 </body>
