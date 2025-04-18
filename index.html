@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="description" content="View your public IP with a mesmerizing recursive LED dodecahedron and cosmic animations." />
-  <meta name="keywords" content="Public IP, Dodecahedron, Sacred Geometry, Quantum Particles" />
+  <meta name="description" content="Discover your public IP with a futuristic recursive LED dodecahedron and cosmic Fibonacci animations." />
+  <meta name="keywords" content="Public IP, Dodecahedron, Fibonacci, Sacred Geometry, Quantum Particles" />
   <meta name="author" content="Labverse Team" />
   <meta property="og:title" content="Your Public IP" />
-  <meta property="og:description" content="Discover your public IP address with a vibrant, futuristic dodecahedron and sacred geometry animations." />
+  <meta property="og:description" content="View your public IP address with mesmerizing sacred geometry and vibrant LED animations." />
   <meta property="og:image" content="https://labverse.co.za/assets/labverse-og-image.png" />
   <meta property="og:url" content="https://labverse.co.za" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -35,7 +35,7 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Source Code Pro', monospace;
+      font-family: 'Source+Code+Pro', monospace;
     }
 
     html, body {
@@ -83,7 +83,7 @@
     }
 
     h1 {
-      font-family: 'Source Code Pro', monospace;
+      font-family: 'Source+Code+Pro', monospace;
       font-size: clamp(2rem, 6vw, 4rem);
       text-transform: uppercase;
       color: var(--light-aura);
@@ -94,7 +94,7 @@
     }
 
     .ip-display {
-      font-family: 'Source Code Pro', monospace;
+      font-family: 'Source+Code+Pro', monospace;
       font-size: clamp(1.5rem, 4vw, 2.8rem);
       color: var(--light-aura);
       background: rgba(8, 8, 26, 0.85);
@@ -108,7 +108,7 @@
     }
 
     .network-info {
-      font-family: 'Source Code Pro', monospace;
+      font-family: 'Source+Code+Pro', monospace;
       font-size: clamp(0.7rem, 1.5vw, 1rem);
       color: var(--light-aura);
       max-width: clamp(200px, 80vw, 400px);
@@ -119,7 +119,7 @@
     }
 
     .error-message {
-      font-family: 'Source Code Pro', monospace;
+      font-family: 'Source+Code+Pro', monospace;
       font-size: clamp(0.7rem, 1.5vw, 1rem);
       color: #ff5555;
       margin-top: 1rem;
@@ -134,7 +134,7 @@
       padding: clamp(0.6rem, 1.5vw, 0.8rem) clamp(1.5rem, 3vw, 2rem);
       border-radius: 8px;
       cursor: pointer;
-      font-family: 'Source Code Pro', monospace;
+      font-family: 'Source+Code+Pro', monospace;
       font-size: clamp(0.8rem, 1.5vw, 1rem);
       text-transform: uppercase;
       box-shadow: 0 0 var(--glow-radius) var(--matrix-blue);
@@ -263,7 +263,7 @@
     async function fetchNetworkInfo() {
       let networkData = { isp: 'Unknown', city: 'Unknown', country: 'Unknown' };
       const endpoints = [
-        'http://ip-api.com/json',
+        'https://ip-api.com/json',
         'https://ipinfo.io/json',
         'https://get.geojs.io/v1/ip/geo.json'
       ];
@@ -331,17 +331,14 @@
             time: { value: 0 },
             uColor1: { value: new THREE.Color('#ff4d94') },
             uColor2: { value: new THREE.Color('#4dffeb') },
-            uColor3: { value: new THREE.Color('#cc66ff') },
-            uEnvMap: { value: null }
+            uColor3: { value: new THREE.Color('#cc66ff') }
           },
           vertexShader: `
             varying vec3 vNormal;
-            varying vec3 vViewDir;
-            varying vec3 vWorldPos;
+            varying vec3 vPosition;
             void main() {
               vNormal = normalize(normalMatrix * normal);
-              vWorldPos = (modelMatrix * vec4(position, 1.0)).xyz;
-              vViewDir = normalize(cameraPosition - vWorldPos);
+              vPosition = position;
               gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
             }
           `,
@@ -350,24 +347,20 @@
             uniform vec3 uColor1;
             uniform vec3 uColor2;
             uniform vec3 uColor3;
-            uniform samplerCube uEnvMap;
             varying vec3 vNormal;
-            varying vec3 vViewDir;
+            varying vec3 vPosition;
 
             void main() {
-              float fresnel = pow(1.0 - dot(vNormal, vViewDir), 4.0);
               float t1 = sin(time * 0.6 + 3.141592653589793) * 0.5 + 0.5;
               float t2 = sin(time * 0.4) * 0.5 + 0.5;
               vec3 color = mix(uColor1, uColor2, t1);
               color = mix(color, uColor3, t2);
-              float r = 0.5 + 0.5 * sin(time * 0.3 + vWorldPos.x);
-              float g = 0.5 + 0.5 * sin(time * 0.5 + vWorldPos.y);
-              float b = 0.5 + 0.5 * sin(time * 0.7 + vWorldPos.z);
+              float r = 0.5 + 0.5 * sin(time * 0.3 + vPosition.x * 1.618033988749895);
+              float g = 0.5 + 0.5 * sin(time * 0.5 + vPosition.y * 1.618033988749895);
+              float b = 0.5 + 0.5 * sin(time * 0.7 + vPosition.z * 1.618033988749895);
               vec3 ledColor = mix(color, vec3(r, g, b), 0.3);
-              vec3 reflectDir = reflect(-vViewDir, vNormal);
-              vec4 reflectColor = uEnvMap ? textureCube(uEnvMap, reflectDir) : vec4(0.0);
-              vec3 finalColor = mix(reflectColor.rgb, ledColor, 0.15);
-              finalColor += fresnel * ledColor * 1.3;
+              float fresnel = pow(1.0 - abs(dot(vNormal, vec3(0.0, 0.0, 1.0))), 4.0);
+              vec3 finalColor = ledColor + fresnel * ledColor * 1.3;
               gl_FragColor = vec4(finalColor, 0.95);
             }
           `,
@@ -376,7 +369,6 @@
         });
 
         const outerDodecahedron = new THREE.Mesh(outerGeometry, outerMaterial);
-        outerDodecahedron.position.set(0, 0, 0);
         scene.add(outerDodecahedron);
 
         // Middle dodecahedron
@@ -389,24 +381,20 @@
             uniform vec3 uColor1;
             uniform vec3 uColor2;
             uniform vec3 uColor3;
-            uniform samplerCube uEnvMap;
             varying vec3 vNormal;
-            varying vec3 vViewDir;
+            varying vec3 vPosition;
 
             void main() {
-              float fresnel = pow(1.0 - dot(vNormal, vViewDir), 3.5);
               float t1 = sin(time * 0.5 + 1.5707963267948966) * 0.5 + 0.5;
               float t2 = sin(time * 0.3) * 0.5 + 0.5;
               vec3 color = mix(uColor2, uColor3, t1);
               color = mix(color, uColor1, t2);
-              float r = 0.5 + 0.5 * sin(time * 0.4 + vWorldPos.x * 1.618033988749895);
-              float g = 0.5 + 0.5 * sin(time * 0.6 + vWorldPos.y * 1.618033988749895);
-              float b = 0.5 + 0.5 * sin(time * 0.8 + vWorldPos.z * 1.618033988749895);
+              float r = 0.5 + 0.5 * sin(time * 0.4 + vPosition.x * 1.618033988749895);
+              float g = 0.5 + 0.5 * sin(time * 0.6 + vPosition.y * 1.618033988749895);
+              float b = 0.5 + 0.5 * sin(time * 0.8 + vPosition.z * 1.618033988749895);
               vec3 ledColor = mix(color, vec3(r, g, b), 0.35);
-              vec3 reflectDir = reflect(-vViewDir, vNormal);
-              vec4 reflectColor = uEnvMap ? textureCube(uEnvMap, reflectDir) : vec4(0.0);
-              vec3 finalColor = mix(reflectColor.rgb, ledColor, 0.2);
-              finalColor += fresnel * ledColor * 1.1;
+              float fresnel = pow(1.0 - abs(dot(vNormal, vec3(0.0, 0.0, 1.0))), 3.5);
+              vec3 finalColor = ledColor + fresnel * ledColor * 1.1;
               gl_FragColor = vec4(finalColor, 0.93);
             }
           `,
@@ -427,24 +415,20 @@
             uniform vec3 uColor1;
             uniform vec3 uColor2;
             uniform vec3 uColor3;
-            uniform samplerCube uEnvMap;
             varying vec3 vNormal;
-            varying vec3 vViewDir;
+            varying vec3 vPosition;
 
             void main() {
-              float fresnel = pow(1.0 - dot(vNormal, vViewDir), 3.0);
               float t1 = sin(time * 0.7 + 4.71238898038469) * 0.5 + 0.5;
               float t2 = sin(time * 0.2) * 0.5 + 0.5;
               vec3 color = mix(uColor3, uColor1, t1);
               color = mix(color, uColor2, t2);
-              float r = 0.5 + 0.5 * sin(time * 0.5 + vWorldPos.x * 2.0);
-              float g = 0.5 + 0.5 * sin(time * 0.7 + vWorldPos.y * 2.0);
-              float b = 0.5 + 0.5 * sin(time * 0.9 + vWorldPos.z * 2.0);
+              float r = 0.5 + 0.5 * sin(time * 0.5 + vPosition.x * 2.0);
+              float g = 0.5 + 0.5 * sin(time * 0.7 + vPosition.y * 2.0);
+              float b = 0.5 + 0.5 * sin(time * 0.9 + vPosition.z * 2.0);
               vec3 ledColor = mix(color, vec3(r, g, b), 0.4);
-              vec3 reflectDir = reflect(-vViewDir, vNormal);
-              vec4 reflectColor = uEnvMap ? textureCube(uEnvMap, reflectDir) : vec4(0.0);
-              vec3 finalColor = mix(reflectColor.rgb, ledColor, 0.25);
-              finalColor += fresnel * ledColor * 1.0;
+              float fresnel = pow(1.0 - abs(dot(vNormal, vec3(0.0, 0.0, 1.0))), 3.0);
+              vec3 finalColor = ledColor + fresnel * ledColor * 1.0;
               gl_FragColor = vec4(finalColor, 0.9);
             }
           `,
@@ -505,18 +489,18 @@
         middleDodecahedron.add(createLEDEdges(middleGeometry));
         innerDodecahedron.add(createLEDEdges(innerGeometry));
 
-        // Internal LED particles
-        const ledCount = 250;
+        // Fibonacci-inspired LED particles
+        const ledCount = 200;
         const ledGeometry = new THREE.BufferGeometry();
         const ledPositions = new Float32Array(ledCount * 3);
         const ledOffsets = new Float32Array(ledCount);
+        const phi = (1 + Math.sqrt(5)) / 2;
         for (let i = 0; i < ledCount; i++) {
-          const theta = Math.random() * Math.PI * 2;
-          const phi = Math.acos(2 * Math.random() - 1);
-          const r = Math.pow(Math.random(), 1/3) * 0.85;
-          const x = r * Math.sin(phi) * Math.cos(theta);
-          const y = r * Math.sin(phi) * Math.sin(theta);
-          const z = r * Math.cos(phi);
+          const theta = i * 2 * Math.PI * phi;
+          const r = Math.sqrt(i) * 0.05;
+          const x = r * Math.cos(theta);
+          const y = r * Math.sin(theta);
+          const z = (Math.random() - 0.5) * 0.5;
           ledPositions[i * 3] = isFinite(x) ? x : 0;
           ledPositions[i * 3 + 1] = isFinite(y) ? y : 0;
           ledPositions[i * 3 + 2] = isFinite(z) ? z : 0;
@@ -537,7 +521,7 @@
             varying float vOffset;
             void main() {
               vOffset = offset;
-              gl_PointSize = 11.0;
+              gl_PointSize = 8.0;
               gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
             }
           `,
@@ -548,6 +532,7 @@
             uniform vec3 uColor3;
             uniform vec3 uColor4;
             varying float vOffset;
+
             void main() {
               float pulse = sin(time * 3.0 + vOffset) * 0.5 + 0.5;
               float t1 = sin(time * 0.6) * 0.5 + 0.5;
@@ -571,49 +556,38 @@
         const ledParticles = new THREE.Points(ledGeometry, ledParticleMaterial);
         outerDodecahedron.add(ledParticles);
 
-        // Reflective environment
-        const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(512, {
-          generateMipmaps: true,
-          minFilter: THREE.LinearMipmapLinearFilter
-        });
-        const cubeCamera = new THREE.CubeCamera(0.1, 1000, cubeRenderTarget);
-        outerMaterial.uniforms.uEnvMap.value = cubeRenderTarget.texture;
-        middleMaterial.uniforms.uEnvMap.value = cubeRenderTarget.texture;
-        innerMaterial.uniforms.uEnvMap.value = cubeRenderTarget.texture;
-
-        // Energy atom particles
-        const atomCount = 70;
-        const atomGeometry = new THREE.BufferGeometry();
-        const atomPositions = new Float32Array(atomCount * 3);
-        const atomVelocities = new Float32Array(atomCount * 3);
-        const atomLifetimes = new Float32Array(atomCount);
-        const atomOffsets = new Float32Array(atomCount);
-        const phi = (1 + Math.sqrt(5)) / 2;
-        for (let i = 0; i < atomCount; i++) {
-          const theta = Math.random() * Math.PI * 2;
-          const r = Math.random() * 12 + 6;
+        // Fibonacci-inspired quantum particles
+        const particleCount = 50;
+        const particleGeometry = new THREE.BufferGeometry();
+        const particlePositions = new Float32Array(particleCount * 3);
+        const particleVelocities = new Float32Array(particleCount * 3);
+        const particleLifetimes = new Float32Array(particleCount);
+        const particleOffsets = new Float32Array(particleCount);
+        for (let i = 0; i < particleCount; i++) {
+          const theta = i * 2 * Math.PI * phi;
+          const r = Math.sqrt(i) * 0.3;
           const x = r * Math.cos(theta);
           const y = r * Math.sin(theta);
-          const z = (Math.random() - 0.5) * 10;
-          atomPositions[i * 3] = isFinite(x) ? x : 0;
-          atomPositions[i * 3 + 1] = isFinite(y) ? y : 0;
-          atomPositions[i * 3 + 2] = isFinite(z) ? z : 0;
-          atomVelocities[i * 3] = (Math.random() - 0.5) * 0.05;
-          atomVelocities[i * 3 + 1] = (Math.random() - 0.5) * 0.05;
-          atomVelocities[i * 3 + 2] = (Math.random() - 0.5) * 0.05;
-          atomLifetimes[i] = Math.random() * 4 + 1;
-          atomOffsets[i] = Math.random() * Math.PI * 2;
+          const z = (Math.random() - 0.5) * 2;
+          particlePositions[i * 3] = isFinite(x) ? x : 0;
+          particlePositions[i * 3 + 1] = isFinite(y) ? y : 0;
+          particlePositions[i * 3 + 2] = isFinite(z) ? z : 0;
+          particleVelocities[i * 3] = (Math.random() - 0.5) * 0.05;
+          particleVelocities[i * 3 + 1] = (Math.random() - 0.5) * 0.05;
+          particleVelocities[i * 3 + 2] = (Math.random() - 0.5) * 0.05;
+          particleLifetimes[i] = Math.random() * 4 + 1;
+          particleOffsets[i] = Math.random() * Math.PI * 2;
         }
-        atomGeometry.setAttribute('position', new THREE.BufferAttribute(atomPositions, 3));
-        atomGeometry.setAttribute('offset', new THREE.BufferAttribute(atomOffsets, 1));
-        const atomMaterial = new THREE.ShaderMaterial({
+        particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+        particleGeometry.setAttribute('offset', new THREE.BufferAttribute(particleOffsets, 1));
+        const particleMaterial = new THREE.ShaderMaterial({
           uniforms: { time: { value: 0 } },
           vertexShader: `
             attribute float offset;
             varying float vOffset;
             void main() {
               vOffset = offset;
-              gl_PointSize = 9.0 + sin(offset) * 4.0;
+              gl_PointSize = 6.0 + sin(offset) * 3.0;
               gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
             }
           `,
@@ -636,8 +610,8 @@
           `,
           transparent: true
         });
-        const atomParticles = new THREE.Points(atomGeometry, atomMaterial);
-        scene.add(atomParticles);
+        const particles = new THREE.Points(particleGeometry, particleMaterial);
+        scene.add(particles);
 
         // Interactivity
         let mouseX = 0, mouseY = 0;
@@ -663,6 +637,7 @@
           touchX = (touch.clientX / window.innerWidth) * 2 - 1;
           touchY = -(touch.clientY / window.innerHeight) * 2 + 1;
           isDragging = true;
+          triggerBigBang();
         }, { passive: false });
 
         document.addEventListener('touchmove', (e) => {
@@ -680,17 +655,16 @@
 
         document.addEventListener('touchend', () => { isDragging = false; });
 
-        function triggerParticleBurst() {
+        function triggerBigBang() {
           const burstCount = 30;
           const burstPositions = new Float32Array(burstCount * 3);
           const burstVelocities = new Float32Array(burstCount * 3);
           for (let i = 0; i < burstCount; i++) {
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.acos(2 * Math.random() - 1);
-            const r = Math.random() * 0.6;
-            const x = r * Math.sin(phi) * Math.cos(theta);
-            const y = r * Math.sin(phi) * Math.sin(theta);
-            const z = r * Math.cos(phi);
+            const theta = i * 2 * Math.PI * phi;
+            const r = Math.sqrt(i) * 0.1;
+            const x = r * Math.cos(theta);
+            const y = r * Math.sin(theta);
+            const z = (Math.random() - 0.5) * 0.5;
             burstPositions[i * 3] = isFinite(x) ? x : 0;
             burstPositions[i * 3 + 1] = isFinite(y) ? y : 0;
             burstPositions[i * 3 + 2] = isFinite(z) ? z : 0;
@@ -701,7 +675,7 @@
           const burstGeometry = new THREE.BufferGeometry();
           burstGeometry.setAttribute('position', new THREE.BufferAttribute(burstPositions, 3));
           const burstMaterial = new THREE.PointsMaterial({
-            size: 14,
+            size: 10,
             color: new THREE.Color(Math.random(), Math.random(), Math.random()),
             transparent: true,
             opacity: 0.9
@@ -732,10 +706,10 @@
         // Lighting
         const ambientLight = new THREE.AmbientLight(0x404040, 0.9);
         scene.add(ambientLight);
-        const pointLight1 = new THREE.PointLight(0xffffff, 2.2, 10);
+        const pointLight1 = new THREE.PointLight(0xffffff, 2.0, 10);
         pointLight1.position.set(5, 5, 5);
         scene.add(pointLight1);
-        const pointLight2 = new THREE.PointLight(0xffffff, 1.8, 10);
+        const pointLight2 = new THREE.PointLight(0xffffff, 1.5, 10);
         pointLight2.position.set(-5, -5, -5);
         scene.add(pointLight2);
 
@@ -744,33 +718,33 @@
           try {
             requestAnimationFrame(animate);
 
-            // Update atoms
-            for (let i = 0; i < atomCount; i++) {
-              const t = time * 0.001 + atomOffsets[i];
-              const omega = 1.618033988749895;
-              let x = atomPositions[i * 3] + atomVelocities[i * 3] * 0.05 * Math.sin(omega * t);
-              let y = atomPositions[i * 3 + 1] + atomVelocities[i * 3 + 1] * 0.05 * Math.cos(omega * t);
-              let z = atomPositions[i * 3 + 2] + atomVelocities[i * 3 + 2] * 0.05 * Math.sin(omega * t * phi);
-              atomPositions[i * 3] = isFinite(x) ? x : 0;
-              atomPositions[i * 3 + 1] = isFinite(y) ? y : 0;
-              atomPositions[i * 3 + 2] = isFinite(z) ? z : 0;
-              atomLifetimes[i] -= 0.016;
-              if (atomLifetimes[i] <= 0) {
-                const theta = Math.random() * Math.PI * 2;
-                const r = Math.random() * 12 + 6;
+            // Update Fibonacci particles
+            for (let i = 0; i < particleCount; i++) {
+              const t = time * 0.001 + particleOffsets[i];
+              const omega = phi;
+              let x = particlePositions[i * 3] + particleVelocities[i * 3] * 0.05 * Math.sin(omega * t);
+              let y = particlePositions[i * 3 + 1] + particleVelocities[i * 3 + 1] * 0.05 * Math.cos(omega * t);
+              let z = particlePositions[i * 3 + 2] + particleVelocities[i * 3 + 2] * 0.05 * Math.sin(omega * t * phi);
+              particlePositions[i * 3] = isFinite(x) ? x : 0;
+              particlePositions[i * 3 + 1] = isFinite(y) ? y : 0;
+              particlePositions[i * 3 + 2] = isFinite(z) ? z : 0;
+              particleLifetimes[i] -= 0.016;
+              if (particleLifetimes[i] <= 0) {
+                const theta = i * 2 * Math.PI * phi;
+                const r = Math.sqrt(i) * 0.3;
                 x = r * Math.cos(theta);
                 y = r * Math.sin(theta);
-                z = (Math.random() - 0.5) * 10;
-                atomPositions[i * 3] = isFinite(x) ? x : 0;
-                atomPositions[i * 3 + 1] = isFinite(y) ? y : 0;
-                atomPositions[i * 3 + 2] = isFinite(z) ? z : 0;
-                atomVelocities[i * 3] = (Math.random() - 0.5) * 0.05;
-                atomVelocities[i * 3 + 1] = (Math.random() - 0.5) * 0.05;
-                atomVelocities[i * 3 + 2] = (Math.random() - 0.5) * 0.05;
-                atomLifetimes[i] = Math.random() * 4 + 1;
+                z = (Math.random() - 0.5) * 2;
+                particlePositions[i * 3] = isFinite(x) ? x : 0;
+                particlePositions[i * 3 + 1] = isFinite(y) ? y : 0;
+                particlePositions[i * 3 + 2] = isFinite(z) ? z : 0;
+                particleVelocities[i * 3] = (Math.random() - 0.5) * 0.05;
+                particleVelocities[i * 3 + 1] = (Math.random() - 0.5) * 0.05;
+                particleVelocities[i * 3 + 2] = (Math.random() - 0.5) * 0.05;
+                particleLifetimes[i] = Math.random() * 4 + 1;
               }
             }
-            atomGeometry.attributes.position.needsUpdate = true;
+            particleGeometry.attributes.position.needsUpdate = true;
 
             // Update rotations
             outerDodecahedron.rotation.y += (targetRotationY - outerDodecahedron.rotation.y) * 0.1;
@@ -783,33 +757,13 @@
             middleMaterial.uniforms.time.value = time * 0.001;
             innerMaterial.uniforms.time.value = time * 0.001;
             ledParticleMaterial.uniforms.time.value = time * 0.001;
-            atomMaterial.uniforms.time.value = time * 0.001;
+            particleMaterial.uniforms.time.value = time * 0.001;
 
             outerDodecahedron.children.forEach(child => {
               if (child.material && child.material.uniforms) {
                 child.material.uniforms.time.value = time * 0.001;
               }
             });
-            middleDodecahedron.children.forEach(child => {
-              if (child.material && child.material.uniforms) {
-                child.material.uniforms.time.value = time * 0.001;
-              }
-            });
-            innerDodecahedron.children.forEach(child => {
-              if (child.material && child.material.uniforms) {
-                child.material.uniforms.time.value = time * 0.001;
-              }
-            });
-
-            // Two-pass rendering
-            outerDodecahedron.visible = false;
-            middleDodecahedron.visible = false;
-            innerDodecahedron.visible = false;
-            cubeCamera.position.copy(outerDodecahedron.position);
-            cubeCamera.update(renderer, scene);
-            outerDodecahedron.visible = true;
-            middleDodecahedron.visible = true;
-            innerDodecahedron.visible = true;
 
             composer.render();
           } catch (error) {
@@ -828,7 +782,7 @@
         }, { passive: true });
 
         // Expose for copyIP
-        window.triggerBigBang = triggerParticleBurst;
+        window.triggerBigBang = triggerBigBang;
         return true;
       } catch (error) {
         logDebug('WebGL Initialization Error: ' + error.message);
@@ -836,7 +790,7 @@
       }
     }
 
-    // Cosmic Flower of Life Background (2D Canvas)
+    // Cosmic Flower of Life Background
     function init2DCanvas() {
       try {
         const canvas = document.getElementById('background-canvas');
@@ -875,17 +829,17 @@
           }
 
           ctx.strokeStyle = `rgba(100, 200, 255, ${0.35 + Math.sin(time * 0.001) * 0.25})`;
-          ctx.lineWidth = 2.5;
+          ctx.lineWidth = 2;
           const centerX = canvas.width / 2;
           const centerY = canvas.height / 2;
           const radius = Math.min(canvas.width, canvas.height) / 12;
-          const offset = radius * Math.sqrt(3);
+          const offset = radius * 1.732050807568877;
           const anim = Math.sin(time * 0.0005) * 6;
           for (let i = -2; i <= 2; i++) {
             for (let j = -2; j <= 2; j++) {
               if (Math.abs(i) + Math.abs(j) <= 3 && !(i === 0 && j === 0)) {
                 const x = centerX + (i * offset + j * offset / 2) + anim;
-                const y = centerY + j * offset * 0.8660254 + anim;
+                const y = centerY + j * offset * 0.8660254037844386 + anim;
                 ctx.beginPath();
                 ctx.arc(x, y, radius, 0, Math.PI * 2);
                 ctx.stroke();
@@ -896,7 +850,7 @@
           ctx.arc(centerX + anim, centerY + anim, radius, 0, Math.PI * 2);
           ctx.stroke();
           ctx.beginPath();
-          ctx.arc(centerX + anim, centerY + anim, radius * 3.4641016, 0, Math.PI * 2);
+          ctx.arc(centerX + anim, centerY + anim, radius * 3.4641016151377544, 0, Math.PI * 2);
           ctx.stroke();
         }
 
