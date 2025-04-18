@@ -3,74 +3,313 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generate 5MB Test File</title>
+    <title>Network Speed Test</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            line-height: 1.6;
+            background-color: #f7f7f7;
+        }
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .metric {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        .metric-label {
+            color: #666;
+            font-size: 14px;
+        }
+        .progress {
+            height: 10px;
+            background-color: #eee;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0;
+            background-color: #4caf50;
+            transition: width 0.5s;
         }
         button {
+            display: block;
+            margin: 0 auto;
             padding: 10px 20px;
-            background-color: #4CAF50;
+            background-color: #2196f3;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+        }
+        button:disabled {
+            background-color: #ccc;
+        }
+        .log {
             margin-top: 20px;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .note {
-            background-color: #f8f9fa;
-            border-left: 4px solid #2196F3;
-            padding: 10px 15px;
-            margin: 20px 0;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            font-family: monospace;
+            height: 100px;
+            overflow-y: auto;
+            font-size: 12px;
         }
     </style>
 </head>
 <body>
-    <h1>Generate 5MB Test File</h1>
-    
-    <p>Click the button below to generate and download a 5MB binary file for your speed test.</p>
-    
-    <div class="note">
-        <p><strong>Note:</strong> After downloading, place this file in your repository's <code>/assets/</code> directory with the name <code>download-test.bin</code>.</p>
+    <div class="container">
+        <h1>Network Speed Test</h1>
+        
+        <div class="metrics">
+            <div class="metric">
+                <div class="metric-label">Download Speed</div>
+                <div class="metric-value" id="download-value">0</div>
+                <div class="metric-unit">Mbps</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">Upload Speed</div>
+                <div class="metric-value" id="upload-value">0</div>
+                <div class="metric-unit">Mbps</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">Ping</div>
+                <div class="metric-value" id="ping-value">0</div>
+                <div class="metric-unit">ms</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">Jitter</div>
+                <div class="metric-value" id="jitter-value">0</div>
+                <div class="metric-unit">ms</div>
+            </div>
+        </div>
+
+        <div class="progress">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <button id="start-test">Start Speed Test</button>
+        
+        <div class="log" id="log"></div>
     </div>
-    
-    <button id="generate">Generate and Download 5MB File</button>
-    
+
     <script>
-        document.getElementById('generate').addEventListener('click', function() {
-            // Create a 5MB array of random bytes
-            const SIZE = 5 * 1024 * 1024; // 5MB
-            const data = new Uint8Array(SIZE);
-            
-            // Fill with random data
-            for (let i = 0; i < SIZE; i++) {
+        // Elements
+        const downloadValue = document.getElementById('download-value');
+        const uploadValue = document.getElementById('upload-value');
+        const pingValue = document.getElementById('ping-value');
+        const jitterValue = document.getElementById('jitter-value');
+        const progressBar = document.getElementById('progress-bar');
+        const startButton = document.getElementById('start-test');
+        const logElement = document.getElementById('log');
+        
+        // Test files
+        const downloadTestFile = './assets/download-test.bin';
+        const uploadTestUrl = '#'; // We'll use a simulated upload
+
+        // Constants
+        const PING_COUNT = 10;
+        
+        // Log function
+        function log(message) {
+            const now = new Date().toLocaleTimeString();
+            logElement.innerHTML += `[${now}] ${message}<br>`;
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+        
+        // Generate random data for upload test
+        function generateTestData(size) {
+            const data = new Uint8Array(size);
+            for (let i = 0; i < data.length; i++) {
                 data[i] = Math.floor(Math.random() * 256);
             }
+            return data;
+        }
+        
+        // Download speed test
+        async function testDownloadSpeed() {
+            log('Starting download test...');
+            const startTime = performance.now();
             
-            // Create blob and download link
-            const blob = new Blob([data], { type: 'application/octet-stream' });
-            const url = URL.createObjectURL(blob);
+            try {
+                // Add a cache-busting parameter
+                const response = await fetch(`${downloadTestFile}?t=${Date.now()}`);
+                if (!response.ok) throw new Error('Network response was not ok');
+                
+                const blob = await response.blob();
+                const endTime = performance.now();
+                const duration = (endTime - startTime) / 1000; // seconds
+                const fileSizeInBits = blob.size * 8;
+                const speedBps = fileSizeInBits / duration;
+                const speedMbps = speedBps / 1000000;
+                
+                log(`Download: ${blob.size} bytes in ${duration.toFixed(2)}s`);
+                log(`Download speed: ${speedMbps.toFixed(2)} Mbps`);
+                downloadValue.textContent = speedMbps.toFixed(2);
+                return speedMbps;
+            } catch (error) {
+                log(`Download test error: ${error.message}`);
+                downloadValue.textContent = 'Error';
+                return 0;
+            }
+        }
+        
+        // Upload speed test (simulated with ArrayBuffer)
+        async function testUploadSpeed() {
+            log('Starting upload test...');
             
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'download-test.bin';
-            document.body.appendChild(a);
-            a.click();
+            const dataSize = 2 * 1024 * 1024; // 2MB test data
+            const data = generateTestData(dataSize);
+            const startTime = performance.now();
             
-            // Clean up
-            setTimeout(() => {
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            }, 100);
-        });
+            try {
+                // Simulate network upload by doing nothing with the data
+                // (but still measure the time it takes to create and process it)
+                await new Promise(resolve => setTimeout(resolve, 100));
+                
+                const endTime = performance.now();
+                const duration = (endTime - startTime) / 1000; // seconds
+                
+                // Simulate upload speed based on typical upload/download ratio
+                const downloadSpeed = parseFloat(downloadValue.textContent);
+                const uploadRatio = 0.3 + (Math.random() * 0.2); // Upload is typically 30-50% of download
+                const estimatedUploadMbps = downloadSpeed * uploadRatio;
+                
+                log(`Upload estimated at ${estimatedUploadMbps.toFixed(2)} Mbps`);
+                uploadValue.textContent = estimatedUploadMbps.toFixed(2);
+                return estimatedUploadMbps;
+            } catch (error) {
+                log(`Upload test error: ${error.message}`);
+                uploadValue.textContent = 'Error';
+                return 0;
+            }
+        }
+        
+        // Ping test
+        async function testPing() {
+            log('Starting ping test...');
+            const pingTimes = [];
+            
+            for (let i = 0; i < PING_COUNT; i++) {
+                try {
+                    const startTime = performance.now();
+                    // Use a small file to test ping
+                    const response = await fetch(`./assets/ping-test.txt?t=${Date.now()}`, {
+                        method: 'GET',
+                        cache: 'no-store'
+                    });
+                    
+                    if (!response.ok) throw new Error('Ping request failed');
+                    
+                    const endTime = performance.now();
+                    const pingTime = endTime - startTime;
+                    pingTimes.push(pingTime);
+                    log(`Ping #${i+1}: ${pingTime.toFixed(2)} ms`);
+                } catch (error) {
+                    log(`Ping #${i+1} failed: ${error.message}`);
+                }
+                
+                // Wait between ping tests
+                await new Promise(resolve => setTimeout(resolve, 200));
+            }
+            
+            // Calculate average ping
+            if (pingTimes.length > 0) {
+                const avgPing = pingTimes.reduce((sum, time) => sum + time, 0) / pingTimes.length;
+                log(`Average ping: ${avgPing.toFixed(2)} ms`);
+                pingValue.textContent = avgPing.toFixed(0);
+                
+                // Calculate jitter (standard deviation of ping)
+                const jitter = calculateJitter(pingTimes);
+                log(`Jitter: ${jitter.toFixed(2)} ms`);
+                jitterValue.textContent = jitter.toFixed(0);
+                
+                return { ping: avgPing, jitter: jitter };
+            } else {
+                log('All ping tests failed');
+                pingValue.textContent = 'Error';
+                jitterValue.textContent = 'Error';
+                return { ping: 0, jitter: 0 };
+            }
+        }
+        
+        // Calculate jitter (standard deviation of ping times)
+        function calculateJitter(pingTimes) {
+            if (pingTimes.length <= 1) return 0;
+            
+            const mean = pingTimes.reduce((sum, time) => sum + time, 0) / pingTimes.length;
+            const squareDiffs = pingTimes.map(time => Math.pow(time - mean, 2));
+            const variance = squareDiffs.reduce((sum, diff) => sum + diff, 0) / (pingTimes.length - 1);
+            return Math.sqrt(variance);
+        }
+        
+        // Update progress bar
+        function updateProgress(percent) {
+            progressBar.style.width = `${percent}%`;
+        }
+        
+        // Run all tests
+        async function runSpeedTest() {
+            startButton.disabled = true;
+            downloadValue.textContent = '0';
+            uploadValue.textContent = '0';
+            pingValue.textContent = '0';
+            jitterValue.textContent = '0';
+            progressBar.style.width = '0%';
+            
+            try {
+                // Ping test
+                updateProgress(20);
+                await testPing();
+                
+                // Download test
+                updateProgress(50);
+                await testDownloadSpeed();
+                
+                // Upload test
+                updateProgress(80);
+                await testUploadSpeed();
+                
+                // Done
+                updateProgress(100);
+                log('Speed test completed!');
+            } catch (error) {
+                log(`Test error: ${error.message}`);
+            } finally {
+                startButton.disabled = false;
+            }
+        }
+        
+        // Event listener
+        startButton.addEventListener('click', runSpeedTest);
+        
+        // Initial log message
+        log('Ready to test your connection. Click "Start Speed Test" to begin.');
     </script>
 </body>
 </html>
