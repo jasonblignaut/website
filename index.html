@@ -36,7 +36,7 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Source Code Pro', monospace;
+      font-family: 'Source+Code+Pro', monospace;
     }
 
     html, body {
@@ -270,20 +270,31 @@
   <script type="importmap">
     {
       "imports": {
-        "three": "https://unpkg.com/three@0.162.0/build/three.module.js",
-        "three/addons/": "https://unpkg.com/three@0.162.0/examples/jsm/"
+        "three": "https://unpkg.com/three@0.176.0/build/three.module.js",
+        "three/examples/jsm/": "https://unpkg.com/three@0.176.0/examples/jsm/"
       }
     }
   </script>
 
   <script type="module">
     import * as THREE from 'three';
-    import { isWebGLAvailable, isWebGL2Available } from 'three/addons/capabilities/WebGL.js';
+    import WebGL from 'three/examples/jsm/capabilities/WebGL.js';
 
     // Debug Logging
     const DEBUG = true; // Set to false for production
     function logDebug(message) {
       if (DEBUG) console.log('[DEBUG] ' + message);
+    }
+
+    // Fallback WebGL2 Check
+    function isWebGL2Supported() {
+      try {
+        const canvas = document.createElement('canvas');
+        return !!canvas.getContext('webgl2');
+      } catch (e) {
+        logDebug('WebGL2 check failed: ' + e.message);
+        return false;
+      }
     }
 
     // Perlin Noise for Organic Variation
@@ -350,7 +361,10 @@
     // WebGL Game
     function initWebGL(canvas) {
       logDebug('Initializing WebGL...');
-      if (!isWebGL2Available() && !isWebGLAvailable()) {
+      const isWebGL2 = WebGL.isWebGL2Available ? WebGL.isWebGL2Available() : isWebGL2Supported();
+      const isWebGL1 = WebGL.isWebGLAvailable();
+
+      if (!isWebGL2 && !isWebGL1) {
         logDebug('WebGL not supported');
         return false;
       }
@@ -358,7 +372,7 @@
       try {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
+        const gl = isWebGL2 ? canvas.getContext('webgl2') : canvas.getContext('webgl');
         if (!gl) {
           logDebug('WebGL context creation failed');
           return false;
@@ -1309,6 +1323,9 @@
             logDebug('Start Game button clicked');
             game.startGame();
           });
+          startButton.disabled = false;
+          startButton.style.cursor = 'pointer';
+          logDebug('Start Game button bound successfully');
         } else {
           errorMessage.style.display = 'block';
           startButton.style.display = 'none';
