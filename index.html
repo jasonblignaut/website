@@ -28,7 +28,7 @@
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Optimize for performance
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
@@ -38,14 +38,14 @@
         composer.addPass(renderPass);
         const bloomPass = new UnrealBloomPass(
             new THREE.Vector2(window.innerWidth, window.innerHeight),
-            0.4, // Reduced strength for GitHub Pages performance
-            0.3, // radius
+            0.3, // Subtle bloom
+            0.2, // radius
             0.9 // threshold
         );
         composer.addPass(bloomPass);
 
-        // Dodecahedron geometry
-        const geometry = new THREE.DodecahedronGeometry(1, 2);
+        // Dodecahedron geometry (no subdivision for sharp facets)
+        const geometry = new THREE.DodecahedronGeometry(1, 0);
         const material = new THREE.ShaderMaterial({
             uniforms: {
                 time: { value: 0 },
@@ -96,9 +96,13 @@
                     // Combine effects
                     vec3 finalColor = mix(refractColor.rgb, reflectColor.rgb, fresnel * 0.5);
                     finalColor = mix(finalColor, color, 0.3);
-                    finalColor += fresnel * color * 0.5;
+                    finalColor += fresnel * color * 0.6;
                     
-                    gl_FragColor = vec4(finalColor, 0.8); // Semi-transparent
+                    // Edge enhancement
+                    float edge = abs(dot(vNormal, vViewDir));
+                    finalColor += vec3(0.1) * (1.0 - edge) * fresnel;
+                    
+                    gl_FragColor = vec4(finalColor, 0.85); // Slightly more transparent
                 }
             `,
             transparent: true,
@@ -108,16 +112,21 @@
         const dodecahedron = new THREE.Mesh(geometry, material);
         scene.add(dodecahedron);
 
+        // Wireframe for facet emphasis
+        const wireframeGeometry = new THREE.EdgesGeometry(geometry);
+        const wireframeMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, opacity: 0.2, transparent: true });
+        const wireframe = new THREE.LineSegments(wireframeGeometry, wireframeMaterial);
+        dodecahedron.add(wireframe);
+
         // Reflective environment
-        const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(256, { // Reduced for performance
+        const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(256, {
             generateMipmaps: true,
             minFilter: THREE.LinearMipmapLinearFilter
         });
         const cubeCamera = new THREE.CubeCamera(0.1, 1000, cubeRenderTarget);
-        scene.add(cubeCamera);
         material.uniforms.uEnvMap.value = cubeRenderTarget.texture;
 
-        // Background particles for depth (reduced count)
+        // Background particles
         const particleGeometry = new THREE.BufferGeometry();
         const particleCount = 500;
         const posArray = new Float32Array(particleCount * 3);
@@ -144,14 +153,22 @@
         // Camera position
         camera.position.z = 3;
 
-        // Animation loop
+        // Animation loop with two-pass rendering
         function animate(time) {
             requestAnimationFrame(animate);
+
+            // Hide dodecahedron during cube camera render to avoid feedback loop
+            dodecahedron.visible = false;
+            cubeCamera.position.copy(dodecahedron.position);
+            cubeCamera.update(renderer, scene);
+            dodecahedron.visible = true;
+
+            // Update rotation and time
             dodecahedron.rotation.x += 0.005;
             dodecahedron.rotation.y += 0.005;
             material.uniforms.time.value = time * 0.001;
-            cubeCamera.position.copy(dodecahedron.position);
-            cubeCamera.update(renderer, scene);
+
+            // Render with composer
             composer.render();
         }
         animate();
