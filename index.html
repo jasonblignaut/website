@@ -1,354 +1,1185 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Cyberpunk Cosmic Genesis - Forge a neon universe with your IP.">
-    <title>Cyberpunk Cosmic Genesis | Labverse Cybernetics</title>
-    <link rel="icon" href="https://labverse.co.za/favicon.ico" type="image/x-icon">
-    <style>
-        body { margin: 0; overflow: hidden; background: #0a0a1a; font-family: 'Orbitron', sans-serif; }
-        canvas { display: block; }
-        #copy-ip-btn {
-            position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
-            padding: 10px 20px; background: #00ffcc; color: #0a0a1a; border: none;
-            font-size: 16px; cursor: pointer; border-radius: 5px; box-shadow: 0 0 10px #00ffcc;
-            transition: all 0.3s; z-index: 10;
-        }
-        #copy-ip-btn:hover { background: #ff00cc; box-shadow: 0 0 20px #ff00cc; }
-        #mute-btn {
-            position: absolute; top: 20px; right: 20px; padding: 10px;
-            background: #ff00cc; color: #0a0a1a; border: none; font-size: 14px;
-            cursor: pointer; border-radius: 5px; box-shadow: 0 0 10px #ff00cc; z-index: 10;
-        }
-        #controls {
-            position: absolute; bottom: 20px; left: 20px; color: #00ffcc;
-            font-size: 14px; z-index: 10; background: rgba(10, 10, 26, 0.8);
-            padding: 10px; border-radius: 5px; display: none;
-        }
-        .glow { filter: drop-shadow(0 0 5px #00ffcc); }
-        @media (max-width: 768px) {
-            #copy-ip-btn { font-size: 14px; padding: 8px 16px; }
-            #mute-btn { font-size: 12px; padding: 8px; }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Ignite a cyberpunk cosmos: copy your IP to forge an eternal neon universe." />
+  <meta name="keywords" content="Cyberpunk Simulation, Public IP, Sacred Geometry, WebGL" />
+  <meta name="author" content="Labverse Cybernetics" />
+  <meta property="og:title" content="Cyberpunk Cosmic Genesis" />
+  <meta property="og:description" content="Copy your IP to unleash a vibrant universe of evolving patterns." />
+  <meta property="og:image" content="https://labverse.co.za/assets/cyberpunk-og-image.png" />
+  <meta property="og:url" content="https://labverse.co.za" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <title>Cyberpunk Cosmic Genesis</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.ico" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Source+Code+Pro&display=swap" rel="stylesheet">
+
+  <!-- Style -->
+  <style>
+    :root {
+      --neon-cyan: #00FFFF;
+      --neon-magenta: #FF00CC;
+      --electric-blue: #00B7EB;
+      --neon-yellow: #FFD700;
+      --deep-black: #0A0A1A;
+      --glow-white: #E6F0FF;
+      --glow-radius: 15px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Source Code Pro', monospace;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      background: var(--deep-black);
+      color: var(--glow-white);
+      overflow: hidden;
+    }
+
+    #background-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: radial-gradient(circle at center, rgba(0, 20, 40, 0.3), var(--deep-black));
+    }
+
+    #fallback-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      display: none;
+    }
+
+    .container {
+      position: relative;
+      z-index: 10;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: clamp(1rem, 3vw, 1.5rem);
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2rem, 6vw, 4rem);
+      text-transform: uppercase;
+      color: var(--neon-cyan);
+      margin-bottom: clamp(0.8rem, 2vw, 1.2rem);
+      text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-magenta);
+      letter-spacing: 0.25rem;
+      font-weight: 700;
+      animation: glitch 3s linear infinite;
+    }
+
+    @keyframes glitch {
+      2%, 64% { transform: translate(1px, 0) skew(0deg); }
+      4%, 60% { transform: translate(-1px, 0) skew(0deg); }
+      62% { transform: translate(0, 0) skew(3deg); }
+    }
+
+    .ip-display {
+      font-family: 'Source Code Pro', monospace;
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      color: var(--glow-white);
+      background: rgba(10, 10, 26, 0.8);
+      padding: clamp(0.6rem, 1.5vw, 0.8rem) clamp(1.2rem, 2.5vw, 2rem);
+      border-radius: 8px;
+      border: 2px solid var(--neon-magenta);
+      box-shadow: 0 0 15px var(--neon-magenta), inset 0 0 8px var(--neon-cyan);
+      margin-bottom: clamp(0.4rem, 1vw, 0.6rem);
+      text-shadow: 0 0 10px var(--neon-magenta);
+      word-break: break-all;
+      animation: flicker 5s infinite;
+    }
+
+    @keyframes flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+      20%, 24%, 55% { opacity: 0.7; }
+    }
+
+    .error-message {
+      font-family: 'Source Code Pro', monospace;
+      font-size: clamp(0.6rem, 1.2vw, 0.9rem);
+      color: #FF5555;
+      margin-top: 0.8rem;
+      text-shadow: 0 0 8px var(--electric-blue);
+      display: none;
+    }
+
+    .btn {
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta));
+      color: var(--glow-white);
+      border: none;
+      padding: clamp(0.6rem, 1.5vw, 0.8rem) clamp(1.5rem, 3vw, 2.5rem);
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(0.9rem, 1.8vw, 1.3rem);
+      text-transform: uppercase;
+      box-shadow: 0 0 var(--glow-radius) var(--neon-cyan);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: 0.4s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 calc(var(--glow-radius) * 2) var(--neon-magenta);
+      background: var(--electric-blue);
+    }
+
+    .controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .control-btn {
+      background: rgba(10, 10, 26, 0.8);
+      border: 1px solid var(--neon-cyan);
+      color: var(--glow-white);
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+
+    .control-btn:hover {
+      background: var(--neon-cyan);
+      color: var(--deep-black);
+      box-shadow: 0 0 10px var(--neon-cyan);
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: transparent;
+      padding: clamp(0.4rem, 1.5vw, 0.8rem);
+      text-align: center;
+      font-size: clamp(0.6rem, 1.2vw, 0.8rem);
+      color: var(--glow-white);
+      z-index: 10;
+      text-shadow: 0 0 8px var(--neon-cyan);
+    }
+
+    @media (max-width: 768px) {
+      .container { padding: clamp(0.5rem, 2vw, 1rem); }
+      h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); letter-spacing: 0.15rem; }
+      .ip-display { font-size: clamp(1.2rem, 3vw, 1.8rem); padding: clamp(0.4rem, 1vw, 0.6rem) clamp(0.8rem, 1.5vw, 1.2rem); }
+      .controls { top: 10px; right: 10px; }
+    }
+
+    @media (max-width: 480px) {
+      h1 { font-size: clamp(1.5rem, 3vw, 2rem); letter-spacing: 0.1rem; }
+      .ip-display { font-size: clamp(0.9rem, 2vw, 1.3rem); }
+      .btn { font-size: clamp(0.7rem, 1.2vw, 0.9rem); padding: clamp(0.4rem, 1vw, 0.6rem) clamp(1rem, 2vw, 1.5rem); }
+      .controls { flex-direction: row; gap: 5px; }
+      .control-btn { font-size: 0.7rem; padding: 6px 8px; }
+    }
+
+    /* SVG Filters for Visual Effects */
+    svg.filters { position: absolute; width: 0; height: 0; }
+  </style>
 </head>
+
 <body>
-    <button id="copy-ip-btn">Copy IP & Ignite Cosmos</button>
-    <button id="mute-btn">Mute</button>
-    <div id="controls">
-        <label><input type="checkbox" id="toggle-forces"> Toggle Forces</label><br>
-        <label>Trail Glow: <input type="range" id="trail-glow" min="0.1" max="1" value="0.5" step="0.1"></label>
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
-    <script>
-        // [DEBUG] Toggle debug logs (set to false in production)
-        const DEBUG = true;
-        const log = DEBUG ? console.log.bind(console, '[DEBUG]') : () => {};
+  <!-- SVG Filters for Visual Effects -->
+  <svg class="filters">
+    <defs>
+      <filter id="scanlines">
+        <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" xChannelSelector="R" yChannelSelector="G" />
+        <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.9 0" />
+      </filter>
+      <filter id="chromatic-aberration">
+        <feOffset in="SourceGraphic" result="red" dx="-2" dy="0" />
+        <feOffset in="SourceGraphic" result="blue" dx="2" dy="0" />
+        <feColorMatrix in="red" result="red" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" />
+        <feColorMatrix in="blue" result="blue" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" />
+        <feBlend in="red" in2="blue" mode="screen" result="blend" />
+        <feBlend in="blend" in2="SourceGraphic" mode="screen" />
+      </filter>
+      <filter id="glow">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur" />
+        <feColorMatrix in="blur" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 2 0" />
+        <feBlend in="SourceGraphic" in2="blur" mode="screen" />
+      </filter>
+    </defs>
+  </svg>
+
+  <canvas id="background-canvas"></canvas>
+  <canvas id="fallback-canvas"></canvas>
+
+  <div class="container">
+    <h1>CYBERPUNK COSMIC GENESIS</h1>
+    <div class="ip-display" id="ip-display">Fetching IP...</div>
+    <div class="error-message" id="error-message">Simulation failed. Check browser settings.</div>
+    <button class="btn" id="copy-ip">Copy IP</button>
+  </div>
+
+  <div class="controls">
+    <button class="control-btn" id="toggle-audio">Mute Audio</button>
+    <button class="control-btn" id="toggle-ar">Toggle AR</button>
+    <button class="control-btn" id="toggle-forces">Toggle Forces</button>
+  </div>
+
+  <footer>
+    © 2025 Labverse Cybernetics | Powered by 1FAR | FORGE THE NEON VOID
+  </footer>
+
+  <!-- Three.js ES Modules -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { WEBGL } from 'three/addons/utils/WebGL.js';
+
+    // Debug Logging (Toggleable)
+    const DEBUG = false;
+    function logDebug(message) {
+      if (DEBUG) console.log('[DEBUG] ' + message);
+    }
+
+    // Simple Hash for IP Personalization
+    function hashString(str) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = ((hash << 5) - hash) + str.charCodeAt(i);
+        hash |= 0;
+      }
+      return Math.abs(hash);
+    }
+
+    // Perlin Noise for Organic Variation
+    function perlinNoise(x, y) {
+      const n = x + y * 57;
+      const seed = Math.sin(n * 12345.6789) * 43758.5453;
+      return (seed - Math.floor(seed));
+    }
+
+    // Fetch Public IP
+    async function fetchPublicIP() {
+      const apis = [
+        'https://api.ipify.org?format=json',
+        'https://api64.ipify.org?format=json',
+        'https://ip.seeip.org/json',
+        'https://api.ip-api.com/json'
+      ];
+      for (const api of apis) {
+        try {
+          const response = await fetch(api, { mode: 'cors' });
+          if (!response.ok) throw new Error(`IP fetch failed: ${response.status}`);
+          const data = await response.json();
+          const ip = data.ip || data.query || '127.0.0.1';
+          document.getElementById('ip-display').textContent = ip;
+          logDebug(`IP fetched from ${api}: ${ip}`);
+          return ip;
+        } catch (error) {
+          logDebug(`IP Fetch Error (${api}): ${error.message}`);
+        }
+      }
+      document.getElementById('ip-display').textContent = '127.0.0.1';
+      return '127.0.0.1';
+    }
+
+    // Audio Integration
+    let audioContext, bigBangSound, patternSound;
+    let isAudioMuted = false;
+    function initAudio() {
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      
+      // Big Bang Sound (Low Synth Pulse)
+      bigBangSound = audioContext.createOscillator();
+      bigBangSound.type = 'sine';
+      bigBangSound.frequency.setValueAtTime(100, audioContext.currentTime);
+      const gainNode = audioContext.createGain();
+      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 2);
+      bigBangSound.connect(gainNode);
+      gainNode.connect(audioContext.currentTime);
+
+      // Pattern Evolution Sound (Ambient Synth)
+      patternSound = audioContext.createOscillator();
+      patternSound.type = 'sawtooth';
+      patternSound.frequency.setValueAtTime(200, audioContext.currentTime);
+      const patternGain = audioContext.createGain();
+      patternGain.gain.setValueAtTime(0.1, audioContext.currentTime);
+      patternSound.connect(patternGain);
+      patternGain.connect(audioContext.currentTime);
+
+      bigBangSound.start();
+      patternSound.start();
+    }
+
+    function playBigBangSound() {
+      if (!isAudioMuted && audioContext) {
+        const gainNode = audioContext.createGain();
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 2);
+        bigBangSound.connect(gainNode);
+        gainNode.connect(audioContext.currentTime);
+      }
+    }
+
+    // WebGL Simulation
+    function initWebGL(canvas) {
+      logDebug('Initializing WebGL...');
+      if (!WEBGL.isWebGL2Available() && !WEBGL.isWebGLAvailable()) {
+        logDebug('WebGL not supported');
+        return false;
+      }
+
+      try {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
+        if (!gl) return false;
+
+        let scene = new THREE.Scene();
+        let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        let renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+        renderer.setClearColor(0x0A0A1A, 0);
+        camera.position.z = 50;
 
         // Scene Setup
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 50;
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        document.body.appendChild(renderer.domElement);
-
-        // Adaptive Quality
-        const isLowEnd = !renderer.capabilities.isWebGL2 || performance.now() > 16; // Detect < 60 FPS
-        const PARTICLE_COUNT = isLowEnd ? 30 : 50;
-        const TRAIL_LENGTH = isLowEnd ? 20 : 30;
-        const GLOW_INTENSITY = isLowEnd ? 0.3 : 0.5;
-
-        // Background: Starry Cosmos
+        scene.fog = new THREE.FogExp2(0x0A0A1A, 0.02); // Subtle depth
         const starGeometry = new THREE.BufferGeometry();
-        const starMaterial = new THREE.PointsMaterial({ color: 0xaaaaaa, size: 0.1, transparent: true });
-        const starPositions = new Float32Array(1000 * 3);
+        const starVertices = [];
         for (let i = 0; i < 1000; i++) {
-            starPositions[i * 3] = (Math.random() - 0.5) * 200;
-            starPositions[i * 3 + 1] = (Math.random() - 0.5) * 200;
-            starPositions[i * 3 + 2] = (Math.random() - 0.5) * 200;
+          starVertices.push(
+            (Math.random() - 0.5) * 200,
+            (Math.random() - 0.5) * 200,
+            (Math.random() - 0.5) * 200
+          );
         }
-        starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
-        const stars = new THREE.Points(starGeometry, starMaterial);
-        scene.add(stars);
+        starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+        const starMaterial = new THREE.PointsMaterial({
+          color: 0xFFFFFF,
+          size: 0.2,
+          transparent: true,
+          opacity: 0.6
+        });
+        scene.add(new THREE.Points(starGeometry, starMaterial));
 
         // Neon Grid
-        const gridGeometry = new THREE.BufferGeometry();
-        const gridMaterial = new THREE.LineBasicMaterial({ color: 0x00ffcc, transparent: true, opacity: 0.2 });
-        const gridLines = [];
-        for (let i = -50; i <= 50; i += 5) {
-            gridLines.push(i, 0, -50, i, 0, 50, -50, 0, i, 50, 0, i);
-        }
-        gridGeometry.setAttribute('position', new THREE.Float32BufferAttribute(gridLines, 3));
-        const grid = new THREE.LineSegments(gridGeometry, gridMaterial);
+        const gridGeometry = new THREE.PlaneGeometry(200, 200, 50, 50);
+        const gridMaterial = new THREE.ShaderMaterial({
+          vertexShader: `
+            varying vec2 vUv;
+            void main() {
+              vUv = uv;
+              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+          `,
+          fragmentShader: `
+            varying vec2 vUv;
+            uniform float time;
+            void main() {
+              vec2 uv = vUv * 10.0;
+              float grid = max(
+                abs(sin(uv.x * 3.1416 + time * 0.2)),
+                abs(sin(uv.y * 3.1416 + time * 0.2))
+              );
+              vec3 color = vec3(0.0, 1.0, 1.0) * pow(grid, 4.0);
+              gl_FragColor = vec4(color, grid * 0.2);
+            }
+          `,
+          uniforms: { time: { value: 0 } },
+          transparent: true,
+          side: THREE.DoubleSide
+        });
+        const grid = new THREE.Mesh(gridGeometry, gridMaterial);
+        grid.rotation.x = Math.PI / 2;
         grid.position.z = -50;
         scene.add(grid);
 
-        // Particles and Trails
-        const particles = [];
-        const trails = [];
-        const colors = [0x00ffcc, 0xff00cc, 0x00ccff, 0xffff00]; // Neon palette
-        class Particle {
-            constructor(x, y, z, type, ipSeed) {
-                this.position = new THREE.Vector3(x, y, z);
-                this.velocity = new THREE.Vector3(0, 0, 0);
-                this.type = type; // planet, life, energy, object
-                this.seed = ipSeed; // For unique patterns
-                this.trail = [];
-                this.forceParams = this.initForces();
-                this.geometry = new THREE.SphereGeometry(0.2, 8, 8);
-                this.material = new THREE.MeshBasicMaterial({
-                    color: colors[Math.floor(Math.random() * colors.length)],
-                    transparent: true,
-                    opacity: 0.8
-                });
-                this.mesh = new THREE.Mesh(this.geometry, this.material);
-                scene.add(this.mesh);
-            }
-            initForces() {
-                const seed = this.seed;
-                return {
-                    gravity: 0.01 * (1 + (seed % 100) / 100),
-                    electromagnetism: 0.02 * (1 + ((seed >> 1) % 100) / 100),
-                    darkMatter: 0.005 * (1 + ((seed >> 2) % 100) / 100),
-                    chaos: Math.random() < 0.1 // 10% chance for chaotic behavior
-                };
-            }
-            update() {
-                // Region-based behavior
-                const t = Date.now() / 1000;
-                const pos = this.position;
-                if (this.type === 'planet') {
-                    // Elliptical orbits (top-left)
-                    const a = 10 + this.seed % 5;
-                    const b = a * (0.5 + (this.seed % 100) / 200);
-                    const theta = t * this.forceParams.gravity;
-                    pos.x = -20 + a * Math.cos(theta);
-                    pos.y = 20 + b * Math.sin(theta);
-                } else if (this.type === 'life') {
-                    // Fractal branching (center-right)
-                    const angle = t * this.forceParams.electromagnetism;
-                    pos.x = 20 + 5 * Math.sin(angle) + Math.cos(t * 0.5) * (this.seed % 3);
-                    pos.y = 5 * Math.cos(angle * 1.5) + Math.sin(t * 0.3) * (this.seed % 2);
-                } else if (this.type === 'energy') {
-                    // Logarithmic spirals (bottom-left)
-                    const r = 5 * Math.exp(0.1 * t * this.forceParams.darkMatter);
-                    const theta = t * 0.5;
-                    pos.x = -20 + r * Math.cos(theta);
-                    pos.y = -20 + r * Math.sin(theta);
-                } else if (this.type === 'object') {
-                    // Polyhedral lattices (top-center)
-                    const n = this.seed % 4 + 3;
-                    const phi = (1 + Math.sqrt(5)) / 2;
-                    pos.x = 5 * Math.cos(t * this.forceParams.gravity * phi);
-                    pos.y = 20 + 5 * Math.sin(t * this.forceParams.electromagnetism * n);
-                }
-                // Quantum tunneling
-                if (Math.random() < 0.01) {
-                    pos.x += (Math.random() - 0.5) * 10;
-                    pos.y += (Math.random() - 0.5) * 10;
-                }
-                // Chaos theory (Lorenz attractor influence)
-                if (this.forceParams.chaos) {
-                    const dt = 0.01;
-                    const sigma = 10, rho = 28, beta = 8 / 3;
-                    pos.x += dt * sigma * (pos.y - pos.x);
-                    pos.y += dt * (pos.x * (rho - pos.z) - pos.y);
-                    pos.z += dt * (pos.x * pos.y - beta * pos.z);
-                }
-                // Update trail
-                this.trail.push(pos.clone());
-                if (this.trail.length > TRAIL_LENGTH) this.trail.shift();
-                this.mesh.position.copy(pos);
-            }
-        }
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0x404040, 0.8);
+        scene.add(ambientLight);
+        const pointLight = new THREE.PointLight(0x00FFFF, 2, 100);
+        pointLight.position.set(20, 20, 20);
+        scene.add(pointLight);
 
-        // Trail Rendering (Instanced)
-        const trailGeometry = new THREE.BufferGeometry();
-        const trailPositions = new Float32Array(PARTICLE_COUNT * TRAIL_LENGTH * 3);
-        const trailColors = new Float32Array(PARTICLE_COUNT * TRAIL_LENGTH * 3);
-        trailGeometry.setAttribute('position', new THREE.BufferAttribute(trailPositions, 3));
-        trailGeometry.setAttribute('color', new THREE.BufferAttribute(trailColors, 3));
-        const trailMaterial = new THREE.ShaderMaterial({
+        let particles = [];
+        let trailGeometries = [];
+        let mousePos = { x: 0, y: 0 };
+        let pinchZoom = 1;
+        let forcesEnabled = { em: true, strong: true, weak: true, higgs: true, grav: true, cluster: true, wave: true, dark: true };
+        let ipHash = 0;
+        let bigBangTime = 0;
+        let isARMode = false;
+
+        // Gesture Controls
+        let touchStartDist = 0;
+        document.addEventListener('touchstart', (e) => {
+          if (e.touches.length === 2) {
+            touchStartDist = Math.hypot(
+              e.touches[0].clientX - e.touches[1].clientX,
+              e.touches[0].clientY - e.touches[1].clientY
+            );
+          }
+        }, { passive: true });
+
+        document.addEventListener('touchmove', (e) => {
+          if (e.touches.length === 2) {
+            const dist = Math.hypot(
+              e.touches[0].clientX - e.touches[1].clientX,
+              e.touches[0].clientY - e.touches[1].clientY
+            );
+            pinchZoom *= dist / touchStartDist;
+            pinchZoom = Math.max(0.5, Math.min(pinchZoom, 2));
+            touchStartDist = dist;
+            camera.position.z = 50 / pinchZoom;
+          } else if (e.touches.length === 1) {
+            mousePos.x = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
+            mousePos.y = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
+          }
+        }, { passive: true });
+
+        document.addEventListener('mousemove', (e) => {
+          mousePos.x = (e.clientX / window.innerWidth) * 2 - 1;
+          mousePos.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        }, { passive: true });
+
+        // Particle Creation
+        function createParticle(index, type = 'fermion', velocity = new THREE.Vector3(0, 0, 0)) {
+          const phi = (1 + Math.sqrt(5)) / 2;
+          const theta = index * 2 * Math.PI * phi;
+          const r = Math.sqrt(index) * 0.8;
+          const noise = perlinNoise(index, ipHash) * 20 - 10;
+          const x = r * Math.cos(theta) + noise;
+          const y = r * Math.sin(theta) + noise;
+          const geometry = new THREE.BufferGeometry();
+          geometry.setAttribute('position', new THREE.Float32BufferAttribute([x, y, Math.random() * 0.5], 3));
+          
+          let color, size, texture;
+          switch (type) {
+            case 'fermion': color = ipHash % 2 ? 0x00B7EB : 0xFF00CC; size = 0.4; texture = 'smooth'; break;
+            case 'boson': color = 0xFFD700; size = 0.6; texture = 'wispy'; break;
+            case 'higgs': color = 0x00FFFF; size = 0.8; texture = 'crystalline'; break;
+          }
+          
+          const material = new THREE.ShaderMaterial({
             vertexShader: `
-                attribute vec3 color;
-                varying vec3 vColor;
-                void main() {
-                    vColor = color;
-                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-                }
+              varying vec2 vUv;
+              void main() {
+                vUv = uv;
+                gl_PointSize = ${size.toFixed(1)} * 10.0;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+              }
             `,
             fragmentShader: `
-                varying vec3 vColor;
-                uniform float glow;
-                void main() {
-                    gl_FragColor = vec4(vColor, 0.05 * glow);
-                }
+              varying vec2 vUv;
+              void main() {
+                float dist = length(vUv - vec2(0.5));
+                float alpha = 1.0 - smoothstep(0.2, 0.5, dist);
+                vec3 color = vec3(${((color >> 16) & 255) / 255.0}, ${((color >> 8) & 255) / 255.0}, ${(color & 255) / 255.0});
+                gl_FragColor = vec4(color, alpha * 0.9);
+              }
             `,
-            uniforms: { glow: { value: GLOW_INTENSITY } },
             transparent: true,
             blending: THREE.AdditiveBlending
-        });
-        const trailMesh = new THREE.LineSegments(trailGeometry, trailMaterial);
-        scene.add(trailMesh);
-
-        // Big Bang Animation
-        let bigBangTriggered = false;
-        function triggerBigBang(ip) {
-            if (bigBangTriggered) return;
-            bigBangTriggered = true;
-            log('Big Bang ignited with IP:', ip);
-            const ipSeed = ip.split('.').reduce((sum, octet) => sum + parseInt(octet), 0);
-            const types = ['planet', 'life', 'energy', 'object'];
-            // Fibonacci spiral spawn
-            const phi = (1 + Math.sqrt(5)) / 2;
-            for (let i = 0; i < PARTICLE_COUNT; i++) {
-                const a = i / PARTICLE_COUNT;
-                const r = Math.sqrt(a) * 10;
-                const theta = 2 * Math.PI * a * phi;
-                const x = r * Math.cos(theta);
-                const y = r * Math.sin(theta);
-                const type = types[Math.floor(i / (PARTICLE_COUNT / 4)) % 4];
-                particles.push(new Particle(x, y, 0, type, ipSeed + i));
-            }
-            // Cinematic camera
-            gsap.to(camera.position, { z: 40, duration: 10, ease: 'power2.out' });
-            gsap.to(camera.rotation, { y: Math.PI / 4, duration: 10, ease: 'sine.inOut' });
-            // Play Big Bang sound
-            if (!muted) bigBangSound.play();
+          });
+          
+          const particle = new THREE.Points(geometry, material);
+          scene.add(particle);
+          return {
+            id: index,
+            obj: particle,
+            type,
+            velocity,
+            charge: type === 'fermion' ? (Math.random() > 0.5 ? 1 : -1) : 0,
+            color: type === 'fermion' ? (ipHash % 2 ? 'cyan' : 'magenta') : null,
+            mass: type === 'higgs' ? 1.5 : type === 'fermion' ? 1 : 0.5,
+            trail: [],
+            region: getRegion(x, y),
+            phase: Math.random() * Math.PI * 2 + (ipHash % 100) * 0.1,
+            texture
+          };
         }
 
-        // Sparse Spawning
-        function sparseSpawn() {
-            if (particles.length < PARTICLE_COUNT && Math.random() < 0.01) {
-                const types = ['planet', 'life', 'energy', 'object'];
-                const type = types[Math.floor(Math.random() * types.length)];
-                particles.push(new Particle(0, 0, 0, type, Math.random() * 1000));
-                log('Sparse particle spawned:', type);
-            }
+        function getRegion(x, y) {
+          const nx = (x + 50) / 100;
+          const ny = (y + 50) / 100;
+          if (nx < 0.3 && ny < 0.3) return 'planet';
+          if (nx > 0.7 && ny < 0.5) return 'life';
+          if (nx < 0.3 && ny > 0.7) return 'energy';
+          if (nx > 0.4 && nx < 0.6 && ny < 0.2) return 'object';
+          return 'default';
         }
 
-        // IP Fetching
-        async function fetchIP() {
-            const apis = [
-                'https://api.ipify.org?format=json',
-                'https://ipapi.co/json/',
-                'https://api.seeip.org/jsonip'
-            ];
-            for (const api of apis) {
-                try {
-                    const res = await fetch(api, { mode: 'cors' });
-                    const data = await res.json();
-                    return data.ip || data.ip_address;
-                } catch (e) {
-                    log('API failed:', api, e);
+        function initParticles() {
+          particles = [];
+          trailGeometries = [];
+          for (let i = 0; i < 10; i++) {
+            particles.push(createParticle(i, Math.random() > 0.7 ? 'boson' : Math.random() > 0.9 ? 'higgs' : 'fermion'));
+          }
+          logDebug('WebGL particles initialized: ' + particles.length);
+        }
+        initParticles();
+
+        function triggerBigBang() {
+          bigBangTime = Date.now();
+          playBigBangSound();
+          particles.forEach(p => {
+            scene.remove(p.obj);
+            p.obj.geometry.dispose();
+            p.obj.material.dispose();
+          });
+          trailGeometries.forEach(t => scene.remove(t));
+          trailGeometries.forEach(t => {
+            t.geometry.dispose();
+            t.material.dispose();
+          });
+          particles = [];
+          trailGeometries = [];
+          
+          for (let i = 0; i < 50; i++) {
+            const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2);
+            const r = Math.sqrt(i) * 1.5;
+            const velocity = new THREE.Vector3(
+              r * Math.cos(theta) * 0.2,
+              r * Math.sin(theta) * 0.2,
+              (Math.random() - 0.5) * 0.1
+            );
+            const type = Math.random() > 0.7 ? 'boson' : Math.random() > 0.9 ? 'higgs' : 'fermion';
+            particles.push(createParticle(i, type, velocity));
+          }
+          logDebug('WebGL Big Bang triggered');
+        }
+
+        // Lorenz Attractor for Chaos
+        function lorenzForce(p, dt) {
+          const sigma = 10, rho = 28, beta = 8 / 3;
+          const x = p.obj.position.x, y = p.obj.position.y, z = p.obj.position.z;
+          return new THREE.Vector3(
+            sigma * (y - x) * dt * 0.01,
+            (x * (rho - z) - y) * dt * 0.01,
+            (x * y - beta * z) * dt * 0.01
+          );
+        }
+
+        function updateParticles() {
+          const now = Date.now();
+          const elapsed = (now - bigBangTime) / 1000;
+          
+          particles.forEach(p => {
+            // Update trail
+            p.trail.push(p.obj.position.clone());
+            if (p.trail.length > 30) p.trail.shift();
+
+            // Apply forces
+            let force = new THREE.Vector3(0, 0, 0);
+            particles.forEach(p2 => {
+              if (p !== p2) {
+                const dist = p.obj.position.distanceTo(p2.obj.position);
+                if (dist > 0.2 && dist < 20) {
+                  if (forcesEnabled.em && p.charge && p2.charge) {
+                    const k = 0.04 + 0.01 * Math.sin(p.id + ipHash * 0.01);
+                    const f = k * (p.charge * p2.charge) / (dist * dist);
+                    const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
+                    force.add(dir.multiplyScalar(f));
+                  }
+                  if (forcesEnabled.strong && p.type === 'fermion' && p2.type === 'boson' && dist < 5) {
+                    const g = 0.1 + 0.02 * perlinNoise(p.id, p2.id);
+                    const f = -g / dist * Math.exp(-dist / (2 + p.id % 3));
+                    const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
+                    force.add(dir.multiplyScalar(f));
+                  }
+                  if (forcesEnabled.weak && p.type === 'fermion' && Math.random() < 0.005) {
+                    p.color = p.color === 'cyan' ? 'magenta' : 'cyan';
+                    p.obj.material.fragmentShader = p.color === 'cyan' ?
+                      `varying vec2 vUv; void main() { float dist = length(vUv - vec2(0.5)); float alpha = 1.0 - smoothstep(0.2, 0.5, dist); gl_FragColor = vec4(0.0, 0.7, 0.9, alpha * 0.9); }` :
+                      `varying vec2 vUv; void main() { float dist = length(vUv - vec2(0.5)); float alpha = 1.0 - smoothstep(0.2, 0.5, dist); gl_FragColor = vec4(1.0, 0.0, 0.8, alpha * 0.9); }`;
+                    p.obj.material.needsUpdate = true;
+                  }
+                  if (forcesEnabled.higgs && p2.type === 'higgs') {
+                    force.add(p.velocity.clone().multiplyScalar(-0.06 * p.mass));
+                  }
+                  if (forcesEnabled.grav && p.region === 'planet' && dist < 12) {
+                    const G = 0.03 + 0.01 * perlinNoise(p.id, ipHash);
+                    const f = -G * p.mass * p2.mass / (dist * dist);
+                    const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
+                    force.add(dir.multiplyScalar(f));
+                    const theta = Math.atan2(p.obj.position.y, p.obj.position.x);
+                    const eccentricity = 0.3 + 0.2 * Math.sin(p.id + ipHash * 0.1);
+                    force.add(new THREE.Vector3(
+                      0.02 * Math.cos(theta + p.phase) * eccentricity,
+                      0.02 * Math.sin(theta + p.phase) * eccentricity,
+                      0
+                    ));
+                  }
+                  if (forcesEnabled.cluster && p.region === 'life' && dist < 6) {
+                    const sigma = 2.5 + 0.5 * (p.id % 3);
+                    const epsilon = 0.06 + 0.01 * perlinNoise(p.id, ipHash);
+                    const r6 = Math.pow(sigma / dist, 6);
+                    const f = epsilon * (12 * r6 * r6 - 6 * r6) / dist;
+                    const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
+                    force.add(dir.multiplyScalar(f));
+                    // Fractal branching
+                    if (elapsed > 10 && Math.random() < 0.001) {
+                      p.trail.push(p.trail[p.trail.length - 1].clone().add(new THREE.Vector3(
+                        Math.random() * 2 - 1,
+                        Math.random() * 2 - 1,
+                        0
+                      )));
+                    }
+                  }
+                  if (forcesEnabled.wave && p.region === 'energy') {
+                    const A = 0.03 + 0.01 * Math.sin(p.id + ipHash * 0.02);
+                    const f = A * Math.sin(now * 0.001 + dist + p.phase);
+                    const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
+                    force.add(dir.multiplyScalar(f));
+                    const theta = Math.atan2(p.obj.position.y, p.obj.position.x);
+                    force.add(new THREE.Vector3(
+                      0.015 * Math.exp(-0.08 * dist) * Math.cos(theta + p.phase + elapsed * 0.1),
+                      0.015 * Math.exp(-0.08 * dist) * Math.sin(theta + p.phase + elapsed * 0.1),
+                      0
+                    ));
+                  }
+                  if (p.region === 'object') {
+                    const f = -0.06 * Math.cos((p.id % 4) * Math.PI / 2 + ipHash * 0.01) / dist;
+                    const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
+                    force.add(dir.multiplyScalar(f));
+                    // Platonic solid alignment
+                    const angle = (p.id % 5) * 2 * Math.PI / 5;
+                    force.add(new THREE.Vector3(
+                      0.01 * Math.cos(angle),
+                      0.01 * Math.sin(angle),
+                      0
+                    ));
+                  }
+                  if (forcesEnabled.dark) {
+                    const f = -0.02 * Math.exp(-dist / (5 + ipHash % 5)) / dist;
+                    const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
+                    force.add(dir.multiplyScalar(f));
+                  }
                 }
+              }
+            });
+
+            // Quantum Tunneling
+            if (Math.random() < 0.002) {
+              p.obj.position.add(new THREE.Vector3(
+                (Math.random() - 0.5) * 5,
+                (Math.random() - 0.5) * 5,
+                (Math.random() - 0.5) * 2
+              ));
             }
-            return '127.0.0.1'; // Offline fallback
+
+            // Chaos (Lorenz Attractor)
+            if (elapsed > 20 && Math.random() < 0.01) {
+              force.add(lorenzForce(p, 0.1));
+            }
+
+            // Mouse/Gesture Interaction
+            const mouseForce = new THREE.Vector3(mousePos.x * 0.03, mousePos.y * 0.03, 0);
+            force.add(mouseForce);
+
+            // Update velocity and position
+            p.velocity.add(force.multiplyScalar(0.1 / p.mass));
+            p.velocity.multiplyScalar(0.98);
+            p.obj.position.add(p.velocity);
+          });
+
+          // Update trails
+          trailGeometries.forEach(t => scene.remove(t));
+          trailGeometries.forEach(t => {
+            t.geometry.dispose();
+            t.material.dispose();
+          });
+          trailGeometries = [];
+
+          particles.forEach(p => {
+            if (p.trail.length >= 2) {
+              const geometry = new THREE.BufferGeometry();
+              const positions = [];
+              p.trail.forEach(pos => positions.push(pos.x, pos.y, pos.z));
+              geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+              
+              const material = new THREE.ShaderMaterial({
+                vertexShader: `
+                  varying float vIndex;
+                  attribute float index;
+                  void main() {
+                    vIndex = index;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                  }
+                `,
+                fragmentShader: `
+                  varying float vIndex;
+                  uniform float time;
+                  void main() {
+                    float alpha = 0.05 * (1.0 - vIndex / 30.0);
+                    vec3 color = vec3(${p.color === 'cyan' ? '0.0, 0.7, 0.9' : p.type === 'boson' ? '1.0, 0.84, 0.0' : '0.0, 1.0, 1.0'});
+                    if (${p.texture === 'crystalline' ? 'true' : 'false'}) {
+                      alpha *= abs(sin(vIndex * 0.5 + time));
+                    } else if (${p.texture === 'wispy' ? 'true' : 'false'}) {
+                      alpha *= 0.5 + 0.5 * sin(vIndex * 0.2 + time);
+                    }
+                    gl_FragColor = vec4(color, alpha);
+                  }
+                `,
+                uniforms: { time: { value: now * 0.001 } },
+                transparent: true,
+                blending: THREE.AdditiveBlending
+              });
+              
+              const line = new THREE.Line(geometry, material);
+              scene.add(line);
+              trailGeometries.push(line);
+            }
+          });
+
+          // Sparse spawning
+          if (particles.length < 50 && Math.random() < 0.01) {
+            particles.push(createParticle(particles.length));
+          }
+
+          // Cinematic Camera
+          if (elapsed < 10) {
+            camera.position.z = 50 - elapsed * 2;
+            camera.position.x = Math.sin(elapsed * 0.3) * 10;
+            camera.lookAt(0, 0, 0);
+          } else {
+            camera.position.x = Math.sin(now * 0.0001) * 5;
+            camera.position.z = 50 / pinchZoom;
+            camera.lookAt(0, 0, 0);
+          }
+
+          // Update grid
+          gridMaterial.uniforms.time.value = now * 0.001;
         }
 
-        // Copy IP and Trigger
-        const copyIpBtn = document.getElementById('copy-ip-btn');
-        copyIpBtn.addEventListener('click', async () => {
-            const ip = await fetchIP();
-            navigator.clipboard.writeText(ip);
-            triggerBigBang(ip);
-            copyIpBtn.textContent = 'IP Copied! Cosmos Ignited';
-            copyIpBtn.disabled = true;
-        });
-
-        // Audio
-        let muted = false;
-        const bigBangSound = new Audio('https://labverse.co.za/assets/bigbang.mp3'); // Replace with actual synth sound
-        const ambientSound = new Audio('https://labverse.co.za/assets/ambient.mp3'); // Replace with actual ambient track
-        ambientSound.loop = true;
-        document.getElementById('mute-btn').addEventListener('click', () => {
-            muted = !muted;
-            if (muted) {
-                bigBangSound.pause();
-                ambientSound.pause();
-            } else {
-                ambientSound.play();
+        // Performance Optimization
+        let lastFrameTime = performance.now();
+        let frameCount = 0;
+        let fps = 60;
+        function calculateFPS() {
+          frameCount++;
+          const now = performance.now();
+          if (now - lastFrameTime >= 1000) {
+            fps = frameCount;
+            frameCount = 0;
+            lastFrameTime = now;
+            if (fps < 30 && particles.length > 25) {
+              particles = particles.slice(0, 25);
+              logDebug('Reduced particle count for performance');
             }
-            document.getElementById('mute-btn').textContent = muted ? 'Unmute' : 'Mute';
-        });
+          }
+        }
 
-        // Interactivity (Gestures)
-        const hammer = new Hammer(renderer.domElement);
-        hammer.get('pinch').set({ enable: true });
-        hammer.get('pan').set({ direction: Hammer.DIRECTION_ALL });
-        hammer.on('pinch', (e) => {
-            camera.position.z /= e.scale;
-            camera.position.z = Math.max(20, Math.min(100, camera.position.z));
-        });
-        hammer.on('pan', (e) => {
-            particles.forEach(p => {
-                p.velocity.x += e.deltaX * 0.001;
-                p.velocity.y -= e.deltaY * 0.001;
-            });
-        });
-
-        // Controls
-        document.getElementById('toggle-forces').addEventListener('change', (e) => {
-            particles.forEach(p => {
-                p.forceParams.gravity = e.target.checked ? 0.01 : 0;
-                p.forceParams.electromagnetism = e.target.checked ? 0.02 : 0;
-            });
-        });
-        document.getElementById('trail-glow').addEventListener('input', (e) => {
-            trailMaterial.uniforms.glow.value = parseFloat(e.target.value);
-        });
-
-        // Animation Loop
         function animate() {
+          try {
             requestAnimationFrame(animate);
-            sparseSpawn();
-            particles.forEach(p => p.update());
-            // Update trails
-            let posIdx = 0, colIdx = 0;
-            particles.forEach(p => {
-                p.trail.forEach((pos, i) => {
-                    trailPositions[posIdx++] = pos.x;
-                    trailPositions[posIdx++] = pos.y;
-                    trailPositions[posIdx++] = pos.z;
-                    const color = new THREE.Color(p.material.color);
-                    trailColors[colIdx++] = color.r;
-                    trailColors[colIdx++] = color.g;
-                    trailColors[colIdx++] = color.b;
-                });
-            });
-            trailGeometry.attributes.position.needsUpdate = true;
-            trailGeometry.attributes.color.needsUpdate = true;
-            // Parallax stars
-            stars.rotation.y += 0.0001;
+            updateParticles();
+            calculateFPS();
             renderer.render(scene, camera);
+          } catch (error) {
+            logDebug('WebGL Render Error: ' + error.message);
+            renderer.dispose();
+            return false;
+          }
         }
         animate();
 
-        // Resize Handler
         window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+        }, { passive: true });
+
+        // AR Mode (WebXR)
+        async function toggleAR() {
+          if (!navigator.xr) {
+            logDebug('WebXR not supported');
+            return;
+          }
+          isARMode = !isARMode;
+          if (isARMode) {
+            try {
+              const session = await navigator.xr.requestSession('immersive-ar', {
+                optionalFeatures: ['local-floor', 'bounded-floor']
+              });
+              renderer.xr.enabled = true;
+              renderer.xr.setSession(session);
+              camera.position.set(0, 1.6, 0); // User eye level
+              logDebug('AR mode enabled');
+            } catch (error) {
+              logDebug('AR Error: ' + error.message);
+              isARMode = false;
+            }
+          } else {
+            renderer.xr.enabled = false;
+            camera.position.set(0, 0, 50);
+            logDebug('AR mode disabled');
+          }
+        }
+
+        // Controls
+        document.getElementById('toggle-audio').addEventListener('click', () => {
+          isAudioMuted = !isAudioMuted;
+          document.getElementById('toggle-audio').textContent = isAudioMuted ? 'Unmute Audio' : 'Mute Audio';
         });
 
-        // Cleanup
-        window.addEventListener('unload', () => {
+        document.getElementById('toggle-ar').addEventListener('click', toggleAR);
+
+        document.getElementById('toggle-forces').addEventListener('click', () => {
+          forcesEnabled.em = !forcesEnabled.em;
+          forcesEnabled.grav = !forcesEnabled.grav;
+          forcesEnabled.cluster = !forcesEnabled.cluster;
+          forcesEnabled.wave = !forcesEnabled.wave;
+          document.getElementById('toggle-forces').textContent = forcesEnabled.em ? 'Disable Forces' : 'Enable Forces';
+        });
+
+        animationMode = 'webgl';
+        logDebug('WebGL simulation started');
+        return { triggerBigBang, setIPHash: (hash) => { ipHash = hash; } };
+      } catch (error) {
+        logDebug('WebGL Initialization Error: ' + error.message);
+        return false;
+      }
+    }
+
+    // 2D Canvas Fallback
+    function init2DCanvas(canvas) {
+      logDebug('Initializing 2D Canvas...');
+      try {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const ctx = canvas.getContext('2d', { alpha: true });
+        if (!ctx) return false;
+
+        let particles = [];
+        let mousePos = { x: canvas.width / 2, y: canvas.height / 2 };
+        let forcesEnabled = { em: true, strong: true, weak: true, higgs: true, grav: true, cluster: true, wave: true, dark: true };
+        let ipHash = 0;
+        let bigBangTime = 0;
+
+        document.addEventListener('mousemove', (e) => {
+          mousePos.x = e.clientX;
+          mousePos.y = e.clientY;
+        }, { passive: true });
+
+        document.addEventListener('touchmove', (e) => {
+          if (e.touches.length === 1) {
+            mousePos.x = e.touches[0].clientX;
+            mousePos.y = e.touches[0].clientY;
+          }
+        }, { passive: true });
+
+        function createParticle(index, type = 'fermion', vx = 0, vy = 0) {
+          const phi = (1 + Math.sqrt(5)) / 2;
+          const theta = index * 2 * Math.PI * phi;
+          const r = Math.sqrt(index) * 15;
+          const noise = perlinNoise(index, ipHash) * 100 - 50;
+          return {
+            id: index,
+            x: canvas.width / 2 + r * Math.cos(theta) + noise,
+            y: canvas.height / 2 + r * Math.sin(theta) + noise,
+            vx,
+            vy,
+            type,
+            color: type === 'fermion' ? (ipHash % 2 ? 'cyan' : 'magenta') : type === 'boson' ? 'yellow' : 'cyan',
+            charge: type === 'fermion' ? (Math.random() > 0.5 ? 1 : -1) : 0,
+            mass: type === 'higgs' ? 1.5 : type === 'fermion' ? 1 : 0.5,
+            trail: [],
+            region: getRegion2D(canvas.width / 2 + r * Math.cos(theta), canvas.height / 2 + r * Math.sin(theta)),
+            phase: Math.random() * Math.PI * 2 + (ipHash % 100) * 0.1
+          };
+        }
+
+        function getRegion2D(x, y) {
+          const nx = x / canvas.width;
+          const ny = y / canvas.height;
+          if (nx < 0.3 && ny < 0.3) return 'planet';
+          if (nx > 0.7 && ny < 0.5) return 'life';
+          if (nx < 0.3 && ny > 0.7) return 'energy';
+          if (nx > 0.4 && nx < 0.6 && ny < 0.2) return 'object';
+          return 'default';
+        }
+
+        function initParticles() {
+          particles = [];
+          for (let i = 0; i < 10; i++) {
+            particles.push(createParticle(i, Math.random() > 0.7 ? 'boson' : Math.random() > 0.9 ? 'higgs' : 'fermion'));
+          }
+          logDebug('2D canvas particles initialized: ' + particles.length);
+        }
+        initParticles();
+
+        function triggerBigBang() {
+          bigBangTime = Date.now();
+          playBigBangSound();
+          particles = [];
+          for (let i = 0; i < 50; i++) {
+            const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2);
+            const r = Math.sqrt(i) * 20;
+            const type = Math.random() > 0.7 ? 'boson' : Math.random() > 0.9 ? 'higgs' : 'fermion';
+            particles.push(createParticle(i, type, r * Math.cos(theta) * 0.05, r * Math.sin(theta) * 0.05));
+          }
+          logDebug('2D Big Bang triggered');
+        }
+
+        function animate() {
+          try {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const now = Date.now();
+            const elapsed = (now - bigBangTime) / 1000;
+
             particles.forEach(p => {
-                scene.remove(p.mesh);
-                p.geometry.dispose();
-                p.material.dispose();
-            });
-            renderer.dispose();
-        });
+              p.trail.push({ x: p.x, y: p.y });
+              if (p.trail.length > 30) p.trail.shift();
 
-        // GSAP for animations (CDN)
-        const gsapScript = document.createElement('script');
-        gsapScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js';
-        document.head.appendChild(gsapScript);
-    </script>
+              let fx = 0, fy = 0;
+              particles.forEach(p2 => {
+                if (p !== p2) {
+                  const dx = p2.x - p.x;
+                  const dy = p2.y - p.y;
+                  const dist = Math.hypot(dx, dy);
+                  if (dist > 2 && dist < 200) {
+                    if (forcesEnabled.em && p.charge && p2.charge) {
+                      const k = 0.04 + 0.01 * Math.sin(p.id + ipHash * 0.01);
+                      const f = k * (p.charge * p2.charge) / (dist * dist);
+                      fx += f * dx / dist;
+                      fy += f * dy / dist;
+                    }
+                    if (forcesEnabled.strong && p.type === 'fermion' && p2.type === 'boson' && dist < 50) {
+                      const g = 0.1 + 0.02 * perlinNoise(p.id, p2.id);
+                      const f = -g / dist * Math.exp(-dist / (20 + p.id % 3));
+                      fx += f * dx / dist;
+                      fy += f * dy / dist;
+                    }
+                    if (forcesEnabled.weak && p.type === 'fermion' && Math.random() < 0.005) {
+                      p.color = p.color === 'cyan' ? 'magenta' : 'cyan';
+                    }
+                    if (forcesEnabled.higgs && p2.type === 'higgs') {
+                      fx -= p.vx * 0.06 * p.mass;
+                      fy -= p.vy * 0.06 * p.mass;
+                    }
+                    if (forcesEnabled.grav && p.region === 'planet' && dist < 120) {
+                      const G = 0.03 + 0.01 * perlinNoise(p.id, ipHash);
+                      const f = -G * p.mass * p2.mass / (dist * dist);
+                      fx += f * dx / dist;
+                      fy += f * dy / dist;
+                      const theta = Math.atan2(p.y, p.x);
+                      const eccentricity = 0.3 + 0.2 * Math.sin(p.id + ipHash * 0.1);
+                      fx += 0.02 * Math.cos(theta + p.phase) * eccentricity;
+                      fy += 0.02 * Math.sin(theta + p.phase) * eccentricity;
+                    }
+                    if (forcesEnabled.cluster && p.region === 'life' && dist < 60) {
+                      const sigma = 25 + 5 * (p.id % 3);
+                      const epsilon = 0.06 + 0.01 * perlinNoise(p.id, ipHash);
+                      const r6 = Math.pow(sigma / dist, 6);
+                      const f = epsilon * (12 * r6 * r6 - 6 * r6) / dist;
+                      fx += f * dx / dist;
+                      fy += f * dy / dist;
+                    }
+                    if (forcesEnabled.wave && p.region === 'energy') {
+                      const A = 0.03 + 0.01 * Math.sin(p.id + ipHash * 0.02);
+                      const f = A * Math.sin(now * 0.001 + dist + p.phase);
+                      fx += f * dx / dist;
+                      fy += f * dy / dist;
+                      const theta = Math.atan2(p.y, p.x);
+                      fx += 0.015 * Math.exp(-0.08 * dist) * Math.cos(theta + p.phase + elapsed * 0.1);
+                      fy += 0.015 * Math.exp(-0.08 * dist) * Math.sin(theta + p.phase + elapsed * 0.1);
+                    }
+                    if (p.region === 'object') {
+                      const f = -0.06 * Math.cos((p.id % 4) * Math.PI / 2 + ipHash * 0.01) / dist;
+                      fx += f * dx / dist;
+                      fy += f * dy / dist;
+                      const angle = (p.id % 5) * 2 * Math.PI / 5;
+                      fx += 0.01 * Math.cos(angle);
+                      fy += 0.01 * Math.sin(angle);
+                    }
+                    if (forcesEnabled.dark) {
+                      const f = -0.02 * Math.exp(-dist / (50 + ipHash % 5)) / dist;
+                      fx += f * dx / dist;
+                      fy += f * dy / dist;
+                    }
+                  }
+                }
+              });
+
+              // Quantum Tunneling
+              if (Math.random() < 0.002) {
+                p.x += (Math.random() - 0.5) * 50;
+                p.y += (Math.random() - 0.5) * 50;
+              }
+
+              // Mouse Interaction
+              fx += (mousePos.x - canvas.width / 2) * 0.00008;
+              fy += (mousePos.y - canvas.height / 2) * 0.00008;
+
+              p.vx += fx / p.mass;
+              p.vy += fy / p.mass;
+              p.vx *= 0.98;
+              p.vy *= 0.98;
+              p.x += p.vx;
+              p.y += p.vy;
+
+              // Draw particle
+              ctx.beginPath();
+              ctx.arc(p.x, p.y, p.type === 'higgs' ? 5 : 3, 0, Math.PI * 2);
+              ctx.fillStyle = p.color;
+              ctx.globalAlpha = 0.9;
+              ctx.fill();
+            });
+
+            // Draw trails
+            particles.forEach(p => {
+              if (p.trail.length >= 2) {
+                ctx.beginPath();
+                ctx.moveTo(p.trail[0].x, p.trail[0].y);
+                for (let i = 1; i < p.trail.length; i++) {
+                  ctx.lineTo(p.trail[i].x, p.trail[i].y);
+                }
+                ctx.strokeStyle = p.color;
+                ctx.globalAlpha = 0.05;
+                ctx.stroke();
+              }
+            });
+
+            ctx.globalAlpha = 1;
+
+            if (particles.length < 50 && Math.random() < 0.01) {
+              particles.push(createParticle(particles.length));
+            }
+
+            requestAnimationFrame(animate);
+          } catch (error) {
+            logDebug('2D Canvas Render Error: ' + error.message);
+            return false;
+          }
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+          initParticles();
+        }, { passive: true });
+
+        animationMode = '2d';
+        logDebug('2D canvas simulation started');
+        return { triggerBigBang, setIPHash: (hash) => { ipHash = hash; } };
+      } catch (error) {
+        logDebug('2D Canvas Initialization Error: ' + error.message);
+        return false;
+      }
+    }
+
+    // Initialize Simulation
+    let simulation = null;
+    let animationMode = 'none';
+    const errorMessage = document.getElementById('error-message');
+
+    async function initializeSimulation() {
+      const webglCanvas = document.getElementById('background-canvas');
+      const fallbackCanvas = document.getElementById('fallback-canvas');
+
+      let sim = initWebGL(webglCanvas);
+      if (sim) {
+        fallbackCanvas.style.display = 'none';
+        errorMessage.style.display = 'none';
+        initAudio();
+        const ip = await fetchPublicIP();
+        sim.setIPHash(hashString(ip));
+        return sim;
+      }
+
+      sim = init2DCanvas(fallbackCanvas);
+      if (sim) {
+        webglCanvas.style.display = 'none';
+        fallbackCanvas.style.display = 'block';
+        errorMessage.style.display = 'none';
+        initAudio();
+        const ip = await fetchPublicIP();
+        sim.setIPHash(hashString(ip));
+        return sim;
+      }
+
+      errorMessage.style.display = 'block';
+      logDebug('All simulation methods failed');
+      return null;
+    }
+
+    // Copy IP to Clipboard
+    function copyIP() {
+      try {
+        const ip = document.getElementById('ip-display').textContent;
+        navigator.clipboard.writeText(ip).then(() => {
+          logDebug('IP copied successfully');
+          if (simulation) simulation.triggerBigBang();
+        }).catch(err => {
+          logDebug('Clipboard Error: ' + err.message);
+          if (simulation) simulation.triggerBigBang();
+        });
+      } catch (error) {
+        logDebug('Copy IP Error: ' + error.message);
+        if (simulation) simulation.triggerBigBang();
+      }
+    }
+
+    // Initialize and Bind Events
+    document.addEventListener('DOMContentLoaded', async () => {
+      simulation = await initializeSimulation();
+      document.getElementById('copy-ip').addEventListener('click', copyIP);
+    });
+  </script>
 </body>
 </html>
