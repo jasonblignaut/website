@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="description" content="Ignite a cyberpunk cosmos: copy your IP to unleash an eternal universe of evolving life." />
+  <meta name="description" content="Ignite a cyberpunk cosmos: copy your IP to create an eternal universe of planets and life." />
   <meta name="keywords" content="Cyberpunk Simulation, Standard Model, Public IP, Sacred Geometry" />
   <meta name="author" content="Labverse Cybernetics" />
   <meta property="og:title" content="Cyberpunk Cosmic Genesis" />
-  <meta property="og:description" content="Copy your IP to trigger a cosmic explosion, forming planets and life in a neon universe." />
+  <meta property="og:description" content="Copy your IP to unleash a neon universe of evolving patterns." />
   <meta property="og:image" content="https://labverse.co.za/assets/cyberpunk-og-image.png" />
   <meta property="og:url" content="https://labverse.co.za" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -31,7 +31,7 @@
       --electric-blue: #00B7EB;
       --deep-black: #0A0A1A;
       --glow-white: #E6F0FF;
-      --glow-radius: 20px;
+      --glow-radius: 15px;
     }
 
     * {
@@ -59,6 +59,7 @@
       z-index: 0;
       display: block;
       opacity: 1;
+      background: radial-gradient(circle at center, rgba(0, 20, 40, 0.3), var(--deep-black));
     }
 
     #fallback-canvas {
@@ -85,20 +86,18 @@
 
     .css-particle {
       position: absolute;
-      width: 8px;
-      height: 8px;
+      width: 6px;
+      height: 6px;
       background: var(--neon-cyan);
       border-radius: 50%;
-      animation: cssParticleGlitch 6s linear infinite;
-      opacity: 0.7;
-      box-shadow: 0 0 10px var(--neon-cyan);
+      animation: cssParticlePulse 5s ease-in-out infinite;
+      opacity: 0.6;
+      box-shadow: 0 0 8px var(--neon-cyan);
     }
 
-    @keyframes cssParticleGlitch {
-      0% { transform: translate(0, 0); opacity: 0.7; }
-      10% { transform: translate(5px, -5px); opacity: 0.9; }
-      50% { opacity: 1; }
-      100% { transform: translate(100vw, 100vh); opacity: 0; }
+    @keyframes cssParticlePulse {
+      0%, 100% { transform: scale(1); opacity: 0.6; }
+      50% { transform: scale(1.5); opacity: 0.9; }
     }
 
     .container {
@@ -115,53 +114,54 @@
 
     h1 {
       font-family: 'Orbitron', sans-serif;
-      font-size: clamp(2.5rem, 7vw, 5rem);
+      font-size: clamp(2rem, 6vw, 4rem);
       text-transform: uppercase;
       color: var(--neon-cyan);
-      margin-bottom: clamp(1rem, 3vw, 1.5rem);
-      text-shadow: 0 0 15px var(--neon-cyan), 0 0 30px var(--neon-magenta);
-      letter-spacing: 0.3rem;
+      margin-bottom: clamp(0.8rem, 2vw, 1.2rem);
+      text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-magenta);
+      letter-spacing: 0.25rem;
       font-weight: 700;
-      animation: glitch 2s linear infinite;
+      animation: glitch 3s linear infinite;
     }
 
     @keyframes glitch {
-      2%, 64% { transform: translate(2px, 0) skew(0deg); }
-      4%, 60% { transform: translate(-2px, 0) skew(0deg); }
-      62% { transform: translate(0, 0) skew(5deg); }
+      2%, 64% { transform: translate(1px, 0) skew(0deg); }
+      4%, 60% { transform: translate(-1px, 0) skew(0deg); }
+      62% { transform: translate(0, 0) skew(3deg); }
     }
 
     .ip-display {
       font-family: 'Source Code Pro', monospace;
-      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
       color: var(--glow-white);
-      background: rgba(10, 10, 26, 0.9);
-      padding: clamp(0.8rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2.5rem);
-      border-radius: 10px;
-      border: 3px solid var(--neon-magenta);
-      box-shadow: 0 0 25px var(--neon-magenta), inset 0 0 10px var(--neon-cyan);
-      margin-bottom: clamp(0.5rem, 1.5vw, 0.8rem);
-      text-shadow: 0 0 15px var(--neon-magenta);
+      background: rgba(10, 10, 26, 0.8);
+      padding: clamp(0.6rem, 1.5vw, 0.8rem) clamp(1.2rem, 2.5vw, 2rem);
+      border-radius: 8px;
+      border: 2px solid var(--neon-magenta);
+      box-shadow: 0 0 15px var(--neon-magenta), inset 0 0 8px var(--neon-cyan);
+      margin-bottom: clamp(0.4rem, 1vw, 0.6rem);
+      text-shadow: 0 0 10px var(--neon-magenta);
       word-break: break-all;
-      animation: flicker 4s infinite;
+      animation: flicker 5s infinite;
     }
 
     @keyframes flicker {
       0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
-      20%, 24%, 55% { opacity: 0.8; }
+      20%, 24%, 55% { opacity: 0.7; }
     }
 
     .equations {
       font-family: 'Source Code Pro', monospace;
-      font-size: clamp(0.7rem, 1.5vw, 1rem);
+      font-size: clamp(0.6rem, 1.2vw, 0.9rem);
       color: var(--neon-cyan);
-      max-width: clamp(200px, 80vw, 400px);
-      line-height: 1.6;
-      text-shadow: 0 0 10px var(--neon-cyan);
-      margin-bottom: clamp(0.8rem, 2vw, 1.2rem);
+      max-width: clamp(180px, 75vw, 350px);
+      line-height: 1.5;
+      text-shadow: 0 0 8px var(--neon-cyan);
+      margin-bottom: clamp(0.6rem, 1.5vw, 1rem);
       text-align: center;
       opacity: 0;
       transition: opacity 1s ease;
+      filter: url(#scanlines);
     }
 
     .equations.active {
@@ -170,10 +170,10 @@
 
     .error-message {
       font-family: 'Source Code Pro', monospace;
-      font-size: clamp(0.7rem, 1.5vw, 1rem);
+      font-size: clamp(0.6rem, 1.2vw, 0.9rem);
       color: #FF5555;
-      margin-top: 1rem;
-      text-shadow: 0 0 10px var(--electric-blue);
+      margin-top: 0.8rem;
+      text-shadow: 0 0 8px var(--electric-blue);
       display: none;
     }
 
@@ -181,13 +181,13 @@
       background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta));
       color: var(--glow-white);
       border: none;
-      padding: clamp(0.8rem, 2vw, 1rem) clamp(2rem, 4vw, 3rem);
-      border-radius: 10px;
+      padding: clamp(0.6rem, 1.5vw, 0.8rem) clamp(1.5rem, 3vw, 2.5rem);
+      border-radius: 8px;
       cursor: pointer;
       font-family: 'Orbitron', sans-serif;
-      font-size: clamp(1rem, 2vw, 1.5rem);
+      font-size: clamp(0.9rem, 1.8vw, 1.3rem);
       text-transform: uppercase;
-      box-shadow: 0 0 var(--glow-radius) var(--neon-cyan), 0 0 calc(var(--glow-radius) * 2) var(--neon-magenta);
+      box-shadow: 0 0 var(--glow-radius) var(--neon-cyan), 0 0 calc(var(--glow-radius) * 1.5) var(--neon-magenta);
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
@@ -200,8 +200,8 @@
       left: -100%;
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-      transition: 0.5s;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: 0.4s;
     }
 
     .btn:hover::before {
@@ -209,7 +209,7 @@
     }
 
     .btn:hover {
-      transform: scale(1.1);
+      transform: scale(1.05);
       box-shadow: 0 0 calc(var(--glow-radius) * 2) var(--neon-magenta);
       background: var(--electric-blue);
     }
@@ -219,12 +219,12 @@
       bottom: 0;
       width: 100%;
       background: transparent;
-      padding: clamp(0.5rem, 2vw, 1rem);
+      padding: clamp(0.4rem, 1.5vw, 0.8rem);
       text-align: center;
-      font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+      font-size: clamp(0.6rem, 1.2vw, 0.8rem);
       color: var(--glow-white);
       z-index: 10;
-      text-shadow: 0 0 10px var(--neon-cyan);
+      text-shadow: 0 0 8px var(--neon-cyan);
     }
 
     @media (max-width: 768px) {
@@ -233,35 +233,53 @@
       }
 
       h1 {
-        font-size: clamp(2rem, 5vw, 3rem);
-        letter-spacing: 0.2rem;
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
+        letter-spacing: 0.15rem;
       }
 
       .ip-display {
-        font-size: clamp(1.5rem, 4vw, 2rem);
-        padding: clamp(0.5rem, 1.5vw, 0.8rem) clamp(1rem, 2vw, 1.5rem);
+        font-size: clamp(1.2rem, 3vw, 1.8rem);
+        padding: clamp(0.4rem, 1vw, 0.6rem) clamp(0.8rem, 1.5vw, 1.2rem);
       }
     }
 
     @media (max-width: 480px) {
       h1 {
-        font-size: clamp(1.5rem, 4vw, 2rem);
-        letter-spacing: 0.15rem;
+        font-size: clamp(1.5rem, 3vw, 2rem);
+        letter-spacing: 0.1rem;
       }
 
       .ip-display {
-        font-size: clamp(1rem, 3vw, 1.5rem);
+        font-size: clamp(0.9rem, 2vw, 1.3rem);
       }
 
       .btn {
-        font-size: clamp(0.8rem, 1.5vw, 1rem);
-        padding: clamp(0.5rem, 1.5vw, 0.8rem) clamp(1.5rem, 3vw, 2rem);
+        font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+        padding: clamp(0.4rem, 1vw, 0.6rem) clamp(1rem, 2vw, 1.5rem);
       }
+    }
+
+    /* SVG Filter for Scanlines */
+    svg.filters {
+      position: absolute;
+      width: 0;
+      height: 0;
     }
   </style>
 </head>
 
 <body>
+  <!-- SVG Filters for Scanlines -->
+  <svg class="filters">
+    <defs>
+      <filter id="scanlines">
+        <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" xChannelSelector="R" yChannelSelector="G" />
+        <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.9 0" />
+      </filter>
+    </defs>
+  </svg>
+
   <canvas id="background-canvas"></canvas>
   <canvas id="fallback-canvas"></canvas>
   <div class="css-particles" id="css-particles"></div>
@@ -275,7 +293,7 @@
   </div>
 
   <footer>
-    © 2025 Labverse Cybernetics | Powered by 1FAR | CREATE ETERNITY
+    © 2025 Labverse Cybernetics | Powered by 1FAR | FORGE THE COSMOS
   </footer>
 
   <!-- Three.js ES Modules -->
@@ -294,6 +312,13 @@
     // Debug Logging
     function logDebug(message) {
       console.log('[DEBUG] ' + message);
+    }
+
+    // Simple Perlin Noise (for pattern variation)
+    function perlinNoise(x, y) {
+      const n = x + y * 57;
+      const seed = Math.sin(n * 12345.6789) * 43758.5453;
+      return (seed - Math.floor(seed));
     }
 
     // Fetch Public IP
@@ -346,21 +371,21 @@
         let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         let renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
         renderer.setClearColor(0x0A0A1A, 0);
-        camera.position.z = 50;
+        camera.position.z = 40;
 
         // Lighting
-        const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+        const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
         scene.add(ambientLight);
-        const pointLight = new THREE.PointLight(0x00FFFF, 2, 100);
-        pointLight.position.set(20, 20, 20);
+        const pointLight = new THREE.PointLight(0x00FFFF, 2, 80);
+        pointLight.position.set(15, 15, 15);
         scene.add(pointLight);
 
         let particles = [];
-        let trails = [];
+        let trailGeometries = [];
         let mousePos = { x: 0, y: 0 };
-        let forcesEnabled = { em: true, strong: true, weak: true, higgs: true };
+        let forcesEnabled = { em: true, strong: true, weak: true, higgs: true, grav: true, cluster: true };
 
         document.addEventListener('mousemove', (e) => {
           mousePos.x = (e.clientX / window.innerWidth) * 2 - 1;
@@ -377,22 +402,23 @@
         function createParticle(index, type = 'fermion', velocity = new THREE.Vector3(0, 0, 0)) {
           const phi = (1 + Math.sqrt(5)) / 2;
           const theta = index * 2 * Math.PI * phi;
-          const r = Math.sqrt(index) * 0.8;
-          const x = r * Math.cos(theta);
-          const y = r * Math.sin(theta);
+          const r = Math.sqrt(index) * 0.6;
+          const noise = perlinNoise(index, index) * 20 - 10;
+          const x = r * Math.cos(theta) + noise;
+          const y = r * Math.sin(theta) + noise;
           const geometry = new THREE.BufferGeometry();
-          geometry.setAttribute('position', new THREE.Float32BufferAttribute([x, y, Math.random() * 0.5], 3));
+          geometry.setAttribute('position', new THREE.Float32BufferAttribute([x, y, Math.random() * 0.4], 3));
           let color, size;
           switch (type) {
-            case 'fermion': color = 0x00B7EB; size = 0.4; break;
-            case 'boson': color = 0xFF00CC; size = 0.6; break;
-            case 'higgs': color = 0xFFD700; size = 0.8; break;
+            case 'fermion': color = 0x00B7EB; size = 0.3; break;
+            case 'boson': color = 0xFF00CC; size = 0.5; break;
+            case 'higgs': color = 0xFFD700; size = 0.7; break;
           }
           const material = new THREE.PointsMaterial({
             color,
             size,
             transparent: true,
-            opacity: 1,
+            opacity: 0.9,
             blending: THREE.AdditiveBlending
           });
           const particle = new THREE.Points(geometry, material);
@@ -403,15 +429,26 @@
             velocity,
             charge: type === 'fermion' ? (Math.random() > 0.5 ? 1 : -1) : 0,
             color: type === 'fermion' ? (Math.random() > 0.5 ? 'red' : 'blue') : null,
-            mass: type === 'higgs' ? 2 : type === 'fermion' ? 1 : 0.5,
-            trail: []
+            mass: type === 'higgs' ? 1.5 : type === 'fermion' ? 1 : 0.5,
+            trail: [],
+            region: getRegion(x, y)
           };
+        }
+
+        function getRegion(x, y) {
+          const nx = (x + 50) / 100; // Normalize to [0, 1]
+          const ny = (y + 50) / 100;
+          if (nx < 0.3 && ny < 0.3) return 'planet'; // Top-left: Orbits
+          if (nx > 0.7 && ny < 0.5) return 'life'; // Center-right: Clusters
+          if (nx < 0.3 && ny > 0.7) return 'energy'; // Bottom-left: Waves
+          if (nx > 0.4 && nx < 0.6 && ny < 0.2) return 'object'; // Top-center: Lattice
+          return 'default';
         }
 
         function initParticles() {
           particles = [];
-          trails = [];
-          for (let i = 0; i < 20; i++) {
+          trailGeometries = [];
+          for (let i = 0; i < 10; i++) {
             particles.push(createParticle(i, Math.random() > 0.7 ? 'boson' : Math.random() > 0.9 ? 'higgs' : 'fermion'));
           }
           logDebug('WebGL particles initialized: ' + particles.length);
@@ -419,16 +456,24 @@
         initParticles();
 
         function triggerBigBang() {
-          for (let i = 0; i < 100; i++) {
+          particles.forEach(p => {
+            scene.remove(p.obj);
+            try {
+              p.obj.geometry.dispose();
+              p.obj.material.dispose();
+            } catch (e) {}
+          });
+          particles = [];
+          for (let i = 0; i < 50; i++) {
             const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2);
-            const r = Math.sqrt(i) * 1.5;
+            const r = Math.sqrt(i) * 1.2;
             const velocity = new THREE.Vector3(
-              r * Math.cos(theta) * 0.2,
-              r * Math.sin(theta) * 0.2,
-              (Math.random() - 0.5) * 0.1
+              r * Math.cos(theta) * 0.15,
+              r * Math.sin(theta) * 0.15,
+              (Math.random() - 0.5) * 0.05
             );
             const type = Math.random() > 0.7 ? 'boson' : Math.random() > 0.9 ? 'higgs' : 'fermion';
-            particles.push(createParticle(particles.length, type, velocity));
+            particles.push(createParticle(i, type, velocity));
           }
           equationsDiv.classList.add('active');
           setTimeout(() => equationsDiv.classList.remove('active'), 10000);
@@ -444,12 +489,12 @@
             particles.forEach(p2 => {
               if (p !== p2) {
                 const dist = p.obj.position.distanceTo(p2.obj.position);
-                if (dist > 0.1) {
+                if (dist > 0.2) {
                   if (forcesEnabled.em && p.charge && p2.charge) {
                     potential += (p.charge * p2.charge) / dist;
                   }
-                  if (forcesEnabled.strong && p.type === 'fermion' && p2.type === 'boson' && dist < 5) {
-                    potential += -0.1 / dist * Math.exp(-dist / 2);
+                  if (forcesEnabled.strong && p.type === 'fermion' && p2.type === 'boson' && dist < 4) {
+                    potential += -0.08 / dist * Math.exp(-dist / 1.5);
                   }
                 }
               }
@@ -465,85 +510,96 @@
         }
 
         function updateParticles() {
-          // Cap active particles to 200 for performance
-          const activeParticles = particles.slice(0, 200);
-          const frozenParticles = particles.slice(200);
-
-          activeParticles.forEach(p => {
-            // Update trail (store last 50 positions)
+          particles.forEach(p => {
+            // Update trail (store last 30 positions)
             p.trail.push(p.obj.position.clone());
-            if (p.trail.length > 50) p.trail.shift();
+            if (p.trail.length > 30) p.trail.shift();
 
             // Apply forces
             let force = new THREE.Vector3(0, 0, 0);
-            activeParticles.forEach(p2 => {
+            particles.forEach(p2 => {
               if (p !== p2) {
                 const dist = p.obj.position.distanceTo(p2.obj.position);
-                if (dist > 0.1) {
+                if (dist > 0.2 && dist < 20) {
                   if (forcesEnabled.em && p.charge && p2.charge) {
                     const f = (p.charge * p2.charge) / (dist * dist);
                     const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
-                    force.add(dir.multiplyScalar(f * 0.05));
+                    force.add(dir.multiplyScalar(f * 0.03));
                   }
-                  if (forcesEnabled.strong && p.type === 'fermion' && p2.type === 'boson' && dist < 5) {
-                    const f = -0.1 / dist * Math.exp(-dist / 2);
+                  if (forcesEnabled.strong && p.type === 'fermion' && p2.type === 'boson' && dist < 4) {
+                    const f = -0.08 / dist * Math.exp(-dist / 1.5);
                     const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
                     force.add(dir.multiplyScalar(f));
                   }
-                  if (forcesEnabled.weak && p.type === 'fermion' && Math.random() < 0.01) {
+                  if (forcesEnabled.weak && p.type === 'fermion' && Math.random() < 0.005) {
                     p.color = p.color === 'red' ? 'blue' : 'red';
                     p.obj.material.color.set(p.color === 'red' ? 0xFF0000 : 0x00B7EB);
                   }
                   if (forcesEnabled.higgs && p2.type === 'higgs') {
-                    force.add(p.velocity.clone().multiplyScalar(-0.1 * p.mass));
+                    force.add(p.velocity.clone().multiplyScalar(-0.05 * p.mass));
+                  }
+                  if (forcesEnabled.grav && p.region === 'planet' && dist < 10) {
+                    const f = -0.02 * p.mass * p2.mass / (dist * dist);
+                    const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
+                    force.add(dir.multiplyScalar(f));
+                  }
+                  if (forcesEnabled.cluster && p.region === 'life' && dist < 5) {
+                    const sigma = 2;
+                    const epsilon = 0.05;
+                    const r6 = Math.pow(sigma / dist, 6);
+                    const f = epsilon * (12 * r6 * r6 - 6 * r6) / dist;
+                    const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
+                    force.add(dir.multiplyScalar(f));
+                  }
+                  if (p.region === 'energy') {
+                    const f = 0.02 * Math.sin(Date.now() * 0.001 + dist);
+                    const dir = p2.obj.position.clone().sub(p.obj.position).normalize();
+                    force.add(dir.multiplyScalar(f));
                   }
                 }
               }
             });
 
             // Mouse interaction
-            const mouseForce = new THREE.Vector3(mousePos.x * 0.05, mousePos.y * 0.05, 0);
+            const mouseForce = new THREE.Vector3(mousePos.x * 0.03, mousePos.y * 0.03, 0);
             force.add(mouseForce);
 
             // Update velocity and position
             p.velocity.add(force.multiplyScalar(0.1 / p.mass));
-            p.velocity.multiplyScalar(0.98);
+            p.velocity.multiplyScalar(0.99);
             p.obj.position.add(p.velocity);
           });
 
-          // Draw trails
-          trails.forEach(t => {
-            const geometry = new THREE.BufferGeometry();
-            const positions = [];
-            t.positions.forEach(pos => positions.push(pos.x, pos.y, pos.z));
-            geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-            const material = new THREE.LineBasicMaterial({
-              color: t.color,
-              transparent: true,
-              opacity: 0.1,
-              blending: THREE.AdditiveBlending
-            });
-            const line = new THREE.Line(geometry, material);
-            scene.add(line);
-            setTimeout(() => {
-              scene.remove(line);
-              line.geometry.dispose();
-              line.material.dispose();
-            }, 1000);
+          // Update trails
+          trailGeometries.forEach(t => scene.remove(t));
+          trailGeometries.forEach(t => {
+            try {
+              t.geometry.dispose();
+              t.material.dispose();
+            } catch (e) {}
           });
+          trailGeometries = [];
 
-          // Update trails for active particles
-          activeParticles.forEach(p => {
+          particles.forEach(p => {
             if (p.trail.length >= 2) {
-              trails.push({
-                positions: [...p.trail],
-                color: p.type === 'fermion' ? (p.color === 'red' ? 0xFF0000 : 0x00B7EB) : p.type === 'boson' ? 0xFF00CC : 0xFFD700
+              const geometry = new THREE.BufferGeometry();
+              const positions = [];
+              p.trail.forEach(pos => positions.push(pos.x, pos.y, pos.z));
+              geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+              const material = new THREE.LineBasicMaterial({
+                color: p.type === 'fermion' ? (p.color === 'red' ? 0xFF0000 : 0x00B7EB) : p.type === 'boson' ? 0xFF00CC : 0xFFD700,
+                transparent: true,
+                opacity: 0.05,
+                blending: THREE.AdditiveBlending
               });
+              const line = new THREE.Line(geometry, material);
+              scene.add(line);
+              trailGeometries.push(line);
             }
           });
 
           // Spawn new particles sparingly
-          if (particles.length < 200 && Math.random() < 0.01) {
+          if (particles.length < 50 && Math.random() < 0.01) {
             particles.push(createParticle(particles.length));
           }
 
@@ -554,8 +610,8 @@
           try {
             requestAnimationFrame(animate);
             updateParticles();
-            camera.position.x += Math.sin(Date.now() * 0.0002) * 0.2;
-            camera.position.z = 50 + Math.cos(Date.now() * 0.0001) * 10;
+            camera.position.x += Math.sin(Date.now() * 0.00015) * 0.1;
+            camera.position.z = 40 + Math.cos(Date.now() * 0.0001) * 5;
             camera.lookAt(0, 0, 0);
             renderer.render(scene, camera);
           } catch (error) {
@@ -596,9 +652,8 @@
         }
 
         let particles = [];
-        let trails = [];
         let mousePos = { x: canvas.width / 2, y: canvas.height / 2 };
-        let forcesEnabled = { em: true, strong: true, weak: true, higgs: true };
+        let forcesEnabled = { em: true, strong: true, weak: true, higgs: true, grav: true, cluster: true };
 
         document.addEventListener('mousemove', (e) => {
           mousePos.x = e.clientX;
@@ -612,27 +667,38 @@
           }
         }, { passive: true });
 
-        function createParticle(index, type = 'fermion', vx = (Math.random() - 0.5) * 2, vy = (Math.random() - 0.5) * 2) {
+        function createParticle(index, type = 'fermion', vx = 0, vy = 0) {
           const phi = (1 + Math.sqrt(5)) / 2;
           const theta = index * 2 * Math.PI * phi;
           const r = Math.sqrt(index) * 10;
+          const noise = perlinNoise(index, index) * 100 - 50;
           return {
-            x: canvas.width / 2 + r * Math.cos(theta),
-            y: canvas.height / 2 + r * Math.sin(theta),
+            x: canvas.width / 2 + r * Math.cos(theta) + noise,
+            y: canvas.height / 2 + r * Math.sin(theta) + noise,
             vx,
             vy,
             type,
             color: type === 'fermion' ? (Math.random() > 0.5 ? 'red' : 'blue') : type === 'boson' ? 'magenta' : 'yellow',
             charge: type === 'fermion' ? (Math.random() > 0.5 ? 1 : -1) : 0,
-            mass: type === 'higgs' ? 2 : type === 'fermion' ? 1 : 0.5,
-            trail: []
+            mass: type === 'higgs' ? 1.5 : type === 'fermion' ? 1 : 0.5,
+            trail: [],
+            region: getRegion2D(canvas.width / 2 + r * Math.cos(theta), canvas.height / 2 + r * Math.sin(theta))
           };
+        }
+
+        function getRegion2D(x, y) {
+          const nx = x / canvas.width;
+          const ny = y / canvas.height;
+          if (nx < 0.3 && ny < 0.3) return 'planet';
+          if (nx > 0.7 && ny < 0.5) return 'life';
+          if (nx < 0.3 && ny > 0.7) return 'energy';
+          if (nx > 0.4 && nx < 0.6 && ny < 0.2) return 'object';
+          return 'default';
         }
 
         function initParticles() {
           particles = [];
-          trails = [];
-          for (let i = 0; i < 20; i++) {
+          for (let i = 0; i < 10; i++) {
             particles.push(createParticle(i, Math.random() > 0.7 ? 'boson' : Math.random() > 0.9 ? 'higgs' : 'fermion'));
           }
           logDebug('2D canvas particles initialized: ' + particles.length);
@@ -640,11 +706,12 @@
         initParticles();
 
         function triggerBigBang() {
-          for (let i = 0; i < 100; i++) {
+          particles = [];
+          for (let i = 0; i < 50; i++) {
             const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2);
             const r = Math.sqrt(i) * 15;
             const type = Math.random() > 0.7 ? 'boson' : Math.random() > 0.9 ? 'higgs' : 'fermion';
-            particles.push(createParticle(particles.length, type, r * Math.cos(theta) * 0.05, r * Math.sin(theta) * 0.05));
+            particles.push(createParticle(i, type, r * Math.cos(theta) * 0.04, r * Math.sin(theta) * 0.04));
           }
           equationsDiv.classList.add('active');
           setTimeout(() => equationsDiv.classList.remove('active'), 10000);
@@ -660,12 +727,12 @@
             particles.forEach(p2 => {
               if (p !== p2) {
                 const dist = Math.hypot(p2.x - p.x, p2.y - p.y);
-                if (dist > 1) {
+                if (dist > 2) {
                   if (forcesEnabled.em && p.charge && p2.charge) {
                     potential += (p.charge * p2.charge) / dist;
                   }
-                  if (forcesEnabled.strong && p.type === 'fermion' && p2.type === 'boson' && dist < 50) {
-                    potential += -0.1 / dist * Math.exp(-dist / 20);
+                  if (forcesEnabled.strong && p.type === 'fermion' && p2.type === 'boson' && dist < 40) {
+                    potential += -0.08 / dist * Math.exp(-dist / 15);
                   }
                 }
               }
@@ -684,61 +751,75 @@
           try {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Cap active particles
-            const activeParticles = particles.slice(0, 200);
-            const frozenParticles = particles.slice(200);
-
-            activeParticles.forEach(p => {
+            particles.forEach(p => {
               // Update trail
               p.trail.push({ x: p.x, y: p.y });
-              if (p.trail.length > 50) p.trail.shift();
+              if (p.trail.length > 30) p.trail.shift();
 
               // Apply forces
               let fx = 0, fy = 0;
-              activeParticles.forEach(p2 => {
+              particles.forEach(p2 => {
                 if (p !== p2) {
                   const dx = p2.x - p.x;
                   const dy = p2.y - p.y;
                   const dist = Math.hypot(dx, dy);
-                  if (dist > 1) {
+                  if (dist > 2 && dist < 200) {
                     if (forcesEnabled.em && p.charge && p2.charge) {
                       const f = (p.charge * p2.charge) / (dist * dist);
-                      fx += f * dx / dist * 0.05;
-                      fy += f * dy / dist * 0.05;
+                      fx += f * dx / dist * 0.03;
+                      fy += f * dy / dist * 0.03;
                     }
-                    if (forcesEnabled.strong && p.type === 'fermion' && p2.type === 'boson' && dist < 50) {
-                      const f = -0.1 / dist * Math.exp(-dist / 20);
+                    if (forcesEnabled.strong && p.type === 'fermion' && p2.type === 'boson' && dist < 40) {
+                      const f = -0.08 / dist * Math.exp(-dist / 15);
                       fx += f * dx / dist;
                       fy += f * dy / dist;
                     }
-                    if (forcesEnabled.weak && p.type === 'fermion' && Math.random() < 0.01) {
+                    if (forcesEnabled.weak && p.type === 'fermion' && Math.random() < 0.005) {
                       p.color = p.color === 'red' ? 'blue' : 'red';
                     }
                     if (forcesEnabled.higgs && p2.type === 'higgs') {
-                      fx -= p.vx * 0.1 * p.mass;
-                      fy -= p.vy * 0.1 * p.mass;
+                      fx -= p.vx * 0.05 * p.mass;
+                      fy -= p.vy * 0.05 * p.mass;
+                    }
+                    if (forcesEnabled.grav && p.region === 'planet' && dist < 100) {
+                      const f = -0.02 * p.mass * p2.mass / (dist * dist);
+                      fx += f * dx / dist;
+                      fy += f * dy / dist;
+                    }
+                    if (forcesEnabled.cluster && p.region === 'life' && dist < 50) {
+                      const sigma = 20;
+                      const epsilon = 0.05;
+                      const r6 = Math.pow(sigma / dist, 6);
+                      const f = epsilon * (12 * r6 * r6 - 6 * r6) / dist;
+                      fx += f * dx / dist;
+                      fy += f * dy / dist;
+                    }
+                    if (p.region === 'energy') {
+                      const f = 0.02 * Math.sin(Date.now() * 0.001 + dist);
+                      fx += f * dx / dist;
+                      fy += f * dy / dist;
                     }
                   }
                 }
               });
 
               // Mouse interaction
-              fx += (mousePos.x - canvas.width / 2) * 0.0001;
-              fy += (mousePos.y - canvas.height / 2) * 0.0001;
+              fx += (mousePos.x - canvas.width / 2) * 0.00008;
+              fy += (mousePos.y - canvas.height / 2) * 0.00008;
 
               // Update velocity and position
               p.vx += fx / p.mass;
               p.vy += fy / p.mass;
-              p.vx *= 0.98;
-              p.vy *= 0.98;
+              p.vx *= 0.99;
+              p.vy *= 0.99;
               p.x += p.vx;
               p.y += p.vy;
 
               // Draw particle
               ctx.beginPath();
-              ctx.arc(p.x, p.y, p.type === 'higgs' ? 5 : 3, 0, Math.PI * 2);
+              ctx.arc(p.x, p.y, p.type === 'higgs' ? 4 : 2, 0, Math.PI * 2);
               ctx.fillStyle = p.type === 'fermion' ? p.color : p.type === 'boson' ? 'magenta' : 'yellow';
-              ctx.globalAlpha = 1;
+              ctx.globalAlpha = 0.9;
               ctx.fill();
             });
 
@@ -751,7 +832,7 @@
                   ctx.lineTo(p.trail[i].x, p.trail[i].y);
                 }
                 ctx.strokeStyle = p.type === 'fermion' ? p.color : p.type === 'boson' ? 'magenta' : 'yellow';
-                ctx.globalAlpha = 0.1;
+                ctx.globalAlpha = 0.05;
                 ctx.stroke();
               }
             });
@@ -759,7 +840,7 @@
             ctx.globalAlpha = 1;
 
             // Spawn new particles
-            if (particles.length < 200 && Math.random() < 0.01) {
+            if (particles.length < 50 && Math.random() < 0.01) {
               particles.push(createParticle(particles.length));
             }
 
@@ -795,12 +876,12 @@
         cssParticles.style.display = 'block';
 
         let particles = [];
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 10; i++) {
           const particle = document.createElement('div');
           particle.className = 'css-particle';
           particle.style.left = `${Math.random() * 100}vw`;
           particle.style.top = `${Math.random() * 100}vh`;
-          particle.style.animationDelay = `${Math.random() * 6}s`;
+          particle.style.animationDelay = `${Math.random() * 5}s`;
           particle.style.background = `hsl(${Math.random() * 360}, 70%, 70%)`;
           cssParticles.appendChild(particle);
           particles.push(particle);
@@ -809,12 +890,12 @@
         function triggerBigBang() {
           particles.forEach(p => p.remove());
           particles = [];
-          for (let i = 0; i < 100; i++) {
+          for (let i = 0; i < 50; i++) {
             const particle = document.createElement('div');
             particle.className = 'css-particle';
             particle.style.left = `${50 + (Math.random() - 0.5) * 20}vw`;
             particle.style.top = `${50 + (Math.random() - 0.5) * 20}vh`;
-            particle.style.animationDuration = '10s';
+            particle.style.animationDuration = '8s';
             particle.style.background = `hsl(${Math.random() * 360}, 70%, 70%)`;
             cssParticles.appendChild(particle);
             particles.push(particle);
