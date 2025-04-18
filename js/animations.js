@@ -1,6 +1,3 @@
-import * as THREE from 'three';
-import { gsap } from 'gsap';
-
 export function initializeAnimations() {
   const canvas = document.getElementById('background-canvas');
   let scene, camera, renderer, particles = [];
@@ -14,7 +11,7 @@ export function initializeAnimations() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     camera.position.z = 50;
 
-    // Particle System
+    // Particle system using Fibonacci spiral
     const createParticle = (index) => {
       const phi = (1 + Math.sqrt(5)) / 2;
       const theta = index * 2 * Math.PI * phi;
@@ -33,9 +30,11 @@ export function initializeAnimations() {
       return { obj: particle, life: 10, velocity: new THREE.Vector3(0, 0, 0) };
     };
 
-    for (let i = 0; i < 50; i++) particles.push(createParticle(i));
+    for (let i = 0; i < 100; i++) {
+      particles.push(createParticle(i));
+    }
 
-    // Animation Loop
+    // Animation loop
     const animate = () => {
       requestAnimationFrame(animate);
       particles.forEach(p => {
@@ -55,19 +54,19 @@ export function initializeAnimations() {
     };
     animate();
 
-    // Resize Handler
+    // Resize handler
     window.addEventListener('resize', () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
     }, { passive: true });
 
-    // Visual Effect
+    // Visual effect trigger
     window.triggerVisualEffect = () => {
       particles.forEach(p => scene.remove(p.obj));
       particles = [];
       const colors = [0x00b7eb, 0xff00cc, 0x00ffff, 0xffd700];
-      for (let i = 0; i < 100; i++) {
+      for (let i = 0; i < 200; i++) {
         const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2);
         const r = Math.sqrt(i) * 1.5;
         const particle = createParticle(i);
@@ -80,6 +79,7 @@ export function initializeAnimations() {
   } catch (error) {
     console.error('WebGL Error:', error);
     document.getElementById('error-message').style.display = 'block';
+    document.getElementById('error-message').textContent = 'Failed to load animations. Please try a different browser.';
   }
 }
 
