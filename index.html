@@ -706,30 +706,45 @@
           ['refresh-test', 'share-results', 'view-history'].forEach(id => document.getElementById(id).style.display = 'none');
           this.graph.reset();
 
+          let pingResults = { ping: 999, jitter: 0, packetLoss: 100 }; // Default values in case ping test fails
           try {
-            const pingResults = await this.runPingTest();
-            if (!this.testAborted) {
+            pingResults = await this.runPingTest();
+          } catch (error) {
+            log('Ping test failed, continuing with default values: ' + error.message);
+          }
+
+          if (!this.testAborted) {
+            try {
               const downloadSpeed = await this.runDownloadTest();
               this.currentResults = { ...pingResults, downloadSpeed };
+            } catch (error) {
+              log('Download test failed: ' + error.message);
+              throw error;
             }
-            if (!this.testAborted) {
+          }
+
+          if (!this.testAborted) {
+            try {
               const uploadSpeed = await this.runUploadTest();
               this.currentResults = { ...this.currentResults, uploadSpeed };
+            } catch (error) {
+              log('Upload test failed: ' + error.message);
+              throw error;
             }
-            if (!this.testAborted && this.currentResults) {
-              this.displayResults();
-              triggerVisualEffect();
-              this.saveResult();
-            }
-          } catch (error) {
-            log('Test error: ' + error.message);
+          }
+
+          if (!this.testAborted && this.currentResults) {
+            this.displayResults();
+            triggerVisualEffect();
+            this.saveResult();
+          } else if (!this.testAborted) {
             document.getElementById('error-message').style.display = 'block';
             document.getElementById('error-message').textContent = 'Speed test failed. Please try again.';
-          } finally {
-            this.testRunning = false;
-            button.disabled = false;
-            button.textContent = 'Test Speed';
           }
+
+          this.testRunning = false;
+          button.disabled = false;
+          button.textContent = 'Test Speed';
         },
 
         async runPingTest() {
@@ -748,31 +763,38 @@
 
           for (let i = 0; i < totalPackets; i++) {
             if (this.testAborted) break;
+            let ping = 999; // Default high latency for failed pings
             try {
               const start = performance.now();
-              const response = await fetch(CONFIG.testServer.pingResource, { method: 'HEAD', cache: 'no-store' });
-              if (response.ok) {
-                const ping = performance.now() - start;
-                pingTimes.push(ping);
-                log(`Ping #${i+1}: ${ping.toFixed(2)}ms`);
-              } else {
-                packetsLost++;
-                log(`Ping #${i+1} failed: Server error`);
-              }
+              await new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => {
+                  ping = performance.now() - start;
+                  resolve();
+                };
+                img.onerror = () => {
+                  reject(new Error('Image load failed'));
+                };
+                img.src = CONFIG.testServer.pingResource + '?t=' + Date.now(); // Cache-busting
+              });
+              pingTimes.push(ping);
+              log(`Ping #${i+1}: ${ping.toFixed(2)}ms`);
             } catch (error) {
               packetsLost++;
+              pingTimes.push(ping);
               log(`Ping #${i+1} failed: ${error.message}`);
             }
             const progressPercentage = ((i + 1) / totalPackets) * 100;
             progress.style.width = `${progressPercentage}%`;
             progressPercent.textContent = `${progressPercentage.toFixed(1)}%`;
-            currentSpeed.textContent = `${pingTimes.length ? pingTimes[pingTimes.length - 1].toFixed(2) : 0} ms`;
+            currentSpeed.textContent = `${pingTimes[pingTimes.length - 1].toFixed(2)} ms`;
             timeElapsed.textContent = `${i + 1}/${totalPackets}`;
             await new Promise(r => setTimeout(r, 300));
           }
 
-          const avgPing = pingTimes.length ? pingTimes.reduce((sum, t) => sum + t, 0) / pingTimes.length : 0;
-          const jitter = pingTimes.length > 1 ? Math.sqrt(pingTimes.map(t => Math.pow(t - avgPing, 2)).reduce((sum, d) => sum + d, 0) / (pingTimes.length - 1)) : 0;
+          const successfulPings = pingTimes.filter(t => t !== 999);
+          const avgPing = successfulPings.length ? successfulPings.reduce((sum, t) => sum + t, 0) / successfulPings.length : 999;
+          const jitter = successfulPings.length > 1 ? Math.sqrt(successfulPings.map(t => Math.pow(t - avgPing, 2)).reduce((sum, d) => sum + d, 0) / (successfulPings.length - 1)) : 0;
           const packetLoss = (packetsLost / totalPackets) * 100;
 
           pingValue.textContent = avgPing.toFixed(0);
