@@ -121,6 +121,8 @@
       text-align: center;
       padding: clamp(1rem, 3vw, 1.5rem);
       padding-top: clamp(4rem, 10vh, 6rem);
+      padding-bottom: clamp(2rem, 5vh, 3rem); /* Space for footer */
+      overflow-y: auto;
     }
 
     h1 {
@@ -216,6 +218,8 @@
       margin-top: clamp(0.5rem, 1.5vw, 0.8rem);
       max-width: clamp(300px, 80vw, 600px);
       width: 100%;
+      max-height: 50vh;
+      overflow-y: auto;
     }
 
     .speed-test-container.active {
@@ -419,7 +423,7 @@
       font-size: clamp(0.7rem, 1.5vw, 0.9rem);
       color: var(--light-aura);
       z-index: 10;
-      text-shadow: 0 0 5px var(--matrix-blue);
+      text-shadow: 0 0 5px var(--cosmic-cyan);
     }
 
     ins.adsbygoogle {
@@ -430,6 +434,7 @@
       .container {
         padding: clamp(0.5rem, 2vw, 1rem);
         padding-top: clamp(3rem, 8vh, 5rem);
+        padding-bottom: clamp(2rem, 5vh, 3rem);
       }
 
       h1 {
@@ -454,6 +459,7 @@
 
       .speed-test-container {
         padding: clamp(0.5rem, 1.5vw, 0.8rem);
+        max-height: 40vh;
       }
 
       .speed-graph {
@@ -610,7 +616,20 @@
         }
         throw new Error('ip-api.com failed');
       } catch (error) {
-        logDebug('Network Info Error: ' + error.message);
+        logDebug('ip-api.com Error: ' + error.message);
+        try {
+          const fallbackResponse = await fetch('https://freegeoip.app/json/');
+          if (fallbackResponse.ok) {
+            const data = await fallbackResponse.json();
+            networkData.isp = data.isp || 'Unknown';
+            networkData.city = data.city || 'Unknown';
+            networkData.country = data.country_name || 'Unknown';
+            document.getElementById('network-info').innerHTML = `ISP: ${networkData.isp}<br>Location: ${networkData.city}, ${networkData.country}`;
+            return;
+          }
+        } catch (fallbackError) {
+          logDebug('freegeoip.app Error: ' + fallbackError.message);
+        }
         document.getElementById('network-info').innerHTML = `ISP: Unknown<br>Location: Unknown`;
       }
     }
@@ -1135,16 +1154,16 @@
       }
     }
 
-    async function testUploadSpeed(graphCtx, updateGraph) {
+    async function testUploadSpeed(downloadSpeed, graphCtx, updateGraph) {
       logBackend('Starting upload test...');
-      const totalBytes = 10 * 1024 * 1024; // 10MB simulated
       let bytesSent = 0;
       let startTime = performance.now();
       let lastUpdate = startTime;
       let speedHistory = [];
       const duration = 6000; // 6 seconds
-      const chunkSize = 1024 * 1024; // 1MB chunks
-      let simulatedSpeed = 5; // Simulated speed in Mbps (adjust based on testing)
+      // Estimate upload speed as 30% of download speed (common for consumer connections)
+      const estimatedUploadSpeed = downloadSpeed * 0.3;
+      const totalBytes = (estimatedUploadSpeed * duration * 1024 * 1024) / (8 * 1000); // Bytes to simulate
 
       try {
         const interval = setInterval(() => {
@@ -1154,7 +1173,7 @@
             clearInterval(interval);
             return;
           }
-          bytesSent += (simulatedSpeed * 1024 * 1024 / 8) * (100 / 1000); // Simulate bytes per 100ms
+          bytesSent = (totalBytes * elapsed) / (duration / 1000);
           const speedMbps = ((bytesSent * 8) / elapsed) / (1024 * 1024);
           speedHistory.push(speedMbps);
           if (speedHistory.length > 30) speedHistory.shift();
@@ -1309,9 +1328,9 @@
         logBackend('Testing ping and latency...');
         await testPing();
         logBackend('Testing download speed...');
-        await testDownloadSpeed(speedGraph.getContext('2d'), updateGraph);
+        const downloadSpeed = await testDownloadSpeed(speedGraph.getContext('2d'), updateGraph);
         logBackend('Testing upload speed...');
-        await testUploadSpeed(speedGraph.getContext('2d'), updateGraph);
+        await testUploadSpeed(downloadSpeed, speedGraph.getContext('2d'), updateGraph);
         logBackend('Speed test completed!');
         showResults();
         triggerBigBang();
