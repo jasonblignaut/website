@@ -1,126 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Labverse Speed Test</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
       font-family: 'Orbitron', sans-serif;
-      background: #0a0a23;
-      color: #fff;
-      overflow-x: hidden;
+      background: #0d0d2b;
+      color: white;
+      text-align: center;
     }
 
-    .header {
-      text-align: center;
+    h1 {
       font-size: 3em;
-      color: cyan;
+      color: #00f6ff;
+      text-shadow: 0 0 10px #00f6ff, 0 0 20px #00f6ff;
       margin-top: 40px;
-      text-shadow: 0 0 15px cyan;
     }
 
-    .info-box {
-      margin: 30px auto;
-      width: 400px;
-      background-color: #111;
-      border-radius: 15px;
+    .container {
+      margin: 20px auto;
       padding: 20px;
-      box-shadow: 0 0 10px cyan;
-      text-align: center;
-      font-size: 1em;
+      border-radius: 15px;
+      background: rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 15px cyan;
+      max-width: 600px;
     }
 
-    .button {
-      margin-top: 10px;
-      padding: 10px 20px;
-      background: linear-gradient(to right, #ff00ff, #00ffff);
-      color: #000;
+    button {
+      font-family: 'Orbitron', sans-serif;
+      padding: 12px 24px;
+      font-size: 1rem;
+      margin-top: 20px;
       border: none;
       border-radius: 8px;
-      font-weight: bold;
       cursor: pointer;
+      color: white;
+      background: linear-gradient(to right, #8e2de2, #4a00e0);
+      box-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
+      transition: 0.3s ease;
     }
 
-    .button:hover {
-      opacity: 0.8;
+    button:hover {
+      transform: scale(1.05);
     }
 
-    #speedResults {
-      margin: 20px auto;
-      width: 90%;
-      max-width: 800px;
-      padding: 20px;
-      border-radius: 15px;
-      background-color: #111;
-      box-shadow: 0 0 15px magenta;
+    .result {
+      font-size: 1.2em;
+      margin-top: 15px;
     }
 
-    iframe {
-      width: 100%;
-      height: 400px;
-      border: none;
-      border-radius: 10px;
-    }
-
-    #vanta-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      z-index: -1;
+    .highlight {
+      font-size: 2em;
+      color: #00f6ff;
+      text-shadow: 0 0 5px #00f6ff;
     }
   </style>
 </head>
-
 <body>
-  <div id="vanta-bg"></div>
-
-  <div class="header">Labverse Speed Test</div>
-
-  <div class="info-box">
-    <p><strong>Your IP:</strong> <span id="ip">Loading...</span></p>
-    <p><strong>ISP:</strong> <span id="isp">Loading...</span></p>
-    <p><strong>Location:</strong> <span id="loc">Loading...</span></p>
-    <button class="button" onclick="document.getElementById('speedFrame').src = 'https://librespeed.org';">Run Speed Test</button>
+  <h1>Labverse Speed Test</h1>
+  <div class="container">
+    <div id="ipInfo"></div>
+    <button onclick="startSpeedTest()">Run Speed Test</button>
+    <div class="result" id="download"></div>
+    <div class="result" id="upload"></div>
+    <div class="result" id="latency"></div>
+    <div class="result" id="jitter"></div>
   </div>
 
-  <div id="speedResults">
-    <iframe id="speedFrame" src=""></iframe>
-  </div>
-
-  <!-- Scripts -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
   <script>
-    VANTA.NET({
-      el: "#vanta-bg",
-      mouseControls: true,
-      touchControls: true,
-      minHeight: 200.00,
-      minWidth: 200.00,
-      scale: 1.00,
-      scaleMobile: 1.00,
-      color: 0x00ffff,
-      backgroundColor: 0x0a0a23
-    });
-
-    // Get IP and Geo Info
-    fetch("https://ipapi.co/json/")
-      .then(res => res.json())
+    // Display IP + Location
+    fetch('https://ipapi.co/json')
+      .then(response => response.json())
       .then(data => {
-        document.getElementById("ip").textContent = data.ip;
-        document.getElementById("isp").textContent = data.org || "Unavailable";
-        document.getElementById("loc").textContent = `${data.city}, ${data.region}, ${data.country_name}`;
-      })
-      .catch(() => {
-        document.getElementById("ip").textContent = "Error";
-        document.getElementById("isp").textContent = "Error";
-        document.getElementById("loc").textContent = "Error";
+        document.getElementById("ipInfo").innerHTML = `
+          <p>Your IP: <span class="highlight">${data.ip}</span></p>
+          <p>ISP: <span class="highlight">${data.org}</span></p>
+          <p>Location: <span class="highlight">${data.city}, ${data.region}, ${data.country_name}</span></p>
+        `;
       });
+
+    // Minimal Cloudflare-like speed test
+    async function startSpeedTest() {
+      document.getElementById("download").innerText = "Running download test...";
+      const downloadSpeed = await testDownloadSpeed();
+      document.getElementById("download").innerHTML = `Download Speed: <span class="highlight">${downloadSpeed} Mbps</span>`;
+
+      document.getElementById("upload").innerText = "Running upload test...";
+      const uploadSpeed = await testUploadSpeed();
+      document.getElementById("upload").innerHTML = `Upload Speed: <span class="highlight">${uploadSpeed} Mbps</span>`;
+
+      const pingResults = await testPing();
+      document.getElementById("latency").innerHTML = `Latency: <span class="highlight">${pingResults.latency} ms</span>`;
+      document.getElementById("jitter").innerHTML = `Jitter: <span class="highlight">${pingResults.jitter} ms</span>`;
+    }
+
+    // Fake download using image
+    async function testDownloadSpeed() {
+      const startTime = Date.now();
+      const image = new Image();
+      const imageUrl = "https://speed.cloudflare.com/__down?bytes=2500000"; // 2.5MB image
+      await new Promise(resolve => {
+        image.onload = resolve;
+        image.onerror = resolve;
+        image.src = imageUrl + "&cacheBuster=" + Math.random();
+      });
+      const duration = (Date.now() - startTime) / 1000;
+      const bitsLoaded = 2500000 * 8;
+      const speedMbps = (bitsLoaded / duration / 1024 / 1024).toFixed(2);
+      return speedMbps;
+    }
+
+    // Fake upload using POST
+    async function testUploadSpeed() {
+      const blob = new Blob([new ArrayBuffer(2 * 1024 * 1024)]); // 2MB
+      const startTime = Date.now();
+      try {
+        await fetch("https://speed.cloudflare.com/__up", {
+          method: "POST",
+          body: blob,
+          headers: {
+            'Content-Type': 'application/octet-stream'
+          }
+        });
+      } catch (e) {}
+      const duration = (Date.now() - startTime) / 1000;
+      const bitsSent = 2 * 1024 * 1024 * 8;
+      const speedMbps = (bitsSent / duration / 1024 / 1024).toFixed(2);
+      return speedMbps;
+    }
+
+    async function testPing(samples = 5) {
+      let latencies = [];
+      for (let i = 0; i < samples; i++) {
+        const start = performance.now();
+        try {
+          await fetch("https://speed.cloudflare.com/cdn-cgi/trace?ts=" + Math.random());
+        } catch (e) {}
+        const end = performance.now();
+        latencies.push(end - start);
+        await new Promise(r => setTimeout(r, 200));
+      }
+      const latency = latencies.reduce((a, b) => a + b, 0) / latencies.length;
+      const jitter = latencies.map(l => Math.abs(l - latency)).reduce((a, b) => a + b, 0) / latencies.length;
+      return {
+        latency: latency.toFixed(2),
+        jitter: jitter.toFixed(2)
+      };
+    }
   </script>
 </body>
 </html>
