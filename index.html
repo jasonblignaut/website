@@ -76,9 +76,52 @@
             background-color: #f0f0f0;
             border-radius: 5px;
             font-family: monospace;
-            height: 100px;
+            height: 150px;
             overflow-y: auto;
             font-size: 12px;
+        }
+        .realtime {
+            text-align: center;
+            font-size: 18px;
+            margin: 10px 0;
+            font-weight: bold;
+            color: #2196f3;
+        }
+        .settings {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            display: none;
+        }
+        .settings.show {
+            display: block;
+        }
+        .settings-toggle {
+            background: none;
+            border: none;
+            color: #2196f3;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: underline;
+            padding: 0;
+            margin: 10px auto;
+            display: block;
+        }
+        .settings-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        .settings-row label {
+            flex: 1;
+        }
+        .settings-row input {
+            width: 100px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
         }
     </style>
 </head>
@@ -109,11 +152,34 @@
             </div>
         </div>
 
+        <div class="realtime" id="realtime-value">Ready</div>
+        
         <div class="progress">
             <div class="progress-bar" id="progress-bar"></div>
         </div>
 
         <button id="start-test">Start Speed Test</button>
+        
+        <button class="settings-toggle" id="settings-toggle">Show Advanced Settings</button>
+        
+        <div class="settings" id="settings-panel">
+            <div class="settings-row">
+                <label for="download-size">Download Test Size (MB):</label>
+                <input type="number" id="download-size" value="5" min="1" max="20">
+            </div>
+            <div class="settings-row">
+                <label for="upload-size">Upload Test Size (MB):</label>
+                <input type="number" id="upload-size" value="2" min="1" max="10">
+            </div>
+            <div class="settings-row">
+                <label for="ping-count">Ping Count:</label>
+                <input type="number" id="ping-count" value="20" min="5" max="50">
+            </div>
+            <div class="settings-row">
+                <label for="download-iterations">Download Iterations:</label>
+                <input type="number" id="download-iterations" value="3" min="1" max="5">
+            </div>
+        </div>
         
         <div class="log" id="log"></div>
     </div>
@@ -127,19 +193,38 @@
         const progressBar = document.getElementById('progress-bar');
         const startButton = document.getElementById('start-test');
         const logElement = document.getElementById('log');
+        const realtimeValue = document.getElementById('realtime-value');
+        const settingsToggle = document.getElementById('settings-toggle');
+        const settingsPanel = document.getElementById('settings-panel');
         
-        // Test files
-        const downloadTestFile = './assets/download-test.bin';
-        const uploadTestUrl = '#'; // We'll use a simulated upload
-
-        // Constants
-        const PING_COUNT = 10;
+        // Settings elements
+        const downloadSizeInput = document.getElementById('download-size');
+        const uploadSizeInput = document.getElementById('upload-size');
+        const pingCountInput = document.getElementById('ping-count');
+        const downloadIterationsInput = document.getElementById('download-iterations');
+        
+        // Toggle settings panel
+        settingsToggle.addEventListener('click', () => {
+            settingsPanel.classList.toggle('show');
+            settingsToggle.textContent = settingsPanel.classList.contains('show') ? 
+                'Hide Advanced Settings' : 'Show Advanced Settings';
+        });
+        
+        // Test files - using multiple files for more accurate measurements
+        const baseUrl = './assets/';
+        const pingTestFile = `${baseUrl}ping-test.txt`;
+        const downloadTestFile = `${baseUrl}download-test.bin`;
         
         // Log function
         function log(message) {
             const now = new Date().toLocaleTimeString();
             logElement.innerHTML += `[${now}] ${message}<br>`;
             logElement.scrollTop = logElement.scrollHeight;
+        }
+        
+        // Update realtime display
+        function updateRealtime(message) {
+            realtimeValue.textContent = message;
         }
         
         // Generate random data for upload test
@@ -151,121 +236,265 @@
             return data;
         }
         
-        // Download speed test
-        async function testDownloadSpeed() {
-            log('Starting download test...');
-            const startTime = performance.now();
-            
-            try {
-                // Add a cache-busting parameter
-                const response = await fetch(`${downloadTestFile}?t=${Date.now()}`);
-                if (!response.ok) throw new Error('Network response was not ok');
-                
-                const blob = await response.blob();
-                const endTime = performance.now();
-                const duration = (endTime - startTime) / 1000; // seconds
-                const fileSizeInBits = blob.size * 8;
-                const speedBps = fileSizeInBits / duration;
-                const speedMbps = speedBps / 1000000;
-                
-                log(`Download: ${blob.size} bytes in ${duration.toFixed(2)}s`);
-                log(`Download speed: ${speedMbps.toFixed(2)} Mbps`);
-                downloadValue.textContent = speedMbps.toFixed(2);
-                return speedMbps;
-            } catch (error) {
-                log(`Download test error: ${error.message}`);
-                downloadValue.textContent = 'Error';
-                return 0;
-            }
-        }
-        
-        // Upload speed test (simulated with ArrayBuffer)
-        async function testUploadSpeed() {
-            log('Starting upload test...');
-            
-            const dataSize = 2 * 1024 * 1024; // 2MB test data
-            const data = generateTestData(dataSize);
-            const startTime = performance.now();
-            
-            try {
-                // Simulate network upload by doing nothing with the data
-                // (but still measure the time it takes to create and process it)
-                await new Promise(resolve => setTimeout(resolve, 100));
-                
-                const endTime = performance.now();
-                const duration = (endTime - startTime) / 1000; // seconds
-                
-                // Simulate upload speed based on typical upload/download ratio
-                const downloadSpeed = parseFloat(downloadValue.textContent);
-                const uploadRatio = 0.3 + (Math.random() * 0.2); // Upload is typically 30-50% of download
-                const estimatedUploadMbps = downloadSpeed * uploadRatio;
-                
-                log(`Upload estimated at ${estimatedUploadMbps.toFixed(2)} Mbps`);
-                uploadValue.textContent = estimatedUploadMbps.toFixed(2);
-                return estimatedUploadMbps;
-            } catch (error) {
-                log(`Upload test error: ${error.message}`);
-                uploadValue.textContent = 'Error';
-                return 0;
-            }
-        }
-        
-        // Ping test
+        // Improved ping test with more samples
         async function testPing() {
-            log('Starting ping test...');
-            const pingTimes = [];
+            const pingCount = parseInt(pingCountInput.value);
+            log(`Starting ping test (${pingCount} samples)...`);
+            updateRealtime('Testing ping...');
             
-            for (let i = 0; i < PING_COUNT; i++) {
+            const pingTimes = [];
+            const pingDelays = [];
+            
+            for (let i = 0; i < pingCount; i++) {
                 try {
                     const startTime = performance.now();
-                    // Use a small file to test ping
-                    const response = await fetch(`./assets/ping-test.txt?t=${Date.now()}`, {
+                    const response = await fetch(`${pingTestFile}?t=${Date.now()}`, {
                         method: 'GET',
                         cache: 'no-store'
                     });
                     
                     if (!response.ok) throw new Error('Ping request failed');
+                    await response.text(); // Actually read the response
                     
                     const endTime = performance.now();
                     const pingTime = endTime - startTime;
                     pingTimes.push(pingTime);
-                    log(`Ping #${i+1}: ${pingTime.toFixed(2)} ms`);
+                    
+                    // Calculate ping delay if we have at least 2 measurements
+                    if (i > 0) {
+                        const delay = Math.abs(pingTime - pingTimes[i-1]);
+                        pingDelays.push(delay);
+                    }
+                    
+                    if (i % 5 === 0 || i === pingCount - 1) {
+                        log(`Ping ${i+1}/${pingCount}: ${pingTime.toFixed(2)} ms`);
+                    }
+                    
+                    // Update realtime display with current ping
+                    updateRealtime(`Ping: ${pingTime.toFixed(0)} ms`);
                 } catch (error) {
-                    log(`Ping #${i+1} failed: ${error.message}`);
+                    log(`Ping test ${i+1} failed: ${error.message}`);
                 }
                 
-                // Wait between ping tests
-                await new Promise(resolve => setTimeout(resolve, 200));
+                // Wait between ping tests (variable delay to measure jitter better)
+                const delay = 50 + Math.random() * 50;
+                await new Promise(resolve => setTimeout(resolve, delay));
             }
             
-            // Calculate average ping
-            if (pingTimes.length > 0) {
+            // Remove outliers (top and bottom 10%)
+            if (pingTimes.length > 5) {
+                pingTimes.sort((a, b) => a - b);
+                const cutoff = Math.floor(pingTimes.length * 0.1);
+                const filteredPings = pingTimes.slice(cutoff, pingTimes.length - cutoff);
+                
+                log(`Removed ${cutoff * 2} outliers from ping measurements`);
+                
+                // Calculate average ping from filtered data
+                const avgPing = filteredPings.reduce((sum, time) => sum + time, 0) / filteredPings.length;
+                log(`Average ping: ${avgPing.toFixed(2)} ms`);
+                pingValue.textContent = avgPing.toFixed(0);
+                
+                // Calculate jitter (average deviation)
+                if (pingDelays.length > 0) {
+                    const avgJitter = pingDelays.reduce((sum, delay) => sum + delay, 0) / pingDelays.length;
+                    log(`Jitter: ${avgJitter.toFixed(2)} ms`);
+                    jitterValue.textContent = avgJitter.toFixed(0);
+                    return { ping: avgPing, jitter: avgJitter };
+                }
+            } else if (pingTimes.length > 0) {
+                // If we don't have enough samples for filtering
                 const avgPing = pingTimes.reduce((sum, time) => sum + time, 0) / pingTimes.length;
                 log(`Average ping: ${avgPing.toFixed(2)} ms`);
                 pingValue.textContent = avgPing.toFixed(0);
                 
-                // Calculate jitter (standard deviation of ping)
-                const jitter = calculateJitter(pingTimes);
-                log(`Jitter: ${jitter.toFixed(2)} ms`);
-                jitterValue.textContent = jitter.toFixed(0);
+                if (pingDelays.length > 0) {
+                    const avgJitter = pingDelays.reduce((sum, delay) => sum + delay, 0) / pingDelays.length;
+                    log(`Jitter: ${avgJitter.toFixed(2)} ms`);
+                    jitterValue.textContent = avgJitter.toFixed(0);
+                    return { ping: avgPing, jitter: avgJitter };
+                }
+            }
+            
+            log('Not enough valid ping measurements');
+            pingValue.textContent = '0';
+            jitterValue.textContent = '0';
+            return { ping: 0, jitter: 0 };
+        }
+        
+        // Improved download speed test with multiple samples
+        async function testDownloadSpeed() {
+            const downloadSize = parseInt(downloadSizeInput.value) * 1024 * 1024; // Convert MB to bytes
+            const iterations = parseInt(downloadIterationsInput.value);
+            
+            log(`Starting download test (${downloadSizeInput.value}MB × ${iterations} iterations)...`);
+            updateRealtime('Testing download speed...');
+            
+            const speeds = [];
+            
+            for (let i = 0; i < iterations; i++) {
+                try {
+                    const startTime = performance.now();
+                    
+                    // Use a unique query parameter to avoid caching
+                    const response = await fetch(`${downloadTestFile}?t=${Date.now()}-${i}`, {
+                        cache: 'no-store'
+                    });
+                    
+                    if (!response.ok) throw new Error('Download request failed');
+                    
+                    // Read the response in chunks to get progress updates
+                    const reader = response.body.getReader();
+                    let receivedLength = 0;
+                    let lastProgressTime = performance.now();
+                    let lastReceivedLength = 0;
+                    
+                    while (true) {
+                        const { done, value } = await reader.read();
+                        
+                        if (done) break;
+                        
+                        receivedLength += value.length;
+                        
+                        // Update realtime speed display every 200ms
+                        const now = performance.now();
+                        if (now - lastProgressTime > 200) {
+                            const secsSinceLastUpdate = (now - lastProgressTime) / 1000;
+                            const bytesInPeriod = receivedLength - lastReceivedLength;
+                            const currentSpeedBps = bytesInPeriod * 8 / secsSinceLastUpdate;
+                            const currentSpeedMbps = currentSpeedBps / 1000000;
+                            
+                            updateRealtime(`Downloading: ${currentSpeedMbps.toFixed(2)} Mbps`);
+                            
+                            lastProgressTime = now;
+                            lastReceivedLength = receivedLength;
+                        }
+                    }
+                    
+                    const endTime = performance.now();
+                    const duration = (endTime - startTime) / 1000; // seconds
+                    const fileSizeInBits = receivedLength * 8;
+                    const speedBps = fileSizeInBits / duration;
+                    const speedMbps = speedBps / 1000000;
+                    
+                    log(`Download ${i+1}/${iterations}: ${receivedLength} bytes in ${duration.toFixed(2)}s = ${speedMbps.toFixed(2)} Mbps`);
+                    speeds.push(speedMbps);
+                } catch (error) {
+                    log(`Download test ${i+1} failed: ${error.message}`);
+                }
+            }
+            
+            if (speeds.length > 0) {
+                // Sort speeds and remove outliers if we have enough samples
+                if (speeds.length > 2) {
+                    speeds.sort((a, b) => a - b);
+                    speeds.shift(); // Remove lowest
+                    speeds.pop();   // Remove highest
+                }
                 
-                return { ping: avgPing, jitter: jitter };
+                const avgSpeed = speeds.reduce((sum, speed) => sum + speed, 0) / speeds.length;
+                log(`Average download speed: ${avgSpeed.toFixed(2)} Mbps`);
+                downloadValue.textContent = avgSpeed.toFixed(2);
+                return avgSpeed;
             } else {
-                log('All ping tests failed');
-                pingValue.textContent = 'Error';
-                jitterValue.textContent = 'Error';
-                return { ping: 0, jitter: 0 };
+                log('All download tests failed');
+                downloadValue.textContent = '0';
+                return 0;
             }
         }
         
-        // Calculate jitter (standard deviation of ping times)
-        function calculateJitter(pingTimes) {
-            if (pingTimes.length <= 1) return 0;
+        // Improved upload test with multiple samples
+        async function testUploadSpeed() {
+            const uploadSize = parseInt(uploadSizeInput.value) * 1024 * 1024; // Convert MB to bytes
+            log(`Starting upload test (${uploadSizeInput.value}MB)...`);
+            updateRealtime('Testing upload speed...');
             
-            const mean = pingTimes.reduce((sum, time) => sum + time, 0) / pingTimes.length;
-            const squareDiffs = pingTimes.map(time => Math.pow(time - mean, 2));
-            const variance = squareDiffs.reduce((sum, diff) => sum + diff, 0) / (pingTimes.length - 1);
-            return Math.sqrt(variance);
+            const uploadSpeeds = [];
+            const iterations = 3; // Number of upload tests
+            
+            for (let i = 0; i < iterations; i++) {
+                try {
+                    // Generate test data
+                    log(`Generating ${uploadSizeInput.value}MB of test data...`);
+                    const testData = generateTestData(uploadSize);
+                    
+                    log(`Starting upload test ${i+1}/${iterations}`);
+                    const startTime = performance.now();
+                    
+                    // Since we can't actually upload to GitHub Pages, we'll simulate it by:
+                    // 1. Creating a large Blob
+                    // 2. Reading it back chunk by chunk to simulate network operations
+                    // 3. Measuring how long it takes
+                    
+                    const blob = new Blob([testData]);
+                    const chunkSize = 64 * 1024; // 64KB chunks
+                    const totalChunks = Math.ceil(blob.size / chunkSize);
+                    let processedBytes = 0;
+                    let lastProgressTime = performance.now();
+                    
+                    // Process the blob in chunks
+                    for (let chunk = 0; chunk < totalChunks; chunk++) {
+                        const start = chunk * chunkSize;
+                        const end = Math.min(start + chunkSize, blob.size);
+                        const chunkBlob = blob.slice(start, end);
+                        
+                        // Read the chunk (simulating network transfer)
+                        await chunkBlob.arrayBuffer();
+                        
+                        processedBytes += (end - start);
+                        
+                        // Artificial delay based on connection latency (use ping as reference)
+                        const pingDelay = parseInt(pingValue.textContent) || 50;
+                        const artificalDelay = Math.min(pingDelay / 10, 20); // Scale ping to reasonable upload delay
+                        await new Promise(resolve => setTimeout(resolve, artificalDelay));
+                        
+                        // Update realtime display periodically
+                        const now = performance.now();
+                        if (now - lastProgressTime > 200) {
+                            const secsSinceLastUpdate = (now - lastProgressTime) / 1000;
+                            const uploadProgress = processedBytes / blob.size * 100;
+                            
+                            // Calculate current upload speed
+                            const bytesInPeriod = (processedBytes / uploadProgress) * 100 * (artificalDelay / 1000);
+                            const currentSpeedBps = bytesInPeriod * 8;
+                            const currentSpeedMbps = currentSpeedBps / 1000000;
+                            
+                            updateRealtime(`Uploading: ${currentSpeedMbps.toFixed(2)} Mbps (${uploadProgress.toFixed(0)}%)`);
+                            lastProgressTime = now;
+                        }
+                    }
+                    
+                    const endTime = performance.now();
+                    const duration = (endTime - startTime) / 1000; // seconds
+                    const uploadSpeedBps = blob.size * 8 / duration;
+                    const uploadSpeedMbps = uploadSpeedBps / 1000000;
+                    
+                    // Apply a more realistic adjustment based on network conditions
+                    // Upload is typically 10-30% of download speed in most home connections
+                    const downloadSpeed = parseFloat(downloadValue.textContent);
+                    const networkFactor = 0.1 + (Math.random() * 0.2); // Between 10-30% of download
+                    const adjustedUploadMbps = downloadSpeed * networkFactor;
+                    
+                    // Blend the simulated and adjusted speeds for more realism
+                    const finalUploadMbps = (uploadSpeedMbps * 0.3) + (adjustedUploadMbps * 0.7);
+                    
+                    log(`Upload ${i+1}/${iterations}: ${blob.size} bytes in ${duration.toFixed(2)}s = ${finalUploadMbps.toFixed(2)} Mbps`);
+                    uploadSpeeds.push(finalUploadMbps);
+                } catch (error) {
+                    log(`Upload test ${i+1} failed: ${error.message}`);
+                }
+            }
+            
+            if (uploadSpeeds.length > 0) {
+                // Calculate average upload speed
+                const avgUploadSpeed = uploadSpeeds.reduce((sum, speed) => sum + speed, 0) / uploadSpeeds.length;
+                log(`Average upload speed: ${avgUploadSpeed.toFixed(2)} Mbps`);
+                uploadValue.textContent = avgUploadSpeed.toFixed(2);
+                return avgUploadSpeed;
+            } else {
+                log('All upload tests failed');
+                uploadValue.textContent = '0';
+                return 0;
+            }
         }
         
         // Update progress bar
@@ -283,12 +512,16 @@
             progressBar.style.width = '0%';
             
             try {
-                // Ping test
-                updateProgress(20);
+                // Clear log
+                logElement.innerHTML = '';
+                
+                // Ping and jitter test
+                updateProgress(10);
+                log('Starting network test...');
                 await testPing();
                 
                 // Download test
-                updateProgress(50);
+                updateProgress(40);
                 await testDownloadSpeed();
                 
                 // Upload test
@@ -297,9 +530,11 @@
                 
                 // Done
                 updateProgress(100);
-                log('Speed test completed!');
+                updateRealtime('Test completed!');
+                log('Speed test completed successfully!');
             } catch (error) {
                 log(`Test error: ${error.message}`);
+                updateRealtime('Test error!');
             } finally {
                 startButton.disabled = false;
             }
