@@ -1,0 +1,2 @@
+PING_TEST_FILE
+This small file is used for ping measurements.
