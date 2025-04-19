@@ -186,6 +186,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      position: relative;
+      z-index: 15; /* Ensure card is above other elements */
     }
 
     .test-type {
@@ -220,7 +222,8 @@
       position: relative;
       width: clamp(250px, 60vw, 350px);
       height: clamp(125px, 30vw, 175px);
-      margin: 0 auto 2.5rem;
+      margin: 0 auto 3rem; /* Increased margin to avoid overlap */
+      z-index: 20; /* Ensure speedometer is above all elements */
     }
 
     .speedometer-canvas {
@@ -239,7 +242,7 @@
       font-size: clamp(1.5rem, 2.5vw, 2rem);
       font-weight: 700;
       color: #e0e0ff;
-      z-index: 5;
+      z-index: 25; /* Ensure above speedometer */
       text-shadow: 0 0 15px rgba(73, 115, 255, 0.8);
       padding: 0 10px;
     }
@@ -253,12 +256,12 @@
       font-family: 'Exo 2', sans-serif;
       font-size: clamp(0.8rem, 1vw, 1rem);
       color: #8492b4;
-      z-index: 5;
+      z-index: 25;
     }
 
     .graph-container {
       position: relative;
-      height: 300px; /* Increased height for better visibility */
+      height: 300px;
       width: 100%;
       margin: 1.5rem 0;
       background: rgba(13, 25, 50, 0.5);
@@ -266,6 +269,7 @@
       padding: 20px;
       border: 1px solid var(--neon-border);
       box-shadow: 0 0 20px rgba(79, 172, 254, 0.3);
+      z-index: 15;
     }
 
     .graph-canvas {
@@ -286,6 +290,7 @@
       border: 1px solid var(--neon-border);
       box-shadow: 0 0 10px rgba(79, 172, 254, 0.3);
       display: none;
+      z-index: 30;
     }
 
     .results {
@@ -496,12 +501,6 @@
       animation: fadeOut 1s ease-in-out forwards;
     }
 
-    @keyframes explode {
-      0% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.5); opacity: 0.5; }
-      100% { transform: scale(2); opacity: 0; }
-    }
-
     @media (max-width: 768px) {
       .container {
         padding: 1rem 0.5rem;
@@ -546,7 +545,7 @@
       }
 
       .graph-container {
-        height: 250px; /* Adjusted for mobile */
+        height: 250px;
         margin: 1.2rem 0;
       }
 
@@ -580,7 +579,7 @@
       }
 
       .graph-container {
-        height: 200px; /* Adjusted for smaller screens */
+        height: 200px;
       }
 
       .button-container {
@@ -928,11 +927,12 @@
       ctx.clearRect(0, 0, width, height);
 
       const maxSpeed = 1000;
-      const speeds = [0, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
+      const speeds = [0, 10, 20, 25, 50, 100, 200, 500, 1000]; // Adjusted for South Africa
 
       const centerX = width / 2;
       const centerY = height;
       const radius = Math.min(width / 2, height) * 0.85;
+      const labelRadiusAdjustment = Math.min(width, height) < 200 ? 15 : 25; // Adjust label distance for smaller screens
 
       // Draw background arc
       ctx.beginPath();
@@ -946,7 +946,7 @@
 
       // Calculate visual angle
       const visualAngle = (Math.min(speed, maxSpeed) / maxSpeed) * Math.PI;
-      speed = Math.min(speed, maxSpeed); // Cap the speed at 1000 Mbps
+      speed = Math.min(speed, maxSpeed);
 
       // Draw speed arc
       ctx.beginPath();
@@ -989,13 +989,14 @@
       ctx.stroke();
 
       // Draw speed scale and labels
-      ctx.font = `10px 'Exo 2', sans-serif`;
+      const fontSize = Math.min(width, height) < 200 ? 8 : 10; // Smaller font on smaller screens
+      ctx.font = `${fontSize}px 'Exo 2', sans-serif`;
       ctx.fillStyle = '#e0e0ff';
       ctx.textAlign = 'center';
 
       speeds.forEach((s) => {
         const tickAngle = Math.PI + (s / maxSpeed) * Math.PI;
-        const labelRadius = radius + (s === 0 || s === 1000 ? 30 : 20);
+        const labelRadius = radius + (s === 0 || s === 1000 ? labelRadiusAdjustment + 5 : labelRadiusAdjustment);
         const labelX = centerX + labelRadius * Math.cos(tickAngle);
         const labelY = centerY + labelRadius * Math.sin(tickAngle);
 
@@ -1014,10 +1015,11 @@
         ctx.lineWidth = 1;
         ctx.stroke();
 
+        // Adjust label position to prevent cutoff
         let xOffset = 0;
-        if (s === 0) xOffset = 10;
-        if (s === 1000) xOffset = -10;
-        ctx.fillText(s, labelX + xOffset, labelY + 5);
+        if (s === 0) xOffset = fontSize;
+        if (s === 1000) xOffset = -fontSize;
+        ctx.fillText(s, labelX + xOffset, labelY + fontSize / 2);
       });
     }
 
@@ -1061,6 +1063,19 @@
       const maxTime = 30;
       const padding = { left: 60, right: 30, top: 30, bottom: 40 };
 
+      // Determine Y-axis labels based on max speed in data
+      const maxDataSpeed = Math.max(...graphData.map(d => d.speed), 10); // Ensure at least 10 Mbps
+      let speeds;
+      if (maxDataSpeed <= 50) {
+        speeds = [0, 10, 20, 25, 50];
+      } else if (maxDataSpeed <= 200) {
+        speeds = [0, 10, 20, 25, 50, 100, 200];
+      } else if (maxDataSpeed <= 500) {
+        speeds = [0, 10, 20, 25, 50, 100, 200, 500];
+      } else {
+        speeds = [0, 10, 20, 25, 50, 100, 200, 500, 1000];
+      }
+
       // Draw axes
       ctx.beginPath();
       ctx.moveTo(padding.left, padding.top);
@@ -1070,10 +1085,9 @@
       ctx.lineWidth = 1;
       ctx.stroke();
 
-      // Draw Y-axis labels (more granular for better readability)
-      const speeds = [0, 10, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
-
-      ctx.font = `12px 'Exo 2', sans-serif`;
+      // Draw Y-axis labels
+      const fontSize = 12;
+      ctx.font = `${fontSize}px 'Exo 2', sans-serif`;
       ctx.fillStyle = '#8492b4';
       ctx.textAlign = 'right';
 
@@ -1084,7 +1098,7 @@
         ctx.lineTo(width - padding.right, y);
         ctx.strokeStyle = 'rgba(73, 115, 255, 0.1)';
         ctx.stroke();
-        ctx.fillText(level, padding.left - 10, y + 4);
+        ctx.fillText(level, padding.left - 10, y + fontSize / 2);
       });
 
       // Draw X-axis labels
@@ -1287,7 +1301,6 @@
 
               if (performance.now() - lastUpdate >= 100) {
                 let speed = elapsed > 0 ? ((totalBytes * 8) / elapsed) / (1024 * 1024) : 0;
-                // Simulate realistic speeds (cap at 1000 Mbps for realism)
                 speed = Math.min(speed, 1000);
                 progressBar.style.width = `${Math.min(100, (elapsed / (CONFIG.testDurations.download / 1000)) * 100)}%`;
                 speedValue.textContent = speed.toFixed(1);
