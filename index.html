@@ -12,7 +12,7 @@
   <meta property="og:url" content="https://labverse.co.za">
   <meta name="twitter:card" content="summary_large_image">
   <title>Labverse Speed Test</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Source+Code_Pro&family=Exo+2:wght@400;700&family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Source+Code+Pro&family=Exo+2:wght@400;700&family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --matrix-blue: #00b7eb;
@@ -36,7 +36,7 @@
       width: 100%;
       background: var(--dark-bg);
       color: var(--light-aura);
-      overflow: hidden; /* Disable scrolling */
+      overflow: hidden;
     }
 
     #vanta-bg {
@@ -163,13 +163,13 @@
 
     .speed-test-card {
       background: var(--card-bg);
-      border-radius: 15px;
+      border-radius: 15 MULTI-LINE-STARTpx;
       padding: 1rem;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 50px rgba(73, 115, 255, 0.15) inset;
       backdrop-filter: blur(10px);
       border: 1px solid rgba(79, 172, 254, 0.3);
       width: 100%;
-      max-height: calc(100vh - 150px); /* Fit within viewport */
+      max-height: calc(100vh - 150px);
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -292,7 +292,7 @@
       justify-content: center;
       gap: 0.8rem;
       margin-top: 1rem;
-      margin-bottom: 1rem; /* Added to prevent button being cut off */
+      margin-bottom: 1rem;
     }
 
     .start-button, .test-again-button {
@@ -463,10 +463,9 @@
         <button class="test-again-button hidden" id="test-again-button">Test Again</button>
       </div>
       <div class="loading hidden" id="loading">
-        <img src="/assets/loading.svg" alt="Loading" class="animate-spin">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300f2fe' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M12 6v6l4 2'/%3E%3C/svg%3E" alt="Loading" class="animate-spin">
       </div>
     </div>
-    <!-- AdSense Placeholder: Insert AdSense code here for future integration -->
   </div>
 
   <div class="overlay" id="overlay">
@@ -501,13 +500,16 @@
     const log = (message) => console.log('[DEBUG] ' + message);
 
     const copyToClipboard = (text) => {
-      navigator.clipboard.writeText(text).catch(() => {
+      navigator.clipboard.writeText(text).then(() => {
+        alert('IP copied to clipboard!');
+      }).catch(() => {
         const textarea = document.createElement('textarea');
         textarea.value = text;
         document.body.appendChild(textarea);
         textarea.select();
         document.execCommand('copy');
         document.body.removeChild(textarea);
+        alert('IP copied to clipboard!');
       });
     };
 
@@ -516,6 +518,7 @@
     let mousePos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     const particleCanvas = document.getElementById('background-canvas');
     const particleCtx = particleCanvas.getContext('2d');
+    const devicePixelRatio = window.devicePixelRatio || 1;
 
     function resizeParticleCanvas() {
       particleCanvas.width = window.innerWidth * devicePixelRatio;
@@ -654,7 +657,17 @@
       }
     }
 
-    // Speedometer - IMPROVED to show all values
+    // Initialize IP and Location
+    fetchIP();
+    fetchLocationInfo();
+
+    // Copy IP Button
+    document.getElementById('copy-ip-btn').addEventListener('click', () => {
+      const ip = document.getElementById('ip-display').textContent;
+      if (ip !== 'N/A') copyToClipboard(ip);
+    });
+
+    // Speedometer
     function drawSpeedometer(speed) {
       const canvas = document.getElementById('speedometer-canvas');
       const ctx = canvas.getContext('2d');
@@ -665,15 +678,16 @@
       ctx.scale(devicePixelRatio, devicePixelRatio);
 
       ctx.clearRect(0, 0, width, height);
-      const maxSpeed = 1000; // Match graph range
+      const maxSpeed = 1000;
       const logMax = Math.log10(maxSpeed + 1);
       const logSpeed = Math.log10(speed + 1);
+      // Adjust angle so 100 Mbps (log10(101) ≈ 2) is at π/2 (top)
       const angle = (logSpeed / logMax) * Math.PI;
       const centerX = width / 2;
       const centerY = height;
       const radius = Math.min(width / 2, height) * 0.9;
 
-      // Background arc
+      // Background arc (0 to 1000 Mbps)
       ctx.beginPath();
       ctx.arc(centerX, centerY, radius, Math.PI, 2 * Math.PI);
       const bgGradient = ctx.createLinearGradient(0, 0, width, 0);
@@ -723,20 +737,153 @@
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // Speed labels on arch - IMPROVED to ensure all values are visible
+      // Speed labels
       const speeds = [0, 10, 50, 100, 200, 500, 1000];
-      ctx.font = `8px 'Exo 2', sans-serif`; // Increased font size
+      ctx.font = `10px 'Exo 2', sans-serif`;
       ctx.fillStyle = '#e0e0ff';
       ctx.textAlign = 'center';
-      
+
       speeds.forEach((s) => {
         const logS = Math.log10(s + 1);
         const tickAngle = Math.PI + (logS / logMax) * Math.PI;
-        
-        // Calculate position with adjusted radius to prevent overlap
-        const labelRadius = radius + 15; // Reduced distance for better visibility
+        const labelRadius = radius + 20;
         const labelX = centerX + labelRadius * Math.cos(tickAngle);
         const labelY = centerY + labelRadius * Math.sin(tickAngle);
-        
-        // Create tick marks
+
+        // Tick marks
         const tickStartX = centerX + (radius - 5) * Math.cos(tickAngle);
+        const tickStartY = centerY + (radius - 5) * Math.sin(tickAngle);
+        const tickEndX = centerX + (radius + 5) * Math.cos(tickAngle);
+        const tickEndY = centerY + (radius + 5) * Math.sin(tickAngle);
+        ctx.beginPath();
+        ctx.moveTo(tickStartX, tickStartY);
+        ctx.lineTo(tickEndX, tickEndY);
+        ctx.strokeStyle = '#e0e0ff';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // Label
+        ctx.fillText(s, labelX, labelY);
+      });
+    }
+
+    // Graph
+    let speedData = [];
+    function drawGraph() {
+      const canvas = document.getElementById('graph-canvas');
+      const ctx = canvas.getContext('2d');
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
+      canvas.width = width * devicePixelRatio;
+      canvas.height = height * devicePixelRatio;
+      ctx.scale(devicePixelRatio, devicePixelRatio);
+
+      ctx.clearRect(0, 0, width, height);
+      const maxSpeed = 1000;
+      const logMax = Math.log10(maxSpeed + 1);
+      const maxPoints = 50;
+
+      // Draw grid and labels
+      const speeds = [0, 10, 50, 100, 200, 500, 1000];
+      ctx.font = `8px 'Exo 2', sans-serif`;
+      ctx.fillStyle = '#e0e0ff';
+      ctx.textAlign = 'right';
+      ctx.strokeStyle = 'rgba(79, 172, 254, 0.2)';
+      ctx.lineWidth = 1;
+
+      speeds.forEach((s) => {
+        const logS = Math.log10(s + 1);
+        const y = height - (logS / logMax) * height;
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+        ctx.fillText(s, 30, y + 3);
+      });
+
+      // Draw speed data
+      if (speedData.length > maxPoints) speedData.shift();
+      ctx.beginPath();
+      ctx.strokeStyle = '#00f2fe';
+      ctx.lineWidth = 2;
+
+      speedData.forEach((speed, i) => {
+        const x = (i / (maxPoints - 1)) * width;
+        const logSpeed = Math.log10(speed + 1);
+        const y = height - (logSpeed / logMax) * height;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+    }
+
+    // Speed Test Simulation
+    async function runSpeedTest() {
+      const startButton = document.getElementById('start-button');
+      const testAgainButton = document.getElementById('test-again-button');
+      const testType = document.getElementById('test-type');
+      const progressBar = document.getElementById('progress-bar');
+      const speedValue = document.getElementById('speed-value');
+      const loading = document.getElementById('loading');
+      const graphContainer = document.getElementById('graph-container');
+      const resultsContainer = document.getElementById('results-container');
+      const downloadResult = document.getElementById('download-result');
+      const pingResult = document.getElementById('ping-result');
+
+      startButton.classList.add('hidden');
+      testAgainButton.classList.add('hidden');
+      loading.classList.remove('hidden');
+      graphContainer.classList.remove('hidden');
+      resultsContainer.classList.add('hidden');
+      speedData = [];
+      triggerBigBang();
+
+      // Simulate Ping Test
+      testType.textContent = 'Ping Test';
+      progressBar.style.width = '33%';
+      let ping = 0;
+      await new Promise(resolve => setTimeout(() => {
+        ping = Math.random() * 50 + 10; // 10-60ms
+        pingResult.textContent = ping.toFixed(1) + ' ms';
+        resolve();
+      }, 2000));
+
+      // Simulate Download Test
+      testType.textContent = 'Download Test';
+      progressBar.style.width = '66%';
+      let downloadSpeed = 0;
+      const startTime = performance.now();
+      const testDuration = 5000; // 5 seconds
+      while (performance.now() - startTime < testDuration) {
+        downloadSpeed = Math.random() * 200 + 50; // 50-250 Mbps
+        speedValue.textContent = downloadSpeed.toFixed(1);
+        drawSpeedometer(downloadSpeed);
+        speedData.push(downloadSpeed);
+        drawGraph();
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+      downloadResult.textContent = downloadSpeed.toFixed(1) + ' Mbps';
+
+      // Complete Test
+      testType.textContent = 'Test Complete';
+      progressBar.style.width = '100%';
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      loading.classList.add('hidden');
+      resultsContainer.classList.remove('hidden');
+      testAgainButton.classList.remove('hidden');
+    }
+
+    // Event Listeners
+    document.getElementById('start-button').addEventListener('click', runSpeedTest);
+    document.getElementById('test-again-button').addEventListener('click', runSpeedTest);
+
+    document.getElementById('close-overlay').addEventListener('click', () => {
+      document.getElementById('overlay').classList.remove('active');
+      document.getElementById('speed-frame').src = '';
+    });
+
+    // Initialize Speedometer
+    drawSpeedometer(0);
+  </script>
+</body>
+</html>
