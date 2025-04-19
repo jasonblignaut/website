@@ -36,7 +36,7 @@
       width: 100%;
       background: var(--dark-bg);
       color: var(--light-aura);
-      overflow: hidden; /* Disable scrolling */
+      overflow: hidden;
     }
 
     #vanta-bg {
@@ -169,8 +169,8 @@
       backdrop-filter: blur(10px);
       border: 1px solid rgba(79, 172, 254, 0.3);
       width: 100%;
-      max-height: calc(100vh - 150px); /* Fit within viewport */
-      overflow: hidden;
+      max-height: calc(100vh - 120px);
+      overflow: visible;
     }
 
     .test-type {
@@ -201,9 +201,9 @@
 
     .speedometer {
       position: relative;
-      width: clamp(150px, 50vw, 250px);
+      width: clamp(140px, 45vw, 240px);
       height: clamp(75px, 25vw, 125px);
-      margin: 0 auto 2rem;
+      margin: 0 auto 1rem;
     }
 
     .speedometer-canvas {
@@ -258,12 +258,12 @@
       flex-wrap: wrap;
       justify-content: space-around;
       gap: 0.5rem;
-      margin-top: 0.5rem;
+      margin-top: 0.3rem;
     }
 
     .result-box {
       text-align: center;
-      padding: 0.5rem;
+      padding: 0.3rem;
       border-radius: 8px;
       background: rgba(13, 25, 50, 0.7);
       flex: 1;
@@ -289,7 +289,7 @@
       display: flex;
       justify-content: center;
       gap: 0.8rem;
-      margin-top: 1rem;
+      margin-top: 0.5rem;
     }
 
     .start-button, .test-again-button {
@@ -323,7 +323,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-top: 0.5rem;
+      margin-top: 0.3rem;
     }
 
     .loading img {
@@ -380,7 +380,7 @@
 
     footer {
       position: absolute;
-      bottom: 0.3rem;
+      bottom: 0.2rem;
       width: 100%;
       text-align: center;
       font-family: 'Exo 2', sans-serif;
@@ -414,7 +414,9 @@
       .ip-display { font-size: clamp(0.8rem, 2vw, 1.2rem); }
       .results { flex-direction: column; }
       .result-box { width: 100%; min-width: unset; }
-      .button-container { flex-direction: column; gap: 0.5rem; }
+      .button-container { flex-direction: column; gap: 0.3rem; }
+      .speedometer { width: clamp(100px, 35vw, 160px); height: clamp(50px, 20vw, 80px); }
+      .graph-container { height: 80px; }
     }
   </style>
 </head>
@@ -663,7 +665,7 @@
       ctx.scale(devicePixelRatio, devicePixelRatio);
 
       ctx.clearRect(0, 0, width, height);
-      const maxSpeed = 1000; // Match graph range
+      const maxSpeed = 1000;
       const logMax = Math.log10(maxSpeed + 1);
       const logSpeed = Math.log10(speed + 1);
       const angle = (logSpeed / logMax) * Math.PI;
@@ -723,14 +725,14 @@
 
       // Speed labels on arch
       const speeds = [0, 10, 50, 100, 200, 500, 1000];
-      ctx.font = `6px 'Exo 2', sans-serif`;
+      ctx.font = `7px 'Exo 2', sans-serif`;
       ctx.fillStyle = '#e0e0ff';
       ctx.textAlign = 'center';
       speeds.forEach((s) => {
         const logS = Math.log10(s + 1);
         const tickAngle = Math.PI + (logS / logMax) * Math.PI;
-        const labelX = centerX + (radius + 30) * Math.cos(tickAngle);
-        const labelY = centerY + (radius + 30) * Math.sin(tickAngle);
+        const labelX = centerX + (radius + 35) * Math.cos(tickAngle);
+        const labelY = centerY + (radius + 35) * Math.sin(tickAngle) - 2;
         ctx.fillText(s, labelX, labelY);
       });
     }
@@ -764,7 +766,7 @@
       ctx.clearRect(0, 0, width, height);
       const maxSpeed = 1000;
       const maxTime = 15;
-      const padding = 45;
+      const padding = 50;
 
       // Axes
       ctx.beginPath();
@@ -839,7 +841,7 @@
     function initializeSpeedTest() {
       const startButton = document.getElementById('start-button');
       const testAgainButton = document.getElementById('test-again-button');
-      const progressBar = document.getElementById('progress-bar');
+      const progressBar = document.getElementaliById('progress-bar');
       const testType = document.getElementById('test-type');
       const speedValue = document.getElementById('speed-value');
       const graphContainer = document.getElementById('graph-container');
