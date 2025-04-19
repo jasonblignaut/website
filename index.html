@@ -826,23 +826,25 @@
     async function fetchLocationInfo() {
       const networkInfo = document.getElementById('network-info');
       try {
-        let response = await fetch('https://ip-api.com/json/?fields=status,message,country,city,isp', { signal: AbortSignal.timeout(5000) });
-        let data = await response.json();
-        if (data.status !== 'success') throw new Error(data.message || 'Failed to fetch location info');
+        // Try ipinfo.io first
+        const response = await fetch('https://ipinfo.io/json', { signal: AbortSignal.timeout(5000) });
+        const data = await response.json();
         const info = {
-          isp: data.isp || 'N/A',
+          isp: data.org || 'N/A',
           city: data.city || 'N/A',
           country: data.country || 'N/A'
         };
         networkInfo.innerHTML = `ISP: ${info.isp}<br>Location: ${info.city}, ${info.country}`;
         return info;
       } catch (error) {
-        log('ip-api.com fetch error: ' + error.message);
+        log('ipinfo.io fetch error: ' + error.message);
         try {
-          const response = await fetch('https://ipinfo.io/json', { signal: AbortSignal.timeout(5000) });
+          // Fallback to ip-api.com
+          const response = await fetch('https://ip-api.com/json/?fields=status,message,country,city,isp', { signal: AbortSignal.timeout(5000) });
           const data = await response.json();
+          if (data.status !== 'success') throw new Error(data.message || 'Failed to fetch location info');
           const info = {
-            isp: data.org || 'N/A',
+            isp: data.isp || 'N/A',
             city: data.city || 'N/A',
             country: data.country || 'N/A'
           };
@@ -852,7 +854,7 @@
           networkInfo.innerHTML = `ISP: N/A<br>Location: N/A`;
           document.getElementById('error-message').textContent = 'Failed to fetch network info';
           document.getElementById('error-message').style.display = 'block';
-          log('ipinfo.io fetch error: ' + fallbackError.message);
+          log('ip-api.com fetch error: ' + fallbackError.message);
           return { isp: 'N/A', city: 'N/A', country: 'N/A' };
         }
       }
@@ -942,7 +944,7 @@
       ctx.stroke();
 
       // Draw speed scale and labels
-      ctx.font = `12px 'Exo 2', sans-serif`;
+      ctx.font = `10px 'Exo 2', sans-serif`;
       ctx.fillStyle = '#e0e0ff';
       ctx.textAlign = 'center';
 
@@ -974,12 +976,11 @@
         ctx.lineWidth = 1;
         ctx.stroke();
 
-        if ([0, 5, 30, 50, 100, 500, 1000].includes(s)) {
-          let xOffset = 0;
-          if (s === 0) xOffset = 10;
-          if (s === 1000) xOffset = -10;
-          ctx.fillText(s, labelX + xOffset, labelY + 5);
-        }
+        // Display all labels as requested
+        let xOffset = 0;
+        if (s === 0) xOffset = 10;
+        if (s === 1000) xOffset = -10;
+        ctx.fillText(s, labelX + xOffset, labelY + 5);
       });
     }
 
@@ -1179,6 +1180,7 @@
       const speedValue = document.getElementById('speed-value');
       const graphContainer = document.getElementById('graph-container');
       const resultsContainer = document.getElementById('results-container');
+      const historyContainer = document.getElementById('history-container');
       const downloadResult = document.getElementById('download-result');
       const pingResult = document.getElementById('ping-result');
       const loading = document.getElementById('loading');
@@ -1195,7 +1197,7 @@
       async function runPingTest() {
         testType.textContent = 'Testing Ping';
         const pingTimes = [];
-        for (let i = 0; i < 10 && testActive; i++) {
+        for ( hopedlet i = 0; i < 10 && testActive; i++) {
           try {
             const start = performance.now();
             await fetch(`${CONFIG.testServer.pingResource}?t=${Date.now()}`, { cache: 'no-store', signal: AbortSignal.timeout(2000) });
@@ -1295,6 +1297,7 @@
       }
 
       async function runTest() {
+        log('Starting speed test...');
         testActive = true;
         startButton.disabled = true;
         startButton.style.visibility = 'hidden';
