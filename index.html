@@ -165,7 +165,7 @@
       backdrop-filter: blur(10px);
       border: 1px solid rgba(79, 172, 254, 0.3);
       width: 100%;
-      max-height: 50vh;
+      max-height: 60vh;
       overflow: hidden;
     }
 
@@ -193,6 +193,43 @@
       border-radius: 3px;
       transition: width 0.3s linear;
       box-shadow: 0 0 10px rgba(73, 115, 255, 0.6);
+    }
+
+    .speedometer {
+      position: relative;
+      width: 200px;
+      height: 100px;
+      margin: 0 auto 0.5rem;
+      overflow: hidden;
+    }
+
+    .speedometer-canvas {
+      width: 100%;
+      height: 100%;
+    }
+
+    .speed-value {
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: clamp(1rem, 2vw, 1.5rem);
+      font-weight: 700;
+      color: #e0e0ff;
+      z-index: 5;
+      text-shadow: 0 0 10px rgba(73, 115, 255, 0.8);
+    }
+
+    .speed-unit {
+      position: absolute;
+      bottom: -20px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: clamp(0.5rem, 0.8vw, 0.7rem);
+      color: #8492b4;
+      z-index: 5;
     }
 
     .graph-container {
@@ -229,16 +266,9 @@
       width: 100%;
     }
 
-    .graph-dot {
-      position: absolute;
-      bottom: 0;
-      width: 6px;
-      height: 6px;
-      background: #00f2fe;
-      border-radius: 50%;
-      transform: translateX(-50%);
-      box-shadow: 0 0 5px rgba(73, 115, 255, 0.8);
-      transition: bottom 0.2s ease;
+    .graph-canvas {
+      width: 100%;
+      height: 100%;
     }
 
     .grid-lines {
@@ -373,6 +403,7 @@
       .ip-display { font-size: clamp(1rem, 2.5vw, 1.5rem); }
       .network-info { font-size: clamp(0.5rem, 0.8vw, 0.7rem); }
       .start-button { font-size: clamp(0.6rem, 1vw, 0.8rem); }
+      .speedometer { width: 150px; height: 75px; }
       .graph-container { height: 100px; }
       .iframe-container { height: 120px; }
       .y-axis { width: 25px; font-size: 0.6rem; }
@@ -384,6 +415,7 @@
       .ip-display { font-size: clamp(0.8rem, 2vw, 1.2rem); }
       .results { flex-direction: column; gap: 0.5rem; }
       .result-box { width: 100%; }
+      .speedometer { width: 120px; height: 60px; }
       .iframe-container { height: 100px; }
       .y-axis { width: 20px; font-size: 0.5rem; }
     }
@@ -409,6 +441,11 @@
       <div class="progress-bar">
         <div class="progress" id="progressBar"></div>
       </div>
+      <div class="speedometer hidden" id="speedometer">
+        <canvas class="speedometer-canvas" id="speedometerCanvas"></canvas>
+        <div class="speed-value" id="speedValue">0</div>
+        <div class="speed-unit">Mbps</div>
+      </div>
       <div class="graph-container hidden" id="graphContainer">
         <div class="y-axis" id="yAxis">
           <div class="y-axis-label">1000</div>
@@ -423,7 +460,9 @@
           <div class="y-axis-label">0</div>
         </div>
         <div class="grid-lines" id="gridLines"></div>
-        <div class="graph" id="graph"></div>
+        <div class="graph">
+          <canvas class="graph-canvas" id="graphCanvas"></canvas>
+        </div>
       </div>
       <div class="results hidden" id="resultsContainer">
         <div class="result-box">
@@ -619,7 +658,7 @@
     const CONFIG = {
       testServer: {
         downloadUrl: 'https://speed.cloudflare.com/__down?bytes=25000000',
-        pingResource: 'https://speed.cloudflare.com/__down?bytes=1000', // Small file for ping
+        pingResource: 'https://speed.cloudflare.com/__down?bytes=1000',
       },
       testDurations: { download: 10000, ping: 3000 },
       maxTestTimeout: 15000,
@@ -629,8 +668,11 @@
       const startButton = document.getElementById('startButton');
       const progressBar = document.getElementById('progressBar');
       const testType = document.getElementById('testType');
+      const speedometer = document.getElementById('speedometer');
+      const speedometerCanvas = document.getElementById('speedometerCanvas');
+      const speedValue = document.getElementById('speedValue');
       const graphContainer = document.getElementById('graphContainer');
-      const graph = document.getElementById('graph');
+      const graphCanvas = document.getElementById('graphCanvas');
       const resultsContainer = document.getElementById('resultsContainer');
       const downloadResult = document.getElementById('downloadResult');
       const pingResult = document.getElementById('pingResult');
@@ -643,6 +685,76 @@
       let testData = [];
       let finalDownloadSpeed = 0;
       let finalPing = 0;
+      let currentSpeed = 0;
+      let animationFrame = null;
+
+      // Speedometer Canvas Setup
+      const speedometerCtx = speedometerCanvas.getContext('2d');
+      let speedometerWidth, speedometerHeight;
+      function resizeSpeedometer() {
+        speedometerWidth = speedometerCanvas.clientWidth;
+        speedometerHeight = speedometerCanvas.clientHeight;
+        speedometerCanvas.width = speedometerWidth * devicePixelRatio;
+        speedometerCanvas.height = speedometerHeight * devicePixelRatio;
+        speedometerCtx.scale(devicePixelRatio, devicePixelRatio);
+      }
+      resizeSpeedometer();
+      window.addEventListener('resize', resizeSpeedometer, { passive: true });
+
+      function drawSpeedometer(speed) {
+        speedometerCtx.clearRect(0, 0, speedometerWidth, speedometerHeight);
+        const maxSpeed = 1000;
+        const angle = (speed / maxSpeed) * Math.PI; // 0 to 180 degrees
+        const centerX = speedometerWidth / 2;
+        const centerY = speedometerHeight;
+        const radius = Math.min(speedometerWidth / 2, speedometerHeight) * 0.8;
+
+        // Background arc
+        speedometerCtx.beginPath();
+        speedometerCtx.arc(centerX, centerY, radius, Math.PI, 2 * Math.PI);
+        speedometerCtx.strokeStyle = 'rgba(73, 115, 255, 0.3)';
+        speedometerCtx.lineWidth = 10;
+        speedometerCtx.stroke();
+
+        // Speed arc
+        speedometerCtx.beginPath();
+        speedometerCtx.arc(centerX, centerY, radius, Math.PI, Math.PI + angle);
+        const gradient = speedometerCtx.createLinearGradient(0, 0, speedometerWidth, 0);
+        gradient.addColorStop(0, '#4facfe');
+        gradient.addColorStop(1, '#00f2fe');
+        speedometerCtx.strokeStyle = gradient;
+        speedometerCtx.lineWidth = 10;
+        speedometerCtx.stroke();
+
+        // Needle
+        speedometerCtx.save();
+        speedometerCtx.translate(centerX, centerY);
+        speedometerCtx.rotate(Math.PI + angle);
+        speedometerCtx.beginPath();
+        speedometerCtx.moveTo(0, 0);
+        speedometerCtx.lineTo(radius - 10, 0);
+        speedometerCtx.strokeStyle = '#e0e0ff';
+        speedometerCtx.lineWidth = 2;
+        speedometerCtx.stroke();
+        speedometerCtx.beginPath();
+        speedometerCtx.arc(0, 0, 5, 0, 2 * Math.PI);
+        speedometerCtx.fillStyle = '#e0e0ff';
+        speedometerCtx.fill();
+        speedometerCtx.restore();
+      }
+
+      // Graph Canvas Setup
+      const graphCtx = graphCanvas.getContext('2d');
+      let graphWidth, graphHeight;
+      function resizeGraph() {
+        graphWidth = graphCanvas.clientWidth;
+        graphHeight = graphCanvas.clientHeight;
+        graphCanvas.width = graphWidth * devicePixelRatio;
+        graphCanvas.height = graphHeight * devicePixelRatio;
+        graphCtx.scale(devicePixelRatio, devicePixelRatio);
+      }
+      resizeGraph();
+      window.addEventListener('resize', resizeGraph, { passive: true });
 
       // Set up grid lines
       function setupGridLines() {
@@ -657,20 +769,49 @@
         });
       }
 
-      // Map speed to Y-axis height (logarithmic scale for better visualization)
+      // Map speed to Y-axis height (logarithmic scale)
       function speedToHeight(speed) {
         const maxScale = 1000;
         const logScale = Math.log10(1 + speed) / Math.log10(1 + maxScale);
         return logScale * 100;
       }
 
-      // Plot a dot on the graph
-      function plotGraphDot(timePercentage, speed) {
-        const dot = document.createElement('div');
-        dot.className = 'graph-dot';
-        dot.style.left = `${timePercentage * 100}%`;
-        dot.style.bottom = `${speedToHeight(speed)}%`;
-        graph.appendChild(dot);
+      // Smooth graph drawing
+      let graphPoints = [];
+      function drawGraph() {
+        graphCtx.clearRect(0, 0, graphWidth, graphHeight);
+        if (graphPoints.length < 2) return;
+
+        // Draw area fill
+        graphCtx.beginPath();
+        graphCtx.moveTo(0, graphHeight);
+        for (let i = 0; i < graphPoints.length; i++) {
+          const x = graphPoints[i].x * graphWidth;
+          const y = (1 - graphPoints[i].y) * graphHeight;
+          graphCtx.lineTo(x, y);
+        }
+        graphCtx.lineTo(graphPoints[graphPoints.length - 1].x * graphWidth, graphHeight);
+        graphCtx.closePath();
+        const gradient = graphCtx.createLinearGradient(0, 0, 0, graphHeight);
+        gradient.addColorStop(0, 'rgba(73, 115, 255, 0.2)');
+        gradient.addColorStop(1, 'rgba(0, 242, 254, 0)');
+        graphCtx.fillStyle = gradient;
+        graphCtx.fill();
+
+        // Draw line
+        graphCtx.beginPath();
+        graphCtx.moveTo(graphPoints[0].x * graphWidth, (1 - graphPoints[0].y) * graphHeight);
+        for (let i = 1; i < graphPoints.length; i++) {
+          const x = graphPoints[i].x * graphWidth;
+          const y = (1 - graphPoints[i].y) * graphHeight;
+          graphCtx.lineTo(x, y);
+        }
+        const lineGradient = graphCtx.createLinearGradient(0, 0, graphWidth, 0);
+        lineGradient.addColorStop(0, '#4facfe');
+        lineGradient.addColorStop(1, '#00f2fe');
+        graphCtx.strokeStyle = lineGradient;
+        graphCtx.lineWidth = 2;
+        graphCtx.stroke();
       }
 
       async function runPingTest() {
@@ -727,12 +868,16 @@
             }
             totalBytes += value ? value.length : 0;
             const elapsed = (performance.now() - startTime) / 1000;
-            if (performance.now() - lastUpdate >= 1000) { // Update every second
+            if (performance.now() - lastUpdate >= 100) { // Update every 100ms for smoothness
               const speed = ((totalBytes * 8) / elapsed) / (1024 * 1024);
+              currentSpeed = speed;
               const timePercentage = elapsed / (CONFIG.testDurations.download / 1000);
               testData.push({ time: elapsed, speed });
-              plotGraphDot(timePercentage, speed);
+              graphPoints.push({ x: timePercentage, y: speedToHeight(speed) / 100 });
               progressBar.style.width = `${timePercentage * 100}%`;
+              speedValue.textContent = speed.toFixed(1);
+              drawSpeedometer(speed);
+              drawGraph();
               lastUpdate = performance.now();
             }
             if (elapsed >= CONFIG.testDurations.download / 1000) {
@@ -774,8 +919,13 @@
       async function runTest() {
         testActive = true;
         testData = [];
-        graph.innerHTML = '';
+        graphPoints = [];
+        currentSpeed = 0;
+        speedValue.textContent = '0';
+        drawSpeedometer(0);
+        graphCtx.clearRect(0, 0, graphWidth, graphHeight);
         progressBar.style.width = '0';
+        speedometer.classList.remove('hidden');
         graphContainer.classList.remove('hidden');
         resultsContainer.classList.add('hidden');
         iframeContainer.classList.remove('active');
