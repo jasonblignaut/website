@@ -8,7 +8,7 @@
   <meta name="author" content="Labverse Team">
   <meta property="og:title" content="Labverse Speed Test">
   <meta property="og:description" content="Discover your public IP and test your network speed with mesmerizing sacred geometry animations.">
-  <meta property="og:image" content="https://labverse.co.za/assets/labverse-og-image.png">
+  <meta property="og:image" content="/assets/labverse-og-image.png">
   <meta property="og:url" content="https://labverse.co.za">
   <meta name="twitter:card" content="summary_large_image">
   <title>Labverse Speed Test</title>
@@ -17,35 +17,39 @@
     :root {
       --matrix-blue: #00b7eb;
       --cosmic-magenta: #ff00cc;
-      --cosmic-gold: #ffd700;
       --cosmic-cyan: #00f2fe;
       --light-aura: #e6f0ff;
       --dark-bg: #070b1a;
       --card-bg: rgba(13, 20, 43, 0.7);
       --glow-radius: 15px;
     }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       font-family: 'Segoe UI', 'Source Code Pro', monospace;
     }
+
     html, body {
       height: 100vh;
       width: 100%;
       background: var(--dark-bg);
       color: var(--light-aura);
       overflow-x: hidden;
+      overflow-y: auto;
     }
+
     #vanta-bg {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
       height: 100%;
+      width: 100%;
       z-index: 1;
       opacity: 0.5;
     }
+
     #background-canvas {
       position: fixed;
       top: 0;
@@ -55,6 +59,7 @@
       z-index: 2;
       opacity: 0.8;
     }
+
     .container {
       position: relative;
       z-index: 10;
@@ -69,11 +74,12 @@
       text-align: center;
       padding: 1rem;
     }
+
     header {
-      text-align: center;
       padding: 0.5rem 0;
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
     }
+
     h1 {
       font-family: 'Orbitron', sans-serif;
       font-size: clamp(1.5rem, 5vw, 2.5rem);
@@ -84,31 +90,34 @@
       letter-spacing: 2px;
       animation: glow 2s ease-in-out infinite alternate;
     }
+
     @keyframes glow {
       from { text-shadow: 0 0 15px var(--cosmic-cyan); }
       to { text-shadow: 0 0 30px var(--cosmic-magenta); }
     }
+
     .ip-container {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.75rem;
       margin-bottom: 1rem;
       width: 100%;
       max-width: 400px;
     }
+
     .ip-display {
       font-family: 'Source Code Pro', monospace;
       font-size: clamp(1.2rem, 3vw, 2rem);
       color: var(--light-aura);
       background: var(--card-bg);
-      padding: 0.5rem 1rem;
+      padding: 0.75rem 1.5rem;
       border-radius: 8px;
       border: 1px solid rgba(79, 172, 254, 0.3);
       box-shadow: 0 0 15px var(--matrix-blue);
-      text-shadow: 0 0 10px var(--matrix-blue);
       word-break: break-all;
     }
+
     .copy-btn {
       background: linear-gradient(90deg, #4facfe, #00f2fe);
       color: var(--dark-bg);
@@ -122,18 +131,21 @@
       box-shadow: 0 0 20px rgba(73, 115, 255, 0.4);
       transition: all 0.3s ease;
     }
+
     .copy-btn:hover {
       transform: scale(1.05);
       box-shadow: 0 0 30px rgba(73, 115, 255, 0.6);
     }
+
     .network-info {
       font-family: 'Exo 2', sans-serif;
       font-size: clamp(0.6rem, 1vw, 0.8rem);
       color: #8492b4;
       max-width: 300px;
       line-height: 1.4;
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
     }
+
     .error-message {
       font-family: 'Exo 2', sans-serif;
       font-size: clamp(0.6rem, 1vw, 0.8rem);
@@ -141,10 +153,11 @@
       margin-top: 0.5rem;
       display: none;
     }
+
     .speed-test-card {
       background: var(--card-bg);
       border-radius: 15px;
-      padding: 1rem;
+      padding: 1.5rem;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 50px rgba(73, 115, 255, 0.15) inset;
       backdrop-filter: blur(10px);
       border: 1px solid rgba(79, 172, 254, 0.3);
@@ -152,21 +165,24 @@
       max-height: 70vh;
       overflow-y: auto;
     }
+
     .test-type {
       font-family: 'Orbitron', sans-serif;
       font-size: clamp(1rem, 2vw, 1.5rem);
       text-align: center;
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
       color: #00f2fe;
     }
+
     .progress-bar {
       height: 6px;
       width: 100%;
       background: rgba(13, 25, 50, 0.7);
       border-radius: 3px;
       overflow: hidden;
-      margin: 0.5rem 0;
+      margin-bottom: 1rem;
     }
+
     .progress {
       height: 100%;
       width: 0;
@@ -175,99 +191,135 @@
       transition: width 0.3s linear;
       box-shadow: 0 0 10px rgba(73, 115, 255, 0.6);
     }
+
     .speedometer {
       position: relative;
-      width: 250px;
-      height: 125px;
+      width: clamp(150px, 50vw, 250px);
+      height: clamp(75px, 25vw, 125px);
       margin: 0 auto 1rem;
     }
+
     .speedometer-canvas {
       width: 100%;
       height: 100%;
       display: block;
     }
+
     .speed-value {
       position: absolute;
-      bottom: -5px;
+      bottom: -0.5rem;
       left: 0;
       right: 0;
       text-align: center;
+      font-family: 'Exo 2', sans-serif;
       font-size: clamp(1rem, 2vw, 1.5rem);
       font-weight: 700;
       color: #e0e0ff;
       z-index: 5;
       text-shadow: 0 0 10px rgba(73, 115, 255, 0.8);
     }
+
     .speed-unit {
       position: absolute;
-      bottom: -20px;
+      bottom: -1.5rem;
       left: 0;
       right: 0;
       text-align: center;
+      font-family: 'Exo 2', sans-serif;
       font-size: clamp(0.5rem, 0.8vw, 0.7rem);
       color: #8492b4;
       z-index: 5;
     }
+
     .graph-container {
-      height: 150px;
       position: relative;
-      margin: 0.5rem 0;
+      height: 150px;
+      margin: 1rem 0;
+      background: rgba(13, 25, 50, 0.5);
+      border-radius: 8px;
+      padding: 10px;
     }
+
     .graph-canvas {
       width: 100%;
       height: 100%;
       display: block;
     }
+
     .results {
       display: flex;
-      justify-content: space-around;
-      margin-top: 0.5rem;
       flex-wrap: wrap;
+      justify-content: space-around;
+      gap: 0.5rem;
+      margin-top: 1rem;
     }
+
     .result-box {
       text-align: center;
-      padding: 0.5rem;
+      padding: 0.75rem;
       border-radius: 8px;
       background: rgba(13, 25, 50, 0.7);
-      width: 45%;
+      flex: 1;
       min-width: 120px;
       border: 1px solid rgba(79, 172, 254, 0.2);
-      margin-bottom: 0.5rem;
     }
+
     .result-label {
+      font-family: 'Exo 2', sans-serif;
       font-size: clamp(0.6rem, 1vw, 0.8rem);
       color: #8492b4;
       margin-bottom: 0.3rem;
     }
+
     .result-value {
+      font-family: 'Exo 2', sans-serif;
       font-size: clamp(0.8rem, 1.5vw, 1.2rem);
       font-weight: bold;
       color: #e0e0ff;
     }
-    .start-button {
+
+    .button-container {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .start-button, .test-again-button {
       background: linear-gradient(90deg, #4facfe, #00f2fe);
       border: none;
       color: var(--dark-bg);
       padding: 0.5rem 1.5rem;
+      font-family: 'Orbitron', sans-serif;
       font-size: clamp(0.7rem, 1.2vw, 0.9rem);
       font-weight: bold;
       border-radius: 20px;
       cursor: pointer;
-      margin: 0.5rem auto;
-      display: block;
       transition: all 0.3s ease;
       box-shadow: 0 0 20px rgba(73, 115, 255, 0.4);
     }
-    .start-button:hover {
+
+    .start-button:hover, .test-again-button:hover {
       transform: translateY(-2px);
       box-shadow: 0 0 30px rgba(73, 115, 255, 0.6);
     }
-    .start-button:active {
+
+    .start-button:active, .test-again-button:active {
       transform: translateY(1px);
     }
+
     .hidden {
       display: none;
     }
+
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
     .overlay {
       display: none;
       position: fixed;
@@ -282,9 +334,11 @@
       flex-direction: column;
       padding: 1rem;
     }
+
     .overlay.active {
       display: flex;
     }
+
     .overlay iframe {
       width: 100%;
       height: 80%;
@@ -292,11 +346,13 @@
       border: none;
       border-radius: 8px;
     }
+
     .close-button {
       background: linear-gradient(90deg, #ff5555, #ff7777);
       border: none;
       color: var(--light-aura);
       padding: 0.5rem 1.5rem;
+      font-family: 'Orbitron', sans-serif;
       font-size: clamp(0.7rem, 1.2vw, 0.9rem);
       font-weight: bold;
       border-radius: 20px;
@@ -305,53 +361,47 @@
       transition: all 0.3s ease;
       box-shadow: 0 0 20px rgba(255, 85, 85, 0.4);
     }
+
     .close-button:hover {
       transform: translateY(-2px);
       box-shadow: 0 0 30px rgba(255, 85, 85, 0.6);
     }
+
     footer {
       position: absolute;
       bottom: 0.5rem;
       width: 100%;
       text-align: center;
+      font-family: 'Exo 2', sans-serif;
       font-size: clamp(0.5rem, 0.8vw, 0.7rem);
       color: #8492b4;
       z-index: 10;
     }
+
     footer a {
       color: #00f2fe;
       text-decoration: none;
     }
+
     footer a:hover {
       text-decoration: underline;
     }
-    .loading {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-top: 0.5rem;
-      justify-content: center;
-    }
-    .loading img {
-      width: 1.5rem;
-      height: 1.5rem;
-    }
+
     @media (max-width: 768px) {
       .container { padding: 0.5rem; }
       h1 { font-size: clamp(1.2rem, 4vw, 2rem); }
       .ip-display { font-size: clamp(1rem, 2.5vw, 1.5rem); }
       .network-info { font-size: clamp(0.5rem, 0.8vw, 0.7rem); }
-      .start-button { font-size: clamp(0.6rem, 1vw, 0.8rem); }
-      .speedometer { width: 150px; height: 75px; }
-      .graph-container { height: 100px; }
+      .speedometer { width: clamp(120px, 40vw, 180px); height: clamp(60px, 20vw, 90px); }
+      .graph-container { height: 120px; }
     }
+
     @media (max-width: 480px) {
       h1 { font-size: clamp(1rem, 3vw, 1.5rem); }
-      .ip-container { gap: 0.3rem; }
+      .ip-container { gap: 0.5rem; }
       .ip-display { font-size: clamp(0.8rem, 2vw, 1.2rem); }
-      .results { flex-direction: column; gap: 0.5rem; }
+      .results { flex-direction: column; }
       .result-box { width: 100%; }
-      .speedometer { width: 120px; height: 60px; }
     }
   </style>
 </head>
@@ -368,7 +418,7 @@
       <button class="copy-btn" id="copy-ip-btn" aria-label="Copy IP address">Copy IP</button>
     </div>
     <div class="network-info" id="network-info" aria-live="polite">Fetching network info...</div>
-    <div class="error-message" id="error-message" aria-live="assertive">Error occurred</div>
+    <div class="error-message" id="error-message">Error fetching data</div>
     <div class="speed-test-card">
       <div class="test-type" id="test-type">Speed Test</div>
       <div class="progress-bar">
@@ -392,10 +442,13 @@
           <div class="result-value" id="ping-result">0 ms</div>
         </div>
       </div>
-      <button class="start-button" id="start-button">Start Test</button>
+      <div class="button-container">
+        <button class="start-button" id="start-button">Start Test</button>
+        <button class="test-again-button hidden" id="test-again-button">Test Again</button>
+      </div>
       <div class="loading hidden" id="loading">
-        <img src="/assets/loading.svg" alt="Loading" class="animate-spin">
-        <span>Running test...</span>
+        <img src="/assets/loading.svg" alt="Loading" class="w-6 h-6 animate-spin">
+        <span class="text-sm">Running test...</span>
       </div>
     </div>
   </div>
@@ -412,7 +465,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.net.min.js"></script>
   <script>
-    // Initialize Vanta.js
+    // Initialize Vanta.js background
     VANTA.NET({
       el: "#vanta-bg",
       mouseControls: true,
@@ -422,11 +475,15 @@
       scale: 1,
       scaleMobile: 1,
       color: 0x00ffff,
-      backgroundColor: 0x070b1a
+      backgroundColor: 0x070b1a,
+      points: 10,
+      maxDistance: 20,
+      spacing: 15
     });
 
     // Utility Functions
     const log = (message) => console.log('[DEBUG] ' + message);
+
     const copyToClipboard = (text) => {
       navigator.clipboard.writeText(text).catch(() => {
         const textarea = document.createElement('textarea');
@@ -441,15 +498,21 @@
     // Particle Animations
     let particles = [];
     let mousePos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-    const canvas = document.getElementById('background-canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    const particleCanvas = document.getElementById('background-canvas');
+    const particleCtx = particleCanvas.getContext('2d');
+
+    function resizeParticleCanvas() {
+      particleCanvas.width = window.innerWidth * devicePixelRatio;
+      particleCanvas.height = window.innerHeight * devicePixelRatio;
+      particleCtx.scale(devicePixelRatio, devicePixelRatio);
+    }
+    resizeParticleCanvas();
 
     document.addEventListener('mousemove', (e) => {
       mousePos.x = e.clientX;
       mousePos.y = e.clientY;
     }, { passive: true });
+
     document.addEventListener('touchmove', (e) => {
       if (e.touches.length > 0) {
         mousePos.x = e.touches[0].clientX;
@@ -462,8 +525,8 @@
       const theta = index * 2 * Math.PI * phi;
       const r = Math.sqrt(index) * 10;
       return {
-        x: canvas.width / 2 + r * Math.cos(theta),
-        y: canvas.height / 2 + r * Math.sin(theta),
+        x: window.innerWidth / 2 + r * Math.cos(theta),
+        y: window.innerHeight / 2 + r * Math.sin(theta),
         vx: (Math.random() - 0.5) * 2,
         vy: (Math.random() - 0.5) * 2,
         life: 600,
@@ -472,18 +535,17 @@
     }
 
     function initParticles() {
-      particles = Array.from({ length: window.innerWidth < 768 ? 10 : 20 }, (_, i) => createParticle(i));
+      particles = Array.from({ length: 15 }, (_, i) => createParticle(i));
     }
     initParticles();
 
     function triggerBigBang() {
-      log('Triggering Big Bang...');
-      particles = Array.from({ length: window.innerWidth < 768 ? 25 : 50 }, (_, i) => {
+      particles = Array.from({ length: 30 }, (_, i) => {
         const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2);
         const r = Math.sqrt(i) * 15;
         return {
-          x: canvas.width / 2,
-          y: canvas.height / 2,
+          x: window.innerWidth / 2,
+          y: window.innerHeight / 2,
           vx: r * Math.cos(theta) * 0.05,
           vy: r * Math.sin(theta) * 0.05,
           life: 300,
@@ -493,50 +555,75 @@
     }
 
     function animateParticles() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particleCtx.clearRect(0, 0, particleCanvas.width / devicePixelRatio, particleCanvas.height / devicePixelRatio);
       particles = particles.filter(p => {
         if (p.life <= 0) return false;
         p.life--;
-        p.x += p.vx + (mousePos.x - canvas.width / 2) * 0.0001;
-        p.y += p.vy + (mousePos.y - canvas.height / 2) * 0.0001;
+        p.x += p.vx + (mousePos.x - window.innerWidth / 2) * 0.0001;
+        p.y += p.vy + (mousePos.y - window.innerHeight / 2) * 0.0001;
         p.vx *= 0.98;
         p.vy *= 0.98;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.globalAlpha = p.life / 600;
-        ctx.fill();
+        particleCtx.beginPath();
+        particleCtx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+        particleCtx.fillStyle = p.color;
+        particleCtx.globalAlpha = p.life / 600;
+        particleCtx.fill();
         return true;
       });
 
-      if (particles.length < (window.innerWidth < 768 ? 10 : 20) && Math.random() < 0.1) {
+      if (particles.length < 15 && Math.random() < 0.1) {
         particles.push(createParticle(particles.length));
       }
 
-      particles.forEach((p1, i) => {
-        particles.slice(i + 1).forEach(p2 => {
-          const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
-          if (dist < 50 && Math.random() < 0.05) {
-            ctx.beginPath();
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = p1.color;
-            ctx.globalAlpha = 0.3;
-            ctx.stroke();
-          }
-        });
-      });
-
-      ctx.globalAlpha = 1;
+      particleCtx.globalAlpha = 1;
       requestAnimationFrame(animateParticles);
     }
     animateParticles();
 
     window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      resizeParticleCanvas();
       initParticles();
     }, { passive: true });
+
+    // IP and Location Fetch
+    async function fetchIP() {
+      const ipDisplay = document.getElementById('ip-display');
+      try {
+        const response = await fetch('https://api.ipify.org?format=json', { signal: AbortSignal.timeout(5000) });
+        if (!response.ok) throw new Error('Network error');
+        const data = await response.json();
+        ipDisplay.textContent = data.ip;
+        return data.ip;
+      } catch (error) {
+        ipDisplay.textContent = 'N/A';
+        document.getElementById('error-message').textContent = 'Failed to fetch IP';
+        document.getElementById('error-message').classList.remove('hidden');
+        log('IP fetch error: ' + error.message);
+        return 'N/A';
+      }
+    }
+
+    async function fetchLocationInfo() {
+      const networkInfo = document.getElementById('network-info');
+      try {
+        const response = await fetch('https://freeipapi.com/api/json', { signal: AbortSignal.timeout(5000) });
+        if (!response.ok) throw new Error('Network error');
+        const data = await response.json();
+        const info = {
+          isp: data.ispName || 'N/A',
+          city: data.cityName || 'N/A',
+          country: data.countryName || 'N/A'
+        };
+        networkInfo.innerHTML = `ISP: ${info.isp}<br>Location: ${info.city}, ${info.country}`;
+        return info;
+      } catch (error) {
+        networkInfo.innerHTML = `ISP: N/A<br>Location: N/A`;
+        document.getElementById('error-message').textContent = 'Failed to fetch network info';
+        document.getElementById('error-message').classList.remove('hidden');
+        log('Location fetch error: ' + error.message);
+        return { isp: 'N/A', city: 'N/A', country: 'N/A' };
+      }
+    }
 
     // Speedometer
     function drawSpeedometer(speed) {
@@ -549,10 +636,8 @@
       ctx.scale(devicePixelRatio, devicePixelRatio);
 
       ctx.clearRect(0, 0, width, height);
-      const maxSpeed = 1000;
-      const logSpeed = Math.log10(speed + 1);
-      const logMax = Math.log10(maxSpeed + 1);
-      const angle = (logSpeed / logMax) * Math.PI; // Logarithmic scale
+      const maxSpeed = 200; // 100 Mbps at halfway (90 degrees)
+      const angle = (speed / maxSpeed) * Math.PI;
       const centerX = width / 2;
       const centerY = height;
       const radius = Math.min(width / 2, height) * 0.9;
@@ -596,34 +681,48 @@
       ctx.shadowBlur = 10;
       ctx.fill();
       ctx.shadowBlur = 0;
+      ctx.restore();
 
       // Center circle
       ctx.beginPath();
-      ctx.arc(0, 0, 8, 0, 2 * Math.PI);
+      ctx.arc(centerX, centerY, 8, 0, 2 * Math.PI);
       ctx.fillStyle = '#070b1a';
       ctx.fill();
       ctx.strokeStyle = '#00f2fe';
       ctx.lineWidth = 2;
       ctx.stroke();
-      ctx.restore();
 
-      // Mbps labels on arc
-      const speeds = [0, 10, 50, 100, 500, 1000];
-      ctx.font = `clamp(8px, 1vw, 10px) 'Exo 2'`;
-      ctx.fillStyle = '#8492b4';
+      // Speed labels on arch
+      const speeds = [0, 50, 100, 150, 200];
+      ctx.font = `10px 'Exo 2', sans-serif`;
+      ctx.fillStyle = '#e0e0ff';
       ctx.textAlign = 'center';
-      speeds.forEach(speed => {
-        const logS = Math.log10(speed + 1) / logMax;
-        const tickAngle = Math.PI + logS * Math.PI;
-        const labelRadius = radius + 20;
-        const x = centerX + labelRadius * Math.cos(tickAngle);
-        const y = centerY + labelRadius * Math.sin(tickAngle);
-        ctx.fillText(speed, x, y);
+      speeds.forEach((s, i) => {
+        const tickAngle = Math.PI + (s / maxSpeed) * Math.PI;
+        const labelX = centerX + (radius + 20) * Math.cos(tickAngle);
+        const labelY = centerY + (radius + 20) * Math.sin(tickAngle);
+        ctx.fillText(s, labelX, labelY);
       });
     }
 
+    function animateSpeedometer(targetSpeed) {
+      let currentSpeed = parseFloat(document.getElementById('speed-value').textContent);
+      const step = (targetSpeed - currentSpeed) / 30;
+      function update() {
+        currentSpeed += step;
+        if (Math.abs(currentSpeed - targetSpeed) < 0.1) currentSpeed = targetSpeed;
+        document.getElementById('speed-value').textContent = currentSpeed.toFixed(1);
+        drawSpeedometer(currentSpeed);
+        if (Math.abs(currentSpeed - targetSpeed) >= 0.1) {
+          requestAnimationFrame(update);
+        }
+      }
+      requestAnimationFrame(update);
+    }
+
     // Graph
-    function drawGraph(testData) {
+    let graphData = [];
+    function drawGraph() {
       const canvas = document.getElementById('graph-canvas');
       const ctx = canvas.getContext('2d');
       const width = canvas.clientWidth;
@@ -633,9 +732,9 @@
       ctx.scale(devicePixelRatio, devicePixelRatio);
 
       ctx.clearRect(0, 0, width, height);
+      const maxSpeed = 200;
+      const maxTime = 10; // 10 seconds
       const padding = 40;
-      const maxSpeed = Math.max(100, ...testData.download.map(d => d.value));
-      const maxTime = Math.max(10, ...testData.download.map(d => d.time));
 
       // Axes
       ctx.beginPath();
@@ -643,39 +742,38 @@
       ctx.lineTo(padding, height - padding);
       ctx.lineTo(width - padding, height - padding);
       ctx.strokeStyle = 'rgba(73, 115, 255, 0.4)';
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 1;
       ctx.stroke();
 
-      // Y-axis labels (dynamic)
-      const speedLevels = [0, 10, 50, 100, 500, 1000].filter(s => s <= maxSpeed * 1.2);
-      ctx.font = `clamp(8px, 1vw, 10px) 'Exo 2'`;
+      // Grid lines and Y-axis labels
+      const speedLevels = [0, 50, 100, 150, 200];
+      ctx.font = `10px 'Exo 2', sans-serif`;
       ctx.fillStyle = '#8492b4';
       ctx.textAlign = 'right';
-      speedLevels.forEach((speed, i) => {
-        const y = height - padding - (speed / maxSpeed) * (height - padding * 2);
-        ctx.fillText(speed, padding - 5, y + 3);
+      speedLevels.forEach((level) => {
+        const y = height - padding - (level / maxSpeed) * (height - 2 * padding);
         ctx.beginPath();
         ctx.moveTo(padding, y);
         ctx.lineTo(width - padding, y);
         ctx.strokeStyle = 'rgba(73, 115, 255, 0.1)';
-        ctx.lineWidth = 1;
         ctx.stroke();
+        ctx.fillText(level, padding - 10, y + 4);
       });
 
       // X-axis labels
       ctx.textAlign = 'center';
       for (let t = 0; t <= maxTime; t += 2) {
-        const x = padding + (t / maxTime) * (width - padding * 2);
+        const x = padding + (t / maxTime) * (width - 2 * padding);
         ctx.fillText(t, x, height - padding + 15);
       }
 
-      // Plot download speed
-      if (testData.download.length > 1) {
+      // Plot data
+      if (graphData.length > 1) {
         ctx.beginPath();
-        ctx.moveTo(padding, height - padding);
-        testData.download.forEach(({ time, value }) => {
-          const x = padding + (time / maxTime) * (width - padding * 2);
-          const y = height - padding - (value / maxSpeed) * (height - padding * 2);
+        ctx.moveTo(padding, height - padding - (graphData[0].speed / maxSpeed) * (height - 2 * padding));
+        graphData.forEach((point, i) => {
+          const x = padding + (point.time / maxTime) * (width - 2 * padding);
+          const y = height - padding - (point.speed / maxSpeed) * (height - 2 * padding);
           ctx.lineTo(x, y);
         });
         ctx.strokeStyle = '#00f2fe';
@@ -684,47 +782,15 @@
       }
     }
 
-    // Network Functions
-    async function fetchIP() {
-      log('Fetching public IP...');
-      try {
-        const response = await fetch('https://api.ipify.org?format=json', { signal: AbortSignal.timeout(5000) });
-        if (!response.ok) throw new Error('Network error');
-        const data = await response.json();
-        const ip = data.ip;
-        log('Public IP fetched: ' + ip);
-        document.getElementById('ip-display').textContent = ip;
-        return ip;
-      } catch (error) {
-        log('IP fetch error: ' + error.message);
-        document.getElementById('ip-display').textContent = 'N/A';
-        document.getElementById('error-message').textContent = 'Failed to fetch IP';
-        document.getElementById('error-message').classList.remove('hidden');
-        return 'N/A';
-      }
+    function updateGraph(time, speed) {
+      graphData.push({ time, speed });
+      if (graphData.length > 100) graphData.shift(); // Keep last 100 points
+      drawGraph();
     }
 
-    async function fetchLocationInfo() {
-      log('Fetching network location info...');
-      try {
-        const response = await fetch('https://api.geoip-js.com/v1/geoip', { signal: AbortSignal.timeout(5000) });
-        if (!response.ok) throw new Error('Network error');
-        const data = await response.json();
-        const info = {
-          isp: data.isp || 'N/A',
-          city: data.city || 'N/A',
-          country: data.country || 'N/A'
-        };
-        log('Network info fetched: ' + JSON.stringify(info));
-        document.getElementById('network-info').innerHTML = `ISP: ${info.isp}<br>Location: ${info.city}, ${info.country}`;
-        return info;
-      } catch (error) {
-        log('Location fetch error: ' + error.message);
-        document.getElementById('network-info').innerHTML = `ISP: N/A<br>Location: N/A`;
-        document.getElementById('error-message').textContent = 'Failed to fetch network info';
-        document.getElementById('error-message').classList.remove('hidden');
-        return { isp: 'N/A', city: 'N/A', country: 'N/A' };
-      }
+    function resetGraph() {
+      graphData = [];
+      drawGraph();
     }
 
     // Speed Test
@@ -739,6 +805,7 @@
 
     function initializeSpeedTest() {
       const startButton = document.getElementById('start-button');
+      const testAgainButton = document.getElementById('test-again-button');
       const progressBar = document.getElementById('progress-bar');
       const testType = document.getElementById('test-type');
       const speedValue = document.getElementById('speed-value');
@@ -753,12 +820,10 @@
 
       let testActive = false;
       let controller = null;
-      let testData = { download: [], ping: [] };
       let finalDownloadSpeed = 0;
       let finalPing = 0;
 
       async function runPingTest() {
-        log('Starting ping test...');
         testType.textContent = 'Testing Ping';
         const pingTimes = [];
         for (let i = 0; i < 10; i++) {
@@ -768,9 +833,9 @@
             await fetch(`${CONFIG.testServer.pingResource}?t=${Date.now()}`, { cache: 'no-store', signal: AbortSignal.timeout(2000) });
             const ping = performance.now() - start;
             pingTimes.push(ping);
-            testData.ping.push({ time: i * 0.3, value: ping });
             log(`Ping #${i + 1}: ${ping.toFixed(2)}ms`);
           } catch (error) {
+            pingTimes.push(999);
             log(`Ping #${i + 1} failed: ${error.message}`);
           }
           await new Promise(resolve => setTimeout(resolve, 300));
@@ -781,12 +846,10 @@
       }
 
       async function runDownloadTest() {
-        log('Starting download test...');
         testType.textContent = 'Testing Download Speed';
         let totalBytes = 0;
         const startTime = performance.now();
         const overallTimeout = setTimeout(() => {
-          log('Download test timed out');
           testActive = false;
           if (controller) controller.abort();
           finalizeTest();
@@ -798,6 +861,7 @@
           if (!response.ok) throw new Error('Failed to fetch download resource');
           const reader = response.body.getReader();
           let lastUpdate = startTime;
+
           while (testActive) {
             const { done, value } = await reader.read();
             if (done || !testActive) {
@@ -808,11 +872,10 @@
             const elapsed = (performance.now() - startTime) / 1000;
             if (performance.now() - lastUpdate >= 100) {
               const speed = ((totalBytes * 8) / elapsed) / (1024 * 1024);
-              testData.download.push({ time: elapsed, value: speed });
               progressBar.style.width = `${(elapsed / (CONFIG.testDurations.download / 1000)) * 100}%`;
               speedValue.textContent = speed.toFixed(1);
-              drawSpeedometer(speed);
-              drawGraph(testData);
+              animateSpeedometer(speed);
+              updateGraph(elapsed, speed);
               lastUpdate = performance.now();
             }
             if (elapsed >= CONFIG.testDurations.download / 1000) {
@@ -834,49 +897,57 @@
       }
 
       function finalizeTest() {
-        if (!testData.download.length && !testData.ping.length) {
+        if (!finalDownloadSpeed && !finalPing) {
           document.getElementById('error-message').textContent = 'Speed test failed. Please try again.';
           document.getElementById('error-message').classList.remove('hidden');
-          startButton.disabled = false;
           startButton.textContent = 'Start Test';
-          testActive = false;
         } else {
           resultsContainer.classList.remove('hidden');
           startButton.textContent = 'More Info';
-          startButton.disabled = false;
-          testActive = false;
+          testAgainButton.classList.remove('hidden');
           triggerBigBang();
         }
+        startButton.disabled = false;
+        testActive = false;
         loading.classList.add('hidden');
       }
 
-      startButton.addEventListener('click', async () => {
-        if (startButton.textContent === 'More Info') {
-          speedFrame.src = 'https://speed.cloudflare.com';
-          overlay.classList.add('active');
-          return;
-        }
+      async function runTest() {
         testActive = true;
         startButton.disabled = true;
         startButton.textContent = 'Testing...';
+        testAgainButton.classList.add('hidden');
         loading.classList.remove('hidden');
-        testData = { download: [], ping: [] };
-        speedValue.textContent = '0';
-        drawSpeedometer(0);
-        drawGraph(testData);
         progressBar.style.width = '0';
+        speedValue.textContent = '0';
+        animateSpeedometer(0);
+        resetGraph();
         graphContainer.classList.remove('hidden');
         resultsContainer.classList.add('hidden');
+        document.getElementById('error-message').classList.add('hidden');
 
         try {
           await runPingTest();
           if (testActive) await runDownloadTest();
           if (testActive) finalizeTest();
         } catch (error) {
-          log('Test error: ' + error);
           finalizeTest();
         }
+      }
+
+      drawSpeedometer(0);
+      drawGraph();
+
+      startButton.addEventListener('click', () => {
+        if (startButton.textContent === 'More Info') {
+          speedFrame.src = 'https://speed.cloudflare.com';
+          overlay.classList.add('active');
+        } else {
+          runTest();
+        }
       });
+
+      testAgainButton.addEventListener('click', runTest);
 
       closeOverlay.addEventListener('click', () => {
         overlay.classList.remove('active');
@@ -887,8 +958,6 @@
         testActive = false;
         if (controller) controller.abort();
       });
-
-      drawSpeedometer(0);
     }
 
     // Main Initialization
