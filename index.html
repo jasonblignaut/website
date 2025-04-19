@@ -68,15 +68,15 @@
       margin: 0 auto;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
       text-align: center;
       padding: 0.5rem;
     }
 
     header {
-      padding: 0.5rem 0;
-      margin-bottom: 0.5rem;
+      padding: 0.3rem 0;
+      margin-bottom: 0.3rem;
     }
 
     h1 {
@@ -100,7 +100,7 @@
       flex-direction: column;
       align-items: center;
       gap: 0.5rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.3rem;
       width: 100%;
       max-width: 400px;
     }
@@ -150,36 +150,33 @@
       color: #8492b4;
       max-width: 300px;
       line-height: 1.4;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.3rem;
     }
 
     .error-message {
       font-family: 'Exo 2', sans-serif;
       font-size: clamp(0.6rem, 1vw, 0.8rem);
       color: #ff5555;
-      margin-top: 0.5rem;
+      margin-top: 0.3rem;
       display: none;
     }
 
     .speed-test-card {
       background: var(--card-bg);
       border-radius: 15px;
-      padding: 1rem;
+      padding: 0.8rem;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 50px rgba(73, 115, 255, 0.15) inset;
       backdrop-filter: blur(10px);
       border: 1px solid rgba(79, 172, 254, 0.3);
       width: 100%;
-      max-height: calc(100vh - 200px); /* Adjusted to allow more space */
-      overflow-y: auto; /* Allow scrolling if content overflows */
-      display: flex;
-      flex-direction: column;
+      overflow: hidden;
     }
 
     .test-type {
       font-family: 'Orbitron', sans-serif;
       font-size: clamp(1rem, 2vw, 1.5rem);
       text-align: center;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.3rem;
       color: #00f2fe;
     }
 
@@ -189,7 +186,7 @@
       background: rgba(13, 25, 50, 0.7);
       border-radius: 3px;
       overflow: hidden;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.3rem;
     }
 
     .progress {
@@ -203,9 +200,9 @@
 
     .speedometer {
       position: relative;
-      width: clamp(150px, 50vw, 250px);
-      height: clamp(75px, 25vw, 125px);
-      margin: 0 auto 2rem;
+      width: clamp(160px, 55vw, 260px);
+      height: clamp(80px, 27.5vw, 130px);
+      margin: 0 auto 1.5rem;
     }
 
     .speedometer-canvas {
@@ -242,8 +239,8 @@
 
     .graph-container {
       position: relative;
-      height: 120px;
-      margin: 0.5rem 0;
+      height: 100px;
+      margin: 0.3rem 0;
       background: rgba(13, 25, 50, 0.5);
       border-radius: 8px;
       padding: 10px;
@@ -260,7 +257,7 @@
       flex-wrap: wrap;
       justify-content: space-around;
       gap: 0.5rem;
-      margin-top: 0.5rem;
+      margin-top: 0.3rem;
     }
 
     .result-box {
@@ -291,9 +288,7 @@
       display: flex;
       justify-content: center;
       gap: 0.8rem;
-      margin-top: 1rem;
-      margin-bottom: 1rem;
-      padding-bottom: 1rem; /* Extra padding to ensure visibility */
+      margin-top: 0.8rem;
     }
 
     .start-button, .test-again-button {
@@ -408,7 +403,7 @@
       .ip-display { font-size: clamp(1rem, 2.5vw, 1.5rem); }
       .network-info { font-size: clamp(0.5rem, 0.8vw, 0.7rem); }
       .speedometer { width: clamp(120px, 40vw, 180px); height: clamp(60px, 20vw, 90px); }
-      .graph-container { height: 100px; }
+      .graph-container { height: 80px; }
       .loading img { width: 24px; height: 24px; }
     }
 
@@ -447,7 +442,7 @@
         <div class="speed-value" id="speed-value">0</div>
         <div class="speed-unit">Mbps</div>
       </div>
-      <div class="graph-container hidden" id="graph-container">
+      <div class="graph-container" id="graph-container">
         <canvas class="graph-canvas" id="graph-canvas"></canvas>
       </div>
       <div class="results hidden" id="results-container">
@@ -468,6 +463,7 @@
         <img src="/assets/loading.svg" alt="Loading" class="animate-spin">
       </div>
     </div>
+    <!-- AdSense Placeholder: Insert AdSense code here for future integration -->
   </div>
 
   <div class="overlay" id="overlay">
@@ -517,7 +513,6 @@
     let mousePos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     const particleCanvas = document.getElementById('background-canvas');
     const particleCtx = particleCanvas.getContext('2d');
-    const devicePixelRatio = window.devicePixelRatio || 1;
 
     function resizeParticleCanvas() {
       particleCanvas.width = window.innerWidth * devicePixelRatio;
@@ -615,7 +610,7 @@
       } catch (error) {
         ipDisplay.textContent = 'N/A';
         document.getElementById('error-message').textContent = 'Failed to fetch IP';
-        document.getElementById('error-message').classList.remove('hidden');
+        document.getElementRig('error-message').classList.remove('hidden');
         log('IP fetch error: ' + error.message);
         return 'N/A';
       }
@@ -670,10 +665,10 @@
       const maxSpeed = 1000;
       const logMax = Math.log10(maxSpeed + 1);
       const logSpeed = Math.log10(speed + 1);
-      const angle = (logSpeed / logMax) * Math.PI;
+      const angle = (logSpeed / logMax) * Math.PI; // Logarithmic for needle
       const centerX = width / 2;
       const centerY = height;
-      const radius = Math.min(width / 2, height) * 0.85; // Slightly reduced to make space for labels
+      const radius = Math.min(width / 2, height) * 0.9;
 
       // Background arc
       ctx.beginPath();
@@ -725,47 +720,15 @@
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // Speed labels
+      // Speed labels on arch (linear positioning)
       const speeds = [0, 10, 50, 100, 200, 500, 1000];
-      ctx.font = `6px 'Exo 2', sans-serif`; // Reduced font size for better fit
+      ctx.font = `5px 'Exo 2', sans-serif`;
       ctx.fillStyle = '#e0e0ff';
       ctx.textAlign = 'center';
       speeds.forEach((s) => {
-        const logS = Math.log10(s + 1);
-        const tickAngle = Math.PI + (logS / logMax) * Math.PI;
-        const labelRadius = radius + 35; // Increased to ensure labels fit
-        let labelX = centerX + labelRadius * Math.cos(tickAngle);
-        let labelY = centerY + labelRadius * Math.sin(tickAngle);
-
-        // Adjust label positions to prevent cutoff
-        if (s === 0) {
-          labelX += 20;
-          labelY += 5;
-        } else if (s === 1000) {
-          labelX -= 20;
-          labelY += 5;
-        } else if (s === 500) {
-          labelY += 5;
-        } else if (s === 10) {
-          labelX += 10;
-          labelY += 3;
-        } else if (s === 50) {
-          labelX += 5;
-          labelY += 2;
-        }
-
-        // Tick marks
-        const tickStartX = centerX + (radius - 5) * Math.cos(tickAngle);
-        const tickStartY = centerY + (radius - 5) * Math.sin(tickAngle);
-        const tickEndX = centerX + (radius + 5) * Math.cos(tickAngle);
-        const tickEndY = centerY + (radius + 5) * Math.sin(tickAngle);
-        ctx.beginPath();
-        ctx.moveTo(tickStartX, tickStartY);
-        ctx.lineTo(tickEndX, tickEndY);
-        ctx.strokeStyle = '#e0e0ff';
-        ctx.lineWidth = 1;
-        ctx.stroke();
-
+        const tickAngle = Math.PI + (s / maxSpeed) * Math.PI; // Linear positioning
+        const labelX = centerX + (radius + 35) * Math.cos(tickAngle);
+        const labelY = centerY + (radius + 35) * Math.sin(tickAngle);
         ctx.fillText(s, labelX, labelY);
       });
     }
@@ -798,8 +761,8 @@
 
       ctx.clearRect(0, 0, width, height);
       const maxSpeed = 1000;
-      const maxTime = 20; // Match the extended test duration
-      const padding = 45;
+      const maxTime = 15;
+      const padding = 40;
 
       // Axes
       ctx.beginPath();
@@ -813,7 +776,7 @@
       // Grid lines and Y-axis labels (logarithmic scale)
       const speedLevels = [0, 10, 50, 100, 200, 500, 1000];
       const logMax = Math.log10(maxSpeed + 1);
-      ctx.font = `7px 'Exo 2', sans-serif`;
+      ctx.font = `6px 'Exo 2', sans-serif`;
       ctx.fillStyle = '#8492b4';
       ctx.textAlign = 'right';
       speedLevels.forEach((level) => {
@@ -829,13 +792,13 @@
 
       // X-axis labels
       ctx.textAlign = 'center';
-      for (let t = 0; t <= maxTime; t += 4) { // Adjusted for longer duration
+      for (let t = 0; t <= maxTime; t += 3) {
         const x = padding + (t / maxTime) * (width - 2 * padding);
-        ctx.fillText(t, x, height - padding + 15);
+        ctx.fillText(t, x, height - padding + 12);
       }
 
       // Plot data
-      if (graphData.length > 0) {
+      if (graphData.length > 1) {
         ctx.beginPath();
         const firstPointY = height - padding - (Math.log10(graphData[0].speed + 1) / logMax) * (height - 2 * padding);
         ctx.moveTo(padding, firstPointY);
@@ -852,12 +815,12 @@
 
     function updateGraph(time, speed) {
       graphData.push({ time, speed });
-      if (graphData.length > 200) graphData.shift(); // Adjusted for longer duration
+      if (graphData.length > 150) graphData.shift();
       drawGraph();
     }
 
     function resetGraph() {
-      graphData = [{ time: 0, speed: 0 }]; // Start at (0,0)
+      graphData = [];
       drawGraph();
     }
 
@@ -867,8 +830,8 @@
         downloadUrl: '/assets/25mb.bin',
         pingResource: '/assets/ping-test.txt',
       },
-      testDurations: { download: 20000, ping: 5000 }, // Extended download test to 20 seconds
-      maxTestTimeout: 25000, // Adjusted timeout accordingly
+      testDurations: { download: 15000, ping: 5000 },
+      maxTestTimeout: 20000,
     };
 
     function initializeSpeedTest() {
@@ -974,10 +937,6 @@
           startButton.textContent = 'More Info';
           testAgainButton.classList.remove('hidden');
           triggerBigBang();
-          // Reset speedometer to 0 while keeping results visible
-          setTimeout(() => {
-            animateSpeedometer(0);
-          }, 1000); // Delay to allow users to see final speed
         }
         startButton.disabled = false;
         testActive = false;
