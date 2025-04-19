@@ -93,17 +93,25 @@
 
     @keyframes glow {
       from { text-shadow: 0 0 15px var(--cosmic-cyan); }
-      to { text-shadow: 0 0 30px var(--cosmic-magenta); }
+      to { text-shadow: Β 0 30px var(--cosmic-magenta); }
     }
 
     .ip-container {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.5rem;
       margin-bottom: 1rem;
       width: 100%;
       max-width: 400px;
+    }
+
+    .ip-label {
+      font-family: 'Exo 2', sans-serif;
+      font-size: clamp(0.6rem, 1vw, 0.8rem);
+      color: #8492b4;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
     }
 
     .ip-display {
@@ -316,13 +324,13 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem;
       margin-top: 1rem;
     }
 
     .loading img {
-      width: 16px;
-      height: 16px;
+      width: 20px;
+      height: 20px;
+      filter: drop-shadow(0 0 5px rgba(0, 242, 254, 0.8));
     }
 
     .overlay {
@@ -399,12 +407,12 @@
       .network-info { font-size: clamp(0.5rem, 0.8vw, 0.7rem); }
       .speedometer { width: clamp(120px, 40vw, 180px); height: clamp(60px, 20vw, 90px); }
       .graph-container { height: 120px; }
-      .loading img { width: 12px; height: 12px; }
+      .loading img { width: 16px; height: 16px; }
     }
 
     @media (max-width: 480px) {
       h1 { font-size: clamp(1rem, 3vw, 1.5rem); }
-      .ip-container { gap: 0.5rem; }
+      .ip-container { gap: 0.3rem; }
       .ip-display { font-size: clamp(0.8rem, 2vw, 1.2rem); }
       .results { flex-direction: column; }
       .result-box { width: 100%; }
@@ -421,6 +429,7 @@
       <h1>Labverse Speed Test</h1>
     </header>
     <div class="ip-container">
+      <div class="ip-label">YOUR PUBLIC IP IS</div>
       <div class="ip-display" id="ip-display" aria-live="polite">Fetching IP...</div>
       <button class="copy-btn" id="copy-ip-btn" aria-label="Copy IP address">Copy IP</button>
     </div>
@@ -455,7 +464,6 @@
       </div>
       <div class="loading hidden" id="loading">
         <img src="/assets/loading.svg" alt="Loading" class="animate-spin">
-        <span class="text-sm">Running test...</span>
       </div>
     </div>
     <!-- AdSense Placeholder: Insert AdSense code here for future integration -->
@@ -753,8 +761,8 @@
       ctx.scale(devicePixelRatio, devicePixelRatio);
 
       ctx.clearRect(0, 0, width, height);
-      const maxSpeed = 200;
-      const maxTime = 15; // Extended to 15s
+      const maxSpeed = 1000; // Extended to 1000 Mbps
+      const maxTime = 15; // 15s test duration
       const padding = 40;
 
       // Axes
@@ -766,19 +774,21 @@
       ctx.lineWidth = 1;
       ctx.stroke();
 
-      // Grid lines and Y-axis labels
-      const speedLevels = [0, 50, 100, 150, 200];
-      ctx.font = `10px 'Exo 2', sans-serif`;
+      // Grid lines and Y-axis labels (logarithmic scale)
+      const speedLevels = [0, 5, 10, 25, 50, 100, 200, 500, 1000];
+      const logMax = Math.log10(maxSpeed + 1);
+      ctx.font = `8px 'Exo 2', sans-serif`;
       ctx.fillStyle = '#8492b4';
       ctx.textAlign = 'right';
       speedLevels.forEach((level) => {
-        const y = height - padding - (level / maxSpeed) * (height - 2 * padding);
+        const logLevel = Math.log10(level + 1);
+        const y = height - padding - (logLevel / logMax) * (height - 2 * padding);
         ctx.beginPath();
         ctx.moveTo(padding, y);
         ctx.lineTo(width - padding, y);
         ctx.strokeStyle = 'rgba(73, 115, 255, 0.1)';
         ctx.stroke();
-        ctx.fillText(level, padding - 10, y + 4);
+        ctx.fillText(level, padding - 10, y + 3);
       });
 
       // X-axis labels
@@ -791,10 +801,11 @@
       // Plot data
       if (graphData.length > 1) {
         ctx.beginPath();
-        ctx.moveTo(padding, height - padding - (graphData[0].speed / maxSpeed) * (height - 2 * padding));
-        graphData.forEach((point, i) => {
+        const firstPointY = height - padding - (Math.log10(graphData[0].speed + 1) / logMax) * (height - 2 * padding);
+        ctx.moveTo(padding, firstPointY);
+        graphData.forEach((point) => {
           const x = padding + (point.time / maxTime) * (width - 2 * padding);
-          const y = height - padding - (point.speed / maxSpeed) * (height - 2 * padding);
+          const y = height - padding - (Math.log10(point.speed + 1) / logMax) * (height - 2 * padding);
           ctx.lineTo(x, y);
         });
         ctx.strokeStyle = '#00f2fe';
@@ -820,8 +831,8 @@
         downloadUrl: '/assets/25mb.bin',
         pingResource: '/assets/ping-test.txt',
       },
-      testDurations: { download: 15000, ping: 5000 }, // Extended durations
-      maxTestTimeout: 20000, // Extended to 20s
+      testDurations: { download: 15000, ping: 5000 }, // 15s download, 5s ping
+      maxTestTimeout: 20000, // 20s timeout
     };
 
     function initializeSpeedTest() {
@@ -847,7 +858,7 @@
       async function runPingTest() {
         testType.textContent = 'Testing Ping';
         const pingTimes = [];
-        for (let i = 0; i < 15; i++) { // Increased to 15 pings
+        for (let i = 0; i < 15; i++) {
           if (!testActive) break;
           try {
             const start = performance.now();
@@ -859,7 +870,7 @@
             pingTimes.push(999);
             log(`Ping #${i + 1} failed: ${error.message}`);
           }
-          await new Promise(resolve => setTimeout(resolve, 333)); // ~5s total
+          await new Promise(resolve => setTimeout(resolve, 333));
         }
         const successfulPings = pingTimes.filter(t => t !== 999);
         finalPing = successfulPings.length ? successfulPings.reduce((sum, t) => sum + t, 0) / successfulPings.length : 999;
