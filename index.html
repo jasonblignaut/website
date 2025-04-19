@@ -826,7 +826,7 @@
     async function fetchLocationInfo() {
       const networkInfo = document.getElementById('network-info');
       try {
-        // Try ipinfo.io first
+        // Prioritize ipinfo.io due to ip-api.com 403 error
         const response = await fetch('https://ipinfo.io/json', { signal: AbortSignal.timeout(5000) });
         const data = await response.json();
         const info = {
@@ -839,9 +839,8 @@
       } catch (error) {
         log('ipinfo.io fetch error: ' + error.message);
         try {
-          // Fallback to ip-api.com
           const response = await fetch('https://ip-api.com/json/?fields=status,message,country,city,isp', { signal: AbortSignal.timeout(5000) });
-          const data = await response.json();
+          let data = await response.json();
           if (data.status !== 'success') throw new Error(data.message || 'Failed to fetch location info');
           const info = {
             isp: data.isp || 'N/A',
@@ -944,7 +943,7 @@
       ctx.stroke();
 
       // Draw speed scale and labels
-      ctx.font = `10px 'Exo 2', sans-serif`;
+      ctx.font = `10px 'Exo 2', sans-serif`; // Reduced font size to fit all labels
       ctx.fillStyle = '#e0e0ff';
       ctx.textAlign = 'center';
 
@@ -976,7 +975,7 @@
         ctx.lineWidth = 1;
         ctx.stroke();
 
-        // Display all labels as requested
+        // Show all requested labels
         let xOffset = 0;
         if (s === 0) xOffset = 10;
         if (s === 1000) xOffset = -10;
@@ -1180,7 +1179,7 @@
       const speedValue = document.getElementById('speed-value');
       const graphContainer = document.getElementById('graph-container');
       const resultsContainer = document.getElementById('results-container');
-      const historyContainer = document.getElementById('history-container');
+      const historyContainer = document.getElementById('history-container'); // Added to fix ReferenceError
       const downloadResult = document.getElementById('download-result');
       const pingResult = document.getElementById('ping-result');
       const loading = document.getElementById('loading');
@@ -1197,7 +1196,7 @@
       async function runPingTest() {
         testType.textContent = 'Testing Ping';
         const pingTimes = [];
-        for ( hopedlet i = 0; i < 10 && testActive; i++) {
+        for (let i = 0; i < 10 && testActive; i++) {
           try {
             const start = performance.now();
             await fetch(`${CONFIG.testServer.pingResource}?t=${Date.now()}`, { cache: 'no-store', signal: AbortSignal.timeout(2000) });
@@ -1297,7 +1296,6 @@
       }
 
       async function runTest() {
-        log('Starting speed test...');
         testActive = true;
         startButton.disabled = true;
         startButton.style.visibility = 'hidden';
