@@ -200,12 +200,12 @@
       width: 200px;
       height: 100px;
       margin: 0 auto 0.5rem;
-      overflow: hidden;
     }
 
     .speedometer-canvas {
       width: 100%;
       height: 100%;
+      display: block;
     }
 
     .speed-value {
@@ -269,6 +269,7 @@
     .graph-canvas {
       width: 100%;
       height: 100%;
+      display: block;
     }
 
     .grid-lines {
@@ -343,39 +344,50 @@
       display: none;
     }
 
-    .iframe-container {
+    .overlay {
       display: none;
-      position: relative;
-      width: 100%;
-      height: 150px;
-      border-radius: 8px;
-      overflow: hidden;
-      margin-top: 0.5rem;
-    }
-
-    .iframe-container.active {
-      display: block;
-    }
-
-    .iframe-container::before {
-      content: '';
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 183, 235, 0.3);
-      z-index: 1;
-      pointer-events: none;
+      background: rgba(7, 11, 26, 0.95);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 1rem;
     }
 
-    iframe {
+    .overlay.active {
+      display: flex;
+    }
+
+    .overlay iframe {
       width: 100%;
-      height: 100%;
+      height: 80%;
+      max-width: 900px;
       border: none;
       border-radius: 8px;
-      position: relative;
-      z-index: 0;
+    }
+
+    .close-button {
+      background: linear-gradient(90deg, #ff5555, #ff7777);
+      border: none;
+      color: var(--light-aura);
+      padding: 0.5rem 1.5rem;
+      font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+      font-weight: bold;
+      border-radius: 20px;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(255, 85, 85, 0.4);
+    }
+
+    .close-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(255, 85, 85, 0.6);
     }
 
     footer {
@@ -405,7 +417,6 @@
       .start-button { font-size: clamp(0.6rem, 1vw, 0.8rem); }
       .speedometer { width: 150px; height: 75px; }
       .graph-container { height: 100px; }
-      .iframe-container { height: 120px; }
       .y-axis { width: 25px; font-size: 0.6rem; }
     }
 
@@ -416,7 +427,6 @@
       .results { flex-direction: column; gap: 0.5rem; }
       .result-box { width: 100%; }
       .speedometer { width: 120px; height: 60px; }
-      .iframe-container { height: 100px; }
       .y-axis { width: 20px; font-size: 0.5rem; }
     }
   </style>
@@ -441,7 +451,7 @@
       <div class="progress-bar">
         <div class="progress" id="progressBar"></div>
       </div>
-      <div class="speedometer hidden" id="speedometer">
+      <div class="speedometer" id="speedometer">
         <canvas class="speedometer-canvas" id="speedometerCanvas"></canvas>
         <div class="speed-value" id="speedValue">0</div>
         <div class="speed-unit">Mbps</div>
@@ -475,10 +485,12 @@
         </div>
       </div>
       <button class="start-button" id="startButton">Start Test</button>
-      <div class="iframe-container" id="iframe-container">
-        <iframe id="speedFrame" src=""></iframe>
-      </div>
     </div>
+  </div>
+
+  <div class="overlay" id="overlay">
+    <iframe id="speedFrame" src=""></iframe>
+    <button class="close-button" id="closeOverlay">Close</button>
   </div>
 
   <footer>
@@ -636,12 +648,13 @@
     async function fetchLocationInfo() {
       log('Fetching network location info...');
       try {
-        const response = await fetch('https://ipinfo.io/json?token=your_token_here', { signal: AbortSignal.timeout(5000) });
+        const response = await fetch('http://ip-api.com/json/?fields=status,message,country,city,isp', { signal: AbortSignal.timeout(5000) });
         const data = await response.json();
+        if (data.status !== 'success') throw new Error(data.message || 'Failed to fetch location info');
         const info = {
-          isp: data.org || 'Dimension Data',
-          city: data.city || 'Johannesburg',
-          country: data.country || 'South Africa'
+          isp: data.isp || 'Unknown ISP',
+          city: data.city || 'Unknown City',
+          country: data.country || 'Unknown Country'
         };
         log('Network info fetched: ' + JSON.stringify(info));
         document.getElementById('network-info').innerHTML = `ISP: ${info.isp}<br>Location: ${info.city}, ${info.country}`;
@@ -677,8 +690,9 @@
       const downloadResult = document.getElementById('downloadResult');
       const pingResult = document.getElementById('pingResult');
       const gridLines = document.getElementById('gridLines');
-      const iframeContainer = document.getElementById('iframe-container');
-      const iframe = document.getElementById('speedFrame');
+      const overlay = document.getElementById('overlay');
+      const speedFrame = document.getElementById('speedFrame');
+      const closeOverlay = document.getElementById('closeOverlay');
 
       let testActive = false;
       let controller = null;
@@ -686,7 +700,6 @@
       let finalDownloadSpeed = 0;
       let finalPing = 0;
       let currentSpeed = 0;
-      let animationFrame = null;
 
       // Speedometer Canvas Setup
       const speedometerCtx = speedometerCanvas.getContext('2d');
@@ -756,24 +769,25 @@
       resizeGraph();
       window.addEventListener('resize', resizeGraph, { passive: true });
 
-      // Set up grid lines
+      // Set up grid lines and Y-axis alignment
+      const SPEED_LEVELS = [0, 5, 10, 20, 25, 50, 100, 200, 500, 1000];
+      function speedToHeight(speed) {
+        const maxSpeed = 1000;
+        if (speed <= 0) return 0;
+        const logSpeed = Math.log10(speed + 1);
+        const logMax = Math.log10(maxSpeed + 1);
+        return (logSpeed / logMax) * 100;
+      }
+
       function setupGridLines() {
         gridLines.innerHTML = '';
-        const levels = [0, 5, 10, 20, 25, 50, 100, 200, 500, 1000];
-        levels.forEach(level => {
+        SPEED_LEVELS.forEach(level => {
           const gridLine = document.createElement('div');
           gridLine.className = 'grid-line';
           const heightPercent = speedToHeight(level);
           gridLine.style.bottom = `${heightPercent}%`;
           gridLines.appendChild(gridLine);
         });
-      }
-
-      // Map speed to Y-axis height (logarithmic scale)
-      function speedToHeight(speed) {
-        const maxScale = 1000;
-        const logScale = Math.log10(1 + speed) / Math.log10(1 + maxScale);
-        return logScale * 100;
       }
 
       // Smooth graph drawing
@@ -868,7 +882,7 @@
             }
             totalBytes += value ? value.length : 0;
             const elapsed = (performance.now() - startTime) / 1000;
-            if (performance.now() - lastUpdate >= 100) { // Update every 100ms for smoothness
+            if (performance.now() - lastUpdate >= 100) {
               const speed = ((totalBytes * 8) / elapsed) / (1024 * 1024);
               currentSpeed = speed;
               const timePercentage = elapsed / (CONFIG.testDurations.download / 1000);
@@ -928,8 +942,6 @@
         speedometer.classList.remove('hidden');
         graphContainer.classList.remove('hidden');
         resultsContainer.classList.add('hidden');
-        iframeContainer.classList.remove('active');
-        iframe.src = '';
         startButton.disabled = true;
         startButton.textContent = 'Testing...';
         testType.textContent = 'Testing Download Speed';
@@ -952,14 +964,19 @@
 
       startButton.addEventListener('click', () => {
         if (startButton.textContent === 'More Info') {
-          iframe.src = 'https://speed.cloudflare.com';
-          iframeContainer.classList.add('active');
+          speedFrame.src = 'https://speed.cloudflare.com';
+          overlay.classList.add('active');
           return;
         }
 
         if (startButton.textContent === 'Start Test') {
           runTest();
         }
+      });
+
+      closeOverlay.addEventListener('click', () => {
+        overlay.classList.remove('active');
+        speedFrame.src = '';
       });
 
       window.addEventListener('beforeunload', () => {
@@ -972,7 +989,6 @@
     document.addEventListener('DOMContentLoaded', async () => {
       initializeSpeedTest();
       await Promise.all([fetchIP(), fetchLocationInfo()]);
-
       document.getElementById('copy-ip-btn').addEventListener('click', () => {
         const ip = document.getElementById('ip-display').textContent;
         if (ip !== 'Fetching IP...' && ip !== 'IP unavailable') {
