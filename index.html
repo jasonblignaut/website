@@ -12,7 +12,7 @@
   <meta property="og:url" content="https://labverse.co.za">
   <meta name="twitter:card" content="summary_large_image">
   <title>Labverse Speed Test</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Source+Code+Pro&family=Exo+2:wght@400;700&family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Source+Code_Pro&family=Exo+2:wght@400;700&family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --matrix-blue: #00b7eb;
@@ -141,7 +141,8 @@
 
     .copy-btn:hover {
       transform: scale(1.05);
-      box-shadow: 0 0 30px rgba(73, 115, 255, 0.6);
+      box-shadow: 0 0 30px rgba(73, 115, 255,  формате: HTML
+0.6);
     }
 
     .network-info {
@@ -163,7 +164,7 @@
 
     .speed-test-card {
       background: var(--card-bg);
-      border-radius: 15 MULTI-LINE-STARTpx;
+      border-radius: 15px;
       padding: 1rem;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 50px rgba(73, 115, 255, 0.15) inset;
       backdrop-filter: blur(10px);
@@ -417,6 +418,7 @@
       .ip-display { font-size: clamp(0.8rem, 2vw, 1.2rem); }
       .results { flex-direction: column; }
       .result-box { width: 100%; min-width: unset; }
+      .button-container { flex-direction: column; gap: 0.5rem; }
     }
   </style>
 </head>
@@ -500,16 +502,13 @@
     const log = (message) => console.log('[DEBUG] ' + message);
 
     const copyToClipboard = (text) => {
-      navigator.clipboard.writeText(text).then(() => {
-        alert('IP copied to clipboard!');
-      }).catch(() => {
+      navigator.clipboard.writeText(text).catch(() => {
         const textarea = document.createElement('textarea');
         textarea.value = text;
         document.body.appendChild(textarea);
         textarea.select();
         document.execCommand('copy');
         document.body.removeChild(textarea);
-        alert('IP copied to clipboard!');
       });
     };
 
@@ -657,16 +656,6 @@
       }
     }
 
-    // Initialize IP and Location
-    fetchIP();
-    fetchLocationInfo();
-
-    // Copy IP Button
-    document.getElementById('copy-ip-btn').addEventListener('click', () => {
-      const ip = document.getElementById('ip-display').textContent;
-      if (ip !== 'N/A') copyToClipboard(ip);
-    });
-
     // Speedometer
     function drawSpeedometer(speed) {
       const canvas = document.getElementById('speedometer-canvas');
@@ -681,13 +670,12 @@
       const maxSpeed = 1000;
       const logMax = Math.log10(maxSpeed + 1);
       const logSpeed = Math.log10(speed + 1);
-      // Adjust angle so 100 Mbps (log10(101) ≈ 2) is at π/2 (top)
       const angle = (logSpeed / logMax) * Math.PI;
       const centerX = width / 2;
       const centerY = height;
       const radius = Math.min(width / 2, height) * 0.9;
 
-      // Background arc (0 to 1000 Mbps)
+      // Background arc
       ctx.beginPath();
       ctx.arc(centerX, centerY, radius, Math.PI, 2 * Math.PI);
       const bgGradient = ctx.createLinearGradient(0, 0, width, 0);
@@ -739,16 +727,26 @@
 
       // Speed labels
       const speeds = [0, 10, 50, 100, 200, 500, 1000];
-      ctx.font = `10px 'Exo 2', sans-serif`;
+      ctx.font = `7px 'Exo 2', sans-serif`;
       ctx.fillStyle = '#e0e0ff';
       ctx.textAlign = 'center';
-
       speeds.forEach((s) => {
         const logS = Math.log10(s + 1);
         const tickAngle = Math.PI + (logS / logMax) * Math.PI;
-        const labelRadius = radius + 20;
-        const labelX = centerX + labelRadius * Math.cos(tickAngle);
-        const labelY = centerY + labelRadius * Math.sin(tickAngle);
+        const labelRadius = radius + 30; // Increased to prevent cutoff
+        let labelX = centerX + labelRadius * Math.cos(tickAngle);
+        let labelY = centerY + labelRadius * Math.sin(tickAngle);
+
+        // Adjust label positions
+        if (s === 0) {
+          labelX += 15;
+          labelY += 5;
+        } else if (s === 1000) {
+          labelX -= 15;
+          labelY += 5;
+        } else if (s === 500) {
+          labelY += 5;
+        }
 
         // Tick marks
         const tickStartX = centerX + (radius - 5) * Math.cos(tickAngle);
@@ -762,13 +760,27 @@
         ctx.lineWidth = 1;
         ctx.stroke();
 
-        // Label
         ctx.fillText(s, labelX, labelY);
       });
     }
 
+    function animateSpeedometer(targetSpeed) {
+      let currentSpeed = parseFloat(document.getElementById('speed-value').textContent);
+      const step = (targetSpeed - currentSpeed) / 30;
+      function update() {
+        currentSpeed += step;
+        if (Math.abs(currentSpeed - targetSpeed) < 0.1) currentSpeed = targetSpeed;
+        document.getElementById('speed-value').textContent = currentSpeed.toFixed(1);
+        drawSpeedometer(currentSpeed);
+        if (Math.abs(currentSpeed - targetSpeed) >= 0.1) {
+          requestAnimationFrame(update);
+        }
+      }
+      requestAnimationFrame(update);
+    }
+
     // Graph
-    let speedData = [];
+    let graphData = [];
     function drawGraph() {
       const canvas = document.getElementById('graph-canvas');
       const ctx = canvas.getContext('2d');
@@ -780,110 +792,248 @@
 
       ctx.clearRect(0, 0, width, height);
       const maxSpeed = 1000;
-      const logMax = Math.log10(maxSpeed + 1);
-      const maxPoints = 50;
+      const maxTime = 15;
+      const padding = 45;
 
-      // Draw grid and labels
-      const speeds = [0, 10, 50, 100, 200, 500, 1000];
-      ctx.font = `8px 'Exo 2', sans-serif`;
-      ctx.fillStyle = '#e0e0ff';
-      ctx.textAlign = 'right';
-      ctx.strokeStyle = 'rgba(79, 172, 254, 0.2)';
-      ctx.lineWidth = 1;
-
-      speeds.forEach((s) => {
-        const logS = Math.log10(s + 1);
-        const y = height - (logS / logMax) * height;
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(width, y);
-        ctx.stroke();
-        ctx.fillText(s, 30, y + 3);
-      });
-
-      // Draw speed data
-      if (speedData.length > maxPoints) speedData.shift();
+      // Axes
       ctx.beginPath();
-      ctx.strokeStyle = '#00f2fe';
-      ctx.lineWidth = 2;
-
-      speedData.forEach((speed, i) => {
-        const x = (i / (maxPoints - 1)) * width;
-        const logSpeed = Math.log10(speed + 1);
-        const y = height - (logSpeed / logMax) * height;
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      });
+      ctx.moveTo(padding, padding);
+      ctx.lineTo(padding, height - padding);
+      ctx.lineTo(width - padding, height - padding);
+      ctx.strokeStyle = 'rgba(73, 115, 255, 0.4)';
+      ctx.lineWidth = 1;
       ctx.stroke();
+
+      // Grid lines and Y-axis labels (logarithmic scale)
+      const speedLevels = [0, 10, 50, 100, 200, 500, 1000];
+      const logMax = Math.log10(maxSpeed + 1);
+      ctx.font = `7px 'Exo 2', sans-serif`;
+      ctx.fillStyle = '#8492b4';
+      ctx.textAlign = 'right';
+      speedLevels.forEach((level) => {
+        const logLevel = Math.log10(level + 1);
+        const y = height - padding - (logLevel / logMax) * (height - 2 * padding);
+        ctx.beginPath();
+        ctx.moveTo(padding, y);
+        ctx.lineTo(width - padding, y);
+        ctx.strokeStyle = 'rgba(73, 115, 255, 0.1)';
+        ctx.stroke();
+        ctx.fillText(level, padding - 10, y + 2);
+      });
+
+      // X-axis labels
+      ctx.textAlign = 'center';
+      for (let t = 0; t <= maxTime; t += 3) {
+        const x = padding + (t / maxTime) * (width - 2 * padding);
+        ctx.fillText(t, x, height - padding + 15);
+      }
+
+      // Plot data
+      if (graphData.length > 0) {
+        ctx.beginPath();
+        const firstPointY = height - padding - (Math.log10(graphData[0].speed + 1) / logMax) * (height - 2 * padding);
+        ctx.moveTo(padding, firstPointY);
+        graphData.forEach((point) => {
+          const x = padding + (point.time / maxTime) * (width - 2 * padding);
+          const y = height - padding - (Math.log10(point.speed + 1) / logMax) * (height - 2 * padding);
+          ctx.lineTo(x, y);
+        });
+        ctx.strokeStyle = '#00f2fe';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
     }
 
-    // Speed Test Simulation
-    async function runSpeedTest() {
+    function updateGraph(time, speed) {
+      graphData.push({ time, speed });
+      if (graphData.length > 150) graphData.shift();
+      drawGraph();
+    }
+
+    function resetGraph() {
+      graphData = [{ time: 0, speed: 0 }]; // Start at (0,0)
+      drawGraph();
+    }
+
+    // Speed Test
+    const CONFIG = {
+      testServer: {
+        downloadUrl: '/assets/25mb.bin',
+        pingResource: '/assets/ping-test.txt',
+      },
+      testDurations: { download: 15000, ping: 5000 },
+      maxTestTimeout: 20000,
+    };
+
+    function initializeSpeedTest() {
       const startButton = document.getElementById('start-button');
       const testAgainButton = document.getElementById('test-again-button');
-      const testType = document.getElementById('test-type');
       const progressBar = document.getElementById('progress-bar');
+      const testType = document.getElementById('test-type');
       const speedValue = document.getElementById('speed-value');
-      const loading = document.getElementById('loading');
       const graphContainer = document.getElementById('graph-container');
       const resultsContainer = document.getElementById('results-container');
       const downloadResult = document.getElementById('download-result');
       const pingResult = document.getElementById('ping-result');
+      const loading = document.getElementById('loading');
+      const overlay = document.getElementById('overlay');
+      const speedFrame = document.getElementById('speed-frame');
+      const closeOverlay = document.getElementById('close-overlay');
 
-      startButton.classList.add('hidden');
-      testAgainButton.classList.add('hidden');
-      loading.classList.remove('hidden');
-      graphContainer.classList.remove('hidden');
-      resultsContainer.classList.add('hidden');
-      speedData = [];
-      triggerBigBang();
+      let testActive = false;
+      let controller = null;
+      let finalDownloadSpeed = 0;
+      let finalPing = 0;
 
-      // Simulate Ping Test
-      testType.textContent = 'Ping Test';
-      progressBar.style.width = '33%';
-      let ping = 0;
-      await new Promise(resolve => setTimeout(() => {
-        ping = Math.random() * 50 + 10; // 10-60ms
-        pingResult.textContent = ping.toFixed(1) + ' ms';
-        resolve();
-      }, 2000));
-
-      // Simulate Download Test
-      testType.textContent = 'Download Test';
-      progressBar.style.width = '66%';
-      let downloadSpeed = 0;
-      const startTime = performance.now();
-      const testDuration = 5000; // 5 seconds
-      while (performance.now() - startTime < testDuration) {
-        downloadSpeed = Math.random() * 200 + 50; // 50-250 Mbps
-        speedValue.textContent = downloadSpeed.toFixed(1);
-        drawSpeedometer(downloadSpeed);
-        speedData.push(downloadSpeed);
-        drawGraph();
-        await new Promise(resolve => setTimeout(resolve, 100));
+      async function runPingTest() {
+        testType.textContent = 'Testing Ping';
+        const pingTimes = [];
+        for (let i = 0; i < 15; i++) {
+          if (!testActive) break;
+          try {
+            const start = performance.now();
+            await fetch(`${CONFIG.testServer.pingResource}?t=${Date.now()}`, { cache: 'no-store', signal: AbortSignal.timeout(2000) });
+            const ping = performance.now() - start;
+            pingTimes.push(ping);
+            log(`Ping #${i + 1}: ${ping.toFixed(2)}ms`);
+          } catch (error) {
+            pingTimes.push(999);
+            log(`Ping #${i + 1} failed: ${error.message}`);
+          }
+          await new Promise(resolve => setTimeout(resolve, 333));
+        }
+        const successfulPings = pingTimes.filter(t => t !== 999);
+        finalPing = successfulPings.length ? successfulPings.reduce((sum, t) => sum + t, 0) / successfulPings.length : 999;
+        pingResult.textContent = `${finalPing.toFixed(0)} ms`;
       }
-      downloadResult.textContent = downloadSpeed.toFixed(1) + ' Mbps';
 
-      // Complete Test
-      testType.textContent = 'Test Complete';
-      progressBar.style.width = '100%';
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      loading.classList.add('hidden');
-      resultsContainer.classList.remove('hidden');
-      testAgainButton.classList.remove('hidden');
+      async function runDownloadTest() {
+        testType.textContent = 'Testing Download Speed';
+        let totalBytes = 0;
+        const startTime = performance.now();
+        const overallTimeout = setTimeout(() => {
+          testActive = false;
+          if (controller) controller.abort();
+          finalizeTest();
+        }, CONFIG.maxTestTimeout);
+
+        try {
+          controller = new AbortController();
+          const response = await fetch(CONFIG.testServer.downloadUrl, { cache: 'no-store', signal: controller.signal });
+          if (!response.ok) throw new Error('Failed to fetch download resource');
+          const reader = response.body.getReader();
+          let lastUpdate = startTime;
+
+          while (testActive) {
+            const { done, value } = await reader.read();
+            if (done || !testActive) {
+              controller.abort();
+              break;
+            }
+            totalBytes += value ? value.length : 0;
+            const elapsed = (performance.now() - startTime) / 1000;
+            if (performance.now() - lastUpdate >= 100) {
+              const speed = ((totalBytes * 8) / elapsed) / (1024 * 1024);
+              progressBar.style.width = `${(elapsed / (CONFIG.testDurations.download / 1000)) * 100}%`;
+              speedValue.textContent = speed.toFixed(1);
+              animateSpeedometer(speed);
+              updateGraph(elapsed, speed);
+              lastUpdate = performance.now();
+            }
+            if (elapsed >= CONFIG.testDurations.download / 1000) {
+              controller.abort();
+              break;
+            }
+          }
+        } catch (error) {
+          log('Download error: ' + error.message);
+          throw error;
+        } finally {
+          clearTimeout(overallTimeout);
+          controller = null;
+        }
+
+        const totalTime = (performance.now() - startTime) / 1000;
+        finalDownloadSpeed = totalTime > 0 ? ((totalBytes * 8) / totalTime) / (1024 * 1024) : 0;
+        downloadResult.textContent = `${finalDownloadSpeed.toFixed(1)} Mbps`;
+      }
+
+      function finalizeTest() {
+        if (!finalDownloadSpeed && !finalPing) {
+          document.getElementById('error-message').textContent = 'Speed test failed. Please try again.';
+          document.getElementById('error-message').classList.remove('hidden');
+          startButton.textContent = 'Start Test';
+        } else {
+          resultsContainer.classList.remove('hidden');
+          startButton.textContent = 'More Info';
+          testAgainButton.classList.remove('hidden');
+          triggerBigBang();
+        }
+        startButton.disabled = false;
+        testActive = false;
+        loading.classList.add('hidden');
+      }
+
+      async function runTest() {
+        testActive = true;
+        startButton.disabled = true;
+        startButton.textContent = 'Testing...';
+        testAgainButton.classList.add('hidden');
+        loading.classList.remove('hidden');
+        progressBar.style.width = '0';
+        speedValue.textContent = '0';
+        animateSpeedometer(0);
+        resetGraph();
+        graphContainer.classList.remove('hidden');
+        resultsContainer.classList.add('hidden');
+        document.getElementById('error-message').classList.add('hidden');
+
+        try {
+          await runPingTest();
+          if (testActive) await runDownloadTest();
+          if (testActive) finalizeTest();
+        } catch (error) {
+          finalizeTest();
+        }
+      }
+
+      drawSpeedometer(0);
+      drawGraph();
+
+      startButton.addEventListener('click', () => {
+        if (startButton.textContent === 'More Info') {
+          speedFrame.src = 'https://speed.cloudflare.com';
+          overlay.classList.add('active');
+        } else {
+          runTest();
+        }
+      });
+
+      testAgainButton.addEventListener('click', runTest);
+
+      closeOverlay.addEventListener('click', () => {
+        overlay.classList.remove('active');
+        speedFrame.src = '';
+      });
+
+      window.addEventListener('beforeunload', () => {
+        testActive = false;
+        if (controller) controller.abort();
+      });
     }
 
-    // Event Listeners
-    document.getElementById('start-button').addEventListener('click', runSpeedTest);
-    document.getElementById('test-again-button').addEventListener('click', runSpeedTest);
-
-    document.getElementById('close-overlay').addEventListener('click', () => {
-      document.getElementById('overlay').classList.remove('active');
-      document.getElementById('speed-frame').src = '';
+    // Main Initialization
+    document.addEventListener('DOMContentLoaded', async () => {
+      initializeSpeedTest();
+      const ip = await fetchIP();
+      await fetchLocationInfo();
+      document.getElementById('copy-ip-btn').addEventListener('click', () => {
+        if (ip !== 'N/A') {
+          copyToClipboard(ip);
+          triggerBigBang();
+        }
+      });
     });
-
-    // Initialize Speedometer
-    drawSpeedometer(0);
   </script>
 </body>
 </html>
