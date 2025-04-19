@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="description" content="Labverse Speed Test - Cyberpunk-themed download speed and ping test with neon visuals.">
-  <meta name="keywords" content="Speed Test, Public IP, Ping, Cyberpunk, Neon Animations">
+  <meta name="description" content="Labverse Speed Test - Measure your download speed and ping with cosmic animations.">
+  <meta name="keywords" content="Speed Test, Public IP, Ping, Cosmic Animations">
   <meta name="author" content="Labverse Team">
   <meta property="og:title" content="Labverse Speed Test">
-  <meta property="og:description" content="Test your network speed with a cyberpunk-inspired interface and neon visuals.">
+  <meta property="og:description" content="Test your network's download speed and ping with stunning nebula-inspired visuals.">
   <meta property="og:image" content="https://labverse.co.za/assets/labverse-og-image.png">
   <meta property="og:url" content="https://labverse.co.za">
   <meta name="twitter:card" content="summary_large_image">
@@ -16,14 +16,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --neon-blue: #00b7eb;
-      --neon-pink: #ff007f;
-      --neon-cyan: #00ffff;
-      --neon-purple: #b300ff;
-      --dark-cyber: #0a0e1f;
-      --card-glow: rgba(0, 183, 235, 0.4);
-      --card-bg: rgba(20, 30, 60, 0.85);
-      --text-glow: 0 0 8px rgba(0, 255, 255, 0.6);
+      --nebula-blue: #1e90ff;
+      --nebula-purple: #8a2be2;
+      --nebula-cyan: #00ffff;
+      --star-white: #f0f6ff;
+      --void-black: #0a0e1f;
+      --card-glow: rgba(30, 144, 255, 0.3);
+      --card-bg: rgba(20, 30, 60, 0.8);
+      --text-glow: 0 0 8px rgba(0, 255, 255, 0.5);
     }
 
     * {
@@ -36,8 +36,8 @@
     html, body {
       width: 100%;
       height: 100vh;
-      background: var(--dark-cyber);
-      color: #e0e6ff;
+      background: var(--void-black);
+      color: var(--star-white);
       overflow: hidden;
       touch-action: manipulation;
     }
@@ -49,7 +49,7 @@
       width: 100%;
       height: 100%;
       z-index: 1;
-      opacity: 0.8;
+      opacity: 0.7;
     }
 
     .container {
@@ -69,20 +69,19 @@
     header h1 {
       font-family: 'Orbitron', sans-serif;
       font-size: clamp(1.5rem, 4vw, 2.2rem);
-      background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+      background: linear-gradient(90deg, var(--nebula-blue), var(--nebula-cyan));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
       text-shadow: var(--text-glow);
       letter-spacing: 1px;
       margin-bottom: 1rem;
-      animation: glitch 2s linear infinite;
+      animation: pulse 3s ease-in-out infinite;
     }
 
-    @keyframes glitch {
-      0%, 100% { transform: translate(0); }
-      10%, 30%, 50%, 70%, 90% { transform: translate(-1px, 1px); }
-      20%, 40%, 60%, 80% { transform: translate(1px, -1px); }
+    @keyframes pulse {
+      0%, 100% { text-shadow: var(--text-glow); }
+      50% { text-shadow: 0 0 12px rgba(0, 255, 255, 0.8); }
     }
 
     .info-section {
@@ -106,8 +105,8 @@
     }
 
     .copy-btn {
-      background: linear-gradient(90deg, var(--neon-blue), var(--neon-cyan));
-      color: var(--dark-cyber);
+      background: linear-gradient(90deg, var(--nebula-blue), var(--nebula-cyan));
+      color: var(--void-black);
       border: none;
       padding: 0.4rem 1rem;
       border-radius: 6px;
@@ -123,7 +122,7 @@
     }
 
     .copy-btn:focus {
-      outline: 2px solid var(--neon-cyan);
+      outline: 2px solid var(--nebula-cyan);
       outline-offset: 2px;
     }
 
@@ -151,9 +150,8 @@
     .test-status {
       font-family: 'Orbitron', sans-serif;
       font-size: clamp(1rem, 2vw, 1.2rem);
-      color: var(--neon-cyan);
+      color: var(--nebula-cyan);
       margin-bottom: 0.5rem;
-      text-shadow: var(--text-glow);
     }
 
     .progress-bar {
@@ -167,99 +165,61 @@
     .progress {
       height: 100%;
       width: 0;
-      background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+      background: linear-gradient(90deg, var(--nebula-blue), var(--nebula-cyan));
       transition: width 0.3s ease;
-      box-shadow: 0 0 8px var(--neon-cyan);
+      box-shadow: 0 0 8px var(--nebula-cyan);
     }
 
     .speedometer {
-      width: 200px;
-      height: 120px;
+      width: 180px;
+      height: 100px;
       margin: 0 auto 0.5rem;
       position: relative;
-      font-family: 'Orbitron', sans-serif;
     }
 
     .gauge {
       width: 100%;
       height: 140px;
-      border-radius: 100px 100px 0 0;
+      border-radius: 90px 90px 0 0;
       background: linear-gradient(145deg, #0f1a3a, #15224f);
       position: relative;
       overflow: hidden;
-      box-shadow: 0 0 15px var(--card-glow);
     }
 
     .gauge::before {
       content: '';
       position: absolute;
-      top: 10%;
-      left: 10%;
-      right: 10%;
+      top: 8%;
+      left: 8%;
+      right: 8%;
       bottom: 0;
-      background: var(--dark-cyber);
+      background: var(--void-black);
       border-radius: 80px 80px 0 0;
-    }
-
-    .gauge-ticks {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      z-index: 2;
-    }
-
-    .tick {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      width: 2px;
-      height: 10px;
-      background: var(--neon-cyan);
-      transform-origin: center bottom;
-      box-shadow: 0 0 5px var(--neon-cyan);
-    }
-
-    .tick-label {
-      position: absolute;
-      bottom: 15px;
-      font-size: clamp(0.5rem, 0.8vw, 0.6rem);
-      color: var(--neon-cyan);
-      text-shadow: var(--text-glow);
-      transform: translateX(-50%);
     }
 
     .gauge-fill {
       position: absolute;
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+      background: linear-gradient(90deg, var(--nebula-blue), var(--nebula-cyan));
       clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
       transform-origin: center bottom;
       transform: rotate(180deg);
       transition: transform 0.3s ease;
-      z-index: 1;
-      opacity: 0.5;
     }
 
     .gauge-needle {
       position: absolute;
       width: 40%;
       height: 3px;
-      background: var(--neon-cyan);
+      background: var(--star-white);
       bottom: 0;
       left: 50%;
       transform-origin: center bottom;
       transform: rotate(180deg);
       border-radius: 2px;
       transition: transform 0.3s ease;
-      box-shadow: 0 0 10px var(--neon-cyan);
-      z-index: 3;
-      animation: pulse-needle 1.5s ease-in-out infinite;
-    }
-
-    @keyframes pulse-needle {
-      0%, 100% { box-shadow: 0 0 10px var(--neon-cyan); }
-      50% { box-shadow: 0 0 15px var(--neon-cyan); }
+      box-shadow: 0 0 6px var(--nebula-cyan);
     }
 
     .gauge-needle::after {
@@ -268,10 +228,10 @@
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: var(--neon-cyan);
+      background: var(--star-white);
       right: -4px;
       top: -2.5px;
-      box-shadow: 0 0 8px var(--neon-cyan);
+      box-shadow: 0 0 6px var(--nebula-cyan);
     }
 
     .speed-value {
@@ -281,9 +241,8 @@
       right: 0;
       font-size: clamp(1rem, 2vw, 1.3rem);
       font-weight: 600;
-      color: #e0e6ff;
+      color: var(--star-white);
       text-shadow: var(--text-glow);
-      z-index: 4;
     }
 
     .speed-unit {
@@ -293,7 +252,6 @@
       right: 0;
       font-size: clamp(0.6rem, 1vw, 0.8rem);
       color: #b0c4de;
-      z-index: 4;
     }
 
     .graph-container {
@@ -339,24 +297,7 @@
       left: 0;
       right: 0;
       height: 1px;
-      background: rgba(0, 183, 235, 0.15);
-    }
-
-    .graph {
-      position: relative;
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
-    }
-
-    .graph-dot {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      background: var(--neon-cyan);
-      border-radius: 50%;
-      box-shadow: 0 0 8px var(--neon-cyan);
-      transform: translate(-50%, -50%);
+      background: rgba(30, 144, 255, 0.15);
     }
 
     .graph-line {
@@ -364,9 +305,9 @@
       bottom: 0;
       left: 0;
       width: 0;
-      height: 1px;
-      background: var(--neon-cyan);
-      opacity: 0.3;
+      height: 2px;
+      background: linear-gradient(90deg, var(--nebula-blue), var(--nebula-cyan));
+      box-shadow: 0 0 6px var(--nebula-cyan);
       transition: width 0.05s linear;
     }
 
@@ -401,13 +342,13 @@
     .result-value {
       font-size: clamp(0.9rem, 1.5vw, 1.1rem);
       font-weight: 600;
-      color: #e0e6ff;
+      color: var(--star-white);
       text-shadow: var(--text-glow);
     }
 
     .start-button {
-      background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
-      color: var(--dark-cyber);
+      background: linear-gradient(90deg, var(--nebula-blue), var(--nebula-cyan));
+      color: var(--void-black);
       border: none;
       padding: 0.5rem 1.5rem;
       border-radius: 20px;
@@ -424,7 +365,7 @@
     }
 
     .start-button:focus {
-      outline: 2px solid var(--neon-cyan);
+      outline: 2px solid var(--nebula-cyan);
       outline-offset: 2px;
     }
 
@@ -479,7 +420,7 @@
       display: none;
       width: 24px;
       height: 24px;
-      border: 3px solid var(--neon-cyan);
+      border: 3px solid var(--nebula-cyan);
       border-top: 3px solid transparent;
       border-radius: 50%;
       animation: spin 1s linear infinite;
@@ -506,7 +447,7 @@
     }
 
     footer a {
-      color: var(--neon-cyan);
+      color: var(--nebula-cyan);
       text-decoration: none;
       transition: text-shadow 0.2s ease;
     }
@@ -523,7 +464,7 @@
       .container { padding: 0.5rem; }
       header h1 { font-size: clamp(1.2rem, 3.5vw, 1.8rem); }
       .ip-display { font-size: clamp(0.9rem, 2vw, 1.2rem); }
-      .speedometer { width: 160px; height: 90px; }
+      .speedometer { width: 140px; height: 80px; }
       .gauge { height: 110px; }
       .graph-container { height: 100px; }
       .iframe-container { height: 150px; }
@@ -534,25 +475,25 @@
       .info-section { max-width: 100%; }
       .results { flex-direction: column; }
       .result-box { width: 100%; }
-      .speedometer { width: 140px; height: 80px; }
+      .speedometer { width: 120px; height: 70px; }
       .gauge { height: 90px; }
       .iframe-container { height: 120px; }
     }
   </style>
 </head>
 <body>
-  <canvas id="cyber-canvas" aria-hidden="true"></canvas>
+  <canvas id="nebula-canvas" aria-hidden="true"></canvas>
   <div class="container">
     <header>
       <h1>Labverse Speed Test</h1>
     </header>
     <div class="info-section">
-      <div class="ip-display" id="ipDisplay" role="status" aria-live="polite">Fetching IP...</div>
-      <button class="copy-btn" id="copyIpBtn" aria-label="Copy IP address">Copy IP</button>
-      <div class="network-info" id="networkInfo" role="status" aria-live="polite">Fetching network info...</div>
+      <div class="ip-display" id="ip-display" role="status" aria-live="polite">Fetching IP...</div>
+      <button class="copy-btn" id="copy-ip-btn" aria-label="Copy IP address">Copy IP</button>
+      <div class="network-info" id="network-info" role="status" aria-live="polite">Fetching network info...</div>
     </div>
-    <div class="error-message" id="errorMessage" role="alert"></div>
-    <div class="loading-spinner" id="loadingSpinner"></div>
+    <div class="error-message" id="error-message" role="alert"></div>
+    <div class="loading-spinner" id="loading-spinner"></div>
     <div class="speed-card">
       <div class="test-status" id="testStatus" role="status" aria-live="polite">Ready</div>
       <div class="progress-bar">
@@ -560,7 +501,6 @@
       </div>
       <div class="speedometer hidden" id="speedometer" role="meter" aria-valuenow="0" aria-valuemin="0" aria-valuemax="1000" aria-label="Download speed">
         <div class="gauge">
-          <div class="gauge-ticks" id="gaugeTicks"></div>
           <div class="gauge-fill" id="gaugeFill"></div>
           <div class="gauge-needle" id="gaugeNeedle"></div>
         </div>
@@ -570,7 +510,9 @@
       <div class="graph-container hidden" id="graphContainer">
         <div class="y-axis" id="yAxis"></div>
         <div class="grid-lines" id="gridLines"></div>
-        <div class="graph" id="graph"></div>
+        <div class="graph" id="graph">
+          <div class="graph-line" id="graphLine"></div>
+        </div>
       </div>
       <div class="results hidden" id="resultsContainer">
         <div class="result-box" id="downloadBox">
@@ -596,10 +538,10 @@
   <script>
     // Configuration
     const CONFIG = {
-      cyber: {
-        particleCount: 150,
-        maxVelocity: 0.4,
-        connectionDistance: 80
+      nebula: {
+        particleCount: 200,
+        maxVelocity: 0.5,
+        connectionDistance: 100
       },
       api: {
         ipServices: [
@@ -657,8 +599,8 @@
       }
     }
 
-    // Cyberpunk Particle System
-    class Cyberpunk {
+    // Nebula Particle System
+    class Nebula {
       constructor(canvasId) {
         this.canvas = document.getElementById(canvasId);
         this.scene = new THREE.Scene();
@@ -681,29 +623,29 @@
         const colors = [];
         const velocities = [];
 
-        for (let i = 0; i < CONFIG.cyber.particleCount; i++) {
+        for (let i = 0; i < CONFIG.nebula.particleCount; i++) {
           vertices.push(
             (Math.random() - 0.5) * 100,
             (Math.random() - 0.5) * 100,
             (Math.random() - 0.5) * 100
           );
-          const hue = Math.random() * 60 + 180;
-          const color = new THREE.Color(`hsl(${hue}, 80%, 70%)`);
+          const hue = Math.random() * 60 + 180; // Blue-purple range
+          const color = new THREE.Color(`hsl(${hue}, 70%, 70%)`);
           colors.push(color.r, color.g, color.b);
           velocities.push(
-            (Math.random() - 0.5) * CONFIG.cyber.maxVelocity,
-            (Math.random() - 0.5) * CONFIG.cyber.maxVelocity,
-            (Math.random() - 0.5) * CONFIG.cyber.maxVelocity
+            (Math.random() - 0.5) * CONFIG.nebula.maxVelocity,
+            (Math.random() - 0.5) * CONFIG.nebula.maxVelocity,
+            (Math.random() - 0.5) * CONFIG.nebula.maxVelocity
           );
         }
 
         geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
         geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
         const material = new THREE.PointsMaterial({
-          size: 0.4,
+          size: 0.5,
           vertexColors: true,
           transparent: true,
-          opacity: 0.9
+          opacity: 0.8
         });
 
         this.particleSystem = new THREE.Points(geometry, material);
@@ -718,18 +660,18 @@
       updateConnections() {
         this.lines.clear();
         const positions = this.particleSystem.geometry.attributes.position.array;
-        const lineMaterial = new THREE.LineBasicMaterial({ color: 0x00b7eb, transparent: true, opacity: 0.3 });
+        const lineMaterial = new THREE.LineBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.2 });
 
-        for (let i = 0; i < CONFIG.cyber.particleCount; i++) {
+        for (let i = 0; i < CONFIG.nebula.particleCount; i++) {
           const x1 = positions[i * 3];
           const y1 = positions[i * 3 + 1];
           const z1 = positions[i * 3 + 2];
-          for (let j = i + 1; j < CONFIG.cyber.particleCount; j++) {
+          for (let j = i + 1; j < CONFIG.nebula.particleCount; j++) {
             const x2 = positions[j * 3];
             const y2 = positions[j * 3 + 1];
             const z2 = positions[j * 3 + 2];
             const distance = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2 + (z2 - z1) ** 2);
-            if (distance < CONFIG.cyber.connectionDistance) {
+            if (distance < CONFIG.nebula.connectionDistance) {
               const geometry = new THREE.BufferGeometry().setFromPoints([
                 new THREE.Vector3(x1, y1, z1),
                 new THREE.Vector3(x2, y2, z2)
@@ -743,7 +685,7 @@
 
       animate() {
         const positions = this.particleSystem.geometry.attributes.position.array;
-        for (let i = 0; i < CONFIG.cyber.particleCount; i++) {
+        for (let i = 0; i < CONFIG.nebula.particleCount; i++) {
           positions[i * 3] += this.velocities[i * 3] + this.mouse.x * 0.0001;
           positions[i * 3 + 1] += this.velocities[i * 3 + 1] + this.mouse.y * 0.0001;
           positions[i * 3 + 2] += this.velocities[i * 3 + 2];
@@ -759,10 +701,10 @@
 
       triggerBurst() {
         const positions = this.particleSystem.geometry.attributes.position.array;
-        for (let i = 0; i < CONFIG.cyber.particleCount; i++) {
-          this.velocities[i * 3] = (Math.random() - 0.5) * CONFIG.cyber.maxVelocity * 2;
-          this.velocities[i * 3 + 1] = (Math.random() - 0.5) * CONFIG.cyber.maxVelocity * 2;
-          this.velocities[i * 3 + 2] = (Math.random() - 0.5) * CONFIG.cyber.maxVelocity * 2;
+        for (let i = 0; i < CONFIG.nebula.particleCount; i++) {
+          this.velocities[i * 3] = (Math.random() - 0.5) * CONFIG.nebula.maxVelocity * 2;
+          this.velocities[i * 3 + 1] = (Math.random() - 0.5) * CONFIG.nebula.maxVelocity * 2;
+          this.velocities[i * 3 + 2] = (Math.random() - 0.5) * CONFIG.nebula.maxVelocity * 2;
         }
       }
 
@@ -855,7 +797,6 @@
           speedometer: document.getElementById('speedometer'),
           graphContainer: document.getElementById('graphContainer'),
           graph: document.getElementById('graph'),
-          gaugeTicks: document.getElementById('gaugeTicks'),
           gaugeFill: document.getElementById('gaugeFill'),
           gaugeNeedle: document.getElementById('gaugeNeedle'),
           speedValue: document.getElementById('speedValue'),
@@ -878,8 +819,7 @@
           finalPing: 0,
           startTime: 0,
           controller: null,
-          watchdogTimer: null,
-          lastUpdateTime: 0
+          watchdogTimer: null
         };
         this.setupUI();
         this.bindEvents();
@@ -888,9 +828,6 @@
       setupUI() {
         const labels = [0, 10, 25, 50, 100, 200, 500, 1000];
         const positions = [0, 25, 50, 65, 75, 85, 95, 100];
-        const angles = labels.map((_, i) => 180 + (180 * positions[i] / 100)); // Map to 180°-360°
-
-        // Y-Axis
         this.elements.yAxis.innerHTML = '';
         labels.forEach((label, index) => {
           const div = document.createElement('div');
@@ -900,31 +837,12 @@
           this.elements.yAxis.appendChild(div);
         });
 
-        // Grid Lines
         this.elements.gridLines.innerHTML = '';
         positions.forEach(pos => {
           const line = document.createElement('div');
           line.className = 'grid-line';
           line.style.bottom = `${pos}%`;
           this.elements.gridLines.appendChild(line);
-        });
-
-        // Gauge Ticks
-        this.elements.gaugeTicks.innerHTML = '';
-        labels.forEach((label, index) => {
-          const tick = document.createElement('div');
-          tick.className = 'tick';
-          tick.style.transform = `rotate(${angles[index]}deg)`;
-          this.elements.gaugeTicks.appendChild(tick);
-
-          const tickLabel = document.createElement('div');
-          tickLabel.className = 'tick-label';
-          const angleRad = angles[index] * Math.PI / 180;
-          const radius = 85; // Adjust for label positioning
-          tickLabel.style.left = `calc(50% + ${radius * Math.cos(angleRad - Math.PI / 2)}px)`;
-          tickLabel.style.bottom = `calc(50% + ${radius * Math.sin(angleRad - Math.PI / 2)}px)`;
-          tickLabel.textContent = label;
-          this.elements.gaugeTicks.appendChild(tickLabel);
         });
       }
 
@@ -942,31 +860,23 @@
         return 0;
       }
 
-      speedToAngle(speed) {
-        const height = this.speedToHeight(speed);
-        return 180 + (180 * height / 100); // Map 0-100% height to 180°-360°
-      }
-
       updateSpeedometer(speed) {
-        const angle = this.speedToAngle(speed);
-        this.elements.gaugeFill.style.transform = `rotate(${angle}deg)`;
-        this.elements.gaugeNeedle.style.transform = `rotate(${angle}deg)`;
+        const maxScale = 1000;
+        let angle = speed <= 25 ? 180 * (speed / 25) : 180 + 180 * ((Math.log10(speed) - Math.log10(25)) / (Math.log10(maxScale) - Math.log10(25)));
+        angle = Math.min(angle, 360);
+        const rotation = 180 + angle;
+        this.elements.gaugeFill.style.transform = `rotate(${rotation}deg)`;
+        this.elements.gaugeNeedle.style.transform = `rotate(${rotation}deg)`;
         this.elements.speedValue.textContent = speed.toFixed(1);
         this.elements.speedometer.setAttribute('aria-valuenow', speed.toFixed(1));
       }
 
-      updateGraph(elapsed, speed) {
-        const testDuration = CONFIG.speedTest.durations.download / 1000;
-        const second = Math.floor(elapsed);
-        if (second > this.state.lastUpdateTime) {
-          const xPercent = (second / testDuration) * 100;
-          const yPercent = this.speedToHeight(speed);
-          const dot = document.createElement('div');
-          dot.className = 'graph-dot';
-          dot.style.left = `${xPercent}%`;
-          dot.style.bottom = `${yPercent}%`;
-          this.elements.graph.appendChild(dot);
-          this.state.lastUpdateTime = second;
+      updateGraph(percentage, speed) {
+        const heightPercentage = this.speedToHeight(speed);
+        const graphLine = document.getElementById('graphLine');
+        if (graphLine) {
+          graphLine.style.width = `${percentage * 100}%`;
+          graphLine.style.height = `${heightPercentage}%`;
         }
       }
 
@@ -1095,7 +1005,7 @@
         });
         this.elements.startButton.textContent = 'More Info';
         this.elements.startButton.disabled = false;
-        cyberpunk.triggerBurst();
+        nebula.triggerBurst();
       }
 
       runTest() {
@@ -1103,8 +1013,11 @@
         this.state.currentSpeed = 0;
         this.state.maxSpeed = 0;
         this.state.startTime = Date.now();
-        this.state.lastUpdateTime = 0;
         this.elements.graph.innerHTML = '';
+        const newGraphLine = document.createElement('div');
+        newGraphLine.className = 'graph-line';
+        newGraphLine.id = 'graphLine';
+        this.elements.graph.appendChild(newGraphLine);
         this.state.testActive = true;
 
         this.state.watchdogTimer = setTimeout(() => {
@@ -1135,7 +1048,7 @@
             this.state.testData.push({ time: elapsed, speed: this.state.currentSpeed });
             this.elements.progressBar.style.width = `${progress * 100}%`;
             this.updateSpeedometer(this.state.currentSpeed);
-            this.updateGraph(elapsed, this.state.currentSpeed);
+            this.updateGraph(progress, this.state.currentSpeed);
             if (progress >= 1) {
               this.elements.progressBar.style.width = '100%';
               this.finalizeTest();
@@ -1156,12 +1069,6 @@
             this.elements.iframe.onload = () => {
               this.elements.loadingSpinner.style.display = 'none';
               this.elements.iframeContainer.classList.add('active');
-              // Attempt to trigger Cloudflare test (note: may depend on Cloudflare's API)
-              try {
-                this.elements.iframe.contentWindow.postMessage({ action: 'startTest' }, 'https://speed.cloudflare.com');
-              } catch (err) {
-                Utils.log('Failed to trigger Cloudflare test: ' + err.message);
-              }
             };
             this.elements.iframe.onerror = () => {
               this.elements.loadingSpinner.style.display = 'none';
@@ -1186,38 +1093,38 @@
     }
 
     // Main Initialization
-    let cyberpunk;
+    let nebula;
     async function init() {
       try {
-        // Initialize Cyberpunk Particles
-        cyberpunk = new Cyberpunk('cyber-canvas');
+        // Initialize Nebula
+        nebula = new Nebula('nebula-canvas');
 
         // Fetch IP and Location
         const ip = await NetworkService.fetchIP().catch(err => {
-          document.getElementById('ipDisplay').textContent = 'IP unavailable';
+          document.getElementById('ip-display').textContent = 'IP unavailable';
           throw err;
         });
-        document.getElementById('ipDisplay').textContent = ip;
+        document.getElementById('ip-display').textContent = ip;
 
         const location = await NetworkService.fetchLocationInfo(ip);
-        document.getElementById('networkInfo').innerHTML = `ISP: ${location.isp}<br>Location: ${location.city}, ${location.country}`;
+        document.getElementById('network-info').innerHTML = `ISP: ${location.isp}<br>Location: ${location.city}, ${location.country}`;
 
         // Initialize Speed Test
         new SpeedTest();
 
         // Copy IP Button
-        document.getElementById('copyIpBtn').addEventListener('click', async () => {
-          const ip = document.getElementById('ipDisplay').textContent;
+        document.getElementById('copy-ip-btn').addEventListener('click', async () => {
+          const ip = document.getElementById('ip-display').textContent;
           if (ip !== 'Fetching IP...' && ip !== 'IP unavailable') {
             await Utils.copyToClipboard(ip);
-            cyberpunk.triggerBurst();
+            nebula.triggerBurst();
             alert('IP copied to clipboard!');
           }
         });
       } catch (error) {
         Utils.log('Initialization error: ' + error.message);
-        document.getElementById('errorMessage').style.display = 'block';
-        document.getElementById('errorMessage').textContent = 'Failed to initialize. Please refresh the page.';
+        document.getElementById('error-message').style.display = 'block';
+        document.getElementById('error-message').textContent = 'Failed to initialize. Please refresh the page.';
       }
     }
 
