@@ -171,6 +171,8 @@
       width: 100%;
       max-height: calc(100vh - 150px); /* Fit within viewport */
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
     .test-type {
@@ -290,6 +292,7 @@
       justify-content: center;
       gap: 0.8rem;
       margin-top: 1rem;
+      margin-bottom: 1rem; /* Added to prevent button being cut off */
     }
 
     .start-button, .test-again-button {
@@ -414,7 +417,6 @@
       .ip-display { font-size: clamp(0.8rem, 2vw, 1.2rem); }
       .results { flex-direction: column; }
       .result-box { width: 100%; min-width: unset; }
-      .button-container { flex-direction: column; gap: 0.5rem; }
     }
   </style>
 </head>
@@ -652,7 +654,7 @@
       }
     }
 
-    // Speedometer
+    // Speedometer - IMPROVED to show all values
     function drawSpeedometer(speed) {
       const canvas = document.getElementById('speedometer-canvas');
       const ctx = canvas.getContext('2d');
@@ -721,290 +723,20 @@
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // Speed labels on arch
+      // Speed labels on arch - IMPROVED to ensure all values are visible
       const speeds = [0, 10, 50, 100, 200, 500, 1000];
-      ctx.font = `6px 'Exo 2', sans-serif`;
+      ctx.font = `8px 'Exo 2', sans-serif`; // Increased font size
       ctx.fillStyle = '#e0e0ff';
       ctx.textAlign = 'center';
+      
       speeds.forEach((s) => {
         const logS = Math.log10(s + 1);
         const tickAngle = Math.PI + (logS / logMax) * Math.PI;
-        const labelX = centerX + (radius + 30) * Math.cos(tickAngle);
-        const labelY = centerY + (radius + 30) * Math.sin(tickAngle);
-        ctx.fillText(s, labelX, labelY);
-      });
-    }
-
-    function animateSpeedometer(targetSpeed) {
-      let currentSpeed = parseFloat(document.getElementById('speed-value').textContent);
-      const step = (targetSpeed - currentSpeed) / 30;
-      function update() {
-        currentSpeed += step;
-        if (Math.abs(currentSpeed - targetSpeed) < 0.1) currentSpeed = targetSpeed;
-        document.getElementById('speed-value').textContent = currentSpeed.toFixed(1);
-        drawSpeedometer(currentSpeed);
-        if (Math.abs(currentSpeed - targetSpeed) >= 0.1) {
-          requestAnimationFrame(update);
-        }
-      }
-      requestAnimationFrame(update);
-    }
-
-    // Graph
-    let graphData = [];
-    function drawGraph() {
-      const canvas = document.getElementById('graph-canvas');
-      const ctx = canvas.getContext('2d');
-      const width = canvas.clientWidth;
-      const height = canvas.clientHeight;
-      canvas.width = width * devicePixelRatio;
-      canvas.height = height * devicePixelRatio;
-      ctx.scale(devicePixelRatio, devicePixelRatio);
-
-      ctx.clearRect(0, 0, width, height);
-      const maxSpeed = 1000;
-      const maxTime = 15;
-      const padding = 45;
-
-      // Axes
-      ctx.beginPath();
-      ctx.moveTo(padding, padding);
-      ctx.lineTo(padding, height - padding);
-      ctx.lineTo(width - padding, height - padding);
-      ctx.strokeStyle = 'rgba(73, 115, 255, 0.4)';
-      ctx.lineWidth = 1;
-      ctx.stroke();
-
-      // Grid lines and Y-axis labels (logarithmic scale)
-      const speedLevels = [0, 10, 50, 100, 200, 500, 1000];
-      const logMax = Math.log10(maxSpeed + 1);
-      ctx.font = `7px 'Exo 2', sans-serif`;
-      ctx.fillStyle = '#8492b4';
-      ctx.textAlign = 'right';
-      speedLevels.forEach((level) => {
-        const logLevel = Math.log10(level + 1);
-        const y = height - padding - (logLevel / logMax) * (height - 2 * padding);
-        ctx.beginPath();
-        ctx.moveTo(padding, y);
-        ctx.lineTo(width - padding, y);
-        ctx.strokeStyle = 'rgba(73, 115, 255, 0.1)';
-        ctx.stroke();
-        ctx.fillText(level, padding - 10, y + 2);
-      });
-
-      // X-axis labels
-      ctx.textAlign = 'center';
-      for (let t = 0; t <= maxTime; t += 3) {
-        const x = padding + (t / maxTime) * (width - 2 * padding);
-        ctx.fillText(t, x, height - padding + 15);
-      }
-
-      // Plot data
-      if (graphData.length > 1) {
-        ctx.beginPath();
-        const firstPointY = height - padding - (Math.log10(graphData[0].speed + 1) / logMax) * (height - 2 * padding);
-        ctx.moveTo(padding, firstPointY);
-        graphData.forEach((point) => {
-          const x = padding + (point.time / maxTime) * (width - 2 * padding);
-          const y = height - padding - (Math.log10(point.speed + 1) / logMax) * (height - 2 * padding);
-          ctx.lineTo(x, y);
-        });
-        ctx.strokeStyle = '#00f2fe';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-      }
-    }
-
-    function updateGraph(time, speed) {
-      graphData.push({ time, speed });
-      if (graphData.length > 150) graphData.shift();
-      drawGraph();
-    }
-
-    function resetGraph() {
-      graphData = [];
-      drawGraph();
-    }
-
-    // Speed Test
-    const CONFIG = {
-      testServer: {
-        downloadUrl: '/assets/25mb.bin',
-        pingResource: '/assets/ping-test.txt',
-      },
-      testDurations: { download: 15000, ping: 5000 },
-      maxTestTimeout: 20000,
-    };
-
-    function initializeSpeedTest() {
-      const startButton = document.getElementById('start-button');
-      const testAgainButton = document.getElementById('test-again-button');
-      const progressBar = document.getElementById('progress-bar');
-      const testType = document.getElementById('test-type');
-      const speedValue = document.getElementById('speed-value');
-      const graphContainer = document.getElementById('graph-container');
-      const resultsContainer = document.getElementById('results-container');
-      const downloadResult = document.getElementById('download-result');
-      const pingResult = document.getElementById('ping-result');
-      const loading = document.getElementById('loading');
-      const overlay = document.getElementById('overlay');
-      const speedFrame = document.getElementById('speed-frame');
-      const closeOverlay = document.getElementById('close-overlay');
-
-      let testActive = false;
-      let controller = null;
-      let finalDownloadSpeed = 0;
-      let finalPing = 0;
-
-      async function runPingTest() {
-        testType.textContent = 'Testing Ping';
-        const pingTimes = [];
-        for (let i = 0; i < 15; i++) {
-          if (!testActive) break;
-          try {
-            const start = performance.now();
-            await fetch(`${CONFIG.testServer.pingResource}?t=${Date.now()}`, { cache: 'no-store', signal: AbortSignal.timeout(2000) });
-            const ping = performance.now() - start;
-            pingTimes.push(ping);
-            log(`Ping #${i + 1}: ${ping.toFixed(2)}ms`);
-          } catch (error) {
-            pingTimes.push(999);
-            log(`Ping #${i + 1} failed: ${error.message}`);
-          }
-          await new Promise(resolve => setTimeout(resolve, 333));
-        }
-        const successfulPings = pingTimes.filter(t => t !== 999);
-        finalPing = successfulPings.length ? successfulPings.reduce((sum, t) => sum + t, 0) / successfulPings.length : 999;
-        pingResult.textContent = `${finalPing.toFixed(0)} ms`;
-      }
-
-      async function runDownloadTest() {
-        testType.textContent = 'Testing Download Speed';
-        let totalBytes = 0;
-        const startTime = performance.now();
-        const overallTimeout = setTimeout(() => {
-          testActive = false;
-          if (controller) controller.abort();
-          finalizeTest();
-        }, CONFIG.maxTestTimeout);
-
-        try {
-          controller = new AbortController();
-          const response = await fetch(CONFIG.testServer.downloadUrl, { cache: 'no-store', signal: controller.signal });
-          if (!response.ok) throw new Error('Failed to fetch download resource');
-          const reader = response.body.getReader();
-          let lastUpdate = startTime;
-
-          while (testActive) {
-            const { done, value } = await reader.read();
-            if (done || !testActive) {
-              controller.abort();
-              break;
-            }
-            totalBytes += value ? value.length : 0;
-            const elapsed = (performance.now() - startTime) / 1000;
-            if (performance.now() - lastUpdate >= 100) {
-              const speed = ((totalBytes * 8) / elapsed) / (1024 * 1024);
-              progressBar.style.width = `${(elapsed / (CONFIG.testDurations.download / 1000)) * 100}%`;
-              speedValue.textContent = speed.toFixed(1);
-              animateSpeedometer(speed);
-              updateGraph(elapsed, speed);
-              lastUpdate = performance.now();
-            }
-            if (elapsed >= CONFIG.testDurations.download / 1000) {
-              controller.abort();
-              break;
-            }
-          }
-        } catch (error) {
-          log('Download error: ' + error.message);
-          throw error;
-        } finally {
-          clearTimeout(overallTimeout);
-          controller = null;
-        }
-
-        const totalTime = (performance.now() - startTime) / 1000;
-        finalDownloadSpeed = totalTime > 0 ? ((totalBytes * 8) / totalTime) / (1024 * 1024) : 0;
-        downloadResult.textContent = `${finalDownloadSpeed.toFixed(1)} Mbps`;
-      }
-
-      function finalizeTest() {
-        if (!finalDownloadSpeed && !finalPing) {
-          document.getElementById('error-message').textContent = 'Speed test failed. Please try again.';
-          document.getElementById('error-message').classList.remove('hidden');
-          startButton.textContent = 'Start Test';
-        } else {
-          resultsContainer.classList.remove('hidden');
-          startButton.textContent = 'More Info';
-          testAgainButton.classList.remove('hidden');
-          triggerBigBang();
-        }
-        startButton.disabled = false;
-        testActive = false;
-        loading.classList.add('hidden');
-      }
-
-      async function runTest() {
-        testActive = true;
-        startButton.disabled = true;
-        startButton.textContent = 'Testing...';
-        testAgainButton.classList.add('hidden');
-        loading.classList.remove('hidden');
-        progressBar.style.width = '0';
-        speedValue.textContent = '0';
-        animateSpeedometer(0);
-        resetGraph();
-        graphContainer.classList.remove('hidden');
-        resultsContainer.classList.add('hidden');
-        document.getElementById('error-message').classList.add('hidden');
-
-        try {
-          await runPingTest();
-          if (testActive) await runDownloadTest();
-          if (testActive) finalizeTest();
-        } catch (error) {
-          finalizeTest();
-        }
-      }
-
-      drawSpeedometer(0);
-      drawGraph();
-
-      startButton.addEventListener('click', () => {
-        if (startButton.textContent === 'More Info') {
-          speedFrame.src = 'https://speed.cloudflare.com';
-          overlay.classList.add('active');
-        } else {
-          runTest();
-        }
-      });
-
-      testAgainButton.addEventListener('click', runTest);
-
-      closeOverlay.addEventListener('click', () => {
-        overlay.classList.remove('active');
-        speedFrame.src = '';
-      });
-
-      window.addEventListener('beforeunload', () => {
-        testActive = false;
-        if (controller) controller.abort();
-      });
-    }
-
-    // Main Initialization
-    document.addEventListener('DOMContentLoaded', async () => {
-      initializeSpeedTest();
-      const ip = await fetchIP();
-      await fetchLocationInfo();
-      document.getElementById('copy-ip-btn').addEventListener('click', () => {
-        if (ip !== 'N/A') {
-          copyToClipboard(ip);
-          triggerBigBang();
-        }
-      });
-    });
-  </script>
-</body>
-</html>
+        
+        // Calculate position with adjusted radius to prevent overlap
+        const labelRadius = radius + 15; // Reduced distance for better visibility
+        const labelX = centerX + labelRadius * Math.cos(tickAngle);
+        const labelY = centerY + labelRadius * Math.sin(tickAngle);
+        
+        // Create tick marks
+        const tickStartX = centerX + (radius - 5) * Math.cos(tickAngle);
