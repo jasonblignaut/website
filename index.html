@@ -187,7 +187,7 @@
       flex-direction: column;
       align-items: center;
       position: relative;
-      z-index: 15; /* Ensure card is above other elements */
+      z-index: 15;
     }
 
     .test-type {
@@ -222,8 +222,8 @@
       position: relative;
       width: clamp(250px, 60vw, 350px);
       height: clamp(125px, 30vw, 175px);
-      margin: 0 auto 3rem; /* Increased margin to avoid overlap */
-      z-index: 20; /* Ensure speedometer is above all elements */
+      margin: 0 auto 3rem;
+      z-index: 20;
     }
 
     .speedometer-canvas {
@@ -242,7 +242,7 @@
       font-size: clamp(1.5rem, 2.5vw, 2rem);
       font-weight: 700;
       color: #e0e0ff;
-      z-index: 25; /* Ensure above speedometer */
+      z-index: 25;
       text-shadow: 0 0 15px rgba(73, 115, 255, 0.8);
       padding: 0 10px;
     }
@@ -910,7 +910,7 @@
       }
     }
 
-    // Speedometer
+    // Speedometer with Non-Linear Scaling
     function drawSpeedometer(speed) {
       const canvas = document.getElementById('speedometer-canvas');
       const ctx = canvas.getContext('2d');
@@ -927,12 +927,26 @@
       ctx.clearRect(0, 0, width, height);
 
       const maxSpeed = 1000;
-      const speeds = [0, 10, 20, 25, 50, 100, 200, 500, 1000]; // Adjusted for South Africa
+      const speeds = [0, 10, 20, 25, 50, 100, 200, 500, 1000]; // Labels for South Africa
 
       const centerX = width / 2;
       const centerY = height;
       const radius = Math.min(width / 2, height) * 0.85;
-      const labelRadiusAdjustment = Math.min(width, height) < 200 ? 15 : 25; // Adjust label distance for smaller screens
+      const labelRadiusAdjustment = Math.min(width, height) < 200 ? 20 : 30; // Increased for padding
+
+      // Non-linear scaling: 0-100 Mbps takes 50% of the arc, 100-1000 Mbps takes the other 50%
+      function speedToAngle(speed) {
+        speed = Math.min(speed, maxSpeed);
+        if (speed <= 100) {
+          // 0-100 Mbps maps to 0-π (50% of the arc)
+          return (speed / 100) * Math.PI;
+        } else {
+          // 100-1000 Mbps maps to π-2π (compressed into the other 50%)
+          const remainingSpeed = speed - 100;
+          const remainingRange = 900; // 1000 - 100
+          return Math.PI + (remainingSpeed / remainingRange) * Math.PI;
+        }
+      }
 
       // Draw background arc
       ctx.beginPath();
@@ -944,9 +958,8 @@
       ctx.lineWidth = 12;
       ctx.stroke();
 
-      // Calculate visual angle
-      const visualAngle = (Math.min(speed, maxSpeed) / maxSpeed) * Math.PI;
-      speed = Math.min(speed, maxSpeed);
+      // Calculate visual angle with non-linear scaling
+      const visualAngle = speedToAngle(speed);
 
       // Draw speed arc
       ctx.beginPath();
@@ -989,14 +1002,14 @@
       ctx.stroke();
 
       // Draw speed scale and labels
-      const fontSize = Math.min(width, height) < 200 ? 8 : 10; // Smaller font on smaller screens
+      const fontSize = Math.min(width, height) < 200 ? 8 : 10;
       ctx.font = `${fontSize}px 'Exo 2', sans-serif`;
       ctx.fillStyle = '#e0e0ff';
       ctx.textAlign = 'center';
 
       speeds.forEach((s) => {
-        const tickAngle = Math.PI + (s / maxSpeed) * Math.PI;
-        const labelRadius = radius + (s === 0 || s === 1000 ? labelRadiusAdjustment + 5 : labelRadiusAdjustment);
+        const tickAngle = Math.PI + speedToAngle(s);
+        const labelRadius = radius + (s === 0 || s === 1000 ? labelRadiusAdjustment + 10 : labelRadiusAdjustment);
         const labelX = centerX + labelRadius * Math.cos(tickAngle);
         const labelY = centerY + labelRadius * Math.sin(tickAngle);
 
@@ -1017,9 +1030,10 @@
 
         // Adjust label position to prevent cutoff
         let xOffset = 0;
-        if (s === 0) xOffset = fontSize;
-        if (s === 1000) xOffset = -fontSize;
-        ctx.fillText(s, labelX + xOffset, labelY + fontSize / 2);
+        let yOffset = fontSize / 2;
+        if (s === 0) xOffset = fontSize * 2; // Extra padding for 0
+        if (s === 1000) xOffset = -fontSize * 2; // Extra padding for 1000
+        ctx.fillText(s, labelX + xOffset, labelY + yOffset);
       });
     }
 
@@ -1039,7 +1053,7 @@
       requestAnimationFrame(update);
     }
 
-    // Graph
+    // Graph with Non-Linear Scaling
     let graphData = [];
     let graphActive = true;
 
@@ -1063,18 +1077,24 @@
       const maxTime = 30;
       const padding = { left: 60, right: 30, top: 30, bottom: 40 };
 
-      // Determine Y-axis labels based on max speed in data
-      const maxDataSpeed = Math.max(...graphData.map(d => d.speed), 10); // Ensure at least 10 Mbps
-      let speeds;
-      if (maxDataSpeed <= 50) {
-        speeds = [0, 10, 20, 25, 50];
-      } else if (maxDataSpeed <= 200) {
-        speeds = [0, 10, 20, 25, 50, 100, 200];
-      } else if (maxDataSpeed <= 500) {
-        speeds = [0, 10, 20, 25, 50, 100, 200, 500];
-      } else {
-        speeds = [0, 10, 20, 25, 50, 100, 200, 500, 1000];
+      // Non-linear scaling: 0-100 Mbps takes 70% of the height, 100-1000 Mbps takes 30%
+      function speedToY(speed) {
+        speed = Math.min(speed, maxSpeed);
+        const graphHeight = height - padding.top - padding.bottom;
+        if (speed <= 100) {
+          // 0-100 Mbps maps to 70% of the height (bottom to 70% up)
+          return height - padding.bottom - (speed / 100) * (graphHeight * 0.7);
+        } else {
+          // 100-1000 Mbps maps to the top 30% of the height
+          const remainingSpeed = speed - 100;
+          const remainingRange = 900; // 1000 - 100
+          const remainingHeight = graphHeight * 0.3;
+          return height - padding.bottom - (graphHeight * 0.7) - (remainingSpeed / remainingRange) * remainingHeight;
+        }
       }
+
+      // Determine Y-axis labels
+      const speeds = [0, 10, 20, 25, 50, 100, 200, 500, 1000];
 
       // Draw axes
       ctx.beginPath();
@@ -1085,14 +1105,14 @@
       ctx.lineWidth = 1;
       ctx.stroke();
 
-      // Draw Y-axis labels
+      // Draw Y-axis labels with non-linear positioning
       const fontSize = 12;
       ctx.font = `${fontSize}px 'Exo 2', sans-serif`;
       ctx.fillStyle = '#8492b4';
       ctx.textAlign = 'right';
 
       speeds.forEach((level) => {
-        const y = height - padding.bottom - (level / maxSpeed) * (height - padding.top - padding.bottom);
+        const y = speedToY(level);
         ctx.beginPath();
         ctx.moveTo(padding.left, y);
         ctx.lineTo(width - padding.right, y);
@@ -1108,21 +1128,21 @@
         ctx.fillText(t, x, height - padding.bottom + 20);
       }
 
-      // Plot data
+      // Plot data with non-linear Y scaling
       if (graphData.length > 0) {
         ctx.beginPath();
         let startX = padding.left;
         let startY = height - padding.bottom;
 
         if (graphData[0].speed > 0) {
-          startY = height - padding.bottom - (graphData[0].speed / maxSpeed) * (height - padding.top - padding.bottom);
+          startY = speedToY(graphData[0].speed);
         }
 
         ctx.moveTo(startX, startY);
 
         graphData.forEach((point) => {
           const x = padding.left + (point.time / maxTime) * (width - padding.left - padding.right);
-          const y = height - padding.bottom - (Math.min(point.speed, maxSpeed) / maxSpeed) * (height - padding.top - padding.bottom);
+          const y = speedToY(point.speed);
           ctx.lineTo(x, y);
         });
 
@@ -1135,7 +1155,7 @@
         ctx.stroke();
         ctx.shadowBlur = 0;
 
-        // Add real-time tooltip
+        // Add real-time tooltip (adjusted for non-linear scaling)
         canvas.removeEventListener('mousemove', handleGraphTooltip);
         canvas.addEventListener('mousemove', handleGraphTooltip);
 
@@ -1215,7 +1235,7 @@
       }, 1000);
     }
 
-    // Speed Test
+    // Speed Test with Improved Ping Test
     const CONFIG = {
       testServer: {
         downloadUrl: '/assets/25mb.bin',
@@ -1223,7 +1243,12 @@
       },
       testDurations: { download: 30000, ping: 5000 },
       maxTestTimeout: 35000,
-      repeatCount: 2
+      repeatCount: 2,
+      pingTargets: [
+        'https://1.1.1.1/favicon.ico', // Cloudflare
+        'https://8.8.8.8/favicon.ico', // Google DNS
+        '/assets/ping-test.txt' // Test server
+      ]
     };
 
     function initializeSpeedTest() {
@@ -1251,22 +1276,46 @@
 
       async function runPingTest() {
         testType.textContent = 'Testing Ping';
-        const pingTimes = [];
-        for (let i = 0; i < 10 && testActive; i++) {
-          try {
-            const start = performance.now();
-            await fetch(`${CONFIG.testServer.pingResource}?t=${Date.now()}`, { cache: 'no-store', signal: AbortSignal.timeout(2000) });
-            const ping = performance.now() - start;
-            pingTimes.push(ping);
-            log(`Ping #${i + 1}: ${ping.toFixed(2)}ms`);
-          } catch (error) {
-            log(`Ping #${i + 1} failed: ${error.message}`);
+        const pingTargets = CONFIG.pingTargets;
+        const attemptsPerTarget = 5;
+        const pingResults = [];
+
+        for (const target of pingTargets) {
+          const pings = [];
+          for (let i = 0; i < attemptsPerTarget && testActive; i++) {
+            try {
+              const start = performance.now();
+              await fetch(`${target}?t=${Date.now()}`, {
+                cache: 'no-store',
+                signal: AbortSignal.timeout(2000),
+                method: 'HEAD' // Use HEAD to minimize data transfer
+              });
+              const ping = performance.now() - start;
+              if (ping > 0 && ping < 1000) { // Filter out invalid pings
+                pings.push(ping);
+              }
+              log(`Ping ${target} #${i + 1}: ${ping.toFixed(2)}ms`);
+            } catch (error) {
+              log(`Ping ${target} #${i + 1} failed: ${error.message}`);
+            }
+            await new Promise(resolve => setTimeout(resolve, 200));
           }
-          await new Promise(resolve => setTimeout(resolve, 333));
+          // Calculate average for this target
+          if (pings.length > 0) {
+            const average = pings.reduce((sum, t) => sum + t, 0) / pings.length;
+            pingResults.push(average);
+          }
         }
-        const successfulPings = pingTimes.filter(t => t !== undefined);
-        finalPing = successfulPings.length ? successfulPings.reduce((sum, t) => sum + t, 0) / successfulPings.length : 999;
-        pingResult.textContent = `${finalPing.toFixed(1)} ms`;
+
+        // Select the lowest average ping
+        if (pingResults.length > 0) {
+          finalPing = Math.min(...pingResults);
+          pingResult.textContent = `${finalPing.toFixed(1)} ms`;
+        } else {
+          finalPing = 999;
+          pingResult.textContent = '999 ms';
+          log('All ping attempts failed');
+        }
       }
 
       async function runDownloadTest() {
