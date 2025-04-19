@@ -1,1 +1,973 @@
-hiiiiiiiii
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Labverse Speed Test - Check your IP and network speed with stunning cinematic visuals.">
+  <meta property="og:title" content="Labverse Speed Test">
+  <meta property="og:description" content="Test your network speed with mesmerizing WebGL animations!">
+  <meta property="og:image" content="https://labverse.co.za/og-image.png">
+  <meta property="og:url" content="https://labverse.co.za">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>Labverse Speed Test</title>
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --neon-blue: #00b7eb;
+      --neon-magenta: #ff00cc;
+      --neon-cyan: #00ffff;
+      --dark-bg: #0a0a1f;
+      --card-bg: rgba(10, 10, 31, 0.9);
+      --text-color: #e6f0ff;
+      --glow-radius: 12px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Exo 2', sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      background: var(--dark-bg);
+      color: var(--text-color);
+      overflow: hidden;
+    }
+
+    #background-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.8;
+    }
+
+    .container {
+      position: relative;
+      z-index: 10;
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(3rem, 6vw, 5rem);
+      text-transform: uppercase;
+      background: linear-gradient(45deg, var(--neon-cyan), var(--neon-magenta));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 15px var(--neon-blue);
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 15px var(--neon-blue); }
+      to { text-shadow: 0 0 30px var(--neon-magenta); }
+    }
+
+    .ip-display {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      background: var(--card-bg);
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      border: 2px solid var(--neon-blue);
+      box-shadow: 0 0 20px var(--neon-blue);
+      margin: 1rem 0;
+      transition: transform 0.3s ease;
+    }
+
+    .ip-display:hover {
+      transform: scale(1.05);
+    }
+
+    .network-info {
+      font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+      max-width: 500px;
+      line-height: 1.5;
+      text-shadow: 0 0 5px var(--neon-blue);
+    }
+
+    .error-message {
+      font-size: 1rem;
+      color: #ff5555;
+      display: none;
+    }
+
+    .btn {
+      background: linear-gradient(45deg, var(--neon-blue), var(--neon-magenta));
+      color: var(--text-color);
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      text-transform: uppercase;
+      box-shadow: 0 0 var(--glow-radius) var(--neon-blue);
+      transition: all 0.3s ease;
+      margin: 0.5rem;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px var(--neon-magenta);
+      background: linear-gradient(45deg, var(--neon-magenta), var(--neon-blue));
+    }
+
+    .speed-test-container {
+      display: none;
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 2px solid var(--neon-blue);
+      box-shadow: 0 0 25px var(--neon-blue);
+      padding: 1.5rem;
+      max-width: 800px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      transition: opacity 0.5s ease;
+    }
+
+    .speed-test-container.active {
+      display: block;
+      opacity: 1;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .metric {
+      background: rgba(0, 183, 235, 0.1);
+      padding: 0.8rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .metric-value {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 8px var(--neon-cyan);
+    }
+
+    .metric-label {
+      font-size: 0.9rem;
+      color: var(--text-color);
+    }
+
+    .metric-unit {
+      font-size: 0.8rem;
+      color: #ffd700;
+    }
+
+    .progress-container {
+      margin: 1rem 0;
+      position: relative;
+      height: 25px;
+      background: #1a1a3d;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .laser-progress {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-magenta));
+      box-shadow: 0 0 20px var(--neon-blue), 0 0 30px var(--neon-magenta);
+      animation: laserGlow 1s infinite alternate;
+      transition: width 0.1s linear;
+    }
+
+    @keyframes laserGlow {
+      from { box-shadow: 0 0 20px var(--neon-blue), 0 0 30px var(--neon-magenta); }
+      to { box-shadow: 0 0 30px var(--neon-cyan), 0 0 40px var(--neon-blue); }
+    }
+
+    .progress-speed, .progress-percentage {
+      font-size: 0.9rem;
+      position: absolute;
+      top: -25px;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 5px var(--neon-blue);
+    }
+
+    .progress-speed { left: 0; }
+    .progress-percentage { right: 0; }
+
+    .progress-stats {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-color);
+      padding: 0.5rem 0;
+    }
+
+    .graph-container {
+      margin: 1rem 0;
+      position: relative;
+      width: 100%;
+      height: 250px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--neon-blue);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    #speed-graph {
+      width: 100%;
+      height: 100%;
+    }
+
+    .history-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 1000;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+
+    .history-overlay.active {
+      display: block;
+    }
+
+    .history-content {
+      background: var(--card-bg);
+      border: 2px solid var(--neon-blue);
+      border-radius: 12px;
+      padding: 1.5rem;
+      max-width: 600px;
+      margin: 0 auto;
+      font-size: 0.9rem;
+    }
+
+    .history-item {
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      border-bottom: 1px solid var(--neon-blue);
+    }
+
+    .close-btn {
+      background: var(--neon-magenta);
+      color: var(--text-color);
+      border: none;
+      padding: 0.6rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      box-shadow: 0 0 var(--glow-radius) var(--neon-magenta);
+      transition: all 0.3s ease;
+    }
+
+    .close-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px var(--neon-cyan);
+      background: var(--neon-cyan);
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      padding: 1rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-color);
+      text-shadow: 0 0 5px var(--neon-cyan);
+    }
+
+    footer a {
+      color: var(--neon-cyan);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .container { padding: 1rem; }
+      h1 { font-size: clamp(2rem, 4vw, 3rem); }
+      .ip-display { font-size: clamp(1.2rem, 2.5vw, 1.5rem); }
+      .btn { font-size: 0.9rem; padding: 0.6rem 1.2rem; }
+      .speed-test-container { max-height: 60vh; }
+      .graph-container { height: 150px; }
+    }
+
+    @media (max-width: 480px) {
+      h1 { font-size: clamp(1.5rem, 3.5vw, 2rem); }
+      .metrics { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="background-canvas" aria-hidden="true"></canvas>
+  <div class="container">
+    <h1>Labverse Speed Test</h1>
+    <div class="ip-display" id="ip-display" aria-live="polite">Fetching IP...</div>
+    <div class="network-info" id="network-info" aria-live="polite">Fetching network info...</div>
+    <div class="error-message" id="error-message" role="alert" aria-hidden="true"></div>
+    <div class="button-container">
+      <button class="btn" id="copy-ip-btn" aria-label="Copy IP address">Copy IP</button>
+      <button class="btn" id="start-speed-test" aria-label="Start network speed test">Test Speed</button>
+    </div>
+    <div class="speed-test-container" id="speed-test-container" role="region" aria-label="Speed test results">
+      <div class="metrics">
+        <div class="metric">
+          <div class="metric-label">Download Speed</div>
+          <div class="metric-value" id="download-value">0.0</div>
+          <div class="metric-unit">Mbps</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Upload Speed</div>
+          <div class="metric-value" id="upload-value">0.0</div>
+          <div class="metric-unit">Mbps</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Ping</div>
+          <div class="metric-value" id="ping-value">0</div>
+          <div class="metric-unit">ms</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Jitter</div>
+          <div class="metric-value" id="jitter-value">0</div>
+          <div class="metric-unit">ms</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Packet Loss</div>
+          <div class="metric-value" id="packet-loss-value">0</div>
+          <div class="metric-unit">%</div>
+        </div>
+      </div>
+      <div class="progress-container">
+        <div class="progress-speed" id="current-speed">0.00 Mbps</div>
+        <div class="progress-percentage" id="progress-percent">0%</div>
+        <div class="laser-progress" id="laser-progress"></div>
+      </div>
+      <div class="progress-stats">
+        <span id="data-transferred">0 MB</span>
+        <span id="time-elapsed">00:00</span>
+      </div>
+      <div class="graph-container">
+        <canvas id="speed-graph" aria-label="Live speed graph"></canvas>
+      </div>
+      <div class="button-container">
+        <button class="btn" id="refresh-test" style="display: none;" aria-label="Refresh test">Refresh</button>
+        <button class="btn" id="share-results" style="display: none;" aria-label="Share results">Share</button>
+        <button class="btn" id="view-history" style="display: none;" aria-label="View history">History</button>
+      </div>
+    </div>
+  </div>
+  <div class="history-overlay" id="history-overlay" role="dialog" aria-label="Test history">
+    <div class="history-content" id="history-content"></div>
+    <button class="close-btn" id="close-history" aria-label="Close history">Close</button>
+  </div>
+  <footer>
+    © 2025 Labverse | Powered by <a href="https://x.ai" target="_blank" rel="noopener">xAI</a>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script>
+    // Utility Functions
+    function log(message) {
+      console.log('[DEBUG] ' + message);
+    }
+
+    function formatBytes(bytes, decimals = 2) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024, dm = decimals < 0 ? 0 : decimals;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    }
+
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).catch(() => {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+      });
+    }
+
+    // Animations
+    function initializeAnimations() {
+      const canvas = document.getElementById('background-canvas');
+      let scene, camera, renderer, particles = [], stars = [];
+
+      try {
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        camera.position.z = 50;
+
+        // Create starry background
+        const starGeometry = new THREE.BufferGeometry();
+        const starPositions = new Float32Array(1000 * 3);
+        for (let i = 0; i < 1000; i++) {
+          starPositions[i * 3] = (Math.random() - 0.5) * 2000;
+          starPositions[i * 3 + 1] = (Math.random() - 0.5) * 2000;
+          starPositions[i * 3 + 2] = (Math.random() - 0.5) * 2000;
+        }
+        starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starPositions, 3));
+        const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 1, transparent: true });
+        const starField = new THREE.Points(starGeometry, starMaterial);
+        scene.add(starField);
+
+        const createParticle = (index) => {
+          const phi = (1 + Math.sqrt(5)) / 2;
+          const theta = index * 2 * Math.PI * phi;
+          const r = Math.sqrt(index) * 0.8;
+          const geometry = new THREE.BufferGeometry();
+          geometry.setAttribute('position', new THREE.Float32BufferAttribute([r * Math.cos(theta), r * Math.sin(theta), 0], 3));
+          const material = new THREE.PointsMaterial({
+            color: 0x00b7eb,
+            size: 0.5,
+            transparent: true,
+            opacity: 0.8,
+            blending: THREE.AdditiveBlending,
+          });
+          const particle = new THREE.Points(geometry, material);
+          scene.add(particle);
+          return { obj: particle, life: 10, velocity: new THREE.Vector3(0, 0, 0) };
+        };
+
+        for (let i = 0; i < 150; i++) {
+          particles.push(createParticle(i));
+        }
+
+        const animate = () => {
+          requestAnimationFrame(animate);
+          particles.forEach(p => {
+            p.life -= 1 / 60;
+            if (p.life <= 0) {
+              scene.remove(p.obj);
+              p.obj.geometry.dispose();
+              p.obj.material.dispose();
+              particles.splice(particles.indexOf(p), 1);
+              particles.push(createParticle(particles.length));
+            }
+            p.obj.position.add(p.velocity);
+            p.obj.material.opacity = p.life / 10;
+            p.velocity.multiplyScalar(0.98);
+          });
+          starField.rotation.y += 0.0005;
+          renderer.render(scene, camera);
+        };
+        animate();
+
+        window.addEventListener('resize', () => {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+        }, { passive: true });
+
+        window.triggerVisualEffect = () => {
+          particles.forEach(p => scene.remove(p.obj));
+          particles = [];
+          const colors = [0x00b7eb, 0xff00cc, 0x00ffff, 0xffd700];
+          for (let i = 0; i < 300; i++) {
+            const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2);
+            const r = Math.sqrt(i) * 2;
+            const particle = createParticle(i);
+            particle.velocity = new THREE.Vector3(r * Math.cos(theta) * 0.1, r * Math.sin(theta) * 0.1, 0);
+            particle.obj.material.color.set(colors[Math.floor(Math.random() * colors.length)]);
+            particles.push(particle);
+          }
+          gsap.to(canvas, { opacity: 1, duration: 0.5 });
+        };
+      } catch (error) {
+        log('WebGL Error: ' + error.message);
+        document.getElementById('error-message').style.display = 'block';
+        document.getElementById('error-message').textContent = 'Failed to load animations. Please try a different browser.';
+      }
+    }
+
+    // Network Functions
+    const CONFIG = {
+      ipApis: [
+        { url: 'https://api.ipify.org?format=json', parser: data => data.ip },
+        { url: 'https://api.ipgeolocation.io/getip', parser: data => data.ip },
+      ],
+      geoApis: [
+        {
+          url: 'https://ipwho.is/',
+          parser: data => ({
+            isp: data.connection?.isp || 'Unknown',
+            city: data.city || 'Unknown',
+            country: data.country || 'Unknown',
+          }),
+        },
+      ],
+      testServer: {
+        downloadUrl: 'https://speed.cloudflare.com/__down?bytes=25000000&location=johannesburg',
+        websocketUrl: 'wss://speed.cloudflare.com?location=johannesburg',
+        uploadUrl: 'https://your-cloudflare-worker.workers.dev/upload', // Replace with your Cloudflare Worker URL
+        backupUploadUrl: 'https://simple-speed-test.example.com/upload', // Fallback, replace with actual URL
+      },
+      testDurations: { download: 10000, upload: 10000, ping: 3000 },
+    };
+
+    async function fetchIP() {
+      log('Fetching public IP...');
+      for (const api of CONFIG.ipApis) {
+        try {
+          const response = await fetch(api.url);
+          const data = await response.json();
+          const ip = api.parser(data);
+          log('Public IP fetched: ' + ip);
+          document.getElementById('ip-display').textContent = ip;
+          return ip;
+        } catch (error) {
+          log('IP fetch error from ' + api.url + ': ' + error.message);
+        }
+      }
+      document.getElementById('ip-display').textContent = 'IP unavailable';
+      throw new Error('Failed to fetch IP');
+    }
+
+    async function fetchLocationInfo() {
+      log('Fetching network location info...');
+      for (const api of CONFIG.geoApis) {
+        try {
+          const response = await fetch(api.url);
+          const data = await response.json();
+          const info = api.parser(data);
+          log('Network info fetched: ' + JSON.stringify(info));
+          document.getElementById('network-info').innerHTML = `ISP: ${info.isp}<br>Location: ${info.city}, ${info.country}`;
+          return info;
+        } catch (error) {
+          log('Location fetch error from ' + api.url + ': ' + error.message);
+        }
+      }
+      document.getElementById('network-info').innerHTML = 'Network info unavailable';
+      throw new Error('Failed to fetch network info');
+    }
+
+    // Graph Functions
+    function initializeGraph() {
+      const canvas = document.getElementById('speed-graph');
+      const ctx = canvas.getContext('2d');
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+
+      const maxSpeed = 100; // Max Mbps on Y-axis
+      const downloadData = [];
+      const uploadData = [];
+      let timeIndex = 0;
+
+      function drawGraph() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw axes
+        ctx.strokeStyle = 'rgba(0, 183, 235, 0.5)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(30, 10);
+        ctx.lineTo(30, canvas.height - 20);
+        ctx.lineTo(canvas.width - 10, canvas.height - 20);
+        ctx.stroke();
+
+        // Draw Y-axis labels
+        ctx.fillStyle = 'rgba(0, 255, 255, 0.7)';
+        ctx.font = '12px Exo 2';
+        ctx.textAlign = 'right';
+        for (let i = 0; i <= 5; i++) {
+          const y = canvas.height - 20 - (i * (canvas.height - 40) / 5);
+          const speed = (i * maxSpeed / 5).toFixed(0);
+          ctx.fillText(speed, 25, y + 4);
+        }
+        ctx.fillText('Mbps', 25, 15);
+
+        // Draw lines with animation
+        const drawLine = (data, color) => {
+          if (data.length < 2) return;
+          ctx.strokeStyle = color;
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          data.forEach((speed, i) => {
+            const x = 30 + (i / (data.length - 1)) * (canvas.width - 40);
+            const y = canvas.height - 20 - (speed / maxSpeed) * (canvas.height - 40);
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          });
+          ctx.stroke();
+        };
+
+        drawLine(downloadData, '#00b7eb');
+        drawLine(uploadData, '#ff00cc');
+      }
+
+      return {
+        addDownloadSpeed(speed) {
+          downloadData.push(Math.min(speed, maxSpeed));
+          if (downloadData.length > canvas.width / 5) downloadData.shift();
+          drawGraph();
+        },
+        addUploadSpeed(speed) {
+          uploadData.push(Math.min(speed, maxSpeed));
+          if (uploadData.length > canvas.width / 5) uploadData.shift();
+          drawGraph();
+        },
+        reset() {
+          downloadData.length = 0;
+          uploadData.length = 0;
+          drawGraph();
+        },
+      };
+    }
+
+    // Speed Test Functions
+    function initializeSpeedTest() {
+      const speedTest = {
+        testHistory: JSON.parse(localStorage.getItem('testHistory') || '[]'),
+        currentResults: null,
+        testRunning: false,
+        testAborted: false,
+        graph: initializeGraph(),
+
+        setupEvents() {
+          document.getElementById('start-speed-test').addEventListener('click', () => this.toggleTest());
+          document.getElementById('refresh-test').addEventListener('click', () => this.startTest());
+          document.getElementById('share-results').addEventListener('click', () => this.shareResults());
+          document.getElementById('view-history').addEventListener('click', () => this.showHistory());
+          document.getElementById('close-history').addEventListener('click', () => document.getElementById('history-overlay').classList.remove('active'));
+        },
+
+        toggleTest() {
+          const container = document.getElementById('speed-test-container');
+          const button = document.getElementById('start-speed-test');
+          if (container.classList.contains('active')) {
+            container.classList.remove('active');
+            button.textContent = 'Test Speed';
+            this.abortTest();
+          } else {
+            container.classList.add('active');
+            button.textContent = 'Stop Test';
+            this.startTest();
+          }
+        },
+
+        async startTest() {
+          if (this.testRunning) return;
+          this.testRunning = true;
+          this.testAborted = false;
+          const button = document.getElementById('start-speed-test');
+          button.disabled = true;
+
+          // Reset UI
+          ['download-value', 'upload-value', 'ping-value', 'jitter-value', 'packet-loss-value'].forEach(id => document.getElementById(id).textContent = '0');
+          document.getElementById('laser-progress').style.width = '0%';
+          document.getElementById('progress-percent').textContent = '0%';
+          document.getElementById('current-speed').textContent = '0.00 Mbps';
+          document.getElementById('data-transferred').textContent = '0 MB';
+          document.getElementById('time-elapsed').textContent = '00:00';
+          ['refresh-test', 'share-results', 'view-history'].forEach(id => document.getElementById(id).style.display = 'none');
+          this.graph.reset();
+
+          try {
+            const pingResults = await this.runPingTest();
+            if (!this.testAborted) {
+              const downloadSpeed = await this.runDownloadTest();
+              this.currentResults = { ...pingResults, downloadSpeed };
+            }
+            if (!this.testAborted) {
+              const uploadSpeed = await this.runUploadTest();
+              this.currentResults = { ...this.currentResults, uploadSpeed };
+            }
+            if (!this.testAborted && this.currentResults) {
+              this.displayResults();
+              triggerVisualEffect();
+              this.saveResult();
+            }
+          } catch (error) {
+            log('Test error: ' + error.message);
+            document.getElementById('error-message').style.display = 'block';
+            document.getElementById('error-message').textContent = 'Speed test failed. Please try again.';
+          } finally {
+            this.testRunning = false;
+            button.disabled = false;
+            button.textContent = 'Test Speed';
+          }
+        },
+
+        async runPingTest() {
+          log('Starting ping test to South African server...');
+          const pingValue = document.getElementById('ping-value');
+          const jitterValue = document.getElementById('jitter-value');
+          const packetLossValue = document.getElementById('packet-loss-value');
+          const progress = document.getElementById('laser-progress');
+          const progressPercent = document.getElementById('progress-percent');
+          const currentSpeed = document.getElementById('current-speed');
+          const timeElapsed = document.getElementById('time-elapsed');
+
+          const pingTimes = [];
+          let packetsLost = 0;
+          const totalPackets = 10;
+
+          for (let i = 0; i < totalPackets; i++) {
+            if (this.testAborted) break;
+            let ws;
+            try {
+              const start = performance.now();
+              ws = new WebSocket(CONFIG.testServer.websocketUrl);
+              await new Promise((resolve, reject) => {
+                ws.onopen = () => {
+                  ws.send('ping');
+                };
+                ws.onmessage = () => {
+                  const ping = performance.now() - start;
+                  pingTimes.push(ping);
+                  log(`Ping #${i+1}: ${ping.toFixed(2)}ms`);
+                  resolve();
+                };
+                ws.onerror = () => {
+                  packetsLost++;
+                  log(`Ping #${i+1} failed: WebSocket error`);
+                  reject(new Error('WebSocket error'));
+                };
+                setTimeout(() => reject(new Error('Timeout')), 1000);
+              });
+            } catch (error) {
+              packetsLost++;
+              log(`Ping #${i+1} failed: ${error.message}`);
+            } finally {
+              if (ws) ws.close();
+            }
+            const progressPercentage = ((i + 1) / totalPackets) * 100;
+            progress.style.width = `${progressPercentage}%`;
+            progressPercent.textContent = `${progressPercentage.toFixed(1)}%`;
+            currentSpeed.textContent = `${pingTimes.length ? pingTimes[pingTimes.length - 1].toFixed(2) : 0} ms`;
+            timeElapsed.textContent = `${i + 1}/${totalPackets}`;
+            await new Promise(r => setTimeout(r, 300));
+          }
+
+          const avgPing = pingTimes.length ? pingTimes.reduce((sum, t) => sum + t, 0) / pingTimes.length : 0;
+          const jitter = pingTimes.length > 1 ? Math.sqrt(pingTimes.map(t => Math.pow(t - avgPing, 2)).reduce((sum, d) => sum + d, 0) / (pingTimes.length - 1)) : 0;
+          const packetLoss = (packetsLost / totalPackets) * 100;
+
+          pingValue.textContent = avgPing.toFixed(0);
+          jitterValue.textContent = jitter.toFixed(0);
+          packetLossValue.textContent = packetLoss.toFixed(0);
+
+          return { ping: avgPing, jitter, packetLoss };
+        },
+
+        async runDownloadTest() {
+          log('Starting download test from Johannesburg server...');
+          const downloadValue = document.getElementById('download-value');
+          const progress = document.getElementById('laser-progress');
+          const progressPercent = document.getElementById('progress-percent');
+          const currentSpeed = document.getElementById('current-speed');
+          const dataTransferred = document.getElementById('data-transferred');
+          const timeElapsed = document.getElementById('time-elapsed');
+
+          let totalBytes = 0, startTime = performance.now();
+          const maxTime = CONFIG.testDurations.download;
+          const updateInterval = 100;
+
+          try {
+            const response = await fetch(CONFIG.testServer.downloadUrl, { cache: 'no-store' });
+            const reader = response.body.getReader();
+            let lastUpdate = startTime;
+
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done || this.testAborted) break;
+              totalBytes += value.length;
+              const elapsed = (performance.now() - startTime) / 1000;
+              if (performance.now() - lastUpdate >= updateInterval) {
+                const speed = ((totalBytes * 8) / elapsed) / (1024 * 1024);
+                downloadValue.textContent = speed.toFixed(1);
+                progress.style.width = `${Math.min(100, (elapsed / (maxTime / 1000)) * 100)}%`;
+                progressPercent.textContent = `${Math.min(100, (elapsed / (maxTime / 1000)) * 100).toFixed(1)}%`;
+                currentSpeed.textContent = `${speed.toFixed(2)} Mbps`;
+                dataTransferred.textContent = formatBytes(totalBytes);
+                timeElapsed.textContent = formatTime(elapsed);
+                this.graph.addDownloadSpeed(speed);
+                lastUpdate = performance.now();
+              }
+              if (elapsed >= maxTime / 1000) break;
+            }
+          } catch (error) {
+            log('Download error: ' + error.message);
+            throw error;
+          }
+
+          const totalTime = (performance.now() - startTime) / 1000;
+          const finalSpeed = ((totalBytes * 8) / totalTime) / (1024 * 1024);
+          downloadValue.textContent = finalSpeed.toFixed(1);
+          this.graph.addDownloadSpeed(finalSpeed);
+          return finalSpeed;
+        },
+
+        async runUploadTest(useBackup = false) {
+          log(`Starting upload test to ${useBackup ? 'backup' : 'primary'} South African server...`);
+          const uploadValue = document.getElementById('upload-value');
+          const progress = document.getElementById('laser-progress');
+          const progressPercent = document.getElementById('progress-percent');
+          const currentSpeed = document.getElementById('current-speed');
+          const dataTransferred = document.getElementById('data-transferred');
+          const timeElapsed = document.getElementById('time-elapsed');
+
+          const totalSize = 10 * 1024 * 1024; // 10MB
+          const blob = new Blob([new Uint8Array(totalSize).fill(0)]);
+          let uploaded = 0, startTime = performance.now();
+          const maxTime = CONFIG.testDurations.upload;
+          const updateInterval = 100;
+          const url = useBackup ? CONFIG.testServer.backupUploadUrl : CONFIG.testServer.uploadUrl;
+
+          try {
+            const formData = new FormData();
+            formData.append('file', blob, 'testfile.bin');
+            const xhr = new XMLHttpRequest();
+            let lastUpdate = startTime;
+
+            xhr.open('POST', url, true);
+            xhr.upload.onprogress = (event) => {
+              if (event.lengthComputable) {
+                uploaded = event.loaded;
+                const elapsed = (performance.now() - startTime) / 1000;
+                if (performance.now() - lastUpdate >= updateInterval) {
+                  const speed = ((uploaded * 8) / elapsed) / (1024 * 1024);
+                  uploadValue.textContent = speed.toFixed(1);
+                  progress.style.width = `${Math.min(100, (elapsed / (maxTime / 1000)) * 100)}%`;
+                  progressPercent.textContent = `${Math.min(100, (elapsed / (maxTime / 1000)) * 100).toFixed(1)}%`;
+                  currentSpeed.textContent = `${speed.toFixed(2)} Mbps`;
+                  dataTransferred.textContent = formatBytes(uploaded);
+                  timeElapsed.textContent = formatTime(elapsed);
+                  this.graph.addUploadSpeed(speed);
+                  lastUpdate = performance.now();
+                }
+              }
+            };
+
+            await new Promise((resolve, reject) => {
+              xhr.onload = () => resolve();
+              xhr.onerror = () => reject(new Error('Upload failed'));
+              xhr.send(formData);
+            });
+
+            const totalTime = (performance.now() - startTime) / 1000;
+            const finalSpeed = ((uploaded * 8) / totalTime) / (1024 * 1024);
+            uploadValue.textContent = finalSpeed.toFixed(1);
+            this.graph.addUploadSpeed(finalSpeed);
+            return finalSpeed;
+          } catch (error) {
+            log('Upload error: ' + error.message);
+            if (!useBackup) {
+              log('Retrying with backup upload method...');
+              return await this.runUploadTest(true);
+            }
+            throw error;
+          }
+        },
+
+        displayResults() {
+          if (!this.currentResults) return;
+          ['refresh-test', 'share-results', 'view-history'].forEach(id => document.getElementById(id).style.display = 'inline-block');
+        },
+
+        saveResult() {
+          if (!this.currentResults) return;
+          const result = {
+            timestamp: new Date().toLocaleString(),
+            download: this.currentResults.downloadSpeed.toFixed(1),
+            upload: this.currentResults.uploadSpeed.toFixed(1),
+            ping: this.currentResults.ping.toFixed(0),
+            jitter: this.currentResults.jitter.toFixed(0),
+            packetLoss: this.currentResults.packetLoss.toFixed(0),
+          };
+          this.testHistory.push(result);
+          if (this.testHistory.length > 10) this.testHistory.shift();
+          localStorage.setItem('testHistory', JSON.stringify(this.testHistory));
+        },
+
+        shareResults() {
+          if (!this.currentResults) return;
+          const { ping, jitter, packetLoss, downloadSpeed, uploadSpeed } = this.currentResults;
+          const text = `Labverse Speed Test\nDownload: ${downloadSpeed.toFixed(1)} Mbps\nUpload: ${uploadSpeed.toFixed(1)} Mbps\nPing: ${ping.toFixed(0)} ms\nJitter: ${jitter.toFixed(0)} ms\nPacket Loss: ${packetLoss.toFixed(0)}%\nTest at https://labverse.co.za`;
+          if (navigator.share) {
+            navigator.share({ title: 'Labverse Speed Test', text, url: 'https://labverse.co.za' });
+          } else {
+            copyToClipboard(text);
+            alert('Results copied to clipboard!');
+          }
+        },
+
+        showHistory() {
+          const content = document.getElementById('history-content');
+          content.innerHTML = this.testHistory.length ? this.testHistory.map(r => `
+            <div class="history-item">
+              <strong>${r.timestamp}</strong><br>
+              Download: ${r.download} Mbps<br>
+              Upload: ${r.upload} Mbps<br>
+              Ping: ${r.ping} ms<br>
+              Jitter: ${r.jitter} ms<br>
+              Packet Loss: ${r.packetLoss}%
+            </div>
+          `).join('') : 'No test history.';
+          document.getElementById('history-overlay').classList.add('active');
+        },
+
+        abortTest() {
+          this.testAborted = true;
+        },
+      };
+
+      speedTest.setupEvents();
+      return speedTest;
+    }
+
+    // Main Initialization
+    document.addEventListener('DOMContentLoaded', async () => {
+      initializeAnimations();
+      const speedTest = initializeSpeedTest();
+      await Promise.all([fetchIP(), fetchLocationInfo()]);
+
+      document.getElementById('copy-ip-btn').addEventListener('click', () => {
+        const ip = document.getElementById('ip-display').textContent;
+        if (ip !== 'Fetching IP...' && ip !== 'IP unavailable') {
+          copyToClipboard(ip);
+          triggerVisualEffect();
+          alert('IP copied to clipboard!');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
