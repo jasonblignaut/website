@@ -37,10 +37,6 @@
       background: var(--dark-bg);
       color: var(--light-aura);
       overflow-x: hidden;
-      /* Set default zoom to match 150% zoom on Edge */
-      zoom: 0.67;
-      -moz-transform: scale(0.67);
-      -moz-transform-origin: 0 0;
     }
 
     #vanta-bg {
@@ -67,26 +63,26 @@
       position: relative;
       z-index: 10;
       min-height: 100vh;
-      width: 90%;
-      max-width: 900px;
+      width: 100%;
+      max-width: 1200px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 1rem 0.5rem;
-      gap: 0.5rem;
+      padding: 1rem;
+      gap: 1rem;
     }
 
     header {
-      padding: 0.3rem 0;
-      margin-bottom: 0.3rem;
+      padding: 0.5rem 0;
+      margin-bottom: 0.5rem;
     }
 
     h1 {
       font-family: 'Orbitron', sans-serif;
-      font-size: clamp(1.2rem, 4vw, 2rem);
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
       text-transform: uppercase;
       background: linear-gradient(90deg, #4facfe, #00f2fe);
       -webkit-background-clip: text;
@@ -104,15 +100,15 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.3rem;
-      margin-bottom: 0.5rem;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
       width: 100%;
       max-width: 400px;
     }
 
     .ip-label {
       font-family: 'Exo 2', sans-serif;
-      font-size: clamp(0.5rem, 1vw, 0.7rem);
+      font-size: clamp(0.7rem, 1vw, 0.9rem);
       color: #8492b4;
       margin-bottom: 0.3rem;
       text-transform: uppercase;
@@ -120,7 +116,7 @@
 
     .ip-display {
       font-family: 'Source Code Pro', monospace;
-      font-size: clamp(1rem, 2.5vw, 1.5rem);
+      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
       color: var(--light-aura);
       background: var(--card-bg);
       padding: 0.5rem 1rem;
@@ -134,11 +130,11 @@
       background: linear-gradient(90deg, #4facfe, #00f2fe);
       color: var(--dark-bg);
       border: none;
-      padding: 0.4rem 0.8rem;
+      padding: 0.5rem 1rem;
       border-radius: 8px;
       cursor: pointer;
       font-family: 'Orbitron', sans-serif;
-      font-size: clamp(0.6rem, 1.2vw, 0.8rem);
+      font-size: clamp(0.8rem, 1.2vw, 1rem);
       text-transform: uppercase;
       box-shadow: 0 0 20px rgba(73, 115, 255, 0.4);
       transition: all 0.3s ease;
@@ -151,16 +147,16 @@
 
     .network-info {
       font-family: 'Exo 2', sans-serif;
-      font-size: clamp(0.5rem, 1vw, 0.7rem);
+      font-size: clamp(0.7rem, 1vw, 0.9rem);
       color: #8492b4;
       max-width: 300px;
       line-height: 1.4;
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
     }
 
     .error-message {
       font-family: 'Exo 2', sans-serif;
-      font-size: clamp(0.5rem, 1vw, 0.7rem);
+      font-size: clamp(0.7rem, 1vw, 0.9rem);
       color: #ff5555;
       margin-top: 0.3rem;
       display: none;
@@ -169,12 +165,12 @@
     .speed-test-card {
       background: var(--card-bg);
       border-radius: 15px;
-      padding: 1rem;
+      padding: 1.5rem;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 50px rgba(73, 115, 255, 0.15) inset;
       backdrop-filter: blur(10px);
       border: 1px solid rgba(79, 172, 254, 0.3);
       width: 100%;
-      overflow: visible;
+      max-width: 800px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -182,19 +178,19 @@
 
     .test-type {
       font-family: 'Orbitron', sans-serif;
-      font-size: clamp(0.9rem, 2vw, 1.2rem);
+      font-size: clamp(1rem, 2vw, 1.5rem);
       text-align: center;
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
       color: #00f2fe;
     }
 
     .progress-bar {
-      height: 5px;
+      height: 6px;
       width: 100%;
       background: rgba(13, 25, 50, 0.7);
       border-radius: 3px;
       overflow: hidden;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
     }
 
     .progress {
@@ -208,54 +204,52 @@
 
     .speedometer {
       position: relative;
-      width: clamp(200px, 60vw, 300px);
-      height: clamp(100px, 30vw, 150px);
-      margin: 0 auto 2rem;
-      visibility: visible;
+      width: clamp(250px, 60vw, 350px);
+      height: clamp(125px, 30vw, 175px);
+      margin: 0 auto 2.5rem;
     }
 
     .speedometer-canvas {
       width: 100%;
       height: 100%;
       display: block;
-      visibility: visible;
     }
 
     .speed-value {
       position: absolute;
-      bottom: -2rem;
+      bottom: -2.5rem;
       left: 0;
       right: 0;
       text-align: center;
       font-family: 'Orbitron', sans-serif;
-      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
       font-weight: 700;
       color: #e0e0ff;
       z-index: 5;
       text-shadow: 0 0 10px rgba(73, 115, 255, 0.8);
-      padding: 0 5px; /* Added padding to prevent text from being cut off */
+      padding: 0 10px;
     }
 
     .speed-unit {
       position: absolute;
-      bottom: -3rem;
+      bottom: -3.5rem;
       left: 0;
       right: 0;
       text-align: center;
       font-family: 'Exo 2', sans-serif;
-      font-size: clamp(0.6rem, 1vw, 0.8rem);
+      font-size: clamp(0.8rem, 1vw, 1rem);
       color: #8492b4;
       z-index: 5;
     }
 
     .graph-container {
       position: relative;
-      height: 180px;
+      height: 200px;
       width: 100%;
-      margin: 1rem 0 1.5rem;
+      margin: 1.5rem 0;
       background: rgba(13, 25, 50, 0.5);
       border-radius: 8px;
-      padding: 10px;
+      padding: 15px;
     }
 
     .graph-canvas {
@@ -268,14 +262,14 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: space-around;
-      gap: 0.5rem;
-      margin-top: 0.5rem;
+      gap: 1rem;
+      margin-top: 1rem;
       width: 100%;
     }
 
     .history-container {
       width: 100%;
-      margin-top: 1rem;
+      margin-top: 1.5rem;
       overflow: hidden;
       border-radius: 8px;
       background: rgba(13, 25, 50, 0.5);
@@ -284,9 +278,9 @@
 
     .history-header {
       background: rgba(13, 25, 50, 0.8);
-      padding: 0.5rem;
+      padding: 0.8rem;
       font-family: 'Orbitron', sans-serif;
-      font-size: clamp(0.8rem, 1.5vw, 1rem);
+      font-size: clamp(1rem, 1.5vw, 1.2rem);
       color: #00f2fe;
       text-align: center;
       border-bottom: 1px solid rgba(79, 172, 254, 0.2);
@@ -298,10 +292,10 @@
     }
 
     .history-table th, .history-table td {
-      padding: 0.4rem 0.5rem;
+      padding: 0.5rem;
       text-align: center;
       font-family: 'Exo 2', sans-serif;
-      font-size: clamp(0.5rem, 1vw, 0.7rem);
+      font-size: clamp(0.7rem, 1vw, 0.9rem);
       border-bottom: 1px solid rgba(79, 172, 254, 0.1);
     }
 
@@ -316,24 +310,24 @@
 
     .result-box {
       text-align: center;
-      padding: 0.8rem;
+      padding: 1rem;
       border-radius: 8px;
       background: rgba(13, 25, 50, 0.7);
       flex: 1;
-      min-width: 100px;
+      min-width: 120px;
       border: 1px solid rgba(79, 172, 254, 0.2);
     }
 
     .result-label {
       font-family: 'Exo 2', sans-serif;
-      font-size: clamp(0.6rem, 1.2vw, 0.8rem);
+      font-size: clamp(0.8rem, 1.2vw, 1rem);
       color: #8492b4;
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.5rem;
     }
 
     .result-value {
       font-family: 'Orbitron', sans-serif;
-      font-size: clamp(0.9rem, 1.8vw, 1.2rem);
+      font-size: clamp(1rem, 1.8vw, 1.5rem);
       font-weight: bold;
       color: #e0e0ff;
     }
@@ -341,9 +335,8 @@
     .button-container {
       display: flex;
       justify-content: center;
-      gap: 1rem;
-      margin-top: 1.5rem;
-      margin-bottom: 0.8rem;
+      gap: 1.5rem;
+      margin: 1.5rem 0;
       width: 100%;
     }
 
@@ -351,15 +344,15 @@
       background: linear-gradient(90deg, #4facfe, #00f2fe);
       border: none;
       color: var(--dark-bg);
-      padding: 0.5rem 1.5rem;
+      padding: 0.7rem 2rem;
       font-family: 'Orbitron', sans-serif;
-      font-size: clamp(0.7rem, 1.4vw, 0.9rem);
+      font-size: clamp(0.9rem, 1.4vw, 1.1rem);
       font-weight: bold;
       border-radius: 20px;
       cursor: pointer;
       transition: all 0.3s ease;
       box-shadow: 0 0 20px rgba(73, 115, 255, 0.4);
-      min-width: 120px;
+      min-width: 140px;
     }
 
     .start-button:hover, .test-again-button:hover, .history-button:hover {
@@ -379,12 +372,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-top: 0.3rem;
+      margin-top: 0.5rem;
     }
 
     .loading img {
-      width: 48px; /* Increased size from 24px to 48px */
-      height: 48px; /* Increased size from 24px to 48px */
+      width: 48px;
+      height: 48px;
     }
 
     .overlay {
@@ -418,13 +411,13 @@
       background: linear-gradient(90deg, #ff5555, #ff7777);
       border: none;
       color: var(--light-aura);
-      padding: 0.4rem 1.2rem;
+      padding: 0.5rem 1.5rem;
       font-family: 'Orbitron', sans-serif;
-      font-size: clamp(0.6rem, 1.2vw, 0.8rem);
+      font-size: clamp(0.8rem, 1.2vw, 1rem);
       font-weight: bold;
       border-radius: 20px;
       cursor: pointer;
-      margin-top: 0.8rem;
+      margin-top: 1rem;
       transition: all 0.3s ease;
       box-shadow: 0 0 20px rgba(255, 85, 85, 0.4);
     }
@@ -439,9 +432,9 @@
       width: 100%;
       text-align: center;
       font-family: 'Exo 2', sans-serif;
-      font-size: clamp(0.4rem, 0.8vw, 0.6rem);
+      font-size: clamp(0.6rem, 0.8vw, 0.8rem);
       color: #8492b4;
-      padding: 1rem 0;
+      padding: 1.5rem 0;
       margin-top: auto;
     }
 
@@ -465,99 +458,95 @@
 
     @media (max-width: 768px) {
       .container {
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-        justify-content: center;
-        min-height: 100vh;
+        padding: 1rem 0.5rem;
       }
-      
+
       h1 {
-        font-size: clamp(1rem, 3vw, 1.5rem);
+        font-size: clamp(1.2rem, 3vw, 1.8rem);
       }
-      
+
       .ip-container {
-        gap: 0.2rem;
-        margin-bottom: 0.5rem;
+        gap: 0.3rem;
+        margin-bottom: 0.8rem;
       }
-      
+
       .ip-display {
-        font-size: clamp(0.8rem, 2vw, 1.2rem);
+        font-size: clamp(1rem, 2vw, 1.5rem);
         padding: 0.4rem 0.8rem;
       }
-      
+
       .network-info {
-        font-size: clamp(0.4rem, 0.8vw, 0.6rem);
-        margin-bottom: 0.5rem;
+        font-size: clamp(0.6rem, 0.8vw, 0.8rem);
       }
-      
+
       .speed-test-card {
-        padding: 0.8rem;
+        padding: 1rem;
       }
-      
+
       .speedometer {
-        width: clamp(150px, 70vw, 250px);
-        height: clamp(75px, 35vw, 125px);
+        width: clamp(200px, 70vw, 300px);
+        height: clamp(100px, 35vw, 150px);
         margin-bottom: 3rem;
       }
-      
+
       .speed-value {
-        font-size: clamp(1rem, 2vw, 1.5rem);
-        bottom: -2rem;
-        padding: 0 5px;
+        font-size: clamp(1.2rem, 2vw, 1.8rem);
+        bottom: -2.2rem;
       }
-      
+
       .speed-unit {
-        font-size: clamp(0.5rem, 0.8vw, 0.7rem);
-        bottom: -2.8rem;
+        font-size: clamp(0.7rem, 0.8vw, 0.9rem);
+        bottom: -3.2rem;
       }
-      
+
       .graph-container {
-        height: 140px;
-        margin: 1.5rem 0;
+        height: 160px;
+        margin: 1.2rem 0;
       }
-      
+
       .button-container {
         flex-direction: row;
-        gap: 0.8rem;
-        margin-top: 1rem;
+        gap: 1rem;
+        margin-top: 1.2rem;
       }
-      
+
       .start-button, .test-again-button, .history-button {
-        font-size: clamp(0.6rem, 1.2vw, 0.8rem);
-        padding: 0.4rem 1rem;
-        min-width: 100px;
+        font-size: clamp(0.8rem, 1.2vw, 1rem);
+        padding: 0.5rem 1.5rem;
+        min-width: 120px;
       }
     }
 
     @media (max-width: 480px) {
       .container {
         width: 95%;
-        padding: 0.8rem 0.3rem;
-        justify-content: center;
+        padding: 0.8rem 0.5rem;
       }
-      
+
       .speed-test-card {
-        padding: 0.6rem;
+        padding: 0.8rem;
       }
-      
+
       .speedometer {
-        width: 180px;
-        height: 90px;
+        width: clamp(180px, 80vw, 220px);
+        height: clamp(90px, 40vw, 110px);
         margin-bottom: 3.5rem;
       }
-      
+
       .button-container {
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 0.8rem;
         align-items: center;
       }
-      
+
       .start-button, .test-again-button, .history-button {
         width: 90%;
+        font-size: clamp(0.7rem, 1.2vw, 0.9rem);
       }
-      
+
       .result-box {
-        padding: 0.5rem;
+        padding: 0.8rem;
+        min-width: 100px;
       }
     }
   </style>
@@ -578,7 +567,7 @@
     <div class="network-info" id="network-info" aria-live="polite">Fetching network info...</div>
     <div class="error-message" id="error-message">Error fetching data</div>
     <div class="speed-test-card">
-      <div class="test-type" id="test-type">Testing Download Speed</div>
+      <div class="test-type" id="test-type">Ready to Test</div>
       <div class="progress-bar">
         <div class="progress" id="progress-bar"></div>
       </div>
@@ -611,9 +600,7 @@
                 <th>Ping</th>
               </tr>
             </thead>
-            <tbody id="history-body">
-              <!-- History entries will be added here dynamically -->
-            </tbody>
+            <tbody id="history-body"></tbody>
           </table>
         </div>
       </div>
@@ -670,26 +657,19 @@
       });
     };
 
-    // Test History Storage Functions
+    // Test History Storage
     const HISTORY_STORAGE_KEY = 'labverseSpeedTestHistory';
 
     function saveTestResult(downloadSpeed, ping) {
       try {
         let history = localStorage.getItem(HISTORY_STORAGE_KEY);
         history = history ? JSON.parse(history) : [];
-        
-        // Add new result to history
         history.push({
           timestamp: new Date().toISOString(),
           download: downloadSpeed.toFixed(1),
-          ping: ping.toFixed(0)
+          ping: ping.toFixed(1)
         });
-        
-        // Keep only the last 10 results
-        if (history.length > 10) {
-          history = history.slice(history.length - 10);
-        }
-        
+        if (history.length > 10) history = history.slice(history.length - 10);
         localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(history));
       } catch (error) {
         log('Failed to save test history: ' + error.message);
@@ -709,27 +689,19 @@
     function displayTestHistory() {
       const historyBody = document.getElementById('history-body');
       const history = loadTestHistory();
-      
-      // Clear existing rows
       historyBody.innerHTML = '';
-      
       if (history.length === 0) {
-        const row = document.createElement('tr');
-        row.innerHTML = '<td colspan="3">No previous tests</td>';
-        historyBody.appendChild(row);
+        historyBody.innerHTML = '<tr><td colspan="3">No previous tests</td></tr>';
       } else {
-        // Add history items in reverse order (newest first)
         history.slice().reverse().forEach(item => {
           const row = document.createElement('tr');
           const date = new Date(item.timestamp);
           const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
-          
           row.innerHTML = `
             <td>${formattedDate}</td>
             <td>${item.download} Mbps</td>
             <td>${item.ping} ms</td>
           `;
-          
           historyBody.appendChild(row);
         });
       }
@@ -821,12 +793,16 @@
     }
     animateParticles();
 
+    // Debounced Resize Handler
+    let resizeTimeout;
     window.addEventListener('resize', () => {
-      resizeParticleCanvas();
-      initParticles();
-      // Redraw speedometer and graph on resize
-      drawSpeedometer(parseFloat(document.getElementById('speed-value').textContent) || 0);
-      drawGraph();
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        resizeParticleCanvas();
+        initParticles();
+        drawSpeedometer(parseFloat(document.getElementById('speed-value').textContent) || 0);
+        drawGraph();
+      }, 100);
     }, { passive: true });
 
     // IP and Location Fetch
@@ -897,28 +873,18 @@
       ctx.scale(devicePixelRatio, devicePixelRatio);
 
       ctx.clearRect(0, 0, width, height);
-      
-      // Define speed levels with more lower values for better granularity
+
       const maxSpeed = 1000;
-      const logMax = Math.log10(maxSpeed + 1);
-      const logSpeed = Math.log10(speed + 1);
-      
-      // Exaggerate speeds over 50Mbps by applying a different scale
-      let visualAngle;
-      if (speed <= 50) {
-        // Normal scale for speeds up to 50Mbps (0 to 0.5*PI)
-        visualAngle = (logSpeed / Math.log10(51)) * Math.PI * 0.5;
-      } else {
-        // Exaggerated scale for speeds over 50Mbps (0.5*PI to PI)
-        const excessSpeed = Math.log10(speed + 1) - Math.log10(51);
-        const excessProportion = excessSpeed / (logMax - Math.log10(51));
-        visualAngle = Math.PI * 0.5 + excessProportion * Math.PI * 0.5;
+      const baseSpeeds = [0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
+      let speeds = [...baseSpeeds];
+      if (speed > 55) {
+        speeds = [...baseSpeeds, 100, 200, 500, 1000];
       }
-      
+
       const centerX = width / 2;
       const centerY = height;
       const radius = Math.min(width / 2, height) * 0.85;
-      
+
       // Draw background arc
       ctx.beginPath();
       ctx.arc(centerX, centerY, radius, Math.PI, 2 * Math.PI);
@@ -928,6 +894,15 @@
       ctx.strokeStyle = bgGradient;
       ctx.lineWidth = 12;
       ctx.stroke();
+
+      // Calculate visual angle
+      let visualAngle;
+      if (speed <= 50) {
+        visualAngle = (speed / 50) * Math.PI * 0.5;
+      } else {
+        const excessSpeed = speed - 50;
+        visualAngle = Math.PI * 0.5 + (excessSpeed / (maxSpeed - 50)) * Math.PI * 0.5;
+      }
 
       // Draw speed arc
       ctx.beginPath();
@@ -954,10 +929,7 @@
       ctx.lineTo(radius - 20, 0);
       ctx.lineTo(0, -5);
       ctx.fillStyle = '#e0e0ff';
-      ctx.shadowColor = 'rgba(255, 255, 255, 0.8)';
-      ctx.shadowBlur = 10;
       ctx.fill();
-      ctx.shadowBlur = 0;
       ctx.restore();
 
       // Draw center circle
@@ -969,32 +941,24 @@
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // Draw speed scale and labels with additional smaller values
-      // More granular speed values
-      const speeds = [0, 1, 5, 15, 20, 25, 30, 50, 100, 200, 500, 1000];
-      ctx.font = `10px 'Exo 2', sans-serif`;
+      // Draw speed scale and labels
+      ctx.font = `12px 'Exo 2', sans-serif`;
       ctx.fillStyle = '#e0e0ff';
       ctx.textAlign = 'center';
-      
+
       speeds.forEach((s) => {
         let tickAngle;
         if (s <= 50) {
-          // Normal scale for speeds up to 50Mbps
-          tickAngle = Math.PI + (Math.log10(s + 1) / Math.log10(51)) * Math.PI * 0.5;
+          tickAngle = Math.PI + (s / 50) * Math.PI * 0.5;
         } else {
-          // Exaggerated scale for speeds over 50Mbps
-          const excessSpeed = Math.log10(s + 1) - Math.log10(51);
-          const excessProportion = excessSpeed / (logMax - Math.log10(51));
-          tickAngle = Math.PI * 1.5 + excessProportion * Math.PI * 0.5;
+          const excessSpeed = s - 50;
+          tickAngle = Math.PI * 1.5 + (excessSpeed / (maxSpeed - 50)) * Math.PI * 0.5;
         }
-        
-        // Calculate positions for label placement with additional padding
-        // Add more padding for the 0 and 1000 values to prevent cutting off
-        const labelPadding = (s === 0 || s === 1000) ? 25 : 15;
-        const labelRadius = radius + labelPadding;
+
+        const labelRadius = radius + (s === 0 || s === 1000 ? 30 : 20);
         const labelX = centerX + labelRadius * Math.cos(tickAngle);
         const labelY = centerY + labelRadius * Math.sin(tickAngle);
-        
+
         // Draw tick marks
         const tickStartRadius = radius - 5;
         const tickEndRadius = radius + 5;
@@ -1002,25 +966,19 @@
         const tickStartY = centerY + tickStartRadius * Math.sin(tickAngle);
         const tickEndX = centerX + tickEndRadius * Math.cos(tickAngle);
         const tickEndY = centerY + tickEndRadius * Math.sin(tickAngle);
-        
+
         ctx.beginPath();
         ctx.moveTo(tickStartX, tickStartY);
         ctx.lineTo(tickEndX, tickEndY);
         ctx.strokeStyle = '#8492b4';
         ctx.lineWidth = 1;
         ctx.stroke();
-        
-        // Only show select labels to avoid clutter
-        if ([0, 1, 5, 30, 50, 100, 500, 1000].includes(s)) {
-          // Position adjustment to ensure labels aren't cut off
+
+        if ([0, 5, 30, 50, 100, 500, 1000].includes(s)) {
           let xOffset = 0;
-          let yOffset = 4;
-          
-          // Special adjustments for edge labels
-          if (s === 0) xOffset = 7;  // Move "0" label right
-          if (s === 1000) xOffset = -7; // Move "1000" label left
-          
-          ctx.fillText(s, labelX + xOffset, labelY + yOffset);
+          if (s === 0) xOffset = 10;
+          if (s === 1000) xOffset = -10;
+          ctx.fillText(s, labelX + xOffset, labelY + 5);
         }
       });
     }
@@ -1028,7 +986,7 @@
     function animateSpeedometer(targetSpeed) {
       let currentSpeed = parseFloat(document.getElementById('speed-value').textContent) || 0;
       const step = (targetSpeed - currentSpeed) / 30;
-      
+
       function update() {
         currentSpeed += step;
         if (Math.abs(currentSpeed - targetSpeed) < 0.1) currentSpeed = targetSpeed;
@@ -1043,12 +1001,11 @@
 
     // Graph
     let graphData = [];
-    let graphActive = true; // Flag to track if the graph should be visible
+    let graphActive = true;
 
     function drawGraph() {
-      // Check if the graph should be drawn
       if (!graphActive) return;
-    
+
       const canvas = document.getElementById('graph-canvas');
       const ctx = canvas.getContext('2d');
       if (!ctx) {
@@ -1064,7 +1021,7 @@
       ctx.clearRect(0, 0, width, height);
       const maxSpeed = 1000;
       const maxTime = 30;
-      const padding = { left: 50, right: 20, top: 20, bottom: 35 };
+      const padding = { left: 60, right: 30, top: 30, bottom: 40 };
 
       // Draw axes
       ctx.beginPath();
@@ -1075,44 +1032,44 @@
       ctx.lineWidth = 1;
       ctx.stroke();
 
-      // Draw grid lines and Y-axis labels with more granular speeds
-      // More granular speed levels for the graph
-      const speedLevels = [0, 1, 5, 15, 20, 25, 30, 50, 100, 200, 500, 1000];
-      const logMax = Math.log10(maxSpeed + 1);
-      ctx.font = `10px 'Exo 2', sans-serif`;
+      // Draw Y-axis labels
+      const baseSpeeds = [0, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
+      let speeds = [...baseSpeeds];
+      const maxDataSpeed = Math.max(...graphData.map(d => d.speed), 55);
+      if (maxDataSpeed > 55) {
+        speeds = [...baseSpeeds, 100, 200, 500, 1000];
+      }
+
+      ctx.font = `12px 'Exo 2', sans-serif`;
       ctx.fillStyle = '#8492b4';
       ctx.textAlign = 'right';
-      
-      speedLevels.forEach((level) => {
+
+      speeds.forEach((level) => {
         let y;
         if (level <= 50) {
-          // Normal scale for speeds up to 50Mbps
-          y = (height - padding.bottom) - (Math.log10(level + 1) / Math.log10(51)) * (height - padding.top - padding.bottom) * 0.5;
+          y = height - padding.bottom - (level / 50) * (height - padding.top - padding.bottom) * 0.5;
         } else {
-          // Exaggerated scale for speeds over 50Mbps
-          const excessSpeed = Math.log10(level + 1) - Math.log10(51);
-          const excessProportion = excessSpeed / (logMax - Math.log10(51));
-          y = (height - padding.bottom) * 0.5 - excessProportion * (height - padding.top - padding.bottom) * 0.5;
+          const excessSpeed = level - 50;
+          const excessProportion = excessSpeed / (maxSpeed - 50);
+          y = (height - padding.bottom - padding.top) * 0.5 - excessProportion * (height - padding.top - padding.bottom) * 0.5;
         }
-        
+
         ctx.beginPath();
         ctx.moveTo(padding.left, y);
         ctx.lineTo(width - padding.right, y);
         ctx.strokeStyle = 'rgba(73, 115, 255, 0.1)';
         ctx.stroke();
-        
-        // Only show select labels to avoid clutter
-        if ([0, 1, 5, 30, 50, 100, 500, 1000].includes(level)) {
-          ctx.fillText(level, padding.left - 5, y + 4);
+
+        if ([0, 5, 30, 50, 100, 500, 1000].includes(level)) {
+          ctx.fillText(level, padding.left - 10, y + 4);
         }
       });
 
       // Draw X-axis labels
       ctx.textAlign = 'center';
-      ctx.fillStyle = '#8492b4';
       for (let t = 0; t <= maxTime; t += 6) {
         const x = padding.left + (t / maxTime) * (width - padding.left - padding.right);
-        ctx.fillText(t, x, height - padding.bottom + 15);
+        ctx.fillText(t, x, height - padding.bottom + 20);
       }
 
       // Plot data
@@ -1120,57 +1077,51 @@
         ctx.beginPath();
         let startX = padding.left;
         let startY = height - padding.bottom;
-        
+
         if (graphData[0].speed > 0) {
           if (graphData[0].speed <= 50) {
-            startY = (height - padding.bottom) - (Math.log10(graphData[0].speed + 1) / Math.log10(51)) * (height - padding.top - padding.bottom) * 0.5;
+            startY = height - padding.bottom - (graphData[0].speed / 50) * (height - padding.top - padding.bottom) * 0.5;
           } else {
-            const excessSpeed = Math.log10(graphData[0].speed + 1) - Math.log10(51);
-            const excessProportion = excessSpeed / (logMax - Math.log10(51));
-            startY = (height - padding.bottom) * 0.5 - excessProportion * (height - padding.top - padding.bottom) * 0.5;
+            const excessSpeed = graphData[0].speed - 50;
+            const excessProportion = excessSpeed / (maxSpeed - 50);
+            startY = (height - padding.bottom - padding.top) * 0.5 - excessProportion * (height - padding.top - padding.bottom) * 0.5;
           }
         }
-        
+
         ctx.moveTo(startX, startY);
-        
+
         graphData.forEach((point) => {
           const x = padding.left + (point.time / maxTime) * (width - padding.left - padding.right);
-          
           let y;
           if (point.speed <= 50) {
-            // Normal scale for speeds up to 50Mbps
-            y = (height - padding.bottom) - (Math.log10(point.speed + 1) / Math.log10(51)) * (height - padding.top - padding.bottom) * 0.5;
+            y = height - padding.bottom - (point.speed / 50) * (height - padding.top - padding.bottom) * 0.5;
           } else {
-            // Exaggerated scale for speeds over 50Mbps
-            const excessSpeed = Math.log10(point.speed + 1) - Math.log10(51);
-            const excessProportion = excessSpeed / (logMax - Math.log10(51));
-            y = (height - padding.bottom) * 0.5 - excessProportion * (height - padding.top - padding.bottom) * 0.5;
+            const excessSpeed = point.speed - 50;
+            const excessProportion = excessSpeed / (maxSpeed - 50);
+            y = (height - padding.bottom - padding.top) * 0.5 - excessProportion * (height - padding.top - padding.bottom) * 0.5;
           }
-          
           ctx.lineTo(x, y);
         });
-        
+
         ctx.strokeStyle = '#00f2fe';
         ctx.lineWidth = 2;
         ctx.stroke();
-        
-        // Add glow effect to the line
+
         ctx.shadowColor = 'rgba(0, 242, 254, 0.8)';
         ctx.shadowBlur = 8;
         ctx.stroke();
         ctx.shadowBlur = 0;
       }
-      
+
       // Add axis labels
-      ctx.font = `12px 'Exo 2', sans-serif`;
+      ctx.font = `14px 'Exo 2', sans-serif`;
       ctx.fillStyle = '#e0e0ff';
       ctx.textAlign = 'center';
-      ctx.fillText('Time (seconds)', width / 2, height - 5);
-      
+      ctx.fillText('Time (seconds)', width / 2, height - 10);
+
       ctx.save();
-      ctx.translate(15, height / 2);
+      ctx.translate(20, height / 2);
       ctx.rotate(-Math.PI / 2);
-      ctx.textAlign = 'center';
       ctx.fillText('Speed (Mbps)', 0, 0);
       ctx.restore();
     }
@@ -1189,17 +1140,23 @@
       drawGraph();
     }
 
+    function completeGraph() {
+      if (graphData.length > 0) {
+        const lastPoint = graphData[graphData.length - 1];
+        graphData.push({ time: 30, speed: lastPoint.speed });
+        drawGraph();
+      }
+    }
+
     function animateGraphEnd() {
       const canvas = document.getElementById('graph-canvas');
       const graphContainer = document.getElementById('graph-container');
-      
-      // Instead of just adding the fade-out class, we'll handle the transition properly
       canvas.classList.add('fade-out');
       setTimeout(() => {
         graphActive = false;
         graphContainer.classList.add('hidden');
         canvas.classList.remove('fade-out');
-      }, 1000); // Match this with the CSS animation duration
+      }, 1000);
     }
 
     // Speed Test
@@ -1208,9 +1165,9 @@
         downloadUrl: '/assets/25mb.bin',
         pingResource: '/assets/ping-test.txt',
       },
-      testDurations: { download: 120000, ping: 5000 }, // Increased to 120s (2 minutes) for much longer test
-      maxTestTimeout: 130000, // Increased to 130s to match longer test
-      repeatCount: 4 // Number of times to redownload the test file
+      testDurations: { download: 30000, ping: 5000 },
+      maxTestTimeout: 35000,
+      repeatCount: 2
     };
 
     function initializeSpeedTest() {
@@ -1222,7 +1179,6 @@
       const speedValue = document.getElementById('speed-value');
       const graphContainer = document.getElementById('graph-container');
       const resultsContainer = document.getElementById('results-container');
-      const historyContainer = document.getElementById('history-container');
       const downloadResult = document.getElementById('download-result');
       const pingResult = document.getElementById('ping-result');
       const loading = document.getElementById('loading');
@@ -1234,13 +1190,12 @@
       let controller = null;
       let finalDownloadSpeed = 0;
       let finalPing = 0;
-      let repeatCounter = 0;
+      let lastGraphUpdate = 0;
 
       async function runPingTest() {
         testType.textContent = 'Testing Ping';
         const pingTimes = [];
-        for (let i = 0; i < 15; i++) {
-          if (!testActive) break;
+        for (let i = 0; i < 10 && testActive; i++) {
           try {
             const start = performance.now();
             await fetch(`${CONFIG.testServer.pingResource}?t=${Date.now()}`, { cache: 'no-store', signal: AbortSignal.timeout(2000) });
@@ -1248,83 +1203,62 @@
             pingTimes.push(ping);
             log(`Ping #${i + 1}: ${ping.toFixed(2)}ms`);
           } catch (error) {
-            pingTimes.push(999);
             log(`Ping #${i + 1} failed: ${error.message}`);
           }
           await new Promise(resolve => setTimeout(resolve, 333));
         }
-        const successfulPings = pingTimes.filter(t => t !== 999);
+        const successfulPings = pingTimes.filter(t => t !== undefined);
         finalPing = successfulPings.length ? successfulPings.reduce((sum, t) => sum + t, 0) / successfulPings.length : 999;
-        pingResult.textContent = `${finalPing.toFixed(0)} ms`;
+        pingResult.textContent = `${finalPing.toFixed(1)} ms`;
       }
 
       async function runDownloadTest() {
         testType.textContent = 'Testing Download Speed';
         let totalBytes = 0;
-        const startTime = performance.now();
+        let startTime = performance.now();
         const overallTimeout = setTimeout(() => {
           testActive = false;
           if (controller) controller.abort();
           finalizeTest();
         }, CONFIG.maxTestTimeout);
-        
-        repeatCounter = 0;
-        
+
         try {
-          // Loop to download the file multiple times for longer test
-          while (testActive && repeatCounter < CONFIG.repeatCount) {
-            log(`Starting download attempt ${repeatCounter + 1} of ${CONFIG.repeatCount}`);
+          for (let i = 0; i < CONFIG.repeatCount && testActive; i++) {
+            log(`Starting download attempt ${i + 1}`);
             controller = new AbortController();
-            const response = await fetch(CONFIG.testServer.downloadUrl, { 
-              cache: 'no-store', 
-              signal: controller.signal 
+            const response = await fetch(CONFIG.testServer.downloadUrl, {
+              cache: 'no-store',
+              signal: controller.signal
             });
-            
+
             if (!response.ok) throw new Error('Failed to fetch download resource');
             const reader = response.body.getReader();
             let lastUpdate = performance.now();
 
             while (testActive) {
               const { done, value } = await reader.read();
-              if (done) {
-                // This file download is complete
-                repeatCounter++;
-                log(`Completed download attempt ${repeatCounter} of ${CONFIG.repeatCount}`);
-                if (repeatCounter >= CONFIG.repeatCount) {
-                  controller.abort();
-                }
-                break;
-              }
-              if (!testActive) {
-                controller.abort();
-                break;
-              }
-              
+              if (done) break;
+
               totalBytes += value ? value.length : 0;
               const elapsed = (performance.now() - startTime) / 1000;
-              
+
               if (performance.now() - lastUpdate >= 100) {
-                const speed = ((totalBytes * 8) / elapsed) / (1024 * 1024);
-                // Calculate progress based on total expected downloads
-                const expectedTotalTime = CONFIG.testDurations.download / 1000;
-                progressBar.style.width = `${Math.min(100, (elapsed / expectedTotalTime) * 100)}%`;
+                const speed = elapsed > 0 ? ((totalBytes * 8) / elapsed) / (1024 * 1024) : 0;
+                progressBar.style.width = `${Math.min(100, (elapsed / (CONFIG.testDurations.download / 1000)) * 100)}%`;
                 speedValue.textContent = speed.toFixed(1);
                 animateSpeedometer(speed);
-                updateGraph(elapsed, speed);
+                if (performance.now() - lastGraphUpdate >= 100) {
+                  updateGraph(elapsed, speed);
+                  lastGraphUpdate = performance.now();
+                }
                 lastUpdate = performance.now();
               }
-              
-              if (elapsed >= CONFIG.testDurations.download / 1000) {
-                controller.abort();
-                break;
-              }
+
+              if (elapsed >= CONFIG.testDurations.download / 1000) break;
             }
-            
-            if (!testActive || elapsed >= CONFIG.testDurations.download / 1000) break;
           }
         } catch (error) {
           log('Download error: ' + error.message);
-          throw error;
         } finally {
           clearTimeout(overallTimeout);
           controller = null;
@@ -1333,6 +1267,9 @@
         const totalTime = (performance.now() - startTime) / 1000;
         finalDownloadSpeed = totalTime > 0 ? ((totalBytes * 8) / totalTime) / (1024 * 1024) : 0;
         downloadResult.textContent = `${finalDownloadSpeed.toFixed(1)} Mbps`;
+
+        // Ensure graph completion
+        completeGraph();
       }
 
       function finalizeTest() {
@@ -1341,16 +1278,12 @@
           document.getElementById('error-message').style.display = 'block';
           startButton.textContent = 'Start Test';
         } else {
-          // Save results to history
           saveTestResult(finalDownloadSpeed, finalPing);
-          
           resultsContainer.classList.remove('hidden');
           startButton.textContent = 'More Info';
           testAgainButton.classList.remove('hidden');
           historyButton.classList.remove('hidden');
           triggerBigBang();
-          
-          // Animate the speedometer back to zero gradually
           setTimeout(() => {
             animateSpeedometer(0);
             animateGraphEnd();
@@ -1364,7 +1297,6 @@
       async function runTest() {
         testActive = true;
         startButton.disabled = true;
-        // Remove "Testing..." text and just show loading icon
         startButton.style.visibility = 'hidden';
         testAgainButton.classList.add('hidden');
         historyButton.classList.add('hidden');
@@ -1386,7 +1318,6 @@
           log('Test error: ' + error.message);
           finalizeTest();
         } finally {
-          // Restore start button visibility
           startButton.style.visibility = 'visible';
         }
       }
@@ -1404,7 +1335,7 @@
       });
 
       testAgainButton.addEventListener('click', runTest);
-      
+
       historyButton.addEventListener('click', () => {
         if (historyContainer.classList.contains('hidden')) {
           displayTestHistory();
