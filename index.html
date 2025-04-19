@@ -910,7 +910,7 @@
       }
     }
 
-    // Speedometer with Fixed Label Cutoffs
+    // Speedometer with Adjusted Range (280° to 80°) and Non-Linear Scaling
     function drawSpeedometer(speed) {
       const canvas = document.getElementById('speedometer-canvas');
       const ctx = canvas.getContext('2d');
@@ -931,24 +931,34 @@
 
       const centerX = width / 2;
       const centerY = height;
-      const radius = Math.min(width / 2, height) * 0.75; // Reduced radius to create more space for labels
-      const labelRadiusAdjustment = Math.min(width, height) < 200 ? 30 : 40; // Increased for more padding
+      const radius = Math.min(width / 2, height) * 0.7; // Reduced radius for more label space
+      const labelRadiusAdjustment = Math.min(width, height) < 200 ? 35 : 45; // Increased for more padding
 
-      // Non-linear scaling: 0-100 Mbps takes 50% of the arc, 100-1000 Mbps takes the other 50%
+      // Define the arc range: 280° to 80° (0°/360° at top center)
+      const startAngle = (280 * Math.PI) / 180; // 280 degrees
+      const endAngle = (80 * Math.PI) / 180;   // 80 degrees
+      const totalAngle = endAngle - startAngle; // Total arc angle (160° + 80° = 240°)
+
+      // Non-linear scaling: 0-100 Mbps from 280° to 0°, 100-1000 Mbps from 0° to 80°
       function speedToAngle(speed) {
         speed = Math.min(speed, maxSpeed);
         if (speed <= 100) {
-          return (speed / 100) * Math.PI;
+          // 0 to 100 Mbps spans 280° to 0° (160 degrees)
+          const fraction = speed / 100;
+          const angleRange = ((0 - 280) * Math.PI) / 180; // 280° to 0°
+          return startAngle + fraction * angleRange;
         } else {
-          const remainingSpeed = speed - 100;
-          const remainingRange = 900; // 1000 - 100
-          return Math.PI + (remainingSpeed / remainingRange) * Math.PI;
+          // 100 to 1000 Mbps spans 0° to 80° (80 degrees)
+          const fraction = (speed - 100) / (1000 - 100);
+          const angleRange = ((80 - 0) * Math.PI) / 180; // 0° to 80°
+          const zeroAngle = (0 * Math.PI) / 180; // 0 degrees in radians
+          return zeroAngle + fraction * angleRange;
         }
       }
 
       // Draw background arc
       ctx.beginPath();
-      ctx.arc(centerX, centerY, radius, Math.PI, 2 * Math.PI);
+      ctx.arc(centerX, centerY, radius, startAngle, endAngle);
       const bgGradient = ctx.createLinearGradient(0, 0, width, 0);
       bgGradient.addColorStop(0, 'rgba(73, 115, 255, 0.2)');
       bgGradient.addColorStop(1, 'rgba(0, 242, 254, 0.2)');
@@ -961,7 +971,7 @@
 
       // Draw speed arc
       ctx.beginPath();
-      ctx.arc(centerX, centerY, radius, Math.PI, Math.PI + visualAngle);
+      ctx.arc(centerX, centerY, radius, startAngle, visualAngle);
       const speedGradient = ctx.createLinearGradient(0, 0, width, 0);
       speedGradient.addColorStop(0, '#4facfe');
       speedGradient.addColorStop(1, '#00f2fe');
@@ -978,7 +988,7 @@
       // Draw needle
       ctx.save();
       ctx.translate(centerX, centerY);
-      ctx.rotate(Math.PI + visualAngle);
+      ctx.rotate(visualAngle);
       ctx.beginPath();
       ctx.moveTo(-5, 0);
       ctx.lineTo(radius - 20, 0);
@@ -999,15 +1009,17 @@
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // Draw speed scale and labels
-      const fontSize = Math.min(width, height) < 200 ? 8 : 10;
-      ctx.font = `${fontSize}px 'Exo 2', sans-serif`;
+      // Draw speed scale and labels with modern 2025 aesthetic
+      const fontSize = Math.min(width, height) < 200 ? 10 : 12;
+      ctx.font = `${fontSize}px 'Orbitron', sans-serif`; // Modern font for 2025
       ctx.fillStyle = '#e0e0ff';
       ctx.textAlign = 'center';
+      ctx.shadowColor = 'rgba(0, 242, 254, 0.5)';
+      ctx.shadowBlur = 5;
 
       speeds.forEach((s) => {
-        const tickAngle = Math.PI + speedToAngle(s);
-        const labelRadius = radius + (s === 0 || s === 1000 ? labelRadiusAdjustment + 10 : labelRadiusAdjustment);
+        const tickAngle = speedToAngle(s);
+        const labelRadius = radius + labelRadiusAdjustment;
         const labelX = centerX + labelRadius * Math.cos(tickAngle);
         const labelY = centerY + labelRadius * Math.sin(tickAngle);
 
@@ -1026,14 +1038,17 @@
         ctx.lineWidth = 1;
         ctx.stroke();
 
-        // Adjust label position to prevent cutoff
+        // Adjust label position to prevent cutoff and ensure aesthetic perfection
         let xOffset = 0;
         let yOffset = fontSize / 2;
-        if (s === 0) xOffset = fontSize * 3; // Increased padding for 0
-        if (s === 1000) xOffset = -fontSize * 3; // Increased padding for 1000
-        if (s === 10 || s === 20 || s === 25 || s === 50) xOffset = fontSize * 1.5; // Extra padding for intermediate labels
+        if (s === 0) xOffset = fontSize * 3; // Extra padding for 0
+        if (s === 1000) xOffset = -fontSize * 3; // Extra padding for 1000
+        if (s === 10 || s === 20 || s === 25 || s === 50) xOffset = fontSize * 1.5;
+        if (s === 100) yOffset = -fontSize * 1.5; // Adjust for top center
         ctx.fillText(s, labelX + xOffset, labelY + yOffset);
       });
+
+      ctx.shadowBlur = 0;
     }
 
     function animateSpeedometer(targetSpeed) {
@@ -1052,7 +1067,7 @@
       requestAnimationFrame(update);
     }
 
-    // Graph with Adjusted Time Scale and Better Label Alignment
+    // Graph (Unchanged for Brevity, Already Fixed in Previous Response)
     let graphData = [];
     let graphActive = true;
 
@@ -1073,10 +1088,9 @@
 
       ctx.clearRect(0, 0, width, height);
       const maxSpeed = 1000;
-      const maxTime = 10; // Adjusted to 10 seconds
+      const maxTime = 10;
       const padding = { left: 60, right: 30, top: 30, bottom: 40 };
 
-      // Non-linear scaling: 0-100 Mbps takes 70% of the height, 100-1000 Mbps takes 30%
       function speedToY(speed) {
         speed = Math.min(speed, maxSpeed);
         const graphHeight = height - padding.top - padding.bottom;
@@ -1084,16 +1098,14 @@
           return height - padding.bottom - (speed / 100) * (graphHeight * 0.7);
         } else {
           const remainingSpeed = speed - 100;
-          const remainingRange = 900; // 1000 - 100
+          const remainingRange = 900;
           const remainingHeight = graphHeight * 0.3;
           return height - padding.bottom - (graphHeight * 0.7) - (remainingSpeed / remainingRange) * remainingHeight;
         }
       }
 
-      // Determine Y-axis labels
       const speeds = [0, 10, 20, 25, 50, 100, 200, 500, 1000];
 
-      // Draw axes
       ctx.beginPath();
       ctx.moveTo(padding.left, padding.top);
       ctx.lineTo(padding.left, height - padding.bottom);
@@ -1102,8 +1114,7 @@
       ctx.lineWidth = 1;
       ctx.stroke();
 
-      // Draw Y-axis labels with better alignment
-      const fontSize = 10; // Reduced font size for better spacing
+      const fontSize = 10;
       ctx.font = `${fontSize}px 'Exo 2', sans-serif`;
       ctx.fillStyle = '#8492b4';
       ctx.textAlign = 'right';
@@ -1115,21 +1126,18 @@
         ctx.lineTo(width - padding.right, y);
         ctx.strokeStyle = 'rgba(73, 115, 255, 0.1)';
         ctx.stroke();
-        // Adjust label positioning for better aesthetics
         let yOffset = fontSize / 2;
-        if (level === 0) yOffset += 5; // Slight offset for 0 to avoid bottom cutoff
-        if (level === 1000) yOffset -= 5; // Slight offset for 1000 to avoid top cutoff
-        ctx.fillText(level, padding.left - 15, y + yOffset); // Increased left padding
+        if (level === 0) yOffset += 5;
+        if (level === 1000) yOffset -= 5;
+        ctx.fillText(level, padding.left - 15, y + yOffset);
       });
 
-      // Draw X-axis labels (0 to 10 seconds)
       ctx.textAlign = 'center';
-      for (let t = 0; t <= maxTime; t += 2) { // Adjusted interval to 2 seconds
+      for (let t = 0; t <= maxTime; t += 2) {
         const x = padding.left + (t / maxTime) * (width - padding.left - padding.right);
         ctx.fillText(t, x, height - padding.bottom + 20);
       }
 
-      // Plot data with non-linear Y scaling
       if (graphData.length > 0) {
         ctx.beginPath();
         let startX = padding.left;
@@ -1156,7 +1164,6 @@
         ctx.stroke();
         ctx.shadowBlur = 0;
 
-        // Add real-time tooltip (adjusted for non-linear scaling)
         canvas.removeEventListener('mousemove', handleGraphTooltip);
         canvas.addEventListener('mousemove', handleGraphTooltip);
 
@@ -1190,7 +1197,6 @@
         });
       }
 
-      // Add axis labels
       ctx.font = `14px 'Exo 2', sans-serif`;
       ctx.fillStyle = '#e0e0ff';
       ctx.textAlign = 'center';
@@ -1220,7 +1226,7 @@
     function completeGraph() {
       if (graphData.length > 0) {
         const lastPoint = graphData[graphData.length - 1];
-        graphData.push({ time: 10, speed: lastPoint.speed }); // Adjusted to 10 seconds
+        graphData.push({ time: 10, speed: lastPoint.speed });
         drawGraph();
       }
     }
@@ -1236,19 +1242,19 @@
       }, 1000);
     }
 
-    // Speed Test with Fixed Ping Test and Adjusted Duration
+    // Speed Test with Updated Ping Targets
     const CONFIG = {
       testServer: {
         downloadUrl: '/assets/25mb.bin',
         pingResource: '/assets/ping-test.txt',
       },
-      testDurations: { download: 10000, ping: 5000 }, // Adjusted download duration to 10 seconds
-      maxTestTimeout: 15000, // Adjusted timeout to 15 seconds
-      repeatCount: 1, // Reduced to 1 to fit within 10 seconds
+      testDurations: { download: 10000, ping: 5000 },
+      maxTestTimeout: 15000,
+      repeatCount: 1,
       pingTargets: [
-        'https://1.1.1.1/favicon.ico', // Cloudflare
-        'https://8.8.8.8/favicon.ico', // Google DNS
-        '/assets/ping-test.txt' // Test server
+        'https://www.microsoft.com/favicon.ico', // Reliable target
+        'https://1.1.1.1/robots.txt', // Cloudflare alternative
+        '/assets/ping-test.txt' // Local resource
       ]
     };
 
@@ -1286,7 +1292,6 @@
           for (let i = 0; i < attemptsPerTarget && testActive; i++) {
             try {
               const start = performance.now();
-              // Use 'no-cors' mode for external targets to bypass CORS restrictions
               const mode = target.includes('http') && !target.includes('assets') ? 'no-cors' : 'cors';
               const response = await fetch(`${target}?t=${Date.now()}`, {
                 cache: 'no-store',
@@ -1295,7 +1300,6 @@
                 mode: mode
               });
               const ping = performance.now() - start;
-              // For no-cors, we can't check response.ok, but we can still use the timing
               if (ping > 0 && ping < 1000) {
                 pings.push(ping);
               }
