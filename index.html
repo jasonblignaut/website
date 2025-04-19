@@ -70,18 +70,16 @@
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      text-align: center;
-      padding: 0.5rem;
+      padding: 0.3rem;
     }
 
     header {
-      padding: 0.3rem 0;
-      margin-bottom: 0.3rem;
+      padding: 0.2rem 0;
     }
 
     h1 {
       font-family: 'Orbitron', sans-serif;
-      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      font-size: clamp(1.2rem, 4vw, 2.2rem);
       text-transform: uppercase;
       background: linear-gradient(90deg, #4facfe, #00f2fe);
       -webkit-background-clip: text;
@@ -99,26 +97,25 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.3rem;
+      gap: 0.3rem;
       width: 100%;
       max-width: 400px;
     }
 
     .ip-label {
       font-family: 'Exo 2', sans-serif;
-      font-size: clamp(0.6rem, 1vw, 0.8rem);
+      font-size: clamp(0.5rem, 1vw, 0.7rem);
       color: #8492b4;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.3rem;
       text-transform: uppercase;
     }
 
     .ip-display {
       font-family: 'Source Code Pro', monospace;
-      font-size: clamp(1.2rem, 3vw, 2rem);
+      font-size: clamp(1rem, 3vw, 1.8rem);
       color: var(--light-aura);
       background: var(--card-bg);
-      padding: 0.75rem 1.5rem;
+      padding: 0.5rem 1rem;
       border-radius: 8px;
       border: 1px solid rgba(79, 172, 254, 0.3);
       box-shadow: 0 0 15px var(--matrix-blue);
@@ -129,64 +126,68 @@
       background: linear-gradient(90deg, #4facfe, #00f2fe);
       color: var(--dark-bg);
       border: none;
-      padding: 0.5rem 1rem;
+      padding: 0.4rem 0.8rem;
       border-radius: 8px;
       cursor: pointer;
       font-family: 'Orbitron', sans-serif;
-      font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+      font-size: clamp(0.6rem, 1.2vw, 0.8rem);
       text-transform: uppercase;
-      box-shadow: 0 0 20px rgba(73, 115, 255, 0.4);
+      box-shadow: 0 0 15px rgba(73, 115, 255, 0.4);
       transition: all 0.3s ease;
     }
 
     .copy-btn:hover {
       transform: scale(1.05);
-      box-shadow: 0 0 30px rgba(73, 115, 255, 0.6);
+      box-shadow: 0 0 25px rgba(73, 115, 255, 0.6);
     }
 
     .network-info {
       font-family: 'Exo 2', sans-serif;
-      font-size: clamp(0.6rem, 1vw, 0.8rem);
+      font-size: clamp(0.5rem, 1vw, 0.7rem);
       color: #8492b4;
       max-width: 300px;
       line-height: 1.4;
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.2rem;
     }
 
     .error-message {
       font-family: 'Exo 2', sans-serif;
-      font-size: clamp(0.6rem, 1vw, 0.8rem);
+      font-size: clamp(0.5rem, 1vw, 0.7rem);
       color: #ff5555;
-      margin-top: 0.3rem;
+      margin-top: 0.2rem;
       display: none;
     }
 
     .speed-test-card {
       background: var(--card-bg);
       border-radius: 15px;
-      padding: 0.8rem;
+      padding: 0.5rem;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 50px rgba(73, 115, 255, 0.15) inset;
       backdrop-filter: blur(10px);
       border: 1px solid rgba(79, 172, 254, 0.3);
       width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       overflow: hidden;
     }
 
     .test-type {
       font-family: 'Orbitron', sans-serif;
-      font-size: clamp(1rem, 2vw, 1.5rem);
+      font-size: clamp(0.8rem, 2vw, 1.3rem);
       text-align: center;
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.2rem;
       color: #00f2fe;
     }
 
     .progress-bar {
-      height: 6px;
+      height: 5px;
       width: 100%;
       background: rgba(13, 25, 50, 0.7);
       border-radius: 3px;
       overflow: hidden;
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.2rem;
     }
 
     .progress {
@@ -200,9 +201,9 @@
 
     .speedometer {
       position: relative;
-      width: clamp(160px, 55vw, 260px);
-      height: clamp(80px, 27.5vw, 130px);
-      margin: 0 auto 1.5rem;
+      width: clamp(160px, 50vw, 260px);
+      height: clamp(80px, 25vh, 130px);
+      margin: 0 auto 1rem;
     }
 
     .speedometer-canvas {
@@ -213,12 +214,12 @@
 
     .speed-value {
       position: absolute;
-      bottom: -1rem;
+      bottom: -0.8rem;
       left: 0;
       right: 0;
       text-align: center;
       font-family: 'Exo 2', sans-serif;
-      font-size: clamp(1rem, 2vw, 1.5rem);
+      font-size: clamp(0.8rem, 2vw, 1.3rem);
       font-weight: 700;
       color: #e0e0ff;
       z-index: 5;
@@ -227,23 +228,24 @@
 
     .speed-unit {
       position: absolute;
-      bottom: -2rem;
+      bottom: -1.8rem;
       left: 0;
       right: 0;
       text-align: center;
       font-family: 'Exo 2', sans-serif;
-      font-size: clamp(0.5rem, 0.8vw, 0.7rem);
+      font-size: clamp(0.4rem, 0.8vw, 0.6rem);
       color: #8492b4;
       z-index: 5;
     }
 
     .graph-container {
       position: relative;
-      height: 100px;
-      margin: 0.3rem 0;
+      height: 15vh;
+      margin: 0.2rem 0;
       background: rgba(13, 25, 50, 0.5);
       border-radius: 8px;
-      padding: 10px;
+      padding: 8px;
+      overflow: hidden;
     }
 
     .graph-canvas {
@@ -256,30 +258,30 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: space-around;
-      gap: 0.5rem;
-      margin-top: 0.3rem;
+      gap: 0.3rem;
+      margin-top: 0.2rem;
     }
 
     .result-box {
       text-align: center;
-      padding: 0.5rem;
+      padding: 0.4rem;
       border-radius: 8px;
       background: rgba(13, 25, 50, 0.7);
       flex: 1;
-      min-width: 100px;
+      min-width: 90px;
       border: 1px solid rgba(79, 172, 254, 0.2);
     }
 
     .result-label {
       font-family: 'Exo 2', sans-serif;
-      font-size: clamp(0.6rem, 1vw, 0.8rem);
+      font-size: clamp(0.5rem, 1vw, 0.7rem);
       color: #8492b4;
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.2rem;
     }
 
     .result-value {
       font-family: 'Exo 2', sans-serif;
-      font-size: clamp(0.8rem, 1.5vw, 1.2rem);
+      font-size: clamp(0.7rem, 1.5vw, 1rem);
       font-weight: bold;
       color: #e0e0ff;
     }
@@ -287,27 +289,27 @@
     .button-container {
       display: flex;
       justify-content: center;
-      gap: 0.8rem;
-      margin-top: 0.8rem;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
     }
 
     .start-button, .test-again-button {
       background: linear-gradient(90deg, #4facfe, #00f2fe);
       border: none;
       color: var(--dark-bg);
-      padding: 0.5rem 1.5rem;
+      padding: 0.4rem 1.2rem;
       font-family: 'Orbitron', sans-serif;
-      font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+      font-size: clamp(0.6rem, 1.2vw, 0.8rem);
       font-weight: bold;
       border-radius: 20px;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 0 20px rgba(73, 115, 255, 0.4);
+      box-shadow: 0 0 15px rgba(73, 115, 255, 0.4);
     }
 
     .start-button:hover, .test-again-button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 30px rgba(73, 115, 255, 0.6);
+      box-shadow: 0 0 25px rgba(73, 115, 255, 0.6);
     }
 
     .start-button:active, .test-again-button:active {
@@ -322,7 +324,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-top: 0.5rem;
+      margin-top: 0.3rem;
     }
 
     .loading img {
@@ -342,7 +344,7 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      padding: 1rem;
+      padding: 0.5rem;
     }
 
     .overlay.active {
@@ -361,29 +363,29 @@
       background: linear-gradient(90deg, #ff5555, #ff7777);
       border: none;
       color: var(--light-aura);
-      padding: 0.5rem 1.5rem;
+      padding: 0.4rem 1.2rem;
       font-family: 'Orbitron', sans-serif;
-      font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+      font-size: clamp(0.6rem, 1.2vw, 0.8rem);
       font-weight: bold;
       border-radius: 20px;
       cursor: pointer;
-      margin-top: 1rem;
+      margin-top: 0.5rem;
       transition: all 0.3s ease;
-      box-shadow: 0 0 20px rgba(255, 85, 85, 0.4);
+      box-shadow: 0 0 15px rgba(255, 85, 85, 0.4);
     }
 
     .close-button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 30px rgba(255, 85, 85, 0.6);
+      box-shadow: 0 0 25px rgba(255, 85, 85, 0.6);
     }
 
     footer {
-      position: absolute;
-      bottom: 0.3rem;
+      position: relative;
+      padding-bottom: 0.2rem;
       width: 100%;
       text-align: center;
       font-family: 'Exo 2', sans-serif;
-      font-size: clamp(0.5rem, 0.8vw, 0.7rem);
+      font-size: clamp(0.4rem, 0.8vw, 0.6rem);
       color: #8492b4;
       z-index: 10;
     }
@@ -398,22 +400,22 @@
     }
 
     @media (max-width: 768px) {
-      .container { padding: 0.3rem; }
-      h1 { font-size: clamp(1.2rem, 4vw, 2rem); }
-      .ip-display { font-size: clamp(1rem, 2.5vw, 1.5rem); }
-      .network-info { font-size: clamp(0.5rem, 0.8vw, 0.7rem); }
-      .speedometer { width: clamp(120px, 40vw, 180px); height: clamp(60px, 20vw, 90px); }
-      .graph-container { height: 80px; }
+      .container { padding: 0.2rem; }
+      h1 { font-size: clamp(1rem, 3.5vw, 1.8rem); }
+      .ip-display { font-size: clamp(0.8rem, 2.5vw, 1.5rem); }
+      .network-info { font-size: clamp(0.4rem, 0.8vw, 0.6rem); }
+      .speedometer { width: clamp(120px, 40vw, 180px); height: clamp(60px, 20vh, 90px); }
+      .graph-container { height: 20vh; }
       .loading img { width: 24px; height: 24px; }
     }
 
     @media (max-width: 480px) {
-      h1 { font-size: clamp(1rem, 3vw, 1.5rem); }
-      .ip-container { gap: 0.3rem; }
-      .ip-display { font-size: clamp(0.8rem, 2vw, 1.2rem); }
+      h1 { font-size: clamp(0.9rem, 3vw, 1.5rem); }
+      .ip-container { gap: 0.2rem; }
+      .ip-display { font-size: clamp(0.7rem, 2vw, 1.2rem); }
       .results { flex-direction: column; }
       .result-box { width: 100%; min-width: unset; }
-      .button-container { flex-direction: column; gap: 0.5rem; }
+      .button-container { flex-direction: column; gap: 0.3rem; }
     }
   </style>
 </head>
@@ -464,16 +466,15 @@
       </div>
     </div>
     <!-- AdSense Placeholder: Insert AdSense code here for future integration -->
+    <footer>
+      © 2025 Labverse | Powered by <a href="https://onefar.co.za" target="_blank" rel="noopener">1FAR</a>
+    </footer>
   </div>
 
   <div class="overlay" id="overlay">
     <iframe id="speed-frame" src=""></iframe>
     <button class="close-button" id="close-overlay">Close</button>
   </div>
-
-  <footer>
-    © 2025 Labverse | Powered by <a href="https://onefar.co.za" target="_blank" rel="noopener">1FAR</a>
-  </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.net.min.js"></script>
@@ -610,7 +611,7 @@
       } catch (error) {
         ipDisplay.textContent = 'N/A';
         document.getElementById('error-message').textContent = 'Failed to fetch IP';
-        document.getElementRig('error-message').classList.remove('hidden');
+        document.getElementById('error-message').classList.remove('hidden');
         log('IP fetch error: ' + error.message);
         return 'N/A';
       }
@@ -665,7 +666,7 @@
       const maxSpeed = 1000;
       const logMax = Math.log10(maxSpeed + 1);
       const logSpeed = Math.log10(speed + 1);
-      const angle = (logSpeed / logMax) * Math.PI; // Logarithmic for needle
+      const angle = (logSpeed / logMax) * Math.PI;
       const centerX = width / 2;
       const centerY = height;
       const radius = Math.min(width / 2, height) * 0.9;
@@ -677,7 +678,7 @@
       bgGradient.addColorStop(0, 'rgba(73, 115, 255, 0.2)');
       bgGradient.addColorStop(1, 'rgba(0, 242, 254, 0.2)');
       ctx.strokeStyle = bgGradient;
-      ctx.lineWidth = 12;
+      ctx.lineWidth = 10;
       ctx.stroke();
 
       // Speed arc
@@ -687,7 +688,7 @@
       speedGradient.addColorStop(0, '#4facfe');
       speedGradient.addColorStop(1, '#00f2fe');
       ctx.strokeStyle = speedGradient;
-      ctx.lineWidth = 12;
+      ctx.lineWidth = 10;
       ctx.stroke();
 
       // Glow effect
@@ -726,7 +727,7 @@
       ctx.fillStyle = '#e0e0ff';
       ctx.textAlign = 'center';
       speeds.forEach((s) => {
-        const tickAngle = Math.PI + (s / maxSpeed) * Math.PI; // Linear positioning
+        const tickAngle = Math.PI + (s / maxSpeed) * Math.PI;
         const labelX = centerX + (radius + 35) * Math.cos(tickAngle);
         const labelY = centerY + (radius + 35) * Math.sin(tickAngle);
         ctx.fillText(s, labelX, labelY);
@@ -748,8 +749,9 @@
       requestAnimationFrame(update);
     }
 
-    // Graph
+    // Graph with Dynamic Zoom
     let graphData = [];
+    let maxSpeedSeen = 0;
     function drawGraph() {
       const canvas = document.getElementById('graph-canvas');
       const ctx = canvas.getContext('2d');
@@ -760,9 +762,24 @@
       ctx.scale(devicePixelRatio, devicePixelRatio);
 
       ctx.clearRect(0, 0, width, height);
-      const maxSpeed = 1000;
       const maxTime = 15;
-      const padding = 40;
+      const padding = 35;
+
+      // Dynamic Y-axis range based on max speed seen
+      const displayMaxSpeed = Math.max(10, maxSpeedSeen * 1.5);
+      const speedLevels = [];
+      let current = 0;
+      while (current <= displayMaxSpeed) {
+        speedLevels.push(current);
+        if (current === 0) current = 10;
+        else if (current < 50) current += 10;
+        else if (current < 200) current += 50;
+        else if (current < 500) current += 100;
+        else current += 500;
+      }
+      if (speedLevels[speedLevels.length - 1] < displayMaxSpeed) {
+        speedLevels.push(Math.ceil(displayMaxSpeed / 100) * 100);
+      }
 
       // Axes
       ctx.beginPath();
@@ -773,15 +790,12 @@
       ctx.lineWidth = 1;
       ctx.stroke();
 
-      // Grid lines and Y-axis labels (logarithmic scale)
-      const speedLevels = [0, 10, 50, 100, 200, 500, 1000];
-      const logMax = Math.log10(maxSpeed + 1);
+      // Grid lines and Y-axis labels (linear scale within zoomed range)
       ctx.font = `6px 'Exo 2', sans-serif`;
       ctx.fillStyle = '#8492b4';
       ctx.textAlign = 'right';
       speedLevels.forEach((level) => {
-        const logLevel = Math.log10(level + 1);
-        const y = height - padding - (logLevel / logMax) * (height - 2 * padding);
+        const y = height - padding - (level / displayMaxSpeed) * (height - 2 * padding);
         ctx.beginPath();
         ctx.moveTo(padding, y);
         ctx.lineTo(width - padding, y);
@@ -794,17 +808,17 @@
       ctx.textAlign = 'center';
       for (let t = 0; t <= maxTime; t += 3) {
         const x = padding + (t / maxTime) * (width - 2 * padding);
-        ctx.fillText(t, x, height - padding + 12);
+        ctx.fillText(t, x, height - padding + 10);
       }
 
       // Plot data
       if (graphData.length > 1) {
         ctx.beginPath();
-        const firstPointY = height - padding - (Math.log10(graphData[0].speed + 1) / logMax) * (height - 2 * padding);
+        const firstPointY = height - padding - (graphData[0].speed / displayMaxSpeed) * (height - 2 * padding);
         ctx.moveTo(padding, firstPointY);
         graphData.forEach((point) => {
           const x = padding + (point.time / maxTime) * (width - 2 * padding);
-          const y = height - padding - (Math.log10(point.speed + 1) / logMax) * (height - 2 * padding);
+          const y = height - padding - (point.speed / displayMaxSpeed) * (height - 2 * padding);
           ctx.lineTo(x, y);
         });
         ctx.strokeStyle = '#00f2fe';
@@ -816,11 +830,13 @@
     function updateGraph(time, speed) {
       graphData.push({ time, speed });
       if (graphData.length > 150) graphData.shift();
+      maxSpeedSeen = Math.max(maxSpeedSeen, speed);
       drawGraph();
     }
 
     function resetGraph() {
       graphData = [];
+      maxSpeedSeen = 0;
       drawGraph();
     }
 
