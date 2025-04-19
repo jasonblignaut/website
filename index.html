@@ -247,9 +247,6 @@
       top: 0;
       height: 100%;
       width: 30px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
       color: #8492b4;
       font-size: clamp(0.5rem, 0.8vw, 0.7rem);
       text-align: right;
@@ -257,7 +254,8 @@
     }
 
     .y-axis-label {
-      transform: translateY(50%);
+      position: absolute;
+      width: 100%;
     }
 
     .graph {
@@ -287,6 +285,17 @@
       right: 0;
       height: 1px;
       background: rgba(73, 115, 255, 0.1);
+    }
+
+    .speed-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 10px;
+      height: 0;
+      background: linear-gradient(to top, #4facfe, #00f2fe);
+      box-shadow: 0 0 10px rgba(73, 115, 255, 0.6);
+      transition: height 0.3s ease;
     }
 
     .results {
@@ -458,20 +467,21 @@
       </div>
       <div class="graph-container hidden" id="graphContainer">
         <div class="y-axis" id="yAxis">
-          <div class="y-axis-label">1000</div>
-          <div class="y-axis-label">500</div>
-          <div class="y-axis-label">200</div>
-          <div class="y-axis-label">100</div>
-          <div class="y-axis-label">50</div>
-          <div class="y-axis-label">25</div>
-          <div class="y-axis-label">20</div>
-          <div class="y-axis-label">10</div>
-          <div class="y-axis-label">5</div>
-          <div class="y-axis-label">0</div>
+          <div class="y-axis-label" style="bottom: 100%;">1000</div>
+          <div class="y-axis-label" style="bottom: 88.5%;">500</div>
+          <div class="y-axis-label" style="bottom: 77%;">200</div>
+          <div class="y-axis-label" style="bottom: 66%;">100</div>
+          <div class="y-axis-label" style="bottom: 55%;">50</div>
+          <div class="y-axis-label" style="bottom: 44%;">25</div>
+          <div class="y-axis-label" style="bottom: 40%;">20</div>
+          <div class="y-axis-label" style="bottom: 33%;">10</div>
+          <div class="y-axis-label" style="bottom: 22%;">5</div>
+          <div class="y-axis-label" style="bottom: 0%;">0</div>
         </div>
         <div class="grid-lines" id="gridLines"></div>
         <div class="graph">
           <canvas class="graph-canvas" id="graphCanvas"></canvas>
+          <div class="speed-bar" id="speedBar"></div>
         </div>
       </div>
       <div class="results hidden" id="resultsContainer">
@@ -648,7 +658,7 @@
     async function fetchLocationInfo() {
       log('Fetching network location info...');
       try {
-        const response = await fetch('http://ip-api.com/json/?fields=status,message,country,city,isp', { signal: AbortSignal.timeout(5000) });
+        const response = await fetch('https://ip-api.com/json/?fields=status,message,country,city,isp', { signal: AbortSignal.timeout(5000) });
         const data = await response.json();
         if (data.status !== 'success') throw new Error(data.message || 'Failed to fetch location info');
         const info = {
@@ -686,6 +696,7 @@
       const speedValue = document.getElementById('speedValue');
       const graphContainer = document.getElementById('graphContainer');
       const graphCanvas = document.getElementById('graphCanvas');
+      const speedBar = document.getElementById('speedBar');
       const resultsContainer = document.getElementById('resultsContainer');
       const downloadResult = document.getElementById('downloadResult');
       const pingResult = document.getElementById('pingResult');
@@ -701,7 +712,7 @@
       let finalPing = 0;
       let currentSpeed = 0;
 
-      // Speedometer Canvas Setup
+      // Speedometer Canvas Setup (Modern Design like Speedtest.net)
       const speedometerCtx = speedometerCanvas.getContext('2d');
       let speedometerWidth, speedometerHeight;
       function resizeSpeedometer() {
@@ -720,40 +731,76 @@
         const angle = (speed / maxSpeed) * Math.PI; // 0 to 180 degrees
         const centerX = speedometerWidth / 2;
         const centerY = speedometerHeight;
-        const radius = Math.min(speedometerWidth / 2, speedometerHeight) * 0.8;
+        const radius = Math.min(speedometerWidth / 2, speedometerHeight) * 0.9;
 
-        // Background arc
+        // Background arc with gradient
         speedometerCtx.beginPath();
         speedometerCtx.arc(centerX, centerY, radius, Math.PI, 2 * Math.PI);
-        speedometerCtx.strokeStyle = 'rgba(73, 115, 255, 0.3)';
-        speedometerCtx.lineWidth = 10;
+        const bgGradient = speedometerCtx.createLinearGradient(0, 0, speedometerWidth, 0);
+        bgGradient.addColorStop(0, 'rgba(73, 115, 255, 0.2)');
+        bgGradient.addColorStop(1, 'rgba(0, 242, 254, 0.2)');
+        speedometerCtx.strokeStyle = bgGradient;
+        speedometerCtx.lineWidth = 12;
         speedometerCtx.stroke();
 
-        // Speed arc
+        // Speed arc with glowing effect
         speedometerCtx.beginPath();
         speedometerCtx.arc(centerX, centerY, radius, Math.PI, Math.PI + angle);
-        const gradient = speedometerCtx.createLinearGradient(0, 0, speedometerWidth, 0);
-        gradient.addColorStop(0, '#4facfe');
-        gradient.addColorStop(1, '#00f2fe');
-        speedometerCtx.strokeStyle = gradient;
-        speedometerCtx.lineWidth = 10;
+        const speedGradient = speedometerCtx.createLinearGradient(0, 0, speedometerWidth, 0);
+        speedGradient.addColorStop(0, '#4facfe');
+        speedGradient.addColorStop(1, '#00f2fe');
+        speedometerCtx.strokeStyle = speedGradient;
+        speedometerCtx.lineWidth = 12;
         speedometerCtx.stroke();
 
-        // Needle
+        // Add glow effect to speed arc
+        speedometerCtx.shadowColor = 'rgba(0, 242, 254, 0.8)';
+        speedometerCtx.shadowBlur = 15;
+        speedometerCtx.stroke();
+        speedometerCtx.shadowBlur = 0;
+
+        // Needle with glow
         speedometerCtx.save();
         speedometerCtx.translate(centerX, centerY);
         speedometerCtx.rotate(Math.PI + angle);
         speedometerCtx.beginPath();
-        speedometerCtx.moveTo(0, 0);
-        speedometerCtx.lineTo(radius - 10, 0);
-        speedometerCtx.strokeStyle = '#e0e0ff';
+        speedometerCtx.moveTo(-5, 0);
+        speedometerCtx.lineTo(radius - 20, 0);
+        speedometerCtx.lineTo(-5, 0);
+        speedometerCtx.fillStyle = '#e0e0ff';
+        speedometerCtx.shadowColor = 'rgba(255, 255, 255, 0.8)';
+        speedometerCtx.shadowBlur = 10;
+        speedometerCtx.fill();
+        speedometerCtx.shadowBlur = 0;
+
+        // Center circle
+        speedometerCtx.beginPath();
+        speedometerCtx.arc(0, 0, 8, 0, 2 * Math.PI);
+        speedometerCtx.fillStyle = '#070b1a';
+        speedometerCtx.fill();
+        speedometerCtx.strokeStyle = '#00f2fe';
         speedometerCtx.lineWidth = 2;
         speedometerCtx.stroke();
-        speedometerCtx.beginPath();
-        speedometerCtx.arc(0, 0, 5, 0, 2 * Math.PI);
-        speedometerCtx.fillStyle = '#e0e0ff';
-        speedometerCtx.fill();
         speedometerCtx.restore();
+
+        // Tick marks
+        speedometerCtx.lineWidth = 2;
+        for (let i = 0; i <= 10; i++) {
+          const tickAngle = Math.PI + (i / 10) * Math.PI;
+          const innerRadius = radius - 10;
+          const outerRadius = radius + 5;
+          speedometerCtx.beginPath();
+          speedometerCtx.moveTo(
+            centerX + innerRadius * Math.cos(tickAngle),
+            centerY + innerRadius * Math.sin(tickAngle)
+          );
+          speedometerCtx.lineTo(
+            centerX + outerRadius * Math.cos(tickAngle),
+            centerY + outerRadius * Math.sin(tickAngle)
+          );
+          speedometerCtx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+          speedometerCtx.stroke();
+        }
       }
 
       // Graph Canvas Setup
@@ -771,6 +818,7 @@
 
       // Set up grid lines and Y-axis alignment
       const SPEED_LEVELS = [0, 5, 10, 20, 25, 50, 100, 200, 500, 1000];
+      const SPEED_POSITIONS = [0, 22, 33, 40, 44, 55, 66, 77, 88.5, 100]; // Logarithmic positions
       function speedToHeight(speed) {
         const maxSpeed = 1000;
         if (speed <= 0) return 0;
@@ -781,51 +829,17 @@
 
       function setupGridLines() {
         gridLines.innerHTML = '';
-        SPEED_LEVELS.forEach(level => {
+        SPEED_LEVELS.forEach((level, index) => {
           const gridLine = document.createElement('div');
           gridLine.className = 'grid-line';
-          const heightPercent = speedToHeight(level);
-          gridLine.style.bottom = `${heightPercent}%`;
+          gridLine.style.bottom = `${SPEED_POSITIONS[index]}%`;
           gridLines.appendChild(gridLine);
         });
       }
 
-      // Smooth graph drawing
-      let graphPoints = [];
-      function drawGraph() {
-        graphCtx.clearRect(0, 0, graphWidth, graphHeight);
-        if (graphPoints.length < 2) return;
-
-        // Draw area fill
-        graphCtx.beginPath();
-        graphCtx.moveTo(0, graphHeight);
-        for (let i = 0; i < graphPoints.length; i++) {
-          const x = graphPoints[i].x * graphWidth;
-          const y = (1 - graphPoints[i].y) * graphHeight;
-          graphCtx.lineTo(x, y);
-        }
-        graphCtx.lineTo(graphPoints[graphPoints.length - 1].x * graphWidth, graphHeight);
-        graphCtx.closePath();
-        const gradient = graphCtx.createLinearGradient(0, 0, 0, graphHeight);
-        gradient.addColorStop(0, 'rgba(73, 115, 255, 0.2)');
-        gradient.addColorStop(1, 'rgba(0, 242, 254, 0)');
-        graphCtx.fillStyle = gradient;
-        graphCtx.fill();
-
-        // Draw line
-        graphCtx.beginPath();
-        graphCtx.moveTo(graphPoints[0].x * graphWidth, (1 - graphPoints[0].y) * graphHeight);
-        for (let i = 1; i < graphPoints.length; i++) {
-          const x = graphPoints[i].x * graphWidth;
-          const y = (1 - graphPoints[i].y) * graphHeight;
-          graphCtx.lineTo(x, y);
-        }
-        const lineGradient = graphCtx.createLinearGradient(0, 0, graphWidth, 0);
-        lineGradient.addColorStop(0, '#4facfe');
-        lineGradient.addColorStop(1, '#00f2fe');
-        graphCtx.strokeStyle = lineGradient;
-        graphCtx.lineWidth = 2;
-        graphCtx.stroke();
+      function updateSpeedBar(speed) {
+        const heightPercent = speedToHeight(speed);
+        speedBar.style.height = `${heightPercent}%`;
       }
 
       async function runPingTest() {
@@ -887,11 +901,10 @@
               currentSpeed = speed;
               const timePercentage = elapsed / (CONFIG.testDurations.download / 1000);
               testData.push({ time: elapsed, speed });
-              graphPoints.push({ x: timePercentage, y: speedToHeight(speed) / 100 });
               progressBar.style.width = `${timePercentage * 100}%`;
               speedValue.textContent = speed.toFixed(1);
               drawSpeedometer(speed);
-              drawGraph();
+              updateSpeedBar(speed);
               lastUpdate = performance.now();
             }
             if (elapsed >= CONFIG.testDurations.download / 1000) {
@@ -933,11 +946,10 @@
       async function runTest() {
         testActive = true;
         testData = [];
-        graphPoints = [];
         currentSpeed = 0;
         speedValue.textContent = '0';
         drawSpeedometer(0);
-        graphCtx.clearRect(0, 0, graphWidth, graphHeight);
+        updateSpeedBar(0);
         progressBar.style.width = '0';
         speedometer.classList.remove('hidden');
         graphContainer.classList.remove('hidden');
@@ -961,6 +973,7 @@
       }
 
       setupGridLines();
+      drawSpeedometer(0); // Initial draw to ensure visibility
 
       startButton.addEventListener('click', () => {
         if (startButton.textContent === 'More Info') {
@@ -994,7 +1007,6 @@
         if (ip !== 'Fetching IP...' && ip !== 'IP unavailable') {
           copyToClipboard(ip);
           triggerBigBang();
-          alert('IP copied to clipboard!');
         }
       });
     });
