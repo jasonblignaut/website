@@ -12,7 +12,7 @@
   <meta property="og:url" content="https://labverse.co.za">
   <meta name="twitter:card" content="summary_large_image">
   <title>Labverse Speed Test</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Source+Code_Pro&family=Exo+2:wght@400;700&family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Source+Code+Pro&family=Exo+2:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --matrix-blue: #00b7eb;
@@ -36,7 +36,7 @@
       width: 100%;
       background: var(--dark-bg);
       color: var(--light-aura);
-      overflow: hidden;
+      overflow-x: hidden;
     }
 
     #vanta-bg {
@@ -62,17 +62,17 @@
     .container {
       position: relative;
       z-index: 10;
-      height: 100vh;
+      min-height: 100vh;
       width: 90%;
       max-width: 900px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
-      justify-content: center; /* Center vertically */
+      justify-content: flex-start;
       align-items: center;
       text-align: center;
-      padding: 0.5rem;
-      overflow: visible; /* Ensure no scrolling */
+      padding: 1rem 0.5rem;
+      gap: 0.5rem;
     }
 
     header {
@@ -165,7 +165,7 @@
     .speed-test-card {
       background: var(--card-bg);
       border-radius: 15px;
-      padding: 0.8rem;
+      padding: 1rem;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 50px rgba(73, 115, 255, 0.15) inset;
       backdrop-filter: blur(10px);
       border: 1px solid rgba(79, 172, 254, 0.3);
@@ -173,13 +173,14 @@
       overflow: visible; /* Remove scroll box */
       display: flex;
       flex-direction: column;
+      align-items: center;
     }
 
     .test-type {
       font-family: 'Orbitron', sans-serif;
       font-size: clamp(0.9rem, 2vw, 1.2rem);
       text-align: center;
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.5rem;
       color: #00f2fe;
     }
 
@@ -189,7 +190,7 @@
       background: rgba(13, 25, 50, 0.7);
       border-radius: 3px;
       overflow: hidden;
-      margin-bottom: 0.3rem;
+      margin-bottom: 1rem;
     }
 
     .progress {
@@ -203,9 +204,9 @@
 
     .speedometer {
       position: relative;
-      width: clamp(120px, 40vw, 200px);
-      height: clamp(60px, 20vw, 100px);
-      margin: 0 auto 1.5rem;
+      width: clamp(200px, 60vw, 300px);
+      height: clamp(100px, 30vw, 150px);
+      margin: 0 auto 2rem;
       visibility: visible;
     }
 
@@ -218,12 +219,12 @@
 
     .speed-value {
       position: absolute;
-      bottom: -0.8rem;
+      bottom: -2rem;
       left: 0;
       right: 0;
       text-align: center;
-      font-family: 'Exo 2', sans-serif;
-      font-size: clamp(0.9rem, 2vw, 1.2rem);
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
       font-weight: 700;
       color: #e0e0ff;
       z-index: 5;
@@ -232,20 +233,21 @@
 
     .speed-unit {
       position: absolute;
-      bottom: -1.5rem;
+      bottom: -3rem;
       left: 0;
       right: 0;
       text-align: center;
       font-family: 'Exo 2', sans-serif;
-      font-size: clamp(0.4rem, 0.8vw, 0.6rem);
+      font-size: clamp(0.6rem, 1vw, 0.8rem);
       color: #8492b4;
       z-index: 5;
     }
 
     .graph-container {
       position: relative;
-      height: 200px; /* Increased height for visibility on desktop */
-      margin: 0.3rem 0;
+      height: 180px;
+      width: 100%;
+      margin: 1rem 0 1.5rem;
       background: rgba(13, 25, 50, 0.5);
       border-radius: 8px;
       padding: 10px;
@@ -261,30 +263,31 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: space-around;
-      gap: 0.3rem;
-      margin-top: 0.3rem;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      width: 100%;
     }
 
     .result-box {
       text-align: center;
-      padding: 0.4rem;
+      padding: 0.8rem;
       border-radius: 8px;
       background: rgba(13, 25, 50, 0.7);
       flex: 1;
-      min-width: 80px;
+      min-width: 100px;
       border: 1px solid rgba(79, 172, 254, 0.2);
     }
 
     .result-label {
       font-family: 'Exo 2', sans-serif;
-      font-size: clamp(0.5rem, 1vw, 0.7rem);
+      font-size: clamp(0.6rem, 1.2vw, 0.8rem);
       color: #8492b4;
-      margin-bottom: 0.2rem;
+      margin-bottom: 0.4rem;
     }
 
     .result-value {
-      font-family: 'Exo 2', sans-serif;
-      font-size: clamp(0.7rem, 1.5vw, 1rem);
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(0.9rem, 1.8vw, 1.2rem);
       font-weight: bold;
       color: #e0e0ff;
     }
@@ -292,23 +295,25 @@
     .button-container {
       display: flex;
       justify-content: center;
-      gap: 0.6rem;
-      margin-top: 0.8rem;
+      gap: 1rem;
+      margin-top: 1.5rem;
       margin-bottom: 0.8rem;
+      width: 100%;
     }
 
     .start-button, .test-again-button {
       background: linear-gradient(90deg, #4facfe, #00f2fe);
       border: none;
       color: var(--dark-bg);
-      padding: 0.4rem 1.2rem;
+      padding: 0.5rem 1.5rem;
       font-family: 'Orbitron', sans-serif;
-      font-size: clamp(0.6rem, 1.2vw, 0.8rem);
+      font-size: clamp(0.7rem, 1.4vw, 0.9rem);
       font-weight: bold;
       border-radius: 20px;
       cursor: pointer;
       transition: all 0.3s ease;
       box-shadow: 0 0 20px rgba(73, 115, 255, 0.4);
+      min-width: 120px;
     }
 
     .start-button:hover, .test-again-button:hover {
@@ -321,7 +326,7 @@
     }
 
     .hidden {
-      display: none;
+      display: none !important;
     }
 
     .loading {
@@ -384,14 +389,14 @@
     }
 
     footer {
-      position: absolute;
-      bottom: 0.2rem;
+      position: relative;
       width: 100%;
       text-align: center;
       font-family: 'Exo 2', sans-serif;
       font-size: clamp(0.4rem, 0.8vw, 0.6rem);
       color: #8492b4;
-      z-index: 10;
+      padding: 1rem 0;
+      margin-top: auto;
     }
 
     footer a {
@@ -414,77 +419,97 @@
 
     @media (max-width: 768px) {
       .container {
-        justify-content: flex-start; /* Start from top on mobile */
-        padding-top: 0.5rem;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        justify-content: flex-start;
+        min-height: 100vh;
       }
+      
       h1 {
         font-size: clamp(1rem, 3vw, 1.5rem);
       }
+      
       .ip-container {
         gap: 0.2rem;
-        margin-bottom: 0.3rem;
+        margin-bottom: 0.5rem;
       }
+      
       .ip-display {
         font-size: clamp(0.8rem, 2vw, 1.2rem);
         padding: 0.4rem 0.8rem;
       }
+      
       .network-info {
         font-size: clamp(0.4rem, 0.8vw, 0.6rem);
-        margin-bottom: 0.3rem;
+        margin-bottom: 0.5rem;
       }
+      
       .speed-test-card {
-        padding: 0.5rem;
+        padding: 0.8rem;
       }
+      
       .speedometer {
-        width: clamp(100px, 35vw, 150px);
-        height: clamp(50px, 17.5vw, 75px);
-        margin-bottom: 1rem;
+        width: clamp(150px, 70vw, 250px);
+        height: clamp(75px, 35vw, 125px);
+        margin-bottom: 3rem;
       }
+      
       .speed-value {
-        font-size: clamp(0.8rem, 1.5vw, 1rem);
-        bottom: -0.6rem;
+        font-size: clamp(1rem, 2vw, 1.5rem);
+        bottom: -2rem;
       }
+      
       .speed-unit {
-        font-size: clamp(0.3rem, 0.6vw, 0.5rem);
-        bottom: -1.2rem;
+        font-size: clamp(0.5rem, 0.8vw, 0.7rem);
+        bottom: -2.8rem;
       }
+      
       .graph-container {
-        height: 100px; /* Adjusted for mobile */
+        height: 140px;
+        margin: 1.5rem 0;
       }
-      .results {
-        flex-direction: column;
-      }
-      .result-box {
-        width: 100%;
-        min-width: unset;
-        padding: 0.3rem;
-      }
+      
       .button-container {
-        flex-direction: column;
-        gap: 0.4rem;
+        flex-direction: row;
+        gap: 0.8rem;
+        margin-top: 1rem;
       }
-      .loading img {
-        width: 20px;
-        height: 20px;
+      
+      .start-button, .test-again-button {
+        font-size: clamp(0.6rem, 1.2vw, 0.8rem);
+        padding: 0.4rem 1rem;
+        min-width: 100px;
       }
     }
 
     @media (max-width: 480px) {
       .container {
-        padding-top: 0.3rem;
+        width: 95%;
+        padding: 0.8rem 0.3rem;
       }
-      h1 {
-        font-size: clamp(0.9rem, 2.5vw, 1.2rem);
-      }
-      .ip-container {
-        gap: 0.1rem;
-      }
-      .ip-display {
-        font-size: clamp(0.7rem, 1.8vw, 1rem);
-        padding: 0.3rem 0.6rem;
-      }
+      
       .speed-test-card {
-        padding: 0.4rem;
+        padding: 0.6rem;
+      }
+      
+      .speedometer {
+        width: 180px;
+        height: 90px;
+        margin-bottom: 3.5rem;
+      }
+      
+      .button-container {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: center;
+      }
+      
+      .start-button, .test-again-button {
+        width: 90%;
+      }
+      
+      .result-box {
+        padding: 0.5rem;
       }
     }
   </style>
@@ -500,18 +525,18 @@
     <div class="ip-container">
       <div class="ip-label">YOUR PUBLIC IP IS</div>
       <div class="ip-display" id="ip-display" aria-live="polite">Fetching IP...</div>
-      <button class="copy-btn" id="copy-ip-btn" aria-label="Copy IP address">Copy IP</button>
+      <button class="copy-btn" id="copy-ip-btn" aria-label="Copy IP address">COPY IP</button>
     </div>
     <div class="network-info" id="network-info" aria-live="polite">Fetching network info...</div>
     <div class="error-message" id="error-message">Error fetching data</div>
     <div class="speed-test-card">
-      <div class="test-type" id="test-type">Speed Test</div>
+      <div class="test-type" id="test-type">Testing Download Speed</div>
       <div class="progress-bar">
         <div class="progress" id="progress-bar"></div>
       </div>
       <div class="speedometer">
         <canvas class="speedometer-canvas" id="speedometer-canvas"></canvas>
-        <div class="speed-value" id="speed-value">0</div>
+        <div class="speed-value" id="speed-value">0.0</div>
         <div class="speed-unit">Mbps</div>
       </div>
       <div class="graph-container hidden" id="graph-container">
@@ -668,6 +693,9 @@
     window.addEventListener('resize', () => {
       resizeParticleCanvas();
       initParticles();
+      // Redraw speedometer and graph on resize
+      drawSpeedometer(parseFloat(document.getElementById('speed-value').textContent) || 0);
+      drawGraph();
     }, { passive: true });
 
     // IP and Location Fetch
@@ -682,7 +710,7 @@
       } catch (error) {
         ipDisplay.textContent = 'N/A';
         document.getElementById('error-message').textContent = 'Failed to fetch IP';
-        document.getElementById('error-message').classList.remove('hidden');
+        document.getElementById('error-message').style.display = 'block';
         log('IP fetch error: ' + error.message);
         return 'N/A';
       }
@@ -716,7 +744,7 @@
         } catch (fallbackError) {
           networkInfo.innerHTML = `ISP: N/A<br>Location: N/A`;
           document.getElementById('error-message').textContent = 'Failed to fetch network info';
-          document.getElementById('error-message').classList.remove('hidden');
+          document.getElementById('error-message').style.display = 'block';
           log('ipinfo.io fetch error: ' + fallbackError.message);
           return { isp: 'N/A', city: 'N/A', country: 'N/A' };
         }
@@ -745,8 +773,8 @@
       const centerX = width / 2;
       const centerY = height;
       const radius = Math.min(width / 2, height) * 0.85;
-
-      // Background arc
+      
+      // Draw background arc
       ctx.beginPath();
       ctx.arc(centerX, centerY, radius, Math.PI, 2 * Math.PI);
       const bgGradient = ctx.createLinearGradient(0, 0, width, 0);
@@ -756,7 +784,7 @@
       ctx.lineWidth = 12;
       ctx.stroke();
 
-      // Speed arc
+      // Draw speed arc
       ctx.beginPath();
       ctx.arc(centerX, centerY, radius, Math.PI, Math.PI + angle);
       const speedGradient = ctx.createLinearGradient(0, 0, width, 0);
@@ -766,20 +794,20 @@
       ctx.lineWidth = 12;
       ctx.stroke();
 
-      // Glow effect
+      // Add glow effect
       ctx.shadowColor = 'rgba(0, 242, 254, 0.8)';
       ctx.shadowBlur = 15;
       ctx.stroke();
       ctx.shadowBlur = 0;
 
-      // Needle
+      // Draw needle
       ctx.save();
       ctx.translate(centerX, centerY);
       ctx.rotate(Math.PI + angle);
       ctx.beginPath();
       ctx.moveTo(-5, 0);
       ctx.lineTo(radius - 20, 0);
-      ctx.lineTo(-5, 0);
+      ctx.lineTo(0, -5);
       ctx.fillStyle = '#e0e0ff';
       ctx.shadowColor = 'rgba(255, 255, 255, 0.8)';
       ctx.shadowBlur = 10;
@@ -787,7 +815,7 @@
       ctx.shadowBlur = 0;
       ctx.restore();
 
-      // Center circle
+      // Draw center circle
       ctx.beginPath();
       ctx.arc(centerX, centerY, 8, 0, 2 * Math.PI);
       ctx.fillStyle = '#070b1a';
@@ -796,53 +824,45 @@
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // Speed labels
+      // Draw speed scale and labels
       const speeds = [0, 10, 50, 100, 200, 500, 1000];
-      ctx.font = `6px 'Exo 2', sans-serif`;
+      ctx.font = `10px 'Exo 2', sans-serif`;
       ctx.fillStyle = '#e0e0ff';
       ctx.textAlign = 'center';
+      
       speeds.forEach((s) => {
         const logS = Math.log10(s + 1);
         const tickAngle = Math.PI + (logS / logMax) * Math.PI;
-        const labelRadius = radius + 35;
-        let labelX = centerX + labelRadius * Math.cos(tickAngle);
-        let labelY = centerY + labelRadius * Math.sin(tickAngle);
-
-        if (s === 0) {
-          labelX += 20;
-          labelY += 5;
-        } else if (s === 1000) {
-          labelX -= 20;
-          labelY += 5;
-        } else if (s === 500) {
-          labelY += 5;
-        } else if (s === 10) {
-          labelX += 10;
-          labelY += 3;
-        } else if (s === 50) {
-          labelX += 5;
-          labelY += 2;
-        }
-
-        // Tick marks
-        const tickStartX = centerX + (radius - 5) * Math.cos(tickAngle);
-        const tickStartY = centerY + (radius - 5) * Math.sin(tickAngle);
-        const tickEndX = centerX + (radius + 5) * Math.cos(tickAngle);
-        const tickEndY = centerY + (radius + 5) * Math.sin(tickAngle);
+        
+        // Calculate positions for label placement
+        const labelRadius = radius + 15;
+        const labelX = centerX + labelRadius * Math.cos(tickAngle);
+        const labelY = centerY + labelRadius * Math.sin(tickAngle);
+        
+        // Draw tick marks
+        const tickStartRadius = radius - 5;
+        const tickEndRadius = radius + 5;
+        const tickStartX = centerX + tickStartRadius * Math.cos(tickAngle);
+        const tickStartY = centerY + tickStartRadius * Math.sin(tickAngle);
+        const tickEndX = centerX + tickEndRadius * Math.cos(tickAngle);
+        const tickEndY = centerY + tickEndRadius * Math.sin(tickAngle);
+        
         ctx.beginPath();
         ctx.moveTo(tickStartX, tickStartY);
         ctx.lineTo(tickEndX, tickEndY);
-        ctx.strokeStyle = '#e0e0ff';
+        ctx.strokeStyle = '#8492b4';
         ctx.lineWidth = 1;
         ctx.stroke();
-
-        ctx.fillText(s, labelX, labelY);
+        
+        // Adjust label position for better readability
+        ctx.fillText(s, labelX, labelY + 4);
       });
     }
 
     function animateSpeedometer(targetSpeed) {
-      let currentSpeed = parseFloat(document.getElementById('speed-value').textContent);
+      let currentSpeed = parseFloat(document.getElementById('speed-value').textContent) || 0;
       const step = (targetSpeed - currentSpeed) / 30;
+      
       function update() {
         currentSpeed += step;
         if (Math.abs(currentSpeed - targetSpeed) < 0.1) currentSpeed = targetSpeed;
@@ -873,55 +893,86 @@
       ctx.clearRect(0, 0, width, height);
       const maxSpeed = 1000;
       const maxTime = 30;
-      const padding = 45;
+      const padding = { left: 50, right: 20, top: 20, bottom: 35 };
 
-      // Axes
+      // Draw axes
       ctx.beginPath();
-      ctx.moveTo(padding, padding);
-      ctx.lineTo(padding, height - padding);
-      ctx.lineTo(width - padding, height - padding);
+      ctx.moveTo(padding.left, padding.top);
+      ctx.lineTo(padding.left, height - padding.bottom);
+      ctx.lineTo(width - padding.right, height - padding.bottom);
       ctx.strokeStyle = 'rgba(73, 115, 255, 0.4)';
       ctx.lineWidth = 1;
       ctx.stroke();
 
-      // Grid lines and Y-axis labels (logarithmic scale, low to high)
+      // Draw grid lines and Y-axis labels (logarithmic scale)
       const speedLevels = [0, 10, 50, 100, 200, 500, 1000];
       const logMax = Math.log10(maxSpeed + 1);
-      ctx.font = `7px 'Exo 2', sans-serif`;
+      ctx.font = `10px 'Exo 2', sans-serif`;
       ctx.fillStyle = '#8492b4';
       ctx.textAlign = 'right';
+      
       speedLevels.forEach((level) => {
         const logLevel = Math.log10(level + 1);
-        const y = (height - padding) - (logLevel / logMax) * (height - 2 * padding);
+        const y = (height - padding.bottom) - (logLevel / logMax) * (height - padding.top - padding.bottom);
+        
         ctx.beginPath();
-        ctx.moveTo(padding, y);
-        ctx.lineTo(width - padding, y);
+        ctx.moveTo(padding.left, y);
+        ctx.lineTo(width - padding.right, y);
         ctx.strokeStyle = 'rgba(73, 115, 255, 0.1)';
         ctx.stroke();
-        ctx.fillText(level, padding - 10, y + 2);
+        
+        ctx.fillText(level, padding.left - 5, y + 4);
       });
 
-      // X-axis labels
+      // Draw X-axis labels
       ctx.textAlign = 'center';
+      ctx.fillStyle = '#8492b4';
       for (let t = 0; t <= maxTime; t += 6) {
-        const x = padding + (t / maxTime) * (width - 2 * padding);
-        ctx.fillText(t, x, height - padding + 15);
+        const x = padding.left + (t / maxTime) * (width - padding.left - padding.right);
+        ctx.fillText(t, x, height - padding.bottom + 15);
       }
 
       // Plot data
       if (graphData.length > 0) {
         ctx.beginPath();
-        const firstPointY = (height - padding) - (Math.log10(graphData[0].speed + 1) / logMax) * (height - 2 * padding);
-        ctx.moveTo(padding, firstPointY);
+        let startX = padding.left;
+        let startY = height - padding.bottom;
+        
+        if (graphData[0].speed > 0) {
+          startY = (height - padding.bottom) - (Math.log10(graphData[0].speed + 1) / logMax) * (height - padding.top - padding.bottom);
+        }
+        
+        ctx.moveTo(startX, startY);
+        
         graphData.forEach((point) => {
-          const x = padding + (point.time / maxTime) * (width - 2 * padding);
-          const y = (height - padding) - (Math.log10(point.speed + 1) / logMax) * (height - 2 * padding);
+          const x = padding.left + (point.time / maxTime) * (width - padding.left - padding.right);
+          const y = (height - padding.bottom) - (Math.log10(point.speed + 1) / logMax) * (height - padding.top - padding.bottom);
           ctx.lineTo(x, y);
         });
+        
         ctx.strokeStyle = '#00f2fe';
         ctx.lineWidth = 2;
         ctx.stroke();
+        
+        // Add glow effect to the line
+        ctx.shadowColor = 'rgba(0, 242, 254, 0.8)';
+        ctx.shadowBlur = 8;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
       }
+      
+      // Add axis labels
+      ctx.font = `12px 'Exo 2', sans-serif`;
+      ctx.fillStyle = '#e0e0ff';
+      ctx.textAlign = 'center';
+      ctx.fillText('Time (seconds)', width / 2, height - 5);
+      
+      ctx.save();
+      ctx.translate(15, height / 2);
+      ctx.rotate(-Math.PI / 2);
+      ctx.textAlign = 'center';
+      ctx.fillText('Speed (Mbps)', 0, 0);
+      ctx.restore();
     }
 
     function updateGraph(time, speed) {
@@ -1046,7 +1097,7 @@
       function finalizeTest() {
         if (!finalDownloadSpeed && !finalPing) {
           document.getElementById('error-message').textContent = 'Speed test failed. Please try again.';
-          document.getElementById('error-message').classList.remove('hidden');
+          document.getElementById('error-message').style.display = 'block';
           startButton.textContent = 'Start Test';
         } else {
           resultsContainer.classList.remove('hidden');
@@ -1054,7 +1105,7 @@
           testAgainButton.classList.remove('hidden');
           triggerBigBang();
           setTimeout(() => {
-            animateSpeedometer(0);
+            // Keep the speedometer showing the final result
             animateGraphEnd();
           }, 1500);
         }
@@ -1070,18 +1121,19 @@
         testAgainButton.classList.add('hidden');
         loading.classList.remove('hidden');
         progressBar.style.width = '0';
-        speedValue.textContent = '0';
+        speedValue.textContent = '0.0';
         animateSpeedometer(0);
         resetGraph();
         graphContainer.classList.remove('hidden');
         resultsContainer.classList.add('hidden');
-        document.getElementById('error-message').classList.add('hidden');
+        document.getElementById('error-message').style.display = 'none';
 
         try {
           await runPingTest();
           if (testActive) await runDownloadTest();
           if (testActive) finalizeTest();
         } catch (error) {
+          log('Test error: ' + error.message);
           finalizeTest();
         }
       }
