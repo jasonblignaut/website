@@ -29,7 +29,7 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Segoe UI', 'Source Code Pro', monospace;
+      font-family: 'Segoe UI', 'Source+Code+Pro', monospace;
     }
 
     html, body {
@@ -109,7 +109,7 @@
     }
 
     .ip-display {
-      font-family: 'Source Code Pro', monospace;
+      font-family: 'Source+Code+Pro', monospace;
       font-size: clamp(1.2rem, 3vw, 2rem);
       color: var(--light-aura);
       background: var(--card-bg);
@@ -141,7 +141,7 @@
     }
 
     .network-info {
-      font-family: 'Exo 2', sans-serif;
+      font-family: 'Exo+2', sans-serif;
       font-size: clamp(0.6rem, 1vw, 0.8rem);
       color: #8492b4;
       max-width: 300px;
@@ -150,7 +150,7 @@
     }
 
     .error-message {
-      font-family: 'Exo 2', sans-serif;
+      font-family: 'Exo+2', sans-serif;
       font-size: clamp(0.6rem, 1vw, 0.8rem);
       color: #ff5555;
       margin-top: 0.5rem;
@@ -195,112 +195,6 @@
       box-shadow: 0 0 10px rgba(73, 115, 255, 0.6);
     }
 
-    .speedometer {
-      position: relative;
-      width: 200px;
-      height: 120px;
-      margin: 0 auto 0.5rem;
-      overflow: hidden;
-    }
-
-    .gauge {
-      width: 100%;
-      height: 160px;
-      border-radius: 100px 100px 0 0;
-      background: linear-gradient(145deg, #091328, #0a1730);
-      box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.2), -10px -10px 20px rgba(15, 30, 60, 0.2);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .gauge::before {
-      content: '';
-      position: absolute;
-      top: 10%;
-      left: 10%;
-      right: 10%;
-      bottom: 0;
-      background: #070b1a;
-      border-radius: 100px 100px 0 0;
-      z-index: 2;
-    }
-
-    .gauge-fill {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, #4facfe, #00f2fe);
-      clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
-      transform-origin: center bottom;
-      transform: rotate(180deg);
-      z-index: 1;
-      transition: transform 0.3s ease-out;
-    }
-
-    .gauge-needle {
-      position: absolute;
-      width: 40%;
-      height: 4px;
-      background: linear-gradient(90deg, rgba(224, 224, 255, 0.3), #e0e0ff);
-      bottom: 0;
-      left: 50%;
-      transform-origin: center bottom;
-      transform: rotate(180deg);
-      border-radius: 2px;
-      z-index: 4;
-      transition: transform 0.3s ease-out;
-      box-shadow: 0 0 10px rgba(224, 224, 255, 0.8);
-    }
-
-    .gauge-needle::after {
-      content: '';
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: #e0e0ff;
-      right: -6px;
-      top: -4px;
-      box-shadow: 0 0 10px rgba(224, 224, 255, 0.8);
-    }
-
-    .speed-value {
-      position: absolute;
-      bottom: -5px;
-      left: 0;
-      right: 0;
-      text-align: center;
-      font-size: clamp(1rem, 2vw, 1.5rem);
-      font-weight: 700;
-      color: #e0e0ff;
-      z-index: 5;
-      text-shadow: 0 0 10px rgba(73, 115, 255, 0.8);
-    }
-
-    .speed-unit {
-      position: absolute;
-      bottom: -20px;
-      left: 0;
-      right: 0;
-      text-align: center;
-      font-size: clamp(0.5rem, 0.8vw, 0.7rem);
-      color: #8492b4;
-      z-index: 5;
-    }
-
-    .speed-label {
-      position: absolute;
-      top: 10%;
-      left: 0;
-      right: 0;
-      text-align: center;
-      font-size: clamp(0.6rem, 1vw, 0.8rem);
-      color: #8492b4;
-      z-index: 5;
-    }
-
     .graph-container {
       height: 150px;
       position: relative;
@@ -335,27 +229,16 @@
       width: 100%;
     }
 
-    .graph-line {
+    .graph-dot {
       position: absolute;
       bottom: 0;
-      left: 0;
-      width: 0;
-      height: 3px;
-      background: linear-gradient(90deg, rgba(73, 115, 255, 0.8) 0%, rgba(0, 242, 254, 0.8) 50%, rgba(73, 115, 255, 0.8) 100%);
-      background-size: 20px 100%;
-      box-shadow: 0 0 10px rgba(73, 115, 255, 0.8);
-      border-radius: 2px;
-      transition: width 0.05s linear;
-    }
-
-    .graph-fill {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      background: linear-gradient(to top, rgba(73, 115, 255, 0.2), rgba(0, 242, 254, 0.05));
-      border-radius: 0 5px 0 0;
-      transition: width 0.05s linear, height 0.05s linear;
+      width: 6px;
+      height: 6px;
+      background: #00f2fe;
+      border-radius: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 0 5px rgba(73, 115, 255, 0.8);
+      transition: bottom 0.2s ease;
     }
 
     .grid-lines {
@@ -490,8 +373,6 @@
       .ip-display { font-size: clamp(1rem, 2.5vw, 1.5rem); }
       .network-info { font-size: clamp(0.5rem, 0.8vw, 0.7rem); }
       .start-button { font-size: clamp(0.6rem, 1vw, 0.8rem); }
-      .speedometer { width: 150px; height: 90px; }
-      .gauge { height: 120px; }
       .graph-container { height: 100px; }
       .iframe-container { height: 120px; }
       .y-axis { width: 25px; font-size: 0.6rem; }
@@ -503,8 +384,6 @@
       .ip-display { font-size: clamp(0.8rem, 2vw, 1.2rem); }
       .results { flex-direction: column; gap: 0.5rem; }
       .result-box { width: 100%; }
-      .speedometer { width: 120px; height: 70px; }
-      .gauge { height: 100px; }
       .iframe-container { height: 100px; }
       .y-axis { width: 20px; font-size: 0.5rem; }
     }
@@ -526,18 +405,9 @@
     <div class="error-message" id="error-message">Animations failed to load. Please check your browser settings.</div>
 
     <div class="speed-test-card">
-      <div class="test-type" id="testType">Speedtest</div>
+      <div class="test-type" id="testType">Speed Test</div>
       <div class="progress-bar">
         <div class="progress" id="progressBar"></div>
-      </div>
-      <div class="speedometer hidden" id="speedometer">
-        <div class="gauge">
-          <div class="gauge-fill" id="gaugeFill"></div>
-          <div class="gauge-needle" id="gaugeNeedle"></div>
-        </div>
-        <div class="speed-label" id="speedLabel">Download</div>
-        <div class="speed-value" id="speedValue">0</div>
-        <div class="speed-unit">Mbps</div>
       </div>
       <div class="graph-container hidden" id="graphContainer">
         <div class="y-axis" id="yAxis">
@@ -553,10 +423,7 @@
           <div class="y-axis-label">0</div>
         </div>
         <div class="grid-lines" id="gridLines"></div>
-        <div class="graph" id="graph">
-          <div class="graph-fill" id="graphFill"></div>
-          <div class="graph-line" id="graphLine"></div>
-        </div>
+        <div class="graph" id="graph"></div>
       </div>
       <div class="results hidden" id="resultsContainer">
         <div class="result-box">
@@ -587,28 +454,18 @@
       el: "#vanta-bg",
       mouseControls: true,
       touchControls: true,
-      minHeight: 200.00,
-      minWidth: 200.00,
-      scale: 1.00,
-      scaleMobile: 1.00,
+      minHeight: 200,
+      minWidth: 200,
+      scale: 1,
+      scaleMobile: 1,
       color: 0x00ffff,
       backgroundColor: 0x070b1a
     });
 
     // Utility Functions
-    function log(message) {
-      console.log('[DEBUG] ' + message);
-    }
+    const log = (message) => console.log('[DEBUG] ' + message);
 
-    function formatBytes(bytes, decimals = 2) {
-      if (bytes === 0) return '0 Bytes';
-      const k = 1024, dm = decimals < 0 ? 0 : decimals;
-      const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-      const i = Math.floor(Math.log(bytes) / Math.log(k));
-      return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-    }
-
-    function copyToClipboard(text) {
+    const copyToClipboard = (text) => {
       navigator.clipboard.writeText(text).catch(() => {
         const textarea = document.createElement('textarea');
         textarea.value = text;
@@ -617,10 +474,11 @@
         document.execCommand('copy');
         document.body.removeChild(textarea);
       });
-    }
+    };
 
     // Particle Animations with Big Bang Explosion
-    let particles = [], mousePos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    let particles = [];
+    let mousePos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     const canvas = document.getElementById('background-canvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
@@ -653,32 +511,24 @@
     }
 
     function initParticles() {
-      particles = [];
-      for (let i = 0; i < 20; i++) {
-        particles.push(createParticle(i));
-      }
+      particles = Array.from({ length: 20 }, (_, i) => createParticle(i));
     }
     initParticles();
 
     function triggerBigBang() {
       log('Triggering Big Bang...');
-      particles = [];
-      ctx.fillStyle = 'blue';
-      ctx.fillRect(canvas.width / 2 - 50, canvas.height / 2 - 50, 100, 100);
-      setTimeout(() => ctx.clearRect(canvas.width / 2 - 50, canvas.height / 2 - 50, 100, 100), 1000);
-
-      for (let i = 0; i < 50; i++) {
+      particles = Array.from({ length: 50 }, (_, i) => {
         const theta = i * 2 * Math.PI * ((1 + Math.sqrt(5)) / 2);
         const r = Math.sqrt(i) * 15;
-        particles.push({
+        return {
           x: canvas.width / 2,
           y: canvas.height / 2,
           vx: r * Math.cos(theta) * 0.05,
           vy: r * Math.sin(theta) * 0.05,
           life: 300,
           color: `hsl(${Math.random() * 360}, 70%, 70%)`
-        });
-      }
+        };
+      });
     }
 
     function animateParticles() {
@@ -702,18 +552,16 @@
         particles.push(createParticle(particles.length));
       }
 
-      particles.forEach(p1 => {
-        particles.forEach(p2 => {
-          if (p1 !== p2) {
-            const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
-            if (dist < 50 && Math.random() < 0.05) {
-              ctx.beginPath();
-              ctx.moveTo(p1.x, p1.y);
-              ctx.lineTo(p2.x, p2.y);
-              ctx.strokeStyle = p1.color;
-              ctx.globalAlpha = 0.3;
-              ctx.stroke();
-            }
+      particles.forEach((p1, i) => {
+        particles.slice(i + 1).forEach(p2 => {
+          const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+          if (dist < 50 && Math.random() < 0.05) {
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = p1.color;
+            ctx.globalAlpha = 0.3;
+            ctx.stroke();
           }
         });
       });
@@ -771,82 +619,62 @@
     const CONFIG = {
       testServer: {
         downloadUrl: 'https://speed.cloudflare.com/__down?bytes=25000000',
-        pingResource: 'https://labverse.co.za/assets/ping-test.txt',
+        pingResource: 'https://speed.cloudflare.com/__down?bytes=1000', // Small file for ping
       },
       testDurations: { download: 10000, ping: 3000 },
-      maxTestTimeout: 15000, // 15 seconds max test duration to prevent hanging
+      maxTestTimeout: 15000,
     };
 
     function initializeSpeedTest() {
       const startButton = document.getElementById('startButton');
       const progressBar = document.getElementById('progressBar');
       const testType = document.getElementById('testType');
-      const speedometer = document.getElementById('speedometer');
       const graphContainer = document.getElementById('graphContainer');
       const graph = document.getElementById('graph');
-      let graphLine = document.getElementById('graphLine');
-      let graphFill = document.getElementById('graphFill');
-      const gaugeFill = document.getElementById('gaugeFill');
-      const gaugeNeedle = document.getElementById('gaugeNeedle');
-      const speedValue = document.getElementById('speedValue');
-      const speedLabel = document.getElementById('speedLabel');
       const resultsContainer = document.getElementById('resultsContainer');
       const downloadResult = document.getElementById('downloadResult');
       const pingResult = document.getElementById('pingResult');
-      const yAxis = document.getElementById('yAxis');
       const gridLines = document.getElementById('gridLines');
       const iframeContainer = document.getElementById('iframe-container');
       const iframe = document.getElementById('speedFrame');
 
-      let currentTest = null;
-      let testData = [];
-      let currentSpeed = 0;
-      let maxSpeed = 0;
-      let finalDownloadSpeed = 0;
-      let finalPing = 0;
-      let startTime = 0;
-      let testDuration = CONFIG.testDurations.download;
-      let animationFrame = null;
       let testActive = false;
       let controller = null;
+      let testData = [];
+      let finalDownloadSpeed = 0;
+      let finalPing = 0;
 
       // Set up grid lines
       function setupGridLines() {
         gridLines.innerHTML = '';
-        const numLines = 10;
-        for (let i = 0; i < numLines; i++) {
+        const levels = [0, 5, 10, 20, 25, 50, 100, 200, 500, 1000];
+        levels.forEach(level => {
           const gridLine = document.createElement('div');
           gridLine.className = 'grid-line';
-          gridLine.style.bottom = `${i / (numLines - 1) * 100}%`;
+          const heightPercent = speedToHeight(level);
+          gridLine.style.bottom = `${heightPercent}%`;
           gridLines.appendChild(gridLine);
-        }
+        });
       }
 
-      // Map speed to Y-axis height (0 to 1000 Mbps)
+      // Map speed to Y-axis height (logarithmic scale for better visualization)
       function speedToHeight(speed) {
-        const maxScale = 1000; // Fixed max scale to match Y-axis
-        const heightPercent = (speed / maxScale) * 100;
-        return Math.min(heightPercent, 100); // Cap at 100%
-      }
-
-      function updateSpeedometer(speed) {
         const maxScale = 1000;
-        const percent = speed / maxScale;
-        const angle = 180 + (percent * 180); // 180° (left) to 360° (right)
-        gaugeFill.style.transform = `rotate(${angle}deg)`;
-        gaugeNeedle.style.transform = `rotate(${angle}deg)`;
-        speedValue.textContent = speed.toFixed(1);
+        const logScale = Math.log10(1 + speed) / Math.log10(1 + maxScale);
+        return logScale * 100;
       }
 
-      function updateGraph(percentage, speed) {
-        const heightPercentage = speedToHeight(speed);
-        graphLine.style.width = `${percentage * 100}%`;
-        graphFill.style.width = `${percentage * 100}%`;
-        graphFill.style.height = `${heightPercentage}%`;
+      // Plot a dot on the graph
+      function plotGraphDot(timePercentage, speed) {
+        const dot = document.createElement('div');
+        dot.className = 'graph-dot';
+        dot.style.left = `${timePercentage * 100}%`;
+        dot.style.bottom = `${speedToHeight(speed)}%`;
+        graph.appendChild(dot);
       }
 
       async function runPingTest() {
-        log('Starting ping test to local server...');
+        log('Starting ping test...');
         const pingTimes = [];
         const totalPackets = 10;
 
@@ -855,15 +683,15 @@
           let ping = 999;
           try {
             const start = performance.now();
-            await fetch(CONFIG.testServer.pingResource + '?t=' + Date.now(), { cache: 'no-store', signal: AbortSignal.timeout(2000) });
+            await fetch(`${CONFIG.testServer.pingResource}&t=${Date.now()}`, { cache: 'no-store', signal: AbortSignal.timeout(2000) });
             ping = performance.now() - start;
             pingTimes.push(ping);
-            log(`Ping #${i+1}: ${ping.toFixed(2)}ms`);
+            log(`Ping #${i + 1}: ${ping.toFixed(2)}ms`);
           } catch (error) {
             pingTimes.push(ping);
-            log(`Ping #${i+1} failed: ${error.message}`);
+            log(`Ping #${i + 1} failed: ${error.message}`);
           }
-          await new Promise(r => setTimeout(r, 300));
+          await new Promise(resolve => setTimeout(resolve, 300));
         }
 
         const successfulPings = pingTimes.filter(t => t !== 999);
@@ -873,14 +701,12 @@
         return avgPing;
       }
 
-      async function runDownloadTest(callback) {
-        log('Starting download test from Cloudflare Johannesburg server...');
+      async function runDownloadTest() {
+        log('Starting download test...');
         let totalBytes = 0;
-        startTime = performance.now();
-        const updateInterval = 100;
-        let lastUpdate = startTime;
+        const startTime = performance.now();
         const overallTimeout = setTimeout(() => {
-          log('Download test timed out after 15 seconds');
+          log('Download test timed out');
           testActive = false;
           if (controller) controller.abort();
           finalizeTest();
@@ -888,34 +714,28 @@
 
         try {
           controller = new AbortController();
-          const signal = controller.signal;
-          const response = await fetch(CONFIG.testServer.downloadUrl, { cache: 'no-store', signal });
+          const response = await fetch(CONFIG.testServer.downloadUrl, { cache: 'no-store', signal: controller.signal });
           if (!response.ok) throw new Error('Failed to fetch download resource');
           const reader = response.body.getReader();
 
+          let lastUpdate = startTime;
           while (testActive) {
-            let result;
-            try {
-              result = await reader.read();
-            } catch (error) {
-              log('Reader error: ' + error.message);
-              throw error;
-            }
-            const { done, value } = result;
+            const { done, value } = await reader.read();
             if (done || !testActive) {
               controller.abort();
               break;
             }
             totalBytes += value ? value.length : 0;
             const elapsed = (performance.now() - startTime) / 1000;
-            if (performance.now() - lastUpdate >= updateInterval) {
+            if (performance.now() - lastUpdate >= 1000) { // Update every second
               const speed = ((totalBytes * 8) / elapsed) / (1024 * 1024);
-              callback(elapsed, speed);
+              const timePercentage = elapsed / (CONFIG.testDurations.download / 1000);
+              testData.push({ time: elapsed, speed });
+              plotGraphDot(timePercentage, speed);
+              progressBar.style.width = `${timePercentage * 100}%`;
               lastUpdate = performance.now();
-              // Clear old data to prevent memory buildup
-              if (testData.length > 100) testData.shift();
             }
-            if (elapsed >= testDuration / 1000) {
+            if (elapsed >= CONFIG.testDurations.download / 1000) {
               controller.abort();
               break;
             }
@@ -929,13 +749,11 @@
         }
 
         const totalTime = (performance.now() - startTime) / 1000;
-        const finalSpeed = totalTime > 0 ? ((totalBytes * 8) / totalTime) / (1024 * 1024) : 0;
-        return finalSpeed;
+        return totalTime > 0 ? ((totalBytes * 8) / totalTime) / (1024 * 1024) : 0;
       }
 
       function finalizeTest() {
-        const dataPoints = testData.length;
-        if (dataPoints === 0) {
+        if (testData.length === 0) {
           document.getElementById('error-message').style.display = 'block';
           document.getElementById('error-message').textContent = 'Speed test failed. Please try again.';
           startButton.disabled = false;
@@ -944,68 +762,40 @@
           return;
         }
 
-        let weightedSum = 0, weightSum = 0;
-        for (let i = 0; i < dataPoints; i++) {
-          const weight = 0.5 + 0.5 * (i / dataPoints);
-          weightedSum += testData[i].speed * weight;
-          weightSum += weight;
-        }
-        finalDownloadSpeed = weightedSum / weightSum;
+        finalDownloadSpeed = testData.reduce((sum, data) => sum + data.speed, 0) / testData.length;
         downloadResult.textContent = `${finalDownloadSpeed.toFixed(1)} Mbps`;
         resultsContainer.classList.remove('hidden');
         startButton.textContent = 'More Info';
         startButton.disabled = false;
-        currentTest = null;
         testActive = false;
         triggerBigBang();
       }
 
-      function runTest(testType) {
-        if (animationFrame) {
-          cancelAnimationFrame(animationFrame);
-        }
-
-        testData = [];
-        currentSpeed = 0;
-        maxSpeed = 0;
-        startTime = Date.now();
-        graph.innerHTML = '';
-        const newGraphLine = document.createElement('div');
-        newGraphLine.className = 'graph-line';
-        newGraphLine.id = 'graphLine';
-        const newGraphFill = document.createElement('div');
-        newGraphFill.className = 'graph-fill';
-        newGraphFill.id = 'graphFill';
-        graph.appendChild(newGraphFill);
-        graph.appendChild(newGraphLine);
-        graphLine = document.getElementById('graphLine');
-        graphFill = document.getElementById('graphFill');
+      async function runTest() {
         testActive = true;
+        testData = [];
+        graph.innerHTML = '';
+        progressBar.style.width = '0';
+        graphContainer.classList.remove('hidden');
+        resultsContainer.classList.add('hidden');
+        iframeContainer.classList.remove('active');
+        iframe.src = '';
+        startButton.disabled = true;
+        startButton.textContent = 'Testing...';
+        testType.textContent = 'Testing Download Speed';
 
-        // Run ping test first
-        runPingTest().then(() => {
-          if (!testActive) return;
-          // Start download test
-          runDownloadTest((elapsed, speed) => {
-            if (!testActive) return;
-            const progress = Math.min(elapsed / (testDuration / 1000), 1);
-            currentSpeed = speed;
-            maxSpeed = Math.max(maxSpeed, currentSpeed);
-            testData.push({ time: elapsed, speed: currentSpeed });
-            progressBar.style.width = `${progress * 100}%`;
-            updateSpeedometer(currentSpeed);
-            updateGraph(progress, currentSpeed);
-
-            if (progress >= 1) {
+        try {
+          await runPingTest();
+          if (testActive) {
+            const finalSpeed = await runDownloadTest();
+            if (testActive) {
               progressBar.style.width = '100%';
               finalizeTest();
             }
-          }).catch(() => {
-            finalizeTest();
-          });
-        }).catch(() => {
+          }
+        } catch (error) {
           finalizeTest();
-        });
+        }
       }
 
       setupGridLines();
@@ -1017,23 +807,11 @@
           return;
         }
 
-        if (!currentTest && startButton.textContent === 'Start Test') {
-          progressBar.style.width = '0';
-          speedometer.classList.remove('hidden');
-          graphContainer.classList.remove('hidden');
-          resultsContainer.classList.add('hidden');
-          iframeContainer.classList.remove('active');
-          iframe.src = '';
-          startButton.disabled = true;
-          startButton.textContent = 'Testing...';
-          currentTest = 'download';
-          testType.textContent = 'Testing Download Speed';
-          speedLabel.textContent = 'Download';
-          runTest('download');
+        if (startButton.textContent === 'Start Test') {
+          runTest();
         }
       });
 
-      // Cleanup on page unload
       window.addEventListener('beforeunload', () => {
         testActive = false;
         if (controller) controller.abort();
