@@ -910,7 +910,65 @@
       }
     }
 
-    // Speedometer with Adjusted Range (280° to 80°) and Non-Linear Scaling
+    // Speedometer with Corrected Range, Non-Linear Scaling, and Self-Test
+    let speedometerMode = 'non-linear'; // Default mode
+
+    function speedToAngle(speed, mode = speedometerMode) {
+      const maxSpeed = 1000;
+      speed = Math.min(speed, maxSpeed);
+
+      // Define the arc range: 280° to 80° (0°/360° at top center)
+      const startAngle = (280 * Math.PI) / 180; // 280 degrees
+      const endAngle = (80 * Math.PI) / 180;   // 80 degrees
+
+      if (mode === 'non-linear') {
+        if (speed <= 100) {
+          // 0 to 100 Mbps spans 280° to 0° (160 degrees)
+          const fraction = speed / 100;
+          const angleRange = ((0 - 280) * Math.PI) / 180; // 280° to 0°
+          return startAngle + fraction * angleRange;
+        } else {
+          // 100 to 1000 Mbps spans 0° to 80° (80 degrees)
+          const fraction = (speed - 100) / (1000 - 100);
+          const angleRange = ((80 - 0) * Math.PI) / 180; // 0° to 80°
+          const zeroAngle = (0 * Math.PI) / 180; // 0 degrees in radians
+          return zeroAngle + fraction * angleRange;
+        }
+      } else if (mode === 'linear') {
+        // Fallback 1: Linear scaling across the full arc
+        const totalAngle = endAngle - startAngle;
+        const fraction = speed / maxSpeed;
+        return startAngle + fraction * totalAngle;
+      } else {
+        // Fallback 2: Simplified arc (180° to 0°)
+        const simplifiedStart = Math.PI;
+        const simplifiedEnd = 0;
+        const totalAngle = simplifiedEnd - simplifiedStart;
+        const fraction = speed / maxSpeed;
+        return simplifiedStart + fraction * totalAngle;
+      }
+    }
+
+    function selfTestSpeedometer() {
+      // Test key points to ensure accuracy
+      const testPoints = [
+        { speed: 0, expectedAngle: (280 * Math.PI) / 180 }, // 0 Mbps at 280°
+        { speed: 100, expectedAngle: (0 * Math.PI) / 180 }, // 100 Mbps at 0°
+        { speed: 1000, expectedAngle: (80 * Math.PI) / 180 } // 1000 Mbps at 80°
+      ];
+
+      for (const point of testPoints) {
+        const calculatedAngle = speedToAngle(point.speed, 'non-linear');
+        const difference = Math.abs(calculatedAngle - point.expectedAngle);
+        if (difference > 0.01) { // Allow small floating-point error
+          log(`Speedometer self-test failed at speed ${point.speed} Mbps. Expected angle: ${point.expectedAngle}, Got: ${calculatedAngle}`);
+          return false;
+        }
+      }
+      log('Speedometer self-test passed');
+      return true;
+    }
+
     function drawSpeedometer(speed) {
       const canvas = document.getElementById('speedometer-canvas');
       const ctx = canvas.getContext('2d');
@@ -924,36 +982,34 @@
       canvas.height = height * devicePixelRatio;
       ctx.scale(devicePixelRatio, devicePixelRatio);
 
+      // Run self-test and switch modes if necessary
+      if (speedometerMode === 'non-linear' && !selfTestSpeedometer()) {
+        log('Switching to linear mode');
+        speedometerMode = 'linear';
+        if (!selfTestSpeedometer()) {
+          log('Switching to simplified mode');
+          speedometerMode = 'simplified';
+        }
+      }
+
       ctx.clearRect(0, 0, width, height);
 
       const maxSpeed = 1000;
-      const speeds = [0, 10, 20, 25, 50, 100, 200, 500, 1000]; // Labels for South Africa
+      const speeds = [0, 10, 20, 25, 50, 100, 200, 500, 1000];
 
       const centerX = width / 2;
       const centerY = height;
-      const radius = Math.min(width / 2, height) * 0.7; // Reduced radius for more label space
-      const labelRadiusAdjustment = Math.min(width, height) < 200 ? 35 : 45; // Increased for more padding
+      const radius = Math.min(width / 2, height) * 0.7;
+      const labelRadiusAdjustment = Math.min(width, height) < 200 ? 35 : 45;
 
-      // Define the arc range: 280° to 80° (0°/360° at top center)
-      const startAngle = (280 * Math.PI) / 180; // 280 degrees
-      const endAngle = (80 * Math.PI) / 180;   // 80 degrees
-      const totalAngle = endAngle - startAngle; // Total arc angle (160° + 80° = 240°)
-
-      // Non-linear scaling: 0-100 Mbps from 280° to 0°, 100-1000 Mbps from 0° to 80°
-      function speedToAngle(speed) {
-        speed = Math.min(speed, maxSpeed);
-        if (speed <= 100) {
-          // 0 to 100 Mbps spans 280° to 0° (160 degrees)
-          const fraction = speed / 100;
-          const angleRange = ((0 - 280) * Math.PI) / 180; // 280° to 0°
-          return startAngle + fraction * angleRange;
-        } else {
-          // 100 to 1000 Mbps spans 0° to 80° (80 degrees)
-          const fraction = (speed - 100) / (1000 - 100);
-          const angleRange = ((80 - 0) * Math.PI) / 180; // 0° to 80°
-          const zeroAngle = (0 * Math.PI) / 180; // 0 degrees in radians
-          return zeroAngle + fraction * angleRange;
-        }
+      // Define the arc range
+      let startAngle, endAngle;
+      if (speedometerMode === 'simplified') {
+        startAngle = Math.PI; // 180°
+        endAngle = 0;        // 0°
+      } else {
+        startAngle = (280 * Math.PI) / 180; // 280 degrees
+        endAngle = (80 * Math.PI) / 180;   // 80 degrees
       }
 
       // Draw background arc
@@ -966,8 +1022,8 @@
       ctx.lineWidth = 12;
       ctx.stroke();
 
-      // Calculate visual angle with non-linear scaling
-      const visualAngle = speedToAngle(speed);
+      // Calculate visual angle
+      const visualAngle = speedToAngle(speed, speedometerMode);
 
       // Draw speed arc
       ctx.beginPath();
@@ -1009,16 +1065,16 @@
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // Draw speed scale and labels with modern 2025 aesthetic
+      // Draw speed scale and labels
       const fontSize = Math.min(width, height) < 200 ? 10 : 12;
-      ctx.font = `${fontSize}px 'Orbitron', sans-serif`; // Modern font for 2025
+      ctx.font = `${fontSize}px 'Orbitron', sans-serif`;
       ctx.fillStyle = '#e0e0ff';
       ctx.textAlign = 'center';
       ctx.shadowColor = 'rgba(0, 242, 254, 0.5)';
       ctx.shadowBlur = 5;
 
       speeds.forEach((s) => {
-        const tickAngle = speedToAngle(s);
+        const tickAngle = speedToAngle(s, speedometerMode);
         const labelRadius = radius + labelRadiusAdjustment;
         const labelX = centerX + labelRadius * Math.cos(tickAngle);
         const labelY = centerY + labelRadius * Math.sin(tickAngle);
@@ -1038,13 +1094,13 @@
         ctx.lineWidth = 1;
         ctx.stroke();
 
-        // Adjust label position to prevent cutoff and ensure aesthetic perfection
+        // Adjust label position
         let xOffset = 0;
         let yOffset = fontSize / 2;
-        if (s === 0) xOffset = fontSize * 3; // Extra padding for 0
-        if (s === 1000) xOffset = -fontSize * 3; // Extra padding for 1000
+        if (s === 0) xOffset = fontSize * 3;
+        if (s === 1000) xOffset = -fontSize * 3;
         if (s === 10 || s === 20 || s === 25 || s === 50) xOffset = fontSize * 1.5;
-        if (s === 100) yOffset = -fontSize * 1.5; // Adjust for top center
+        if (s === 100) yOffset = -fontSize * 1.5;
         ctx.fillText(s, labelX + xOffset, labelY + yOffset);
       });
 
@@ -1067,7 +1123,7 @@
       requestAnimationFrame(update);
     }
 
-    // Graph (Unchanged for Brevity, Already Fixed in Previous Response)
+    // Graph (Unchanged, Already Correct)
     let graphData = [];
     let graphActive = true;
 
@@ -1242,7 +1298,7 @@
       }, 1000);
     }
 
-    // Speed Test with Updated Ping Targets
+    // Speed Test with Ping Self-Test and Fallbacks
     const CONFIG = {
       testServer: {
         downloadUrl: '/assets/25mb.bin',
@@ -1252,11 +1308,77 @@
       maxTestTimeout: 15000,
       repeatCount: 1,
       pingTargets: [
-        'https://www.microsoft.com/favicon.ico', // Reliable target
-        'https://1.1.1.1/robots.txt', // Cloudflare alternative
-        '/assets/ping-test.txt' // Local resource
+        { url: 'https://www.microsoft.com/favicon.ico', mode: 'no-cors' },
+        { url: 'https://1.1.1.1/robots.txt', mode: 'no-cors' },
+        { url: '/assets/ping-test.txt', mode: 'cors' }
+      ],
+      fallbackPingTargets: [
+        { url: 'https://www.google.com/favicon.ico', mode: 'no-cors' },
+        { url: 'https://example.com', mode: 'no-cors' }
       ]
     };
+
+    let pingMode = 'primary';
+
+    async function selfTestPing(pingResults) {
+      // Validate ping results: should be between 1 ms and 500 ms, and at least one target must succeed
+      const validPings = pingResults.filter(ping => ping > 1 && ping < 500);
+      if (validPings.length === 0) {
+        log('Ping self-test failed: No valid ping results');
+        return false;
+      }
+      return true;
+    }
+
+    async function runPingTest() {
+      testType.textContent = 'Testing Ping';
+      let pingTargets = pingMode === 'primary' ? CONFIG.pingTargets : CONFIG.fallbackPingTargets;
+      const attemptsPerTarget = 5;
+      const pingResults = [];
+
+      for (const target of pingTargets) {
+        const pings = [];
+        for (let i = 0; i < attemptsPerTarget && testActive; i++) {
+          try {
+            const start = performance.now();
+            const response = await fetch(`${target.url}?t=${Date.now()}`, {
+              cache: 'no-store',
+              signal: AbortSignal.timeout(2000),
+              method: 'HEAD',
+              mode: target.mode
+            });
+            const ping = performance.now() - start;
+            if (ping > 0 && ping < 1000) {
+              pings.push(ping);
+            }
+            log(`Ping ${target.url} #${i + 1}: ${ping.toFixed(2)}ms`);
+          } catch (error) {
+            log(`Ping ${target.url} #${i + 1} failed: ${error.message}`);
+          }
+          await new Promise(resolve => setTimeout(resolve, 200));
+        }
+        if (pings.length > 0) {
+          const average = pings.reduce((sum, t) => sum + t, 0) / pings.length;
+          pingResults.push(average);
+        }
+      }
+
+      // Self-test and fallback if necessary
+      if (!(await selfTestPing(pingResults)) && pingMode === 'primary') {
+        log('Switching to fallback ping targets');
+        pingMode = 'fallback';
+        return await runPingTest(); // Retry with fallback targets
+      }
+
+      if (pingResults.length > 0) {
+        finalPing = Math.min(...pingResults);
+        pingResult.textContent = `${finalPing.toFixed(1)} ms`;
+      } else {
+        finalPing = 999;
+        pingResult.textContent = '999 ms';
+        log('All ping attempts failed');
+      }
+    }
 
     function initializeSpeedTest() {
       const startButton = document.getElementById('start-button');
@@ -1280,50 +1402,6 @@
       let finalDownloadSpeed = 0;
       let finalPing = 0;
       let lastGraphUpdate = 0;
-
-      async function runPingTest() {
-        testType.textContent = 'Testing Ping';
-        const pingTargets = CONFIG.pingTargets;
-        const attemptsPerTarget = 5;
-        const pingResults = [];
-
-        for (const target of pingTargets) {
-          const pings = [];
-          for (let i = 0; i < attemptsPerTarget && testActive; i++) {
-            try {
-              const start = performance.now();
-              const mode = target.includes('http') && !target.includes('assets') ? 'no-cors' : 'cors';
-              const response = await fetch(`${target}?t=${Date.now()}`, {
-                cache: 'no-store',
-                signal: AbortSignal.timeout(2000),
-                method: 'HEAD',
-                mode: mode
-              });
-              const ping = performance.now() - start;
-              if (ping > 0 && ping < 1000) {
-                pings.push(ping);
-              }
-              log(`Ping ${target} #${i + 1}: ${ping.toFixed(2)}ms`);
-            } catch (error) {
-              log(`Ping ${target} #${i + 1} failed: ${error.message}`);
-            }
-            await new Promise(resolve => setTimeout(resolve, 200));
-          }
-          if (pings.length > 0) {
-            const average = pings.reduce((sum, t) => sum + t, 0) / pings.length;
-            pingResults.push(average);
-          }
-        }
-
-        if (pingResults.length > 0) {
-          finalPing = Math.min(...pingResults);
-          pingResult.textContent = `${finalPing.toFixed(1)} ms`;
-        } else {
-          finalPing = 999;
-          pingResult.textContent = '999 ms';
-          log('All ping attempts failed');
-        }
-      }
 
       async function runDownloadTest() {
         testType.textContent = 'Testing Download Speed';
