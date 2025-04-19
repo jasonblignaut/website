@@ -1,474 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="description" content="Labverse Speed Test - Cyberpunk-themed speed test with a dynamic space-moving graph.">
-  <meta name="keywords" content="Speed Test, Public IP, Ping, Cyberpunk, Neon Animations">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="description" content="Labverse Speed Test - A cyberpunk-themed network speed test with a dynamic space-moving graph and neon visuals.">
   <meta name="keywords" content="Speed Test, Public IP, Ping, Cyberpunk, Neon Animations, Internet Speed">
-<meta name="author" content="Labverse Team">
-<meta property="og:title" content="Labverse Speed Test">
-  <meta property="og:description" content="Test your network speed with a cyberpunk-inspired interface and a dynamic space graph.">
+  <meta name="author" content="Labverse Team">
+  <meta property="og:title" content="Labverse Speed Test">
   <meta property="og:description" content="Experience a futuristic speed test with a neon graph moving through space, powered by Labverse.">
-<meta property="og:image" content="https://labverse.co.za/assets/labverse-og-image.png">
-<meta property="og:url" content="https://labverse.co.za">
-<meta name="twitter:card" content="summary_large_image">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https://labverse.co.za; frame-src https://speed.cloudflare.com; connect-src 'self' https://api.ipify.org https://api.seeip.org https://api.myip.com https://ipinfo.io https://ipapi.co https://extreme-ip-lookup.com https://freegeoip.app https://speed.cloudflare.com https://labverse.co.za;">
+  <meta property="og:image" content="https://labverse.co.za/assets/labverse-og-image.png">
+  <meta property="og:url" content="https://labverse.co.za">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:creator" content="@LabverseTeam">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'sha256-3ds/6c3WVqT3tH7W8bV67DAXbD+3O0+4z3eUMdO3r2W2G3iW+8G7yW+OmW+1lWm7+jD8CuJ8JTi9A90L3eU0Q=='; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https://labverse.co.za; frame-src https://speed.cloudflare.com; connect-src 'self' https://api.ipify.org https://api.seeip.org https://api.myip.com https://ipinfo.io https://ipapi.co https://extreme-ip-lookup.com https://freegeoip.app https://speed.cloudflare.com https://labverse.co.za;">
-<title>Labverse Speed Test</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
-<style>
-@@ -24,13 +25,15 @@
---card-glow: rgba(0, 183, 235, 0.4);
---card-bg: rgba(20, 30, 60, 0.85);
---text-glow: 0 0 8px rgba(0, 255, 255, 0.6);
+  <title>Labverse Speed Test</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --neon-blue: #00b7eb;
+      --neon-pink: #ff007f;
+      --neon-cyan: #00ffff;
+      --neon-purple: #b300ff;
+      --dark-cyber: #0a0e1f;
+      --card-glow: rgba(0, 183, 235, 0.4);
+      --card-bg: rgba(20, 30, 60, 0.85);
+      --text-glow: 0 0 8px rgba(0, 255, 255, 0.6);
       --trail-glow: rgba(0, 255, 255, 0.2);
-}
+    }
 
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-font-family: 'Source Code Pro', monospace;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Source Code Pro', monospace;
       -webkit-tap-highlight-color: transparent;
-}
+    }
 
-html, body {
-@@ -40,6 +43,7 @@
-color: #e0e6ff;
-overflow: hidden;
-touch-action: manipulation;
+    html, body {
+      width: 100%;
+      height: 100vh;
+      background: var(--dark-cyber);
+      color: #e0e6ff;
+      overflow: hidden;
+      touch-action: manipulation;
       overscroll-behavior: none;
-}
+    }
 
-canvas {
-@@ -49,156 +53,174 @@
-width: 100%;
-height: 100%;
-z-index: 1;
-      opacity: 0.8;
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
       opacity: 0.85;
       pointer-events: none;
-}
+    }
 
-.container {
-position: relative;
-z-index: 10;
-      max-width: 800px;
+    .container {
+      position: relative;
+      z-index: 10;
       max-width: 850px;
-margin: 0 auto;
-height: 100vh;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-      padding: 1rem;
+      margin: 0 auto;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       padding: clamp(0.8rem, 2vw, 1.2rem);
-text-align: center;
-}
+      text-align: center;
+    }
 
-header h1 {
-font-family: 'Orbitron', sans-serif;
-      font-size: clamp(1.5rem, 4vw, 2.2rem);
+    header h1 {
+      font-family: 'Orbitron', sans-serif;
       font-size: clamp(1.6rem, 4.5vw, 2.4rem);
-background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
--webkit-background-clip: text;
-background-clip: text;
-color: transparent;
-text-shadow: var(--text-glow);
-      letter-spacing: 1px;
-      margin-bottom: 1rem;
-      animation: glitch 2s linear infinite;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: var(--text-glow);
       letter-spacing: 1.5px;
       margin-bottom: clamp(0.8rem, 2vw, 1rem);
       animation: glitch 2.5s linear infinite;
-}
+    }
 
-@keyframes glitch {
-      0%, 100% { transform: translate(0); }
-      10%, 30%, 50%, 70%, 90% { transform: translate(-1px, 1px); }
-      20%, 40%, 60%, 80% { transform: translate(1px, -1px); }
+    @keyframes glitch {
       0%, 100% { transform: translate(0); opacity: 1; }
       10%, 30%, 50%, 70%, 90% { transform: translate(-1px, 1px); opacity: 0.95; }
       20%, 40%, 60%, 80% { transform: translate(1px, -1px); opacity: 0.98; }
-}
+    }
 
-.info-section {
-display: flex;
-flex-direction: column;
-align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 1.5rem;
+    .info-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       gap: 0.6rem;
       margin-bottom: clamp(1rem, 2.5vw, 1.5rem);
-width: 100%;
-      max-width: 350px;
+      width: 100%;
       max-width: 380px;
-}
+    }
 
-.ip-display {
-font-size: clamp(1rem, 2.5vw, 1.4rem);
-background: var(--card-bg);
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
+    .ip-display {
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      background: var(--card-bg);
       padding: clamp(0.5rem, 1.5vw, 0.8rem) clamp(1rem, 2vw, 1.2rem);
       border-radius: 8px;
-border: 1px solid var(--card-glow);
-      box-shadow: 0 0 10px var(--card-glow);
+      border: 1px solid var(--card-glow);
       box-shadow: 0 0 12px var(--card-glow);
-word-break: break-all;
+      word-break: break-all;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .ip-display:hover {
       transform: scale(1.02);
       box-shadow: 0 0 18px var(--card-glow);
-}
+    }
 
-.copy-btn {
-background: linear-gradient(90deg, var(--neon-blue), var(--neon-cyan));
-color: var(--dark-cyber);
-border: none;
-      padding: 0.4rem 1rem;
-      border-radius: 6px;
+    .copy-btn {
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-cyan));
+      color: var(--dark-cyber);
+      border: none;
       padding: clamp(0.4rem, 1vw, 0.5rem) clamp(1rem, 2vw, 1.2rem);
       border-radius: 8px;
-font-family: 'Orbitron', sans-serif;
-      font-size: clamp(0.7rem, 1vw, 0.9rem);
+      font-family: 'Orbitron', sans-serif;
       font-size: clamp(0.7rem, 1.2vw, 0.9rem);
-cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
-}
+    }
 
-.copy-btn:hover {
-transform: scale(1.05);
-box-shadow: 0 0 15px var(--card-glow);
+    .copy-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px var(--card-glow);
       background: linear-gradient(90deg, var(--neon-cyan), var(--neon-blue));
-}
+    }
 
-.copy-btn:focus {
-outline: 2px solid var(--neon-cyan);
-outline-offset: 2px;
-}
+    .copy-btn:focus {
+      outline: 2px solid var(--neon-cyan);
+      outline-offset: 2px;
+    }
 
     .copy-btn:active {
       transform: scale(0.98);
     }
 
-.network-info {
-      font-size: clamp(0.7rem, 1vw, 0.9rem);
+    .network-info {
       font-size: clamp(0.7rem, 1.1vw, 0.9rem);
-color: #b0c4de;
-      line-height: 1.5;
+      color: #b0c4de;
       line-height: 1.6;
       text-shadow: 0 0 4px rgba(0, 183, 235, 0.3);
-}
+    }
 
-.speed-card {
-background: var(--card-bg);
-      border-radius: 12px;
-      padding: 1rem;
-      box-shadow: 0 0 20px var(--card-glow);
-      backdrop-filter: blur(8px);
+    .speed-card {
+      background: var(--card-bg);
       border-radius: 14px;
       padding: clamp(1rem, 2vw, 1.2rem);
       box-shadow: 0 0 25px var(--card-glow);
       backdrop-filter: blur(10px);
-width: 100%;
-      max-width: 400px;
-      transition: transform 0.3s ease;
+      width: 100%;
       max-width: 420px;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+    }
 
-.speed-card:hover {
-      transform: translateY(-5px);
+    .speed-card:hover {
       transform: translateY(-8px);
       box-shadow: 0 0 30px var(--card-glow);
-}
+    }
 
-.test-status {
-font-family: 'Orbitron', sans-serif;
-      font-size: clamp(1rem, 2vw, 1.2rem);
+    .test-status {
+      font-family: 'Orbitron', sans-serif;
       font-size: clamp(1rem, 2vw, 1.3rem);
-color: var(--neon-cyan);
-      margin-bottom: 0.5rem;
+      color: var(--neon-cyan);
       margin-bottom: clamp(0.5rem, 1vw, 0.8rem);
-text-shadow: var(--text-glow);
+      text-shadow: var(--text-glow);
       letter-spacing: 0.5px;
-}
+    }
 
-.progress-bar {
-      height: 8px;
-      background: rgba(20, 30, 60, 0.8);
-      border-radius: 4px;
+    .progress-bar {
       height: 10px;
       background: rgba(20, 30, 60, 0.9);
       border-radius: 5px;
-overflow: hidden;
-      margin-bottom: 1rem;
+      overflow: hidden;
       margin-bottom: clamp(0.8rem, 2vw, 1rem);
       box-shadow: inset 0 0 5px var(--card-glow);
-}
+    }
 
-.progress {
-height: 100%;
-width: 0;
-background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
-      transition: width 0.3s ease;
-      box-shadow: 0 0 8px var(--neon-cyan);
+    .progress {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
       transition: width 0.4s ease;
       box-shadow: 0 0 10px var(--neon-cyan);
-}
+    }
 
-.speedometer {
-      width: 200px;
-      height: 120px;
-      margin: 0 auto 0.5rem;
+    .speedometer {
       width: clamp(180px, 28vw, 220px);
       height: clamp(100px, 14vw, 130px);
       margin: 0 auto clamp(0.5rem, 1vw, 0.8rem);
-position: relative;
-font-family: 'Orbitron', sans-serif;
-}
+      position: relative;
+      font-family: 'Orbitron', sans-serif;
+    }
 
-.gauge {
-width: 100%;
-      height: 140px;
-      border-radius: 100px 100px 0 0;
+    .gauge {
+      width: 100%;
       height: clamp(120px, 18vw, 150px);
       border-radius: 110px 110px 0 0;
-background: linear-gradient(145deg, #0f1a3a, #15224f);
-position: relative;
-overflow: hidden;
-      box-shadow: 0 0 15px var(--card-glow);
+      background: linear-gradient(145deg, #0f1a3a, #15224f);
+      position: relative;
+      overflow: hidden;
       box-shadow: 0 0 20px var(--card-glow);
       border: 1px solid var(--neon-cyan);
-}
+    }
 
-.gauge::before {
-content: '';
-position: absolute;
-      top: 10%;
-      left: 10%;
-      right: 10%;
+    .gauge::before {
+      content: '';
+      position: absolute;
       top: 12%;
       left: 12%;
       right: 12%;
-bottom: 0;
-background: var(--dark-cyber);
-      border-radius: 80px 80px 0 0;
+      bottom: 0;
+      background: var(--dark-cyber);
       border-radius: 90px 90px 0 0;
       box-shadow: inset 0 0 10px var(--card-glow);
-}
+    }
 
-.gauge-ticks {
-@@ -213,19 +235,20 @@
-bottom: 0;
-left: 50%;
-width: 2px;
-      height: 10px;
+    .gauge-ticks {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+    }
+
+    .tick {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
       height: clamp(8px, 1.5vw, 12px);
-background: var(--neon-cyan);
-transform-origin: center bottom;
-      box-shadow: 0 0 5px var(--neon-cyan);
+      background: var(--neon-cyan);
+      transform-origin: center bottom;
       box-shadow: 0 0 6px var(--neon-cyan);
-}
+    }
 
-.tick-label {
-position: absolute;
-      bottom: 15px;
-      font-size: clamp(0.5rem, 0.8vw, 0.6rem);
+    .tick-label {
+      position: absolute;
       bottom: clamp(12px, 2vw, 18px);
       font-size: clamp(0.5rem, 0.9vw, 0.7rem);
-color: var(--neon-cyan);
-text-shadow: var(--text-glow);
-transform: translateX(-50%);
+      color: var(--neon-cyan);
+      text-shadow: var(--text-glow);
+      transform: translateX(-50%);
       letter-spacing: 0.5px;
-}
+    }
 
-.gauge-fill {
-@@ -236,50 +259,51 @@
-clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
-transform-origin: center bottom;
-transform: rotate(180deg);
-      transition: transform 0.3s ease;
+    .gauge-fill {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+      clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
+      transform-origin: center bottom;
+      transform: rotate(180deg);
       transition: transform 0.4s ease;
-z-index: 1;
-      opacity: 0.5;
+      z-index: 1;
       opacity: 0.55;
       filter: blur(2px);
-}
+    }
 
-.gauge-needle {
-position: absolute;
-      width: 40%;
-      height: 3px;
+    .gauge-needle {
+      position: absolute;
       width: 45%;
       height: 4px;
-background: var(--neon-cyan);
-bottom: 0;
-left: 50%;
-transform-origin: center bottom;
-transform: rotate(180deg);
-border-radius: 2px;
-      transition: transform 0.3s ease;
-      box-shadow: 0 0 10px var(--neon-cyan);
+      background: var(--neon-cyan);
+      bottom: 0;
+      left: 50%;
+      transform-origin: center bottom;
+      transform: rotate(180deg);
+      border-radius: 2px;
       transition: transform 0.4s ease;
       box-shadow: 0 0 12px var(--neon-cyan);
-z-index: 3;
-      animation: pulse-needle 1.5s ease-in-out infinite;
+      z-index: 3;
       animation: pulse-needle 1.8s ease-in-out infinite;
-}
+    }
 
-@keyframes pulse-needle {
-      0%, 100% { box-shadow: 0 0 10px var(--neon-cyan); }
-      50% { box-shadow: 0 0 15px var(--neon-cyan); }
+    @keyframes pulse-needle {
       0%, 100% { box-shadow: 0 0 12px var(--neon-cyan); }
       50% { box-shadow: 0 0 18px var(--neon-cyan); }
-}
+    }
 
-.gauge-needle::after {
-content: '';
-position: absolute;
-      width: 8px;
-      height: 8px;
+    .gauge-needle::after {
+      content: '';
+      position: absolute;
       width: 10px;
       height: 10px;
-border-radius: 50%;
-background: var(--neon-cyan);
-      right: -4px;
-      top: -2.5px;
-      box-shadow: 0 0 8px var(--neon-cyan);
+      border-radius: 50%;
+      background: var(--neon-cyan);
       right: -5px;
       top: -3px;
       box-shadow: 0 0 10px var(--neon-cyan);
-}
+    }
 
-.speed-value {
-position: absolute;
-      bottom: -5px;
+    .speed-value {
+      position: absolute;
       bottom: -8px;
-left: 0;
-right: 0;
-      font-size: clamp(1rem, 2vw, 1.3rem);
+      left: 0;
+      right: 0;
       font-size: clamp(1rem, 2.2vw, 1.4rem);
-font-weight: 600;
-color: #e0e6ff;
-text-shadow: var(--text-glow);
-@@ -288,23 +312,25 @@
+      font-weight: 600;
+      color: #e0e6ff;
+      text-shadow: var(--text-glow);
+      z-index: 4;
+    }
 
-.speed-unit {
-position: absolute;
-      bottom: -20px;
+    .speed-unit {
+      position: absolute;
       bottom: -25px;
-left: 0;
-right: 0;
-      font-size: clamp(0.6rem, 1vw, 0.8rem);
+      left: 0;
+      right: 0;
       font-size: clamp(0.6rem, 1.1vw, 0.8rem);
-color: #b0c4de;
-z-index: 4;
-}
+      color: #b0c4de;
+      z-index: 4;
+    }
 
-.graph-container {
-      height: 120px;
+    .graph-container {
       height: clamp(100px, 18vw, 140px);
-position: relative;
-      margin: 0.5rem 0;
+      position: relative;
       margin: clamp(0.5rem, 1vw, 0.8rem) 0;
-border-left: 1px solid var(--card-glow);
-border-bottom: 1px solid var(--card-glow);
-      padding: 5px;
-      background: radial-gradient(circle at center, rgba(0, 183, 235, 0.1) 0%, transparent 70%);
+      border-left: 1px solid var(--card-glow);
+      border-bottom: 1px solid var(--card-glow);
       padding: 8px;
       background: radial-gradient(circle at center, rgba(0, 183, 235, 0.12) 0%, transparent 80%);
-overflow: hidden;
+      overflow: hidden;
       border-radius: 6px;
       box-shadow: 0 0 15px var(--card-glow);
-}
+    }
 
-.graph-background {
-@@ -314,6 +340,7 @@
-width: 100%;
-height: 100%;
-z-index: 1;
+    .graph-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
       pointer-events: none;
-}
+    }
 
-.star {
-@@ -322,35 +349,36 @@
-height: 2px;
-background: var(--neon-cyan);
-border-radius: 50%;
-      opacity: 0.5;
-      animation: twinkle 3s ease-in-out infinite;
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--neon-cyan);
+      border-radius: 50%;
       opacity: 0.6;
       animation: twinkle 4s ease-in-out infinite;
-}
+    }
 
-@keyframes twinkle {
-      0%, 100% { opacity: 0.5; }
-      50% { opacity: 1; }
+    @keyframes twinkle {
       0%, 100% { opacity: 0.6; transform: scale(1); }
       50% { opacity: 1; transform: scale(1.2); }
-}
+    }
 
-.y-axis {
-position: absolute;
-left: 0;
-top: 0;
-height: 100%;
-      width: 30px;
+    .y-axis {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
       width: clamp(28px, 4vw, 35px);
-display: flex;
-flex-direction: column;
-justify-content: space-between;
-color: #b0c4de;
-      font-size: clamp(0.6rem, 0.8vw, 0.7rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: #b0c4de;
       font-size: clamp(0.6rem, 0.9vw, 0.7rem);
-text-align: right;
-      padding-right: 5px;
-      z-index: 2;
+      text-align: right;
       padding-right: 6px;
       z-index: 3;
-}
+    }
 
-.y-axis-label {
-position: absolute;
-      right: 5px;
+    .y-axis-label {
+      position: absolute;
       right: 6px;
-transform: translateY(-50%);
+      transform: translateY(-50%);
       text-shadow: 0 0 4px var(--card-glow);
-}
+    }
 
-.grid-lines {
-@@ -367,60 +395,75 @@
-left: 0;
-right: 0;
-height: 1px;
-      background: rgba(0, 183, 235, 0.15);
+    .grid-lines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 2;
+    }
+
+    .grid-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 1px;
       background: rgba(0, 183, 235, 0.2);
-}
+    }
 
-.graph {
-position: relative;
-height: 100%;
-width: 100%;
-z-index: 3;
+    .graph {
+      position: relative;
+      height: 100%;
+      width: 100%;
+      z-index: 3;
       overflow: hidden;
-}
+    }
 
-.graph-line {
-position: absolute;
-bottom: 0;
-left: 0;
-width: 0;
-      height: 2px;
+    .graph-line {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
       height: 3px;
-background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
-      box-shadow: 0 0 10px var(--neon-cyan);
-      transition: width 0.5s linear, bottom 0.2s ease;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
       box-shadow: 0 0 12px var(--neon-cyan);
       transition: width 0.5s linear, bottom 0.3s ease;
       border-radius: 2px;
@@ -484,181 +428,147 @@ background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
       background: linear-gradient(90deg, var(--trail-glow), transparent);
       opacity: 0.7;
       z-index: -1;
-}
+    }
 
-.graph-line::after {
-content: '';
-position: absolute;
-      right: 0;
-      top: -3px;
-      width: 8px;
-      height: 8px;
+    .graph-line::after {
+      content: '';
+      position: absolute;
       right: -4px;
       top: -4px;
       width: 12px;
       height: 12px;
-border-radius: 50%;
-background: var(--neon-cyan);
-      box-shadow: 0 0 12px var(--neon-cyan);
-      animation: pulse-dot 1s ease-in-out infinite;
+      border-radius: 50%;
+      background: var(--neon-cyan);
       box-shadow: 0 0 15px var(--neon-cyan);
       animation: pulse-dot 1.2s ease-in-out infinite;
-}
+    }
 
-@keyframes pulse-dot {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.2); }
+    @keyframes pulse-dot {
       0%, 100% { transform: scale(1); box-shadow: 0 0 15px var(--neon-cyan); }
       50% { transform: scale(1.3); box-shadow: 0 0 20px var(--neon-cyan); }
-}
+    }
 
-.results {
-display: flex;
-justify-content: space-around;
-      margin-top: 0.5rem;
-      gap: 0.5rem;
+    .results {
+      display: flex;
+      justify-content: space-around;
       margin-top: clamp(0.5rem, 1vw, 0.8rem);
       gap: clamp(0.5rem, 1vw, 0.8rem);
-}
+    }
 
-.result-box {
-      background: rgba(20, 30, 60, 0.8);
-      padding: 0.5rem;
-      border-radius: 6px;
-      width: 45%;
-      transition: transform 0.3s ease, opacity 0.3s ease;
+    .result-box {
       background: rgba(20, 30, 60, 0.9);
       padding: clamp(0.5rem, 1vw, 0.7rem);
       border-radius: 8px;
       width: 48%;
       transition: transform 0.4s ease, opacity 0.4s ease;
-opacity: 0;
-      transform: translateY(10px);
+      opacity: 0;
       transform: translateY(15px);
       box-shadow: 0 0 10px var(--card-glow);
-}
+    }
 
-.result-box.visible {
-@@ -429,13 +472,14 @@
-}
+    .result-box.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-.result-label {
-      font-size: clamp(0.7rem, 1vw, 0.9rem);
+    .result-label {
       font-size: clamp(0.7rem, 1.1vw, 0.9rem);
-color: #b0c4de;
-      margin-bottom: 0.2rem;
+      color: #b0c4de;
       margin-bottom: 0.3rem;
       text-shadow: 0 0 4px var(--card-glow);
-}
+    }
 
-.result-value {
-      font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+    .result-value {
       font-size: clamp(0.9rem, 1.6vw, 1.2rem);
-font-weight: 600;
-color: #e0e6ff;
-text-shadow: var(--text-glow);
-@@ -445,43 +489,52 @@
-background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
-color: var(--dark-cyber);
-border: none;
-      padding: 0.5rem 1.5rem;
-      border-radius: 20px;
+      font-weight: 600;
+      color: #e0e6ff;
+      text-shadow: var(--text-glow);
+    }
+
+    .start-button {
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+      color: var(--dark-cyber);
+      border: none;
       padding: clamp(0.6rem, 1.5vw, 0.8rem) clamp(1.5rem, 3vw, 2rem);
       border-radius: 25px;
-font-family: 'Orbitron', sans-serif;
-      font-size: clamp(0.8rem, 1.2vw, 1rem);
+      font-family: 'Orbitron', sans-serif;
       font-size: clamp(0.8rem, 1.3vw, 1rem);
-cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 0 0 10px var(--card-glow);
+      cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
       box-shadow: 0 0 12px var(--card-glow);
       margin-top: clamp(0.5rem, 1vw, 0.8rem);
-}
+    }
 
-.start-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 15px var(--card-glow);
+    .start-button:hover {
       transform: translateY(-3px);
       box-shadow: 0 0 20px var(--card-glow);
       background: linear-gradient(90deg, var(--neon-pink), var(--neon-blue));
-}
+    }
 
-.start-button:focus {
-      outline: 2px solid var(--neon-cyan);
-      outline-offset: 2px;
+    .start-button:focus {
       outline: 3px solid var(--neon-cyan);
       outline-offset: 3px;
     }
 
     .start-button:active {
       transform: scale(0.97);
-}
+    }
 
-.start-button:disabled {
-      opacity: 0.6;
+    .start-button:disabled {
       opacity: 0.5;
-cursor: not-allowed;
+      cursor: not-allowed;
       transform: none;
       box-shadow: 0 0 8px var(--card-glow);
-}
+    }
 
-.iframe-container {
-position: relative;
-width: 100%;
-      height: 200px;
-      border-radius: 8px;
+    .iframe-container {
+      position: relative;
+      width: 100%;
       height: clamp(180px, 25vw, 220px);
       border-radius: 10px;
-overflow: hidden;
-      margin-top: 1rem;
+      overflow: hidden;
       margin-top: clamp(0.8rem, 2vw, 1rem);
-display: none;
+      display: none;
       box-shadow: 0 0 15px var(--card-glow);
-}
+    }
 
-.iframe-container.active {
-display: block;
-      animation: fadeIn 0.5s ease-in-out;
+    .iframe-container.active {
+      display: block;
       animation: fadeIn 0.6s ease-in-out;
-}
+    }
 
-.iframe-container::before {
-@@ -491,7 +544,8 @@
-left: 0;
-width: 100%;
-height: 100%;
-      background: var(--card-glow);
+    .iframe-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       border: 1px solid var(--card-glow);
       border-radius: 10px;
-z-index: 1;
-pointer-events: none;
-}
-@@ -500,79 +554,111 @@
-width: 100%;
-height: 100%;
-border: none;
-      border-radius: 8px;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    #speedFrame {
+      width: 100%;
+      height: 100%;
+      border: none;
       border-radius: 10px;
       background: var(--dark-cyber);
-}
+    }
 
-.error-message {
-      font-size: clamp(0.7rem, 1vw, 0.9rem);
+    .error-message {
       font-size: clamp(0.7rem, 1.1vw, 0.9rem);
-color: #ff4040;
-      margin-top: 0.5rem;
+      color: #ff4040;
       margin-top: clamp(0.5rem, 1vw, 0.8rem);
-display: none;
-animation: fadeIn 0.5s ease-in-out;
+      display: none;
+      animation: fadeIn 0.5s ease-in-out;
       text-shadow: 0 0 4px rgba(255, 64, 64, 0.5);
-}
+    }
 
-.loading-spinner {
-display: none;
-      width: 24px;
-      height: 24px;
-      border: 3px solid var(--neon-cyan);
+    .loading-spinner {
+      display: none;
       width: 32px;
       height: 32px;
       border: 4px solid var(--neon-cyan);
@@ -678,61 +588,47 @@ display: none;
       right: 4px;
       bottom: 4px;
       border: 3px solid var(--neon-pink);
-border-top: 3px solid transparent;
-border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: 0.5rem auto;
+      border-top: 3px solid transparent;
+      border-radius: 50%;
       animation: spin 0.8s linear infinite reverse;
-}
+    }
 
-@keyframes spin {
-to { transform: rotate(360deg); }
-}
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
 
-@keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
-}
+    }
 
-footer {
-position: absolute;
-      bottom: 0.5rem;
+    footer {
+      position: absolute;
       bottom: clamp(0.5rem, 1vw, 0.8rem);
-width: 100%;
-text-align: center;
-      font-size: clamp(0.6rem, 0.8vw, 0.8rem);
+      width: 100%;
+      text-align: center;
       font-size: clamp(0.6rem, 0.9vw, 0.8rem);
-color: #b0c4de;
-z-index: 10;
+      color: #b0c4de;
+      z-index: 10;
       text-shadow: 0 0 4px var(--card-glow);
-}
+    }
 
-footer a {
-color: var(--neon-cyan);
-text-decoration: none;
-      transition: text-shadow 0.2s ease;
+    footer a {
+      color: var(--neon-cyan);
+      text-decoration: none;
       transition: text-shadow 0.2s ease, color 0.2s ease;
-}
+    }
 
-footer a:hover {
-text-shadow: var(--text-glow);
+    footer a:hover {
+      text-shadow: var(--text-glow);
       color: var(--neon-pink);
-}
+    }
 
-.hidden {
-display: none;
-}
+    .hidden {
+      display: none;
+    }
 
-@media (max-width: 768px) {
-      .container { padding: 0.5rem; }
-      header h1 { font-size: clamp(1.2rem, 3.5vw, 1.8rem); }
-      .ip-display { font-size: clamp(0.9rem, 2vw, 1.2rem); }
-      .speedometer { width: 160px; height: 90px; }
-      .gauge { height: 110px; }
-      .graph-container { height: 100px; }
-      .iframe-container { height: 150px; }
+    @media (max-width: 768px) {
       .container { padding: clamp(0.5rem, 1.5vw, 0.8rem); }
       header h1 { font-size: clamp(1.3rem, 3.8vw, 1.9rem); }
       .ip-display { font-size: clamp(0.9rem, 2.2vw, 1.2rem); }
@@ -741,17 +637,13 @@ display: none;
       .graph-container { height: clamp(90px, 15vw, 110px); }
       .iframe-container { height: clamp(150px, 20vw, 180px); }
       .start-button { padding: clamp(0.5rem, 1.2vw, 0.7rem) clamp(1.2rem, 2.5vw, 1.5rem); }
-}
+    }
 
-@media (max-width: 480px) {
-      header h1 { font-size: clamp(1rem, 3vw, 1.5rem); }
+    @media (max-width: 480px) {
       header h1 { font-size: clamp(1.1rem, 3.2vw, 1.6rem); }
-.info-section { max-width: 100%; }
-.results { flex-direction: column; }
-.result-box { width: 100%; }
-      .speedometer { width: 140px; height: 80px; }
-      .gauge { height: 90px; }
-      .iframe-container { height: 120px; }
+      .info-section { max-width: 100%; }
+      .results { flex-direction: column; }
+      .result-box { width: 100%; }
       .speedometer { width: clamp(130px, 22vw, 140px); height: clamp(70px, 10vw, 80px); }
       .gauge { height: clamp(90px, 13vw, 100px); }
       .graph-container { height: clamp(80px, 13vw, 100px); }
@@ -767,88 +659,129 @@ display: none;
       .speedometer { width: 240px; height: 140px; }
       .gauge { height: 160px; }
       .graph-container { height: 150px; }
-}
-</style>
+    }
+  </style>
 </head>
-@@ -584,7 +670,7 @@ <h1>Labverse Speed Test</h1>
-</header>
-<div class="info-section">
-<div class="ip-display" id="ipDisplay" role="status" aria-live="polite">Fetching IP...</div>
-      <button class="copy-btn" id="copyIpBtn" aria-label="Copy IP address">Copy IP</button>
+<body>
+  <canvas id="cyber-canvas" aria-hidden="true"></canvas>
+  <div class="container">
+    <header>
+      <h1>Labverse Speed Test</h1>
+    </header>
+    <div class="info-section">
+      <div class="ip-display" id="ipDisplay" role="status" aria-live="polite">Fetching IP...</div>
       <button class="copy-btn" id="copyIpBtn" aria-label="Copy IP address to clipboard">Copy IP</button>
-<div class="network-info" id="networkInfo" role="status" aria-live="polite">Fetching network info...</div>
-</div>
-<div class="error-message" id="errorMessage" role="alert"></div>
-@@ -594,7 +680,7 @@ <h1>Labverse Speed Test</h1>
-<div class="progress-bar">
-<div class="progress" id="progressBar"></div>
-</div>
-      <div class="speedometer hidden" id="speedometer" role="meter" aria-valuenow="0" aria-valuemin="0" aria-valuemax="1000" aria-label="Download speed">
+      <div class="network-info" id="networkInfo" role="status" aria-live="polite">Fetching network info...</div>
+    </div>
+    <div class="error-message" id="errorMessage" role="alert"></div>
+    <div class="loading-spinner" id="loadingSpinner"></div>
+    <div class="speed-card">
+      <div class="test-status" id="testStatus" role="status" aria-live="polite">Ready</div>
+      <div class="progress-bar">
+        <div class="progress" id="progressBar"></div>
+      </div>
       <div class="speedometer hidden" id="speedometer" role="meter" aria-valuenow="0" aria-valuemin="0" aria-valuemax="1000" aria-label="Current download speed in Mbps">
-<div class="gauge">
-<div class="gauge-ticks" id="gaugeTicks"></div>
-<div class="gauge-fill" id="gaugeFill"></div>
-@@ -613,17 +699,17 @@ <h1>Labverse Speed Test</h1>
-</div>
-<div class="results hidden" id="resultsContainer">
-<div class="result-box" id="downloadBox">
-          <div class="result-label">Download</div>
+        <div class="gauge">
+          <div class="gauge-ticks" id="gaugeTicks"></div>
+          <div class="gauge-fill" id="gaugeFill"></div>
+          <div class="gauge-needle" id="gaugeNeedle"></div>
+        </div>
+        <div class="speed-value" id="speedValue">0</div>
+        <div class="speed-unit">Mbps</div>
+      </div>
+      <div class="graph-container hidden" id="graphContainer">
+        <div class="graph-background" id="graphBackground"></div>
+        <div class="y-axis" id="yAxis"></div>
+        <div class="grid-lines" id="gridLines"></div>
+        <div class="graph" id="graph">
+          <div class="graph-line" id="graphLine"></div>
+        </div>
+      </div>
+      <div class="results hidden" id="resultsContainer">
+        <div class="result-box" id="downloadBox">
           <div class="result-label">Download Speed</div>
-<div class="result-value" id="downloadResult">0 Mbps</div>
-</div>
-<div class="result-box" id="pingBox">
-          <div class="result-label">Ping</div>
+          <div class="result-value" id="downloadResult">0 Mbps</div>
+        </div>
+        <div class="result-box" id="pingBox">
           <div class="result-label">Ping Latency</div>
-<div class="result-value" id="pingResult">0 ms</div>
-</div>
-</div>
-      <button class="start-button" id="startButton" aria-label="Start speed test">Start Test</button>
+          <div class="result-value" id="pingResult">0 ms</div>
+        </div>
+      </div>
       <button class="start-button" id="startButton" aria-label="Start speed test or view more info">Start Test</button>
-<div class="iframe-container" id="iframeContainer">
-        <iframe id="speedFrame" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen aria-label="Cloudflare speed test"></iframe>
+      <div class="iframe-container" id="iframeContainer">
         <iframe id="speedFrame" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen aria-label="Cloudflare speed test interface"></iframe>
-</div>
-</div>
-</div>
-@@ -636,9 +722,10 @@ <h1>Labverse Speed Test</h1>
-// Configuration
-const CONFIG = {
-cyber: {
-        particleCount: 150,
-        maxVelocity: 0.4,
-        connectionDistance: 80
+      </div>
+    </div>
+  </div>
+  <footer>
+    © 2025 Labverse | Powered by <a href="https://onefar.co.za" target="_blank" rel="noopener">1FAR</a>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js" integrity="sha512-3ds/6c3WVqT3tH7W8bV67DAXbD+3O0+4z3eUMdO3r2W2G3iW+8G7yW+OmW+1lWm7+jD8CuJ8JTi9A90L3eU0Q==" crossorigin="anonymous"></script>
+  <script>
+    // Configuration
+    const CONFIG = {
+      cyber: {
         particleCount: 200,
         maxVelocity: 0.35,
         connectionDistance: 90,
         particleSize: 0.45
-},
-api: {
-ipServices: [
-@@ -653,16 +740,17 @@ <h1>Labverse Speed Test</h1>
-'https://extreme-ip-lookup.com/json/',
-'https://freegeoip.app/json/'
-],
-        timeout: 3000,
-        retries: 2
+      },
+      api: {
+        ipServices: [
+          'https://api.ipify.org?format=json',
+          'https://api.seeip.org/jsonip',
+          'https://api.myip.com',
+          'https://ipinfo.io/json'
+        ],
+        geoServices: [
+          'https://ipinfo.io/{ip}/json',
+          'https://ipapi.co/json/',
+          'https://extreme-ip-lookup.com/json/',
+          'https://freegeoip.app/json/'
+        ],
         timeout: 3500,
         retries: 3
-},
-speedTest: {
-servers: [
-{ download: 'https://speed.cloudflare.com/__down?bytes=25000000', ping: 'https://labverse.co.za/assets/ping-test.txt' }
-],
-durations: { download: 10000, ping: 3000 },
-maxTimeout: 15000,
-        watchdogTimeout: 20000
+      },
+      speedTest: {
+        servers: [
+          { download: 'https://speed.cloudflare.com/__down?bytes=25000000', ping: 'https://labverse.co.za/assets/ping-test.txt' }
+        ],
+        durations: { download: 10000, ping: 3000 },
+        maxTimeout: 15000,
         watchdogTimeout: 20000,
         retryLimit: 1
-}
-};
+      }
+    };
 
-@@ -694,6 +782,17 @@ <h1>Labverse Speed Test</h1>
-timeout = setTimeout(() => func(...args), wait);
-};
-}
+    // Utility Functions
+    class Utils {
+      static log(message) {
+        console.log('[DEBUG] ' + message);
+      }
+
+      static async copyToClipboard(text) {
+        try {
+          await navigator.clipboard.writeText(text);
+          return true;
+        } catch {
+          const textarea = document.createElement('textarea');
+          textarea.value = text;
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+          return true;
+        }
+      }
+
+      static debounce(func, wait) {
+        let timeout;
+        return (...args) => {
+          clearTimeout(timeout);
+          timeout = setTimeout(() => func(...args), wait);
+        };
+      }
 
       static throttle(func, limit) {
         let inThrottle;
@@ -860,212 +793,442 @@ timeout = setTimeout(() => func(...args), wait);
           }
         };
       }
-}
+    }
 
-// Cyberpunk Particle System
-@@ -711,7 +810,7 @@ <h1>Labverse Speed Test</h1>
-}
+    // Cyberpunk Particle System
+    class Cyberpunk {
+      constructor(canvasId) {
+        this.canvas = document.getElementById(canvasId);
+        this.scene = new THREE.Scene();
+        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, alpha: true });
+        this.particles = new THREE.Group();
+        this.mouse = new THREE.Vector2(0, 0);
+        this.init();
+        this.bindEvents();
+        this.animate();
+      }
 
-init() {
-        this.camera.position.z = 50;
+      init() {
         this.camera.position.z = 55;
-this.renderer.setSize(window.innerWidth, window.innerHeight);
-this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-@@ -722,12 +821,12 @@ <h1>Labverse Speed Test</h1>
+        const geometry = new THREE.BufferGeometry();
+        const vertices = [];
+        const colors = [];
+        const velocities = [];
 
-for (let i = 0; i < CONFIG.cyber.particleCount; i++) {
-vertices.push(
-            (Math.random() - 0.5) * 100,
-            (Math.random() - 0.5) * 100,
-            (Math.random() - 0.5) * 100
+        for (let i = 0; i < CONFIG.cyber.particleCount; i++) {
+          vertices.push(
             (Math.random() - 0.5) * 120,
             (Math.random() - 0.5) * 120,
             (Math.random() - 0.5) * 120
-);
-const hue = Math.random() * 60 + 180;
-          const color = new THREE.Color(`hsl(${hue}, 80%, 70%)`);
+          );
+          const hue = Math.random() * 60 + 180;
           const color = new THREE.Color(`hsl(${hue}, 85%, 75%)`);
-colors.push(color.r, color.g, color.b);
-velocities.push(
-(Math.random() - 0.5) * CONFIG.cyber.maxVelocity,
-@@ -739,7 +838,7 @@ <h1>Labverse Speed Test</h1>
-geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-const material = new THREE.PointsMaterial({
-          size: 0.4,
+          colors.push(color.r, color.g, color.b);
+          velocities.push(
+            (Math.random() - 0.5) * CONFIG.cyber.maxVelocity,
+            (Math.random() - 0.5) * CONFIG.cyber.maxVelocity,
+            (Math.random() - 0.5) * CONFIG.cyber.maxVelocity
+          );
+        }
+
+        geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+        geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+        const material = new THREE.PointsMaterial({
           size: CONFIG.cyber.particleSize,
-vertexColors: true,
-transparent: true,
-opacity: 0.9
-@@ -757,7 +856,7 @@ <h1>Labverse Speed Test</h1>
-updateConnections() {
-this.lines.clear();
-const positions = this.particleSystem.geometry.attributes.position.array;
-        const lineMaterial = new THREE.LineBasicMaterial({ color: 0x00b7eb, transparent: true, opacity: 0.3 });
+          vertexColors: true,
+          transparent: true,
+          opacity: 0.9
+        });
+
+        this.particleSystem = new THREE.Points(geometry, material);
+        this.particles.add(this.particleSystem);
+        this.scene.add(this.particles);
+
+        this.velocities = velocities;
+        this.lines = new THREE.Group();
+        this.scene.add(this.lines);
+      }
+
+      updateConnections() {
+        this.lines.clear();
+        const positions = this.particleSystem.geometry.attributes.position.array;
         const lineMaterial = new THREE.LineBasicMaterial({ color: 0x00b7eb, transparent: true, opacity: 0.25 });
 
-for (let i = 0; i < CONFIG.cyber.particleCount; i++) {
-const x1 = positions[i * 3];
-@@ -783,12 +882,12 @@ <h1>Labverse Speed Test</h1>
-animate() {
-const positions = this.particleSystem.geometry.attributes.position.array;
-for (let i = 0; i < CONFIG.cyber.particleCount; i++) {
-          positions[i * 3] += this.velocities[i * 3] + this.mouse.x * 0.0001;
-          positions[i * 3 + 1] += this.velocities[i * 3 + 1] + this.mouse.y * 0.0001;
+        for (let i = 0; i < CONFIG.cyber.particleCount; i++) {
+          const x1 = positions[i * 3];
+          const y1 = positions[i * 3 + 1];
+          const z1 = positions[i * 3 + 2];
+          for (let j = i + 1; j < CONFIG.cyber.particleCount; j++) {
+            const x2 = positions[j * 3];
+            const y2 = positions[j * 3 + 1];
+            const z2 = positions[j * 3 + 2];
+            const distance = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2 + (z2 - z1) ** 2);
+            if (distance < CONFIG.cyber.connectionDistance) {
+              const geometry = new THREE.BufferGeometry().setFromPoints([
+                new THREE.Vector3(x1, y1, z1),
+                new THREE.Vector3(x2, y2, z2)
+              ]);
+              const line = new THREE.Line(geometry, lineMaterial);
+              this.lines.add(line);
+            }
+          }
+        }
+      }
+
+      animate() {
+        const positions = this.particleSystem.geometry.attributes.position.array;
+        for (let i = 0; i < CONFIG.cyber.particleCount; i++) {
           positions[i * 3] += this.velocities[i * 3] + this.mouse.x * 0.00008;
           positions[i * 3 + 1] += this.velocities[i * 3 + 1] + this.mouse.y * 0.00008;
-positions[i * 3 + 2] += this.velocities[i * 3 + 2];
-          if (Math.abs(positions[i * 3]) > 50) this.velocities[i * 3] *= -1;
-          if (Math.abs(positions[i * 3 + 1]) > 50) this.velocities[i * 3 + 1] *= -1;
-          if (Math.abs(positions[i * 3 + 2]) > 50) this.velocities[i * 3 + 2] *= -1;
+          positions[i * 3 + 2] += this.velocities[i * 3 + 2];
           if (Math.abs(positions[i * 3]) > 60) this.velocities[i * 3] *= -1;
           if (Math.abs(positions[i * 3 + 1]) > 60) this.velocities[i * 3 + 1] *= -1;
           if (Math.abs(positions[i * 3 + 2]) > 60) this.velocities[i * 3 + 2] *= -1;
-}
-this.particleSystem.geometry.attributes.position.needsUpdate = true;
-this.updateConnections();
-@@ -797,25 +896,22 @@ <h1>Labverse Speed Test</h1>
-}
+        }
+        this.particleSystem.geometry.attributes.position.needsUpdate = true;
+        this.updateConnections();
+        this.renderer.render(this.scene, this.camera);
+        requestAnimationFrame(() => this.animate());
+      }
 
-triggerBurst() {
-        const positions = this.particleSystem.geometry.attributes.position.array;
-for (let i = 0; i < CONFIG.cyber.particleCount; i++) {
-          this.velocities[i * 3] = (Math.random() - 0.5) * CONFIG.cyber.maxVelocity * 2;
-          this.velocities[i * 3 + 1] = (Math.random() - 0.5) * CONFIG.cyber.maxVelocity * 2;
-          this.velocities[i * 3 + 2] = (Math.random() - 0.5) * CONFIG.cyber.maxVelocity * 2;
+      triggerBurst() {
+        for (let i = 0; i < CONFIG.cyber.particleCount; i++) {
           this.velocities[i * 3] = (Math.random() - 0.5) * CONFIG.cyber.maxVelocity * 2.5;
           this.velocities[i * 3 + 1] = (Math.random() - 0.5) * CONFIG.cyber.maxVelocity * 2.5;
           this.velocities[i * 3 + 2] = (Math.random() - 0.5) * CONFIG.cyber.maxVelocity * 2.5;
-}
-}
+        }
+      }
 
-bindEvents() {
-        window.addEventListener('mousemove', (e) => {
-          this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-          this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-        }, { passive: true });
+      bindEvents() {
         const updateMouse = Utils.throttle((x, y) => {
           this.mouse.x = (x / window.innerWidth) * 2 - 1;
           this.mouse.y = -(y / window.innerHeight) * 2 + 1;
         }, 50);
 
         window.addEventListener('mousemove', (e) => updateMouse(e.clientX, e.clientY), { passive: true });
-window.addEventListener('touchmove', (e) => {
-          if (e.touches.length > 0) {
-            this.mouse.x = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
-            this.mouse.y = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
-          }
+        window.addEventListener('touchmove', (e) => {
           if (e.touches.length > 0) updateMouse(e.touches[0].clientX, e.touches[0].clientY);
-}, { passive: true });
+        }, { passive: true });
 
-window.addEventListener('resize', Utils.debounce(() => {
-@@ -832,12 +928,16 @@ <h1>Labverse Speed Test</h1>
-static async fetchWithRetry(url, options, retries) {
-for (let i = 0; i <= retries; i++) {
-try {
+        window.addEventListener('resize', Utils.debounce(() => {
+          this.camera.aspect = window.innerWidth / window.innerHeight;
+          this.camera.updateProjectionMatrix();
+          this.renderer.setSize(window.innerWidth, window.innerHeight);
+          this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        }, 100), { passive: true });
+      }
+    }
+
+    // Network Services
+    class NetworkService {
+      static async fetchWithRetry(url, options, retries) {
+        for (let i = 0; i <= retries; i++) {
+          try {
             const start = performance.now();
-const response = await fetch(url, { ...options, signal: AbortSignal.timeout(CONFIG.api.timeout) });
+            const response = await fetch(url, { ...options, signal: AbortSignal.timeout(CONFIG.api.timeout) });
             const duration = performance.now() - start;
-if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
             Utils.log(`Fetched ${url} in ${duration.toFixed(2)}ms`);
-return await response.json();
-} catch (err) {
-Utils.log(`Fetch attempt ${i + 1} failed for ${url}: ${err.message}`);
-if (i === retries) throw err;
+            return await response.json();
+          } catch (err) {
+            Utils.log(`Fetch attempt ${i + 1} failed for ${url}: ${err.message}`);
+            if (i === retries) throw err;
             await new Promise(r => setTimeout(r, 500));
-}
-}
-}
-@@ -920,7 +1020,8 @@ <h1>Labverse Speed Test</h1>
-startTime: 0,
-controller: null,
-watchdogTimer: null,
-          lastUpdateTime: 0
+          }
+        }
+      }
+
+      static async fetchIP() {
+        Utils.log('Fetching public IP...');
+        for (const service of CONFIG.api.ipServices) {
+          try {
+            const data = await this.fetchWithRetry(service, {}, CONFIG.api.retries);
+            const ip = data.ip || data.query || data.YourFuckingIPAddress || '';
+            if (ip && ip.match(/^(?:\d{1,3}\.){3}\d{1,3}$|^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/)) {
+              Utils.log('Public IP fetched: ' + ip);
+              return ip;
+            }
+          } catch (err) {
+            Utils.log(`IP service ${service} failed: ${err.message}`);
+          }
+        }
+        throw new Error('All IP services failed');
+      }
+
+      static async fetchLocationInfo(ip) {
+        Utils.log('Fetching network location info...');
+        for (const service of CONFIG.api.geoServices.map(s => s.replace('{ip}', ip))) {
+          try {
+            const data = await this.fetchWithRetry(service, {}, CONFIG.api.retries);
+            const info = {
+              isp: data.org || data.as || data.isp || 'Unknown ISP',
+              city: data.city || data.location?.city || 'Unknown City',
+              country: data.country || data.country_name || 'Unknown Country'
+            };
+            if (info.isp.includes('AS')) {
+              info.isp = info.isp.split(' ').slice(1).join(' ').trim() || 'Unknown ISP';
+            }
+            if (info.city && info.country) {
+              Utils.log('Network info fetched: ' + JSON.stringify(info));
+              return info;
+            }
+          } catch (err) {
+            Utils.log(`Geo service ${service} failed: ${err.message}`);
+          }
+        }
+        return { isp: 'Dimension Data', city: 'Johannesburg', country: 'South Africa' };
+      }
+    }
+
+    // Speed Test
+    class SpeedTest {
+      constructor() {
+        this.elements = {
+          startButton: document.getElementById('startButton'),
+          progressBar: document.getElementById('progressBar'),
+          testStatus: document.getElementById('testStatus'),
+          speedometer: document.getElementById('speedometer'),
+          graphContainer: document.getElementById('graphContainer'),
+          graph: document.getElementById('graph'),
+          graphLine: document.getElementById('graphLine'),
+          graphBackground: document.getElementById('graphBackground'),
+          gaugeTicks: document.getElementById('gaugeTicks'),
+          gaugeFill: document.getElementById('gaugeFill'),
+          gaugeNeedle: document.getElementById('gaugeNeedle'),
+          speedValue: document.getElementById('speedValue'),
+          resultsContainer: document.getElementById('resultsContainer'),
+          downloadResult: document.getElementById('downloadResult'),
+          pingResult: document.getElementById('pingResult'),
+          yAxis: document.getElementById('yAxis'),
+          gridLines: document.getElementById('gridLines'),
+          iframeContainer: document.getElementById('iframeContainer'),
+          iframe: document.getElementById('speedFrame'),
+          errorMessage: document.getElementById('errorMessage'),
+          loadingSpinner: document.getElementById('loadingSpinner')
+        };
+        this.state = {
+          testActive: false,
+          testData: [],
+          currentSpeed: 0,
+          maxSpeed: 0,
+          finalDownloadSpeed: 0,
+          finalPing: 0,
+          startTime: 0,
+          controller: null,
+          watchdogTimer: null,
           lastUpdateTime: -1,
           retryCount: 0
-};
-this.setupUI();
-this.bindEvents();
-@@ -961,7 +1062,7 @@ <h1>Labverse Speed Test</h1>
-const tickLabel = document.createElement('div');
-tickLabel.className = 'tick-label';
-const angleRad = angles[index] * Math.PI / 180;
-          const radius = 85;
-          const radius = 90;
-tickLabel.style.left = `calc(50% + ${radius * Math.cos(angleRad - Math.PI / 2)}px)`;
-tickLabel.style.bottom = `calc(50% + ${radius * Math.sin(angleRad - Math.PI / 2)}px)`;
-tickLabel.textContent = label;
-@@ -970,12 +1071,13 @@ <h1>Labverse Speed Test</h1>
+        };
+        this.setupUI();
+        this.bindEvents();
+      }
 
-// Graph Background Stars
-this.elements.graphBackground.innerHTML = '';
-        for (let i = 0; i < 20; i++) {
+      setupUI() {
+        const labels = [0, 10, 25, 50, 100, 200, 500, 1000];
+        const positions = [0, 25, 50, 65, 75, 85, 95, 100];
+        const angles = labels.map((_, i) => 180 + (180 * positions[i] / 100));
+
+        // Y-Axis
+        this.elements.yAxis.innerHTML = '';
+        labels.forEach((label, index) => {
+          const div = document.createElement('div');
+          div.className = 'y-axis-label';
+          div.style.bottom = `${positions[index]}%`;
+          div.textContent = label;
+          this.elements.yAxis.appendChild(div);
+        });
+
+        // Grid Lines
+        this.elements.gridLines.innerHTML = '';
+        positions.forEach(pos => {
+          const line = document.createElement('div');
+          line.className = 'grid-line';
+          line.style.bottom = `${pos}%`;
+          this.elements.gridLines.appendChild(line);
+        });
+
+        // Gauge Ticks
+        this.elements.gaugeTicks.innerHTML = '';
+        labels.forEach((label, index) => {
+          const tick = document.createElement('div');
+          tick.className = 'tick';
+          tick.style.transform = `rotate(${angles[index]}deg)`;
+          this.elements.gaugeTicks.appendChild(tick);
+
+          const tickLabel = document.createElement('div');
+          tickLabel.className = 'tick-label';
+          const angleRad = angles[index] * Math.PI / 180;
+          const radius = 90;
+          tickLabel.style.left = `calc(50% + ${radius * Math.cos(angleRad - Math.PI / 2)}px)`;
+          tickLabel.style.bottom = `calc(50% + ${radius * Math.sin(angleRad - Math.PI / 2)}px)`;
+          tickLabel.textContent = label;
+          this.elements.gaugeTicks.appendChild(tickLabel);
+        });
+
+        // Graph Background Stars
+        this.elements.graphBackground.innerHTML = '';
         for (let i = 0; i < 30; i++) {
-const star = document.createElement('div');
-star.className = 'star';
-star.style.left = `${Math.random() * 100}%`;
-star.style.bottom = `${Math.random() * 100}%`;
-          star.style.animationDelay = `${Math.random() * 3}s`;
+          const star = document.createElement('div');
+          star.className = 'star';
+          star.style.left = `${Math.random() * 100}%`;
+          star.style.bottom = `${Math.random() * 100}%`;
           star.style.animationDelay = `${Math.random() * 4}s`;
           star.style.animationDuration = `${3 + Math.random() * 2}s`;
-this.elements.graphBackground.appendChild(star);
-}
-}
-@@ -1016,6 +1118,7 @@ <h1>Labverse Speed Test</h1>
-this.elements.graphLine.style.width = `${xPercent}%`;
-this.elements.graphLine.style.bottom = `${yPercent}%`;
-this.state.lastUpdateTime = second;
+          this.elements.graphBackground.appendChild(star);
+        }
+      }
+
+      speedToHeight(speed) {
+        if (speed <= 0) return 0;
+        if (speed >= 1000) return 100;
+        const labels = [0, 10, 25, 50, 100, 200, 500, 1000];
+        const positions = [0, 25, 50, 65, 75, 85, 95, 100];
+        for (let i = 0; i < labels.length - 1; i++) {
+          if (speed >= labels[i] && speed <= labels[i + 1]) {
+            const fraction = (speed - labels[i]) / (labels[i + 1] - labels[i]);
+            return positions[i] + fraction * (positions[i + 1] - positions[i]);
+          }
+        }
+        return 0;
+      }
+
+      speedToAngle(speed) {
+        const height = this.speedToHeight(speed);
+        return 180 + (180 * height / 100);
+      }
+
+      updateSpeedometer(speed) {
+        const angle = this.speedToAngle(speed);
+        this.elements.gaugeFill.style.transform = `rotate(${angle}deg)`;
+        this.elements.gaugeNeedle.style.transform = `rotate(${angle}deg)`;
+        this.elements.speedValue.textContent = speed.toFixed(1);
+        this.elements.speedometer.setAttribute('aria-valuenow', speed.toFixed(1));
+      }
+
+      updateGraph(elapsed, speed) {
+        const testDuration = CONFIG.speedTest.durations.download / 1000;
+        const second = Math.floor(elapsed);
+        if (second > this.state.lastUpdateTime && second <= testDuration) {
+          const xPercent = (second / testDuration) * 100;
+          const yPercent = this.speedToHeight(speed);
+          this.elements.graphLine.style.width = `${xPercent}%`;
+          this.elements.graphLine.style.bottom = `${yPercent}%`;
+          this.state.lastUpdateTime = second;
           Utils.log(`Graph updated at ${second}s: ${speed.toFixed(1)} Mbps, position: ${xPercent}%, ${yPercent}%`);
-}
-}
+        }
+      }
 
-@@ -1069,7 +1172,7 @@ <h1>Labverse Speed Test</h1>
-try {
-this.state.controller = new AbortController();
-const response = await fetch(server.download, { cache: 'no-store', signal: this.state.controller.signal });
-          if (!response.ok) throw new Error('Failed to fetch download resource');
+      async runPingTest() {
+        Utils.log('Starting ping test...');
+        const pingTimes = [];
+        const totalPackets = 8;
+        const server = CONFIG.speedTest.servers[0];
+
+        for (let i = 0; i < totalPackets; i++) {
+          if (!this.state.testActive) break;
+          let ping = 999;
+          try {
+            const start = performance.now();
+            await fetch(server.ping + '?t=' + Date.now(), { cache: 'no-store', signal: AbortSignal.timeout(2000) });
+            ping = performance.now() - start;
+            pingTimes.push(ping);
+            Utils.log(`Ping #${i+1}: ${ping.toFixed(2)}ms`);
+          } catch (error) {
+            pingTimes.push(ping);
+            Utils.log(`Ping #${i+1} failed: ${error.message}`);
+          }
+          await new Promise(r => setTimeout(r, 250));
+        }
+
+        const successfulPings = pingTimes.filter(t => t !== 999);
+        const avgPing = successfulPings.length ? successfulPings.reduce((sum, t) => sum + t, 0) / successfulPings.length : 999;
+        this.state.finalPing = avgPing;
+        this.elements.pingResult.textContent = `${avgPing.toFixed(0)} ms`;
+        return avgPing;
+      }
+
+      async runDownloadTest(callback) {
+        Utils.log('Starting download test...');
+        let totalBytes = 0;
+        this.state.startTime = performance.now();
+        const updateInterval = 100;
+        let lastUpdate = this.state.startTime;
+        let lastBytes = 0;
+        let lastTime = this.state.startTime;
+        let speeds = [];
+        const server = CONFIG.speedTest.servers[0];
+
+        const overallTimeout = setTimeout(() => {
+          Utils.log('Download test timed out');
+          this.state.testActive = false;
+          if (this.state.controller) this.state.controller.abort();
+          this.finalizeTest();
+        }, CONFIG.speedTest.maxTimeout);
+
+        try {
+          this.state.controller = new AbortController();
+          const response = await fetch(server.download, { cache: 'no-store', signal: this.state.controller.signal });
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
-const reader = response.body.getReader();
+          const reader = response.body.getReader();
 
-while (this.state.testActive) {
-@@ -1087,14 +1190,14 @@ <h1>Labverse Speed Test</h1>
-const bytesSinceLast = totalBytes - lastBytes;
-const speed = elapsedSinceLast > 0 ? ((bytesSinceLast * 8) / elapsedSinceLast) / (1024 * 1024) : 0;
-speeds.push(speed);
-              const windowSize = 3;
+          while (this.state.testActive) {
+            const { done, value } = await reader.read();
+            if (done || !this.state.testActive) {
+              this.state.controller.abort();
+              break;
+            }
+            totalBytes += value ? value.length : 0;
+            const currentTime = performance.now();
+            const elapsed = (currentTime - this.state.startTime) / 1000;
+
+            if (currentTime - lastUpdate >= updateInterval) {
+              const elapsedSinceLast = (currentTime - lastTime) / 1000;
+              const bytesSinceLast = totalBytes - lastBytes;
+              const speed = elapsedSinceLast > 0 ? ((bytesSinceLast * 8) / elapsedSinceLast) / (1024 * 1024) : 0;
+              speeds.push(speed);
               const windowSize = 4;
-const recentSpeeds = speeds.slice(-windowSize);
-const avgSpeed = recentSpeeds.reduce((sum, s) => sum + s, 0) / recentSpeeds.length;
-callback(elapsed, avgSpeed);
-lastUpdate = currentTime;
-lastBytes = totalBytes;
-lastTime = currentTime;
-              if (this.state.testData.length > 50) this.state.testData.shift();
+              const recentSpeeds = speeds.slice(-windowSize);
+              const avgSpeed = recentSpeeds.reduce((sum, s) => sum + s, 0) / recentSpeeds.length;
+              callback(elapsed, avgSpeed);
+              lastUpdate = currentTime;
+              lastBytes = totalBytes;
+              lastTime = currentTime;
               if (this.state.testData.length > 60) this.state.testData.shift();
-}
+            }
 
-if (elapsed >= CONFIG.speedTest.durations.download / 1000) {
-@@ -1104,13 +1207,15 @@ <h1>Labverse Speed Test</h1>
-}
-} catch (error) {
-Utils.log('Download error: ' + error.message);
+            if (elapsed >= CONFIG.speedTest.durations.download / 1000) {
+              this.state.controller.abort();
+              break;
+            }
+          }
+        } catch (error) {
+          Utils.log('Download error: ' + error.message);
           throw error;
-} finally {
-clearTimeout(overallTimeout);
-this.state.controller = null;
-}
+        } finally {
+          clearTimeout(overallTimeout);
+          this.state.controller = null;
+        }
 
-const totalTime = (performance.now() - this.state.startTime) / 1000;
-const finalSpeed = totalTime > 0 ? ((totalBytes * 8) / totalTime) / (1024 * 1024) : 0;
+        const totalTime = (performance.now() - this.state.startTime) / 1000;
+        const finalSpeed = totalTime > 0 ? ((totalBytes * 8) / totalTime) / (1024 * 1024) : 0;
         Utils.log(`Download test completed: ${finalSpeed.toFixed(1)} Mbps over ${totalTime.toFixed(2)}s`);
-return finalSpeed;
-}
+        return finalSpeed;
+      }
 
-@@ -1124,9 +1229,18 @@ <h1>Labverse Speed Test</h1>
+      finalizeTest() {
+        clearTimeout(this.state.watchdogTimer);
+        this.state.testActive = false;
+        if (this.state.controller) {
+          this.state.controller.abort();
+          this.state.controller = null;
+        }
 
-const dataPoints = this.state.testData.length;
-if (dataPoints === 0) {
+        const dataPoints = this.state.testData.length;
+        if (dataPoints === 0) {
           if (this.state.retryCount < CONFIG.speedTest.retryLimit) {
             this.state.retryCount++;
             Utils.log(`Retrying test (attempt ${this.state.retryCount + 1})`);
@@ -1074,98 +1237,150 @@ if (dataPoints === 0) {
             setTimeout(() => this.runTest(), 1000);
             return;
           }
-this.elements.errorMessage.style.display = 'block';
-          this.elements.errorMessage.textContent = 'Speed test failed. Please try again.';
+          this.elements.errorMessage.style.display = 'block';
           this.elements.errorMessage.textContent = 'Speed test failed after retries. Please try again later.';
-this.state.finalDownloadSpeed = 0;
+          this.state.finalDownloadSpeed = 0;
           this.state.retryCount = 0;
-} else {
-let weightedSum = 0, weightSum = 0;
-for (let i = 0; i < dataPoints; i++) {
-@@ -1136,23 +1250,27 @@ <h1>Labverse Speed Test</h1>
-}
-this.state.finalDownloadSpeed = weightedSum / weightSum;
-this.elements.downloadResult.textContent = `${this.state.finalDownloadSpeed.toFixed(1)} Mbps`;
+        } else {
+          let weightedSum = 0, weightSum = 0;
+          for (let i = 0; i < dataPoints; i++) {
+            const weight = 0.5 + 0.5 * (i / dataPoints);
+            weightedSum += this.state.testData[i].speed * weight;
+            weightSum += weight;
+          }
+          this.state.finalDownloadSpeed = weightedSum / weightSum;
+          this.elements.downloadResult.textContent = `${this.state.finalDownloadSpeed.toFixed(1)} Mbps`;
           this.state.retryCount = 0;
-}
+        }
 
-this.elements.resultsContainer.classList.remove('hidden');
-this.elements.resultsContainer.querySelectorAll('.result-box').forEach((box, index) => {
-          setTimeout(() => box.classList.add('visible'), index * 100);
+        this.elements.resultsContainer.classList.remove('hidden');
+        this.elements.resultsContainer.querySelectorAll('.result-box').forEach((box, index) => {
           setTimeout(() => box.classList.add('visible'), index * 150);
-});
-this.elements.startButton.textContent = 'More Info';
-this.elements.startButton.disabled = false;
-cyberpunk.triggerBurst();
+        });
+        this.elements.startButton.textContent = 'More Info';
+        this.elements.startButton.disabled = false;
+        cyberpunk.triggerBurst();
 
         // Optional analytics (commented out)
         // Utils.log(`Analytics: Speed=${this.state.finalDownloadSpeed.toFixed(1)} Mbps, Ping=${this.state.finalPing.toFixed(0)} ms`);
-}
+      }
 
-runTest() {
-this.state.testData = [];
-this.state.currentSpeed = 0;
-this.state.maxSpeed = 0;
-this.state.startTime = Date.now();
-        this.state.lastUpdateTime = 0;
+      runTest() {
+        this.state.testData = [];
+        this.state.currentSpeed = 0;
+        this.state.maxSpeed = 0;
+        this.state.startTime = Date.now();
         this.state.lastUpdateTime = -1;
-this.elements.graphLine.style.width = '0';
-this.elements.graphLine.style.bottom = '0';
-this.state.testActive = true;
-@@ -1171,6 +1289,7 @@ <h1>Labverse Speed Test</h1>
-this.elements.startButton.disabled = true;
-this.elements.startButton.textContent = 'Testing...';
-this.elements.testStatus.textContent = 'Testing Download Speed';
+        this.elements.graphLine.style.width = '0';
+        this.elements.graphLine.style.bottom = '0';
+        this.state.testActive = true;
+
+        this.state.watchdogTimer = setTimeout(() => {
+          Utils.log('Watchdog triggered');
+          this.finalizeTest();
+        }, CONFIG.speedTest.watchdogTimeout);
+
+        this.elements.progressBar.style.width = '0';
+        this.elements.speedometer.classList.remove('hidden');
+        this.elements.graphContainer.classList.remove('hidden');
+        this.elements.resultsContainer.classList.add('hidden');
+        this.elements.iframeContainer.classList.remove('active');
+        this.elements.iframe.src = '';
+        this.elements.startButton.disabled = true;
+        this.elements.startButton.textContent = 'Testing...';
+        this.elements.testStatus.textContent = 'Testing Download Speed';
         this.elements.errorMessage.style.display = 'none';
 
-this.runPingTest().then(() => {
-if (!this.state.testActive) {
-@@ -1190,7 +1309,7 @@ <h1>Labverse Speed Test</h1>
-this.elements.progressBar.style.width = '100%';
-this.finalizeTest();
-}
-          }).finally(() => {
+        this.runPingTest().then(() => {
+          if (!this.state.testActive) {
+            this.finalizeTest();
+            return;
+          }
+          this.runDownloadTest((elapsed, speed) => {
+            if (!this.state.testActive) return;
+            const progress = Math.min(elapsed / (CONFIG.speedTest.durations.download / 1000), 1);
+            this.state.currentSpeed = speed;
+            this.state.maxSpeed = Math.max(this.state.maxSpeed, this.state.currentSpeed);
+            this.state.testData.push({ time: elapsed, speed: this.state.currentSpeed });
+            this.elements.progressBar.style.width = `${progress * 100}%`;
+            this.updateSpeedometer(this.state.currentSpeed);
+            this.updateGraph(elapsed, this.state.currentSpeed);
+            if (progress >= 1) {
+              this.elements.progressBar.style.width = '100%';
+              this.finalizeTest();
+            }
           }).catch(() => {
-this.finalizeTest();
-});
-}).catch(() => {
-@@ -1208,20 +1327,20 @@ <h1>Labverse Speed Test</h1>
-this.elements.iframeContainer.classList.add('active');
-try {
-this.elements.iframe.contentWindow.postMessage({ action: 'startTest' }, 'https://speed.cloudflare.com');
-                Utils.log('Sent postMessage to start Cloudflare test');
-} catch (err) {
-Utils.log('Failed to trigger Cloudflare test: ' + err.message);
-}
-};
-this.elements.iframe.onerror = () => {
-this.elements.loadingSpinner.style.display = 'none';
-this.elements.errorMessage.style.display = 'block';
-              this.elements.errorMessage.textContent = 'Failed to load Cloudflare speed test.';
-              this.elements.errorMessage.textContent = 'Failed to load Cloudflare speed test. Please check your connection.';
-};
-return;
-}
+            this.finalizeTest();
+          });
+        }).catch(() => {
+          this.finalizeTest();
+        });
+      }
 
-if (!this.state.testActive) {
-            this.elements.errorMessage.style.display = 'none';
-this.runTest();
-}
-});
-@@ -1244,6 +1363,8 @@ <h1>Labverse Speed Test</h1>
-// Fetch IP and Location
-const ip = await NetworkService.fetchIP().catch(err => {
-document.getElementById('ipDisplay').textContent = 'IP unavailable';
+      bindEvents() {
+        this.elements.startButton.addEventListener('click', () => {
+          if (this.elements.startButton.textContent === 'More Info') {
+            this.elements.loadingSpinner.style.display = 'block';
+            this.elements.iframe.src = 'https://speed.cloudflare.com';
+            this.elements.iframe.onload = () => {
+              this.elements.loadingSpinner.style.display = 'none';
+              this.elements.iframeContainer.classList.add('active');
+              try {
+                this.elements.iframe.contentWindow.postMessage({ action: 'startTest' }, 'https://speed.cloudflare.com');
+                Utils.log('Sent postMessage to start Cloudflare test');
+              } catch (err) {
+                Utils.log('Failed to trigger Cloudflare test: ' + err.message);
+              }
+            };
+            this.elements.iframe.onerror = () => {
+              this.elements.loadingSpinner.style.display = 'none';
+              this.elements.errorMessage.style.display = 'block';
+              this.elements.errorMessage.textContent = 'Failed to load Cloudflare speed test. Please check your connection.';
+            };
+            return;
+          }
+
+          if (!this.state.testActive) {
+            this.runTest();
+          }
+        });
+
+        window.addEventListener('beforeunload', () => {
+          this.state.testActive = false;
+          if (this.state.controller) this.state.controller.abort();
+          clearTimeout(this.state.watchdogTimer);
+        });
+      }
+    }
+
+    // Main Initialization
+    let cyberpunk;
+    async function init() {
+      try {
+        // Initialize Cyberpunk Particles
+        cyberpunk = new Cyberpunk('cyber-canvas');
+
+        // Fetch IP and Location
+        const ip = await NetworkService.fetchIP().catch(err => {
+          document.getElementById('ipDisplay').textContent = 'IP unavailable';
           document.getElementById('errorMessage').style.display = 'block';
           document.getElementById('errorMessage').textContent = 'Unable to fetch IP address. Please check your connection.';
-throw err;
-});
-document.getElementById('ipDisplay').textContent = ip;
-@@ -1260,7 +1381,13 @@ <h1>Labverse Speed Test</h1>
-if (ip !== 'Fetching IP...' && ip !== 'IP unavailable') {
-await Utils.copyToClipboard(ip);
-cyberpunk.triggerBurst();
-            alert('IP copied to clipboard!');
+          throw err;
+        });
+        document.getElementById('ipDisplay').textContent = ip;
+
+        const location = await NetworkService.fetchLocationInfo(ip);
+        document.getElementById('networkInfo').innerHTML = `ISP: ${location.isp}<br>Location: ${location.city}, ${location.country}`;
+
+        // Initialize Speed Test
+        new SpeedTest();
+
+        // Copy IP Button
+        document.getElementById('copyIpBtn').addEventListener('click', async () => {
+          const ip = document.getElementById('ipDisplay').textContent;
+          if (ip !== 'Fetching IP...' && ip !== 'IP unavailable') {
+            await Utils.copyToClipboard(ip);
+            cyberpunk.triggerBurst();
             const copyBtn = document.getElementById('copyIpBtn');
             copyBtn.textContent = 'Copied!';
             copyBtn.disabled = true;
@@ -1173,6 +1388,16 @@ cyberpunk.triggerBurst();
               copyBtn.textContent = 'Copy IP';
               copyBtn.disabled = false;
             }, 1500);
-}
-});
-} catch (error) {
+          }
+        });
+      } catch (error) {
+        Utils.log('Initialization error: ' + error.message);
+        document.getElementById('errorMessage').style.display = 'block';
+        document.getElementById('errorMessage').textContent = 'Failed to initialize. Please refresh the page.';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
