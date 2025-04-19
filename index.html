@@ -910,7 +910,7 @@
       }
     }
 
-    // Speedometer with Non-Linear Scaling
+    // Speedometer with Fixed Label Cutoffs
     function drawSpeedometer(speed) {
       const canvas = document.getElementById('speedometer-canvas');
       const ctx = canvas.getContext('2d');
@@ -931,17 +931,15 @@
 
       const centerX = width / 2;
       const centerY = height;
-      const radius = Math.min(width / 2, height) * 0.85;
-      const labelRadiusAdjustment = Math.min(width, height) < 200 ? 20 : 30; // Increased for padding
+      const radius = Math.min(width / 2, height) * 0.75; // Reduced radius to create more space for labels
+      const labelRadiusAdjustment = Math.min(width, height) < 200 ? 30 : 40; // Increased for more padding
 
       // Non-linear scaling: 0-100 Mbps takes 50% of the arc, 100-1000 Mbps takes the other 50%
       function speedToAngle(speed) {
         speed = Math.min(speed, maxSpeed);
         if (speed <= 100) {
-          // 0-100 Mbps maps to 0-π (50% of the arc)
           return (speed / 100) * Math.PI;
         } else {
-          // 100-1000 Mbps maps to π-2π (compressed into the other 50%)
           const remainingSpeed = speed - 100;
           const remainingRange = 900; // 1000 - 100
           return Math.PI + (remainingSpeed / remainingRange) * Math.PI;
@@ -1031,8 +1029,9 @@
         // Adjust label position to prevent cutoff
         let xOffset = 0;
         let yOffset = fontSize / 2;
-        if (s === 0) xOffset = fontSize * 2; // Extra padding for 0
-        if (s === 1000) xOffset = -fontSize * 2; // Extra padding for 1000
+        if (s === 0) xOffset = fontSize * 3; // Increased padding for 0
+        if (s === 1000) xOffset = -fontSize * 3; // Increased padding for 1000
+        if (s === 10 || s === 20 || s === 25 || s === 50) xOffset = fontSize * 1.5; // Extra padding for intermediate labels
         ctx.fillText(s, labelX + xOffset, labelY + yOffset);
       });
     }
@@ -1053,7 +1052,7 @@
       requestAnimationFrame(update);
     }
 
-    // Graph with Non-Linear Scaling
+    // Graph with Adjusted Time Scale and Better Label Alignment
     let graphData = [];
     let graphActive = true;
 
@@ -1074,7 +1073,7 @@
 
       ctx.clearRect(0, 0, width, height);
       const maxSpeed = 1000;
-      const maxTime = 30;
+      const maxTime = 10; // Adjusted to 10 seconds
       const padding = { left: 60, right: 30, top: 30, bottom: 40 };
 
       // Non-linear scaling: 0-100 Mbps takes 70% of the height, 100-1000 Mbps takes 30%
@@ -1082,10 +1081,8 @@
         speed = Math.min(speed, maxSpeed);
         const graphHeight = height - padding.top - padding.bottom;
         if (speed <= 100) {
-          // 0-100 Mbps maps to 70% of the height (bottom to 70% up)
           return height - padding.bottom - (speed / 100) * (graphHeight * 0.7);
         } else {
-          // 100-1000 Mbps maps to the top 30% of the height
           const remainingSpeed = speed - 100;
           const remainingRange = 900; // 1000 - 100
           const remainingHeight = graphHeight * 0.3;
@@ -1105,8 +1102,8 @@
       ctx.lineWidth = 1;
       ctx.stroke();
 
-      // Draw Y-axis labels with non-linear positioning
-      const fontSize = 12;
+      // Draw Y-axis labels with better alignment
+      const fontSize = 10; // Reduced font size for better spacing
       ctx.font = `${fontSize}px 'Exo 2', sans-serif`;
       ctx.fillStyle = '#8492b4';
       ctx.textAlign = 'right';
@@ -1118,12 +1115,16 @@
         ctx.lineTo(width - padding.right, y);
         ctx.strokeStyle = 'rgba(73, 115, 255, 0.1)';
         ctx.stroke();
-        ctx.fillText(level, padding.left - 10, y + fontSize / 2);
+        // Adjust label positioning for better aesthetics
+        let yOffset = fontSize / 2;
+        if (level === 0) yOffset += 5; // Slight offset for 0 to avoid bottom cutoff
+        if (level === 1000) yOffset -= 5; // Slight offset for 1000 to avoid top cutoff
+        ctx.fillText(level, padding.left - 15, y + yOffset); // Increased left padding
       });
 
-      // Draw X-axis labels
+      // Draw X-axis labels (0 to 10 seconds)
       ctx.textAlign = 'center';
-      for (let t = 0; t <= maxTime; t += 5) {
+      for (let t = 0; t <= maxTime; t += 2) { // Adjusted interval to 2 seconds
         const x = padding.left + (t / maxTime) * (width - padding.left - padding.right);
         ctx.fillText(t, x, height - padding.bottom + 20);
       }
@@ -1219,7 +1220,7 @@
     function completeGraph() {
       if (graphData.length > 0) {
         const lastPoint = graphData[graphData.length - 1];
-        graphData.push({ time: 30, speed: lastPoint.speed });
+        graphData.push({ time: 10, speed: lastPoint.speed }); // Adjusted to 10 seconds
         drawGraph();
       }
     }
@@ -1235,15 +1236,15 @@
       }, 1000);
     }
 
-    // Speed Test with Improved Ping Test
+    // Speed Test with Fixed Ping Test and Adjusted Duration
     const CONFIG = {
       testServer: {
         downloadUrl: '/assets/25mb.bin',
         pingResource: '/assets/ping-test.txt',
       },
-      testDurations: { download: 30000, ping: 5000 },
-      maxTestTimeout: 35000,
-      repeatCount: 2,
+      testDurations: { download: 10000, ping: 5000 }, // Adjusted download duration to 10 seconds
+      maxTestTimeout: 15000, // Adjusted timeout to 15 seconds
+      repeatCount: 1, // Reduced to 1 to fit within 10 seconds
       pingTargets: [
         'https://1.1.1.1/favicon.ico', // Cloudflare
         'https://8.8.8.8/favicon.ico', // Google DNS
@@ -1285,13 +1286,17 @@
           for (let i = 0; i < attemptsPerTarget && testActive; i++) {
             try {
               const start = performance.now();
-              await fetch(`${target}?t=${Date.now()}`, {
+              // Use 'no-cors' mode for external targets to bypass CORS restrictions
+              const mode = target.includes('http') && !target.includes('assets') ? 'no-cors' : 'cors';
+              const response = await fetch(`${target}?t=${Date.now()}`, {
                 cache: 'no-store',
                 signal: AbortSignal.timeout(2000),
-                method: 'HEAD' // Use HEAD to minimize data transfer
+                method: 'HEAD',
+                mode: mode
               });
               const ping = performance.now() - start;
-              if (ping > 0 && ping < 1000) { // Filter out invalid pings
+              // For no-cors, we can't check response.ok, but we can still use the timing
+              if (ping > 0 && ping < 1000) {
                 pings.push(ping);
               }
               log(`Ping ${target} #${i + 1}: ${ping.toFixed(2)}ms`);
@@ -1300,14 +1305,12 @@
             }
             await new Promise(resolve => setTimeout(resolve, 200));
           }
-          // Calculate average for this target
           if (pings.length > 0) {
             const average = pings.reduce((sum, t) => sum + t, 0) / pings.length;
             pingResults.push(average);
           }
         }
 
-        // Select the lowest average ping
         if (pingResults.length > 0) {
           finalPing = Math.min(...pingResults);
           pingResult.textContent = `${finalPing.toFixed(1)} ms`;
@@ -1375,7 +1378,6 @@
         finalDownloadSpeed = totalTime > 0 ? Math.min(((totalBytes * 8) / totalTime) / (1024 * 1024), 1000) : 0;
         downloadResult.textContent = `${finalDownloadSpeed.toFixed(1)} Mbps`;
 
-        // Ensure graph completion
         completeGraph();
       }
 
