@@ -560,6 +560,11 @@
         padding: 0.5rem 1.5rem;
         min-width: 120px;
       }
+
+      .result-box {
+        padding: 0.8rem;
+        min-width: 100px;
+      }
     }
 
     @media (max-width: 480px) {
@@ -616,7 +621,7 @@
     <div class="network-info" id="network-info" aria-live="polite">Fetching network info...</div>
     <div class="error-message" id="error-message">Error fetching data</div>
     <div class="speed-test-card">
-      <div class="test-type" id="test-type">Ready to Test</div>
+      <div class="test-type" id="test-type">Ready to Test - Testing against github.io</div>
       <div class="progress-bar">
         <div class="progress" id="progress-bar"></div>
       </div>
@@ -912,7 +917,7 @@
       }
     }
 
-    // Speedometer with Corrected Arc and Non-Linear Scaling
+    // Speedometer with Logarithmic Scale for Better Marker Placement
     function speedToAngle(speed) {
       const maxSpeed = 1000;
       const startAngle = 225 * (Math.PI / 180); // Left side (225°)
@@ -920,18 +925,8 @@
       const totalAngle = (225 - 135) * (Math.PI / 180); // 90° span
 
       speed = Math.min(speed, maxSpeed);
-      let fraction;
-
-      if (speed <= 100) {
-        // 0 to 100 Mbps spans 80% of the arc (72°)
-        fraction = (speed / 100) * 0.8;
-      } else {
-        // 100 to 1000 Mbps spans the remaining 20% (18°)
-        const remainingSpeed = speed - 100;
-        const remainingRange = 900;
-        fraction = 0.8 + ((remainingSpeed / remainingRange) * 0.2);
-      }
-
+      // Logarithmic mapping: log(speed + 1) / log(maxSpeed + 1)
+      const fraction = Math.log(speed + 1) / Math.log(maxSpeed + 1);
       return startAngle - (fraction * totalAngle); // Clockwise progression
     }
 
@@ -1043,7 +1038,7 @@
         ctx.lineWidth = 1;
         ctx.stroke();
 
-        // Adjust label position
+        // Adjust label position to prevent overlap
         let xOffset = 0;
         let yOffset = fontSize / 2;
         if (s === 0) xOffset = fontSize * 2;
@@ -1073,7 +1068,7 @@
       requestAnimationFrame(update);
     }
 
-    // Graph Logic
+    // Graph Logic with Logarithmic Scale
     let graphData = [];
     let graphActive = true;
 
@@ -1100,13 +1095,8 @@
       function speedToY(speed) {
         speed = Math.min(speed, maxSpeed);
         const graphHeight = height - padding.top - padding.bottom;
-        if (speed <= 100) {
-          return height - padding.bottom - (speed / 100) * (graphHeight * 0.8);
-        } else {
-          const remainingSpeed = speed - 100;
-          const remainingRange = 900;
-          return height - padding.bottom - (graphHeight * 0.8) - ((remainingSpeed / remainingRange) * (graphHeight * 0.2));
-        }
+        const fraction = Math.log(speed + 1) / Math.log(maxSpeed + 1);
+        return height - padding.bottom - (fraction * graphHeight);
       }
 
       const speeds = [0, 5, 10, 20, 25, 50, 100, 500, 1000];
@@ -1247,52 +1237,48 @@
       }, 1000);
     }
 
-    // Speed Test with Improved Ping Test
+    // Speed Test with Updated Ping Test
     const CONFIG = {
       testServer: {
         downloadUrl: '/assets/25mb.bin',
-        pingResource: '/assets/ping-test.txt',
+        pingResource: 'https://www.google.co.za/favicon.ico',
       },
       testDurations: { download: 10000, ping: 5000 },
       maxTestTimeout: 15000,
-      repeatCount: 1,
-      pingTargets: [
-        { url: 'https://1.1.1.1/robots.txt', mode: 'no-cors' },
-        { url: 'https://www.google.com/favicon.ico', mode: 'no-cors' },
-        { url: '/assets/ping-test.txt', mode: 'cors' }
-      ]
+      repeatCount: 1
     };
 
     async function runPingTest() {
       const testType = document.getElementById('test-type');
-      testType.textContent = 'Testing Ping - Testing against github.io';
+      testType.textContent = 'Testing Ping - Testing against www.google.co.za';
       const pingTimes = [];
 
-      for (const target of CONFIG.pingTargets) {
-        for (let i = 0; i < 10 && testActive; i++) {
-          try {
-            const start = performance.now();
-            await fetch(`${target.url}?t=${Date.now()}`, {
-              method: 'HEAD',
-              mode: target.mode,
-              cache: 'no-store',
-              signal: AbortSignal.timeout(1000)
-            });
-            const ping = performance.now() - start;
-            if (ping > 0 && ping < 100) pingTimes.push(ping);
-            log(`Ping ${target.url} #${i + 1}: ${ping.toFixed(2)}ms`);
-          } catch (error) {
-            log(`Ping ${target.url} #${i + 1} failed: ${error.message}`);
-          }
-          await new Promise(resolve => setTimeout(resolve, 100));
+      for (let i = 0; i < 10 && testActive; i++) {
+        try {
+          const start = performance.now();
+          await fetch(`${CONFIG.testServer.pingResource}?t=${Date.now()}`, {
+            method: 'HEAD',
+            mode: 'no-cors',
+            cache: 'no-store',
+            signal: AbortSignal.timeout(1000)
+          });
+          const ping = performance.now() - start;
+          if (ping > 0 && ping < 100) pingTimes.push(ping);
+          log(`Ping #${i + 1}: ${ping.toFixed(2)}ms`);
+        } catch (error) {
+          log(`Ping #${i + 1} failed: ${error.message}`);
         }
-        if (pingTimes.length >= 5) break;
+        await new Promise(resolve => setTimeout(resolve, 100));
       }
 
       const successfulPings = pingTimes.sort((a, b) => a - b).slice(0, 5);
       finalPing = successfulPings.length
         ? successfulPings.reduce((sum, t) => sum + t, 0) / successfulPings.length
         : 999;
+      if (successfulPings.length === 0) {
+        log('No successful pings recorded');
+        finalPing = 999;
+      }
       pingResult.textContent = `${finalPing.toFixed(1)} ms`;
     }
 
